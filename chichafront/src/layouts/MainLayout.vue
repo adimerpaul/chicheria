@@ -69,11 +69,12 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+
         <q-item
           v-if="$store.getters['login/isLoggedIn']"
           clickable
           exact
-          to="registro"
+          to="cliente"
         >
           <q-item-section
             avatar
@@ -82,9 +83,9 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Registros</q-item-label>
+            <q-item-label>Clientes</q-item-label>
             <q-item-label caption>
-              Realizar nuevo registro
+              Informacion de clientes
             </q-item-label>
           </q-item-section>
         </q-item>

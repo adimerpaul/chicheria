@@ -146,8 +146,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Quasar App`,
-        short_name: `Quasar App`,
+        name: `Chicheria`,
+        short_name: `Chicheria`,
         description: `A Quasar Framework app`,
         display: 'standalone',
         orientation: 'portrait',
@@ -213,7 +213,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'inmueblefront'
+        appId: 'chichafront'
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

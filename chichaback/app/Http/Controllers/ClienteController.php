@@ -15,6 +15,7 @@ class ClienteController extends Controller
     public function index()
     {
         //
+        return Cliente::all();
     }
 
     /**
@@ -36,6 +37,8 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //
+        $cliente=Cliente::create($request->all());
+        return $cliente;
     }
 
     /**
@@ -44,9 +47,10 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function show(Cliente $cliente)
+    public function show($nit)
     {
-        //
+        // 
+        return Cliente::where('nit',$nit)->get() ;
     }
 
     /**
@@ -70,6 +74,22 @@ class ClienteController extends Controller
     public function update(Request $request, Cliente $cliente)
     {
         //
+        $cliente->update($request->all());
+        return $cliente;
+    }
+
+    public function activar($id)
+    {
+        //
+        $cliente=Cliente::find($id);
+        if($cliente->estado=='ACTIVO')
+            $cliente->estado='INACTIVO';
+        else {
+            $cliente->estado='ACTIVO';
+
+        }
+        $cliente->save();
+        return $cliente;
     }
 
     /**
@@ -81,5 +101,8 @@ class ClienteController extends Controller
     public function destroy(Cliente $cliente)
     {
         //
+        $cliente=Cliente::find($id);
+        $cliente->delete();
+        return response()->json(['res'=>'Borrado exitoso'],200);
     }
 }
