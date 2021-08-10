@@ -1,5 +1,6 @@
-import Login from '../pages/Login'
+import Login from '../pages/Login';
 import Cliente from "pages/Cliente";
+
 const routes = [
   {
     path: '/',

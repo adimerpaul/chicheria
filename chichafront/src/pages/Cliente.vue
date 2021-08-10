@@ -7,7 +7,7 @@
             </div>
             <!--            <div class="text-subtitle2">by John Doe</div>-->
           <q-dialog v-model="crear" >
-            <q-card>
+            <q-card style="width: 700px; max-width: 80vw;">
               <q-card-section>
                 <div class="text-h6">Registro nuevo cliente</div>
               </q-card-section>
@@ -64,7 +64,7 @@
                     filled
                     v-model="cliente.nit"
                     label="NIT"
-                    hint="Tipo de tramite"
+                    type="text"
                   />
                   <div>
                     <q-btn label="Registrar" type="submit" color="primary" />
@@ -82,12 +82,13 @@
           <q-table
             title="CLIENTES"
             :rows="rows"
-            :columns="columns">
-            <template v-slot:body="props">
+            :columns="columns"
+            row-key="name">
+            <template v-slot:body-cell-opcion="props" >
               <q-tr :props="props">
                 <q-td key="opcion" :props="props">
-                <q-btn dense round flat color="yellow" icon="edit"></q-btn>
-                <q-btn dense round flat color="red" icon="delete"></q-btn>
+                <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
+                <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
                 </q-td>
               </q-tr>
             </template>
@@ -99,16 +100,18 @@
 
 </template>
 <script>
-import { date } from 'quasar';
+
 export default {
   data(){
     return{
       crear:false,
+      dialog_mod:false,
+      dialog_del:false,
       cliente:{},
+      dato:{},
       columns : [
   {
     name: 'local',
-    required: true,
     label: 'Codigo',
     align: 'center',
     field: 'local',
@@ -136,14 +139,34 @@ export default {
   methods: {
     listado(){
       this.$q.loading.show();
-      this.$axios.get(process.env.URL+'/cliente').then(res=>{
-        // console.log(res.data)
+      this.$axios.get(process.env.API+'/cliente').then(res=>{
+        console.log(res.data)
         this.rows=res.data;
         this.$q.loading.hide();
       })
     },
-    registrar(){}
+    registrar(){
+        this.$axios.post(process.env.API+'/cliente', this.cliente).then(res=>{
+        this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Creado correctamente'
+        });
+        this.alert=false;
+        this.listado();
+      })}
+
     
+    
+  },
+  editRow(props){
+    this.dato=props.row;
+    this.dialog_mod=true;
+  },
+  delRow(props){
+    this.dato=props.row;
+    this.dialog_del=true;
   },
   onReset(){
     this.cliente={};
