@@ -72,9 +72,6 @@
                 </q-form>
               </q-card-section>
 
-<!--              <q-card-actions align="right">-->
-<!--                <q-btn flat label="OK" color="primary" v-close-popup />-->
-<!--              </q-card-actions>-->
             </q-card>
           </q-dialog>
 
@@ -84,6 +81,15 @@
             :rows="rows"
             :columns="columns"
             row-key="name">
+            <template v-slot:body-cell-estado="props" >
+              <q-tr :props="props">
+                <q-td key="estado" :props="props">
+                  <q-badge color="orange">
+                    {{ props.row.estado }}
+                  </q-badge>
+                </q-td>
+              </q-tr>
+            </template>
             <template v-slot:body-cell-opcion="props" >
               <q-tr :props="props">
                 <q-td key="opcion" :props="props">
@@ -109,6 +115,7 @@ export default {
       dialog_del:false,
       cliente:{},
       dato:{},
+      color:'green',
       columns : [
   {
     name: 'local',

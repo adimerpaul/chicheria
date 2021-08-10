@@ -37,6 +37,8 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //
+        if(Cliente::find($request->ci))
+        return response()->json(['res'=>'Cliente ya registrado'],406);
         $cliente=Cliente::create($request->all());
         return $cliente;
     }
@@ -47,10 +49,10 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function show($nit)
+    public function show($ci)
     {
         // 
-        return Cliente::where('nit',$nit)->get() ;
+        return Cliente::where('ci',$ci)->get() ;
     }
 
     /**
