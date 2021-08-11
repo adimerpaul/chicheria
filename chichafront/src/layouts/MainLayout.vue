@@ -15,7 +15,7 @@
           {{this.$store.state.login.user.name}}
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>Chicha doña nati</div>
       </q-toolbar>
     </q-header>
 
