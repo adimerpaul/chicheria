@@ -233,7 +233,7 @@ export default {
   { name: 'categoria', label: 'Categoria NIT', field: 'categoria' },
   { name: 'razon', label: 'Razon Social', field: 'razon' },
   { name: 'nit', label: 'Numero NIT', field: 'nit' },
-  { name: 'estado', label: 'Estado', field: 'estado' },
+  { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'opcion', label: 'Opciones', field: 'action' }
 ],
   rows:[]

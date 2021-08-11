@@ -76,6 +76,18 @@ class ProductoController extends Controller
         $producto->update($request->all());
         return $producto;
     }
+    public function activarprod(Request $request)
+    {
+        //
+        $producto=Producto::find($request->id);
+        if($producto->estado=='ACTIVO')
+            $producto->estado='INACTIVO';
+        else {
+            $producto->estado='ACTIVO';
+        }
+        $producto->save();
+        return $producto;
+    }
 
     /**
      * Remove the specified resource from storage.
