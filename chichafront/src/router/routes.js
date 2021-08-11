@@ -1,5 +1,6 @@
 import Login from '../pages/Login';
 import Cliente from "pages/Cliente";
+import Producto from "pages/Producto";
 
 const routes = [
   {
@@ -9,6 +10,7 @@ const routes = [
       { path: '', component: () => import('pages/Index.vue') },
       { path: 'login', component: Login },
       { path: 'cliente', component: Cliente,meta: {requiresAuth: true} },
+      { path: 'producto', component: Producto,meta: {requiresAuth: true} },
     ]
   },
 

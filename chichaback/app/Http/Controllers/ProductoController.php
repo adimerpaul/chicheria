@@ -15,6 +15,7 @@ class ProductoController extends Controller
     public function index()
     {
         //
+        return Producto::all();
     }
 
     /**
@@ -36,8 +37,8 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         //
-        Producto::create($request->all());
-        return redirect('productos');
+        $producto=Producto::create($request->all());
+        return $producto;
     }
 
     /**
@@ -72,6 +73,8 @@ class ProductoController extends Controller
     public function update(Request $request, Producto $producto)
     {
         //
+        $producto->update($request->all());
+        return $producto;
     }
 
     /**
@@ -80,8 +83,11 @@ class ProductoController extends Controller
      * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Producto $producto)
+    public function destroy($id)
     {
         //
+        $producto=Producto::find($id);
+        $producto->delete();
+        return response()->json(['res'=>'Borrado exitoso'],200);
     }
 }

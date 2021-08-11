@@ -93,6 +93,26 @@
         <q-item
           v-if="$store.getters['login/isLoggedIn']"
           clickable
+          exact
+          to="producto"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="list" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Productos</q-item-label>
+            <q-item-label caption>
+              Informacion de Productos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          v-if="$store.getters['login/isLoggedIn']"
+          clickable
           @click="logout"
         >
           <q-item-section

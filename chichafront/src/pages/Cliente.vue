@@ -88,7 +88,7 @@
             :columns="columns"
             row-key="name">
             <template v-slot:body-cell-estado="props" >
-              <q-tr :props="props">
+              <q-tr :props="props" >
                 <q-td key="estado" :props="props" @click="activar(props)">
                   <q-badge color="green" v-if="props.row.estado=='ACTIVO'">
                     {{ props.row.estado }}
@@ -100,7 +100,7 @@
               </q-tr>
             </template>
             <template v-slot:body-cell-opcion="props" >
-                <q-td key="opcion" :props="props">
+                <q-td key="opcion" :props="props" >
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
                 <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
                 </q-td>
@@ -213,6 +213,7 @@ export default {
       dialog_mod:false,
       dialog_del:false,
       cliente:{},
+      color:'',
       dato:{},
       columns : [
   {
