@@ -80,15 +80,14 @@ class ClienteController extends Controller
         return $cliente;
     }
 
-    public function activar($id)
+    public function activar(Request $request)
     {
         //
-        $cliente=Cliente::find($id);
+        $cliente=Cliente::find($request->id);
         if($cliente->estado=='ACTIVO')
             $cliente->estado='INACTIVO';
         else {
             $cliente->estado='ACTIVO';
-
         }
         $cliente->save();
         return $cliente;
@@ -100,7 +99,7 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cliente $cliente)
+    public function destroy($id)
     {
         //
         $cliente=Cliente::find($id);
