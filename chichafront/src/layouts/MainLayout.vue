@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          {{this.$store.state.login.user.name}}
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
@@ -242,6 +242,9 @@ export default defineComponent({
           this.$router.push('/login')
         })
     }
+  },
+  mounted() {
+    // console.log(this.$store.state.login.user.name)
   }
 })
 </script>

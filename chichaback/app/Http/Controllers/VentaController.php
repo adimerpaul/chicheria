@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detalle;
 use App\Models\Venta;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,13 @@ class VentaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function misventas(Request $request){
+        return Venta::with('user')->with('cliente')->whereDate('fecha',$request->fecha)->get();
+    }
+
+    public function index(Request $request)
     {
-        //
+        return $request;
     }
 
     /**
@@ -35,7 +40,30 @@ class VentaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $venta= new Venta();
+        $venta->fecha=date('Y-m-d');
+        $venta->total=$request->total;
+        $venta->acuenta=$request->acuenta;
+        $venta->saldo=$request->saldo;
+        $venta->estado=$request->estado;
+        $venta->user_id=$request->user()->id;
+        $venta->cliente_id=$request->cliente_id;
+        $venta->save();
+//        return $venta;
+        foreach ($request->detalles as $detalle){
+//            var_dump($detalle);
+//            echo $detalle['producto_id'].'--';
+            $d= new Detalle();
+            $d->venta_id=$venta->id;
+            $d->user_id=$request->user()->id;
+            $d->producto_id=$detalle['producto_id'];
+            $d->cantidad=$detalle['cantidad'];
+            $d->nombreproducto=$detalle['nombreproducto'];
+            $d->precio=$detalle['precio'];
+            $d->subtotal=$detalle['subtotal'];
+            $d->save();
+//            return $detalle;
+        }
     }
 
     /**
