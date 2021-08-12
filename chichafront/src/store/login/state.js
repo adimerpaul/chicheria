@@ -1,7 +1,7 @@
 export default function () {
   return {
     status: '',
-    token: localStorage.getItem('token') || '',
+    token: localStorage.getItem('tokenchi') || '',
     user : {},
     pedido:[]
   }
