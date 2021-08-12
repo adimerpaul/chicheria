@@ -110,6 +110,27 @@
           </q-item-section>
         </q-item>
 
+        
+        <q-item
+          v-if="$store.getters['login/isLoggedIn']"
+          clickable
+          exact
+          to="inventario"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="list" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Inventario</q-item-label>
+            <q-item-label caption>
+              Informacion de Materiales 
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item
           v-if="$store.getters['login/isLoggedIn']"
           clickable

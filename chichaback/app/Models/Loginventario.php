@@ -5,20 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Garantia extends Model
+class Loginventario extends Model
 {
     use HasFactory;
     protected $fillable=[
         'fecha',
-        'efectivo',
-        'fisico',
-        'detalle',
         'cantidad',
-        'estado',
-        'user_id',
-        'cliente_id',
+        'agregar',
+        'Motivo',
         'inventario_id',
+        'user_id',
     ];
     protected $hidden = ["created_at", "updated_at"];
-
 }
