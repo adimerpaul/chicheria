@@ -151,6 +151,25 @@
           </q-item-section>
         </q-item>
 
+        <q-item
+          v-if="$store.getters['login/isLoggedIn']"
+          clickable
+          exact
+          to="garantia"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="shop" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Registro Garantia</q-item-label>
+            <q-item-label caption>
+              Datos de Garantia
+            </q-item-label>
+          </q-item-section>
+        </q-item>
 
 
         <q-item

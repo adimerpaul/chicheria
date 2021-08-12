@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLoginventariosTable extends Migration
+class CreateGdetallesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateLoginventariosTable extends Migration
      */
     public function up()
     {
-        Schema::create('Loginventarios', function (Blueprint $table) {
+        Schema::create('gdetalles', function (Blueprint $table) {
             $table->id();
-            $table->date("fecha")->nullable();
-            $table->integer("cantidad")->nullable();
-            $table->boolean("agregar")->default(true);
-            $table->string("motivo")->nullable();
+            $table->unsignedBigInteger('garantia_id');
+            $table->foreign('garantia_id')->references('id')->on('garantias');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('inventario_id');
             $table->foreign('inventario_id')->references('id')->on('inventarios');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');  
+            $table->integer('cantidad');
+            $table->string('nombreinv');
             $table->timestamps();
         });
     }
@@ -34,6 +34,6 @@ class CreateLoginventariosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Loginventarios');
+        Schema::dropIfExists('gdetalles');
     }
 }

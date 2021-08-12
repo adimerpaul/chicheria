@@ -2,6 +2,7 @@ import Login from '../pages/Login';
 import Cliente from "pages/Cliente";
 import Producto from "pages/Producto";
 import Venta from "pages/Venta";
+import Garantia from "pages/Garantia";
 import Inventario from "pages/Inventario";
 
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
       { path: 'cliente', component: Cliente,meta: {requiresAuth: true} },
       { path: 'producto', component: Producto,meta: {requiresAuth: true} },
       { path: 'venta', component: Venta,meta: {requiresAuth: true} },
+      { path: 'garantia', component: Garantia,meta: {requiresAuth: true} },
       { path: 'inventario', component: Inventario,meta: {requiresAuth: true} },
     ]
   },
