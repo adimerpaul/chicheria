@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             ProductoSeeder::class,
             VentaSeeder::class,
             DetalleSeeder::class,
+            EmpleadoSeeder::class,
+            SueldoSeeder::class,
         ]);
     }
 }

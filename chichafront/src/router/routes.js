@@ -4,6 +4,7 @@ import Producto from "pages/Producto";
 import Venta from "pages/Venta";
 import Garantia from "pages/Garantia";
 import Inventario from "pages/Inventario";
+import Empledo from "pages/Empledo";
 
 const routes = [
   {
@@ -17,6 +18,7 @@ const routes = [
       { path: 'venta', component: Venta,meta: {requiresAuth: true} },
       { path: 'garantia', component: Garantia,meta: {requiresAuth: true} },
       { path: 'inventario', component: Inventario,meta: {requiresAuth: true} },
+      { path: 'empleado', component: Empledo,meta: {requiresAuth: true} },
     ]
   },
 

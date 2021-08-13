@@ -110,7 +110,7 @@
           </q-item-section>
         </q-item>
 
-        
+
         <q-item
           v-if="$store.getters['login/isLoggedIn']"
           clickable
@@ -126,7 +126,7 @@
           <q-item-section>
             <q-item-label>Inventario</q-item-label>
             <q-item-label caption>
-              Informacion de Materiales 
+              Informacion de Materiales
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -150,6 +150,26 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item
+          v-if="$store.getters['login/isLoggedIn']"
+          clickable
+          exact
+          to="empleado"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="people" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Empleado</q-item-label>
+            <q-item-label caption>
+              Controlde empleados
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
 
         <q-item
           v-if="$store.getters['login/isLoggedIn']"
