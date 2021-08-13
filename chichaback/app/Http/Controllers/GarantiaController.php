@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Garantia;
+use App\Models\Gdetalle;
 use Illuminate\Http\Request;
 
 class GarantiaController extends Controller
@@ -15,7 +16,7 @@ class GarantiaController extends Controller
     public function index()
     {
         //
-        return Garantia::all();
+        return Garantia::with('cliente')->get();
     }
 
     /**
@@ -37,6 +38,24 @@ class GarantiaController extends Controller
     public function store(Request $request)
     {
         //
+        $garantia= new Garantia();
+        $garantia->fecha=$request->fecha;
+        $garantia->efectivo=$request->efectivo;
+        $garantia->fisico=$request->fisico;
+        $garantia->detalle=$request->detalle;
+        $garantia->estado=$request->estado;
+        $garantia->user_id=$request->user()->id;
+        $garantia->cliente_id=$request->cliente_id;
+        $garantia->save();
+        foreach ($request->detalles as $detalle){
+            $d= new Gdetalle();
+            $d->garantia_id=$garantia->id;
+            $d->user_id=$request->user()->id;
+            $d->inventario_id=$detalle['inventario_id'];
+            $d->cantidad=$detalle['cantidad'];
+            $d->nombreinv=$detalle['nombreinv'];
+            $d->save();
+        }
     }
 
     /**
@@ -82,5 +101,10 @@ class GarantiaController extends Controller
     public function destroy(Garantia $garantia)
     {
         //
+    }
+
+    public function listado(Request $request){
+        return Garantia::with('user')->with('cliente')->whereDate('fecha',$request->fecha)->get();
+        
     }
 }

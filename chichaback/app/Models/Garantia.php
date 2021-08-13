@@ -13,12 +13,16 @@ class Garantia extends Model
         'efectivo',
         'fisico',
         'detalle',
-        'cantidad',
         'estado',
         'user_id',
         'cliente_id',
-        'inventario_id',
     ];
     protected $hidden = ["created_at", "updated_at"];
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+    public function cliente(){
+        return $this->belongsTo(Cliente::class);
+    }
 }
