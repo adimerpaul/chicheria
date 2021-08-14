@@ -20,6 +20,7 @@ class Cliente extends Model
         'categoria',
         'razon',
         'nit',
+        'observacion',
         'estado',
     ];
     protected $hidden = ["created_at", "updated_at"];

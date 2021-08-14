@@ -3,11 +3,9 @@
       <div class="col-12">
             <div class="text-h6">
               <h5 style="text-align:center">INFORMACION DE CLIENTES</h5>
-              <q-btn label="Registrar" icon="add" color="positive" @click="crear = true" />
             </div>
             <!--            <div class="text-subtitle2">by John Doe</div>-->
-          <q-dialog v-model="crear" >
-            <q-card style="width: 700px; max-width: 80vw;">
+            <q-card style="width:100% ;">
               <q-card-section>
                 <div class="text-h6">Registro nuevo cliente</div>
               </q-card-section>
@@ -17,61 +15,99 @@
                   @reset="onReset"
                   class="q-gutter-md"
                 >
+                <div class="row">
+                <div class="col-21">
                   <q-input
                     filled
                     type="text"
                     v-model="cliente.local"
                     label="Local"
+                    style="text-transform: uppercase"
                   />
+                  </div>
+                  <div class="col-1">
                   <q-input
                     filled
                     type="text"
                     v-model="cliente.ci"
                     label="Cedula Identidad"
+                    style="text-transform: uppercase"
                   />
+                  </div>
+                  <div class="col-2">
                   <q-input
                     filled
                     v-model="cliente.titular"
                     type="text"
                     label="Nombre Completo"
+                    style="text-transform: uppercase"
                     lazy-rules
                     :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
                   />
+                                    </div>
+                  <div class="col-1">
                   <q-select v-model="cliente.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
-                  
+                                    </div>
+                  <div class="col-1">
                   <q-input
                     filled
                     type="text"
                     v-model="cliente.telefono"
                     label="Telefono o Celular"
+                    style="text-transform: uppercase"
                   />
+                                    </div>
+                  <div class="col-2">
                   <q-input
                     type="date"
                     filled
                     v-model="cliente.fecnac"
                     label="Fecha Nac"
                   />
+                                    </div>
+                  <div class="col-2">
                   <q-input
                     type="text"
                     filled
                     v-model="cliente.direccion"
                     label="Direccion*"
+                    style="text-transform: uppercase"
                   />
+                                    </div>
+                  <div class="col-1">
                   <q-select v-model="cliente.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad" />
-                  <q-select v-model="cliente.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Legalidad" />
+                                    </div>
+                  <div class="col-1">
+                  <q-select v-model="cliente.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
+                                    </div>
+                  <div class="col-1">
                   <q-input
                     type="text"
                     filled
                     v-model="cliente.razon"
                     label="Razon Social"
+                    style="text-transform: uppercase"
                   />
-
+                  </div>
+                  <div class="col-1">
                   <q-input
                     filled
                     v-model="cliente.nit"
                     label="NIT"
                     type="text"
+                    style="text-transform: uppercase"
                   />
+                  </div>
+                  <div class="col-2">
+                  <q-input
+                    filled
+                    v-model="cliente.observacion"
+                    label="Observacion"
+                    type="text"
+                    style="text-transform: uppercase"
+                  />
+                  </div>
+                  </div>
                   <div>
                     <q-btn label="Registrar" type="submit" color="primary" />
                   </div>
@@ -79,7 +115,6 @@
               </q-card-section>
 
             </q-card>
-          </q-dialog>
 
         <div class="q-pa-md">
           <q-table
@@ -123,18 +158,21 @@
                     type="text"
                     v-model="dato.local"
                     label="Local"
+                    style="text-transform: uppercase"
                   />
                   <q-input
                     filled
                     type="text"
                     v-model="dato.ci"
                     label="Cedula Identidad"
+                    style="text-transform: uppercase"
                   />
                   <q-input
                     filled
                     v-model="dato.titular"
                     type="text"
                     label="Nombre Completo"
+                    style="text-transform: uppercase"
                     lazy-rules
                     :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
                   />
@@ -145,6 +183,7 @@
                     type="text"
                     v-model="dato.telefono"
                     label="Telefono o Celular"
+                    style="text-transform: uppercase"
                   />
                   <q-input
                     type="date"
@@ -157,14 +196,16 @@
                     filled
                     v-model="dato.direccion"
                     label="Direccion*"
+                    style="text-transform: uppercase"
                   />
                   <q-select v-model="dato.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad" />
-                  <q-select v-model="dato.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Legalidad" />
+                  <q-select v-model="dato.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
                   <q-input
                     type="text"
                     filled
                     v-model="dato.razon"
                     label="Razon Social"
+                    style="text-transform: uppercase"
                   />
 
                   <q-input
@@ -172,6 +213,15 @@
                     v-model="dato.nit"
                     label="NIT"
                     type="text"
+                    style="text-transform: uppercase"
+                  />
+                  
+                  <q-input
+                    filled
+                    v-model="dato.observacion"
+                    label="Observacion"
+                    type="text"
+                    style="text-transform: uppercase"
                   />
 
             <div>
@@ -233,6 +283,7 @@ export default {
   { name: 'categoria', label: 'Categoria NIT', field: 'categoria' },
   { name: 'razon', label: 'Razon Social', field: 'razon' },
   { name: 'nit', label: 'Numero NIT', field: 'nit' },
+  { name: 'observacion', label: 'Observacion', field: 'observacion' },
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'opcion', label: 'Opciones', field: 'action' }
 ],

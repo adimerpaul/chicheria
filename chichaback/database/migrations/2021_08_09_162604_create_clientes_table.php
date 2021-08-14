@@ -26,6 +26,7 @@ class CreateClientesTable extends Migration
             $table->string("categoria")->nullable()->default('');
             $table->string("razon")->nullable()->default('');
             $table->string("nit")->nullable()->default('');
+            $table->string("observacion")->nullable()->default('');
             $table->string("estado")->nullable()->default('ACTIVO');
             $table->timestamps();
         });

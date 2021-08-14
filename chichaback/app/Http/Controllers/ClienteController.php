@@ -37,9 +37,22 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //
-        if(Cliente::find($request->ci))
+        if(Cliente::find(strtoupper($request->ci)))
         return response()->json(['res'=>'Cliente ya registrado'],406);
-        $cliente=Cliente::create($request->all());
+        $cliente= new Cliente;
+        $cliente->local=strtoupper($request->local);
+        $cliente->ci=strtoupper($request->ci);
+        $cliente->titular=strtoupper($request->titular);
+        $cliente->tipo=$request->tipo;
+        $cliente->telefono=strtoupper($request->telefono);
+        $cliente->fechanac=$request->fechanac;
+        $cliente->direccion=strtoupper($request->direccion);
+        $cliente->legalidad=$request->legalidad;
+        $cliente->categoria=$request->categoria;
+        $cliente->razon=strtoupper($request->razon);
+        $cliente->nit=strtoupper($request->nit);
+        $cliente->observacion=strtoupper($request->observacion);
+        $cliente->save();
         return $cliente;
     }
 
@@ -76,7 +89,20 @@ class ClienteController extends Controller
     public function update(Request $request, Cliente $cliente)
     {
         //
-        $cliente->update($request->all());
+        $cliente=Cliente::find($request->id);
+        $cliente->local=strtoupper($request->local);
+        $cliente->ci=strtoupper($request->ci);
+        $cliente->titular=strtoupper($request->titular);
+        $cliente->tipo=$request->tipo;
+        $cliente->telefono=strtoupper($request->telefono);
+        $cliente->fechanac=$request->fechanac;
+        $cliente->direccion=strtoupper($request->direccion);
+        $cliente->legalidad=$request->legalidad;
+        $cliente->categoria=$request->categoria;
+        $cliente->razon=strtoupper($request->razon);
+        $cliente->nit=strtoupper($request->nit);
+        $cliente->observacion=strtoupper($request->observacion);
+        $cliente->save();
         return $cliente;
     }
 
