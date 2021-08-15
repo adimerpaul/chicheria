@@ -61,7 +61,7 @@
                   <q-input
                     type="date"
                     filled
-                    v-model="cliente.fecnac"
+                    v-model="cliente.fechanac"
                     label="Fecha Nac"
                   />
                                     </div>
@@ -188,8 +188,10 @@
                   <q-input
                     type="date"
                     filled
-                    v-model="dato.fecnac"
+                    v-model="dato.fechanac"
                     label="Fecha Nac"
+                    lazy-rules
+                    :rules="[ val => val && val.length > 0 || 'Por favor ingresar fechas']"
                   />
                   <q-input
                     type="text"
@@ -263,6 +265,7 @@ export default {
       dialog_mod:false,
       dialog_del:false,
       cliente:{},
+      clientes:{},
       color:'',
       dato:{},
       columns : [
@@ -297,9 +300,48 @@ export default {
   methods: {
     listado(){
       this.$q.loading.show();
-      this.$axios.get(process.env.API+'/cliente').then(res=>{
+      this.rows=[];
+      this.$axios.get(process.env.API+'/cumple').then(res=>{
         console.log(res.data)
-        this.rows=res.data;
+        res.data.forEach(el => {
+          this.clientes={};
+        this.clientes.id=el.id;
+        this.clientes.local=el.local;
+        this.clientes.ci=el.ci;
+        this.clientes.titular=el.titular;
+        this.clientes.tipo=el.tipo;
+        this.clientes.telefono=el.telefono;
+        this.clientes.fechanac=el.fechanac;
+        this.clientes.direccion=el.direccion;
+        this.clientes.legalidad=el.legalidad;
+        this.clientes.categoria=el.categoria;
+        this.clientes.razon=el.razon;
+        this.clientes.nit=el.nit;
+        this.clientes.observacion=el.observacion;
+        this.clientes.estado=el.estado;
+        this.rows.push(this.clientes);
+        });
+      });
+      this.$axios.get(process.env.API+'/cumple2').then(res=>{
+        console.log(res.data)
+        res.data.forEach(el => {
+          this.clientes={};
+        this.clientes.id=el.id;
+        this.clientes.local=el.local;
+        this.clientes.ci=el.ci;
+        this.clientes.titular=el.titular;
+        this.clientes.tipo=el.tipo;
+        this.clientes.telefono=el.telefono;
+        this.clientes.fechanac=el.fechanac;
+        this.clientes.direccion=el.direccion;
+        this.clientes.legalidad=el.legalidad;
+        this.clientes.categoria=el.categoria;
+        this.clientes.razon=el.razon;
+        this.clientes.nit=el.nit;
+        this.clientes.observacion=el.observacion;
+        this.clientes.estado=el.estado;
+        this.rows.push(this.clientes);
+        });
         this.$q.loading.hide();
       })
     },

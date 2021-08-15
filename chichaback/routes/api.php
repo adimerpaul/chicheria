@@ -36,6 +36,8 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/activarinv',[\App\Http\Controllers\InventarioController::class,'activarinv']);
     Route::post('/inventarioadd',[\App\Http\Controllers\InventarioController ::class,'productadd']);
     Route::post('/inventariosub',[\App\Http\Controllers\InventarioController ::class,'productsub']);
+    Route::get('/cumple',[\App\Http\Controllers\ClienteController ::class,'ordercumple']);
+    Route::get('/cumple2',[\App\Http\Controllers\ClienteController ::class,'ordercumple2']);
     Route::resource('/empleado',\App\Http\Controllers\EmpleadoController::class);
     Route::resource('/sueldo',\App\Http\Controllers\SueldoController::class);
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
 {
@@ -131,5 +132,20 @@ class ClienteController extends Controller
         $cliente=Cliente::find($id);
         $cliente->delete();
         return response()->json(['res'=>'Borrado exitoso'],200);
+    }
+    
+    public function ordercumple(){
+
+        
+         $cliente=DB::select('(select *,MONTH(fechanac) as mes,DAY(fechanac) as dia from clientes 
+         where MONTH(fechanac)>=MONTH(CURDATE()) and DAY(fechanac)>=DAY(CURDATE()) order by  mes asc, dia asc)
+         ');
+         return $cliente;
+    }
+    public function ordercumple2(){
+        $cliente2=DB::select('
+        (select *,MONTH(fechanac) as mes,DAY(fechanac) as dia from clientes
+         where MONTH(fechanac)<=MONTH(CURDATE()) and DAY(fechanac)<DAY(CURDATE()) order by  mes asc, dia asc)');
+         return $cliente2;
     }
 }
