@@ -20,7 +20,6 @@ class CreateGastosTable extends Migration
             $table->string('observacion');
             $table->date('fecha');
             $table->time('hora');
-
             $table->timestamps();
         });
     }
