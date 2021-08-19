@@ -144,7 +144,26 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Venta</q-item-label>
+            <q-item-label>Venta Detalle</q-item-label>
+            <q-item-label caption>
+              Historial de ventas
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item
+          v-if="$store.getters['login/isLoggedIn']"
+          clickable
+          exact
+          to="ventalocal"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="shop" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Venta local</q-item-label>
             <q-item-label caption>
               Historial de ventas
             </q-item-label>

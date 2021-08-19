@@ -14,7 +14,11 @@ class VentaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function misventas(Request $request){
-        return Venta::with('user')->with('cliente')->whereDate('fecha',$request->fecha)->get();
+        return Venta::with('user')
+            ->with('cliente')
+            ->whereDate('fecha','>=',$request->fecha1)
+            ->whereDate('fecha','<=',$request->fecha2)
+            ->get();
     }
 
     public function index(Request $request)
@@ -40,9 +44,11 @@ class VentaController extends Controller
      */
     public function store(Request $request)
     {
+//        return $request->user();
         $venta= new Venta();
         $venta->fecha=date('Y-m-d');
         $venta->total=$request->total;
+        $venta->tipo=$request->tipo;
         $venta->acuenta=$request->acuenta;
         $venta->saldo=$request->saldo;
         $venta->estado=$request->estado;
@@ -62,7 +68,7 @@ class VentaController extends Controller
             $d->precio=$detalle['precio'];
             $d->subtotal=$detalle['subtotal'];
             $d->save();
-//            return $detalle;
+//            echo $detalle;
         }
     }
 

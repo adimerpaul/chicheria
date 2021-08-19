@@ -14,6 +14,7 @@ class Venta extends Model
         "acuenta",
         "saldo",
         "estado",
+        "local",
         'user_id',
         'cliente_id',
     ];

@@ -16,7 +16,7 @@ class CreateDetallesTable extends Migration
         Schema::create('detalles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('venta_id');
-            $table->foreign('venta_id')->references('id')->on('ventas');
+            $table->foreign('venta_id')->references('id')->on('ventas')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('producto_id');

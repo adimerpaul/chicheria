@@ -22,6 +22,7 @@ class VentaSeeder extends Seeder
                 "saldo"=>'50',
                 "estado"=>'POR COBRAR',
                 'user_id'=>'1',
+                'tipo'=>'DETALLE',
                 'cliente_id'=>'1',
             ],
         ]);
