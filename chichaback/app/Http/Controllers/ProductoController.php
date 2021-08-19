@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use App\Models\Loginventario;
 
 class ProductoController extends Controller
 {
@@ -76,6 +77,7 @@ class ProductoController extends Controller
         $producto->update($request->all());
         return $producto;
     }
+
     public function activarprod(Request $request)
     {
         //
@@ -101,5 +103,38 @@ class ProductoController extends Controller
         $producto=Producto::find($id);
         $producto->delete();
         return response()->json(['res'=>'Borrado exitoso'],200);
+    }
+
+    public function productadd(Request $request){
+        $log=new Loginventario();
+        $log->cantidad=$request->cantidad;
+        $log->producto_id=$request->id;
+        $log->fecha=date('Y-m-d');
+        $log->agregar=true;
+        $log->user_id=$request->user()->id;
+        $log->motivo=$request->motivo;
+        $log->save();
+
+        $inventario=Producto::find($request->id);
+        $inventario->cantidad+=$request->cantidad;
+        return $inventario->save();
+    }
+
+    public function productsub(Request $request){
+        $log=new Loginventario();
+        $log->cantidad=$request->cantidad;
+        $log->producto_id=$request->id;
+        $log->agregar=false;
+        $log->fecha=date('Y-m-d');
+        $log->user_id=$request->user()->id;
+        $log->motivo=$request->motivo;
+        $log->save();
+
+        $inventario=Producto::find($request->id);
+        if($inventario->cantidad < $request->cantidad)
+            $inventario->cantidad=0;
+        else
+            $inventario->cantidad-=$request->cantidad;
+        return $inventario->save();
     }
 }

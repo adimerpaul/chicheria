@@ -34,8 +34,8 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/activar',[\App\Http\Controllers\ClienteController::class,'activar']);
     Route::post('/activarprod',[\App\Http\Controllers\ProductoController::class,'activarprod']);
     Route::post('/activarinv',[\App\Http\Controllers\InventarioController::class,'activarinv']);
-    Route::post('/inventarioadd',[\App\Http\Controllers\InventarioController ::class,'productadd']);
-    Route::post('/inventariosub',[\App\Http\Controllers\InventarioController ::class,'productsub']);
+    Route::post('/inventarioadd',[\App\Http\Controllers\ProductoController ::class,'productadd']);
+    Route::post('/inventariosub',[\App\Http\Controllers\ProductoController ::class,'productsub']);
     Route::get('/cumple',[\App\Http\Controllers\ClienteController ::class,'ordercumple']);
     Route::get('/cumple2',[\App\Http\Controllers\ClienteController ::class,'ordercumple2']);
     Route::resource('/empleado',\App\Http\Controllers\EmpleadoController::class);
