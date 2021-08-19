@@ -6,6 +6,7 @@ import Garantia from "pages/Garantia";
 import Inventario from "pages/Inventario";
 import Empledo from "pages/Empledo";
 import Ventadirecta from "pages/Ventadirecta";
+import Ventalocal from "pages/Ventalocal";
 
 const routes = [
   {
@@ -18,6 +19,7 @@ const routes = [
       { path: 'producto', component: Producto,meta: {requiresAuth: true} },
       { path: 'venta', component: Venta,meta: {requiresAuth: true} },
       { path: 'ventadirecta', component: Ventadirecta,meta: {requiresAuth: true} },
+      { path: 'ventalocal', component: Ventalocal,meta: {requiresAuth: true} },
       { path: 'garantia', component: Garantia,meta: {requiresAuth: true} },
       { path: 'inventario', component: Inventario,meta: {requiresAuth: true} },
       { path: 'empleado', component: Empledo,meta: {requiresAuth: true} },

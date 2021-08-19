@@ -65,8 +65,9 @@
     <div class="col-12">
       <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas</div>
     </div>
-    <div class="col-6 col-sm-6 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
-    <div class="col-6 col-sm-6 q-pa-xs flex flex-center">
+    <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha inicio" v-model="fecha2" outlined required/></div>
+    <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha fin" v-model="fecha3" outlined required/></div>
+    <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
       <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misventas" />
     </div>
     <div class="col-12">
@@ -75,7 +76,6 @@
         :rows="ventas"
         title="Historial de ventas"
         :filter="filter"
-        hide-header
       >
         <template v-slot:top-right>
           <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -98,6 +98,7 @@ export default {
     return{
       fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
+      fecha3:date.formatDate(new Date(),'YYYY-MM-DD'),
       responsable:'',
       clientes:[],
       cliente:'',
@@ -136,11 +137,11 @@ export default {
       this.productos=res.data
       this.producto=res.data[0]
     })
-    this.$axios.post(process.env.API+'/misventas',{fecha:this.fecha2}).then(res=>{
-      this.venta=res.data
-      // console.log(this.venta)
-      // this.producto=res.data[0]
-    })
+    // this.$axios.post(process.env.API+'/misventas',{fecha:this.fecha2}).then(res=>{
+    //   this.venta=res.data
+    //   // console.log(this.venta)
+    //   // this.producto=res.data[0]
+    // })
     this.$axios.post(process.env.API+'/me').then(res=>{
       // console.log(res.data)
       this.responsable=res.data.name
@@ -150,7 +151,7 @@ export default {
   methods:{
     misventas(){
       this.$q.loading.show()
-      this.$axios.post(process.env.API+'/misventas',{fecha:this.fecha2}).then(res=>{
+      this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha2,fecha2:this.fecha3,}).then(res=>{
         // this.ventas=res.data
         // console.log(res.data)
         this.$q.loading.hide()

@@ -151,11 +151,30 @@
           </q-item-section>
         </q-item>
 
-                        <q-item
+<!--                        <q-item-->
+<!--          v-if="$store.getters['login/isLoggedIn']"-->
+<!--          clickable-->
+<!--          exact-->
+<!--          to="ventadirecta"-->
+<!--        >-->
+<!--          <q-item-section-->
+<!--            avatar-->
+<!--          >-->
+<!--            <q-icon name="shop" />-->
+<!--          </q-item-section>-->
+
+<!--          <q-item-section>-->
+<!--            <q-item-label>Venta Local</q-item-label>-->
+<!--            <q-item-label caption>-->
+<!--              Historial de ventas-->
+<!--            </q-item-label>-->
+<!--          </q-item-section>-->
+<!--        </q-item>-->
+        <q-item
           v-if="$store.getters['login/isLoggedIn']"
           clickable
           exact
-          to="ventadirecta"
+          to="ventalocal"
         >
           <q-item-section
             avatar
@@ -164,7 +183,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Venta Local</q-item-label>
+            <q-item-label>Venta Local 2</q-item-label>
             <q-item-label caption>
               Historial de ventas
             </q-item-label>

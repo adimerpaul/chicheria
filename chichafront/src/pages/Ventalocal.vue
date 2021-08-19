@@ -29,8 +29,8 @@
           <div class="col-6 col-sm-1 q-pa-xs"><q-input type="text" label="A cuenta" label-color="white" bg-color="accent" v-model="acuenta" outlined/></div>
           <div class="col-6 col-sm-1 q-pa-xs"><q-input type="text" label="Saldo" v-model="saldo" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" disable outlined/></div>
           <div class="col-6 col-sm-2 q-pa-xs"><q-input type="text" label="Estado" v-model="estado" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" outlined/></div>
-          <div class="col-6 col-sm-12 q-pa-xs flex flex-center">
-            <q-btn color="primary" class="full-width"  label="Agregar" icon="send" type="submit" />
+          <div class="col-12 col-sm-12 q-pa-xs flex flex-center">
+            <q-btn color="warning" class="full-width"  label="Agregar" icon="send" type="submit" />
           </div>
         </div>
       </q-form>
