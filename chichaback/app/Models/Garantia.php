@@ -12,7 +12,7 @@ class Garantia extends Model
         'fecha',
         'efectivo',
         'fisico',
-        'detalle',
+        'observacion',
         'estado',
         'user_id',
         'cliente_id',

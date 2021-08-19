@@ -150,11 +150,12 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item
+
+                        <q-item
           v-if="$store.getters['login/isLoggedIn']"
           clickable
           exact
-          to="ventalocal"
+          to="ventadirecta"
         >
           <q-item-section
             avatar
@@ -163,7 +164,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Venta local</q-item-label>
+            <q-item-label>Venta Local</q-item-label>
             <q-item-label caption>
               Historial de ventas
             </q-item-label>

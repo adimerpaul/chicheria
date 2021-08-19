@@ -18,7 +18,7 @@ class CreateGarantiasTable extends Migration
             $table->date("fecha")->nullable();
             $table->double("efectivo",11,2)->nullable();
             $table->string("fisico")->nullable();
-            $table->string("detalle")->nullable();
+            $table->string("observacion")->nullable();
             $table->string("estado")->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

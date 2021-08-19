@@ -72,6 +72,46 @@ class VentaController extends Controller
         }
     }
 
+    public function directa(Request $request)
+    {
+        $venta= new Venta();
+        $venta->fecha=date('Y-m-d');
+        $venta->total=$request->total;
+        $venta->acuenta=$request->acuenta;
+        $venta->saldo=$request->saldo;
+        $venta->estado=$request->estado;
+        $venta->user_id=$request->user()->id;
+        $venta->cliente_id=$request->cliente_id;
+        $venta->save();
+        foreach ($request->detalles as $detalle){
+
+            $d= new Detalle();
+            $d->venta_id=$venta->id;
+            $d->user_id=$request->user()->id;
+            $d->producto_id=$detalle['producto_id'];
+            $d->cantidad=$detalle['cantidad'];
+            $d->nombreproducto=$detalle['nombreproducto'];
+            $d->precio=$detalle['precio'];
+            $d->subtotal=$detalle['subtotal'];
+            $d->save();
+
+            $prod=Producto::find($d->producto_id);
+            $prod->cantidad-=$d->cantidad;
+            $prod->save();
+        }
+        foreach ($request->garantias as $garantia){
+
+            $g=new Garantia();
+            $g->fecha=date('Y-m-d');
+            $g->efectivo=$garantia['efectivo'];
+            $g->fisico=$garantia['fisico'];
+            $g->observacion=$garantia['observacion'];
+            $g->estado=$garantia['estado'];
+            $g->user_id=$request->user()->id;
+            $g->cliente_id=$request->cliente_id;
+            $g->save();
+        }
+    }
     /**
      * Display the specified resource.
      *

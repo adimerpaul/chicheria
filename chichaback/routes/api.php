@@ -30,6 +30,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::resource('/inventario',\App\Http\Controllers\InventarioController::class);
     Route::resource('/loginventario',\App\Http\Controllers\LoginventarioController::class);
     Route::post('/misventas',[\App\Http\Controllers\VentaController::class,'misventas']);
+    Route::post('/directa',[\App\Http\Controllers\VentaController::class,'directa']);
     Route::post('/listado',[\App\Http\Controllers\GarantiaController::class,'listado']);
     Route::post('/activar',[\App\Http\Controllers\ClienteController::class,'activar']);
     Route::post('/activarprod',[\App\Http\Controllers\ProductoController::class,'activarprod']);
