@@ -11,7 +11,10 @@ class Producto extends Model
     protected $fillable=[
         'nombre',
         'precio',
+        'cantidad',
+        'observacion',
         'estado',
+        
     ];
     protected $hidden = ["created_at", "updated_at"];
 }

@@ -13,7 +13,7 @@ class Loginventario extends Model
         'cantidad',
         'agregar',
         'Motivo',
-        'inventario_id',
+        'producto_id',
         'user_id',
     ];
     protected $hidden = ["created_at", "updated_at"];
