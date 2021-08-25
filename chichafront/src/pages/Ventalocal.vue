@@ -11,7 +11,17 @@
           <div class="col-6 col-sm-6 q-pa-xs"><q-input type="text" label="Responsable" v-model="responsable" outlined required/></div>
         </div>
         <div class="row">
-          <div class="col-6 col-sm-2 q-pa-xs"><q-select v-model="cliente" outlined :options="clientes" option-label="local" option-value="id" label="Local" required/></div>
+          <div class="col-6 col-sm-2 q-pa-xs">
+            <q-select
+              outlined
+              v-model="model"
+              use-input
+              input-debounce="0"
+              label="Selecionar Cliente"
+              :options="options"
+              @filter="filterFn"
+            />
+          </div>
           <div class="col-6 col-sm-2 q-pa-xs"><q-select v-model="producto" outlined :options="productos" option-label="nombre" option-value="id" label="Producto" required/></div>
           <div class="col-6 col-sm-1 q-pa-xs">
             <q-input
@@ -104,8 +114,11 @@
             <q-td key="estado" :props="props">
               <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
             </q-td>
-            <q-td key="cliente" :props="props">
-              {{ props.row.cliente }}
+            <q-td key="local" :props="props">
+              {{ props.row.local }}
+            </q-td>
+            <q-td key="titular" :props="props">
+              {{ props.row.titular }}
             </q-td>
             <q-td key="user" :props="props">
               {{ props.row.user }}
@@ -118,17 +131,19 @@
       <q-form>
         <div class="row">
           <div class="col-4 q-pa-md">
-            <q-input type="text" label="Venta total" label-color="positive"  v-model="acuenta"  outlined/>
+            <q-input type="text" label="Venta total" label-color="positive"  v-model="ventat"  outlined/>
           </div>
           <div class="col-4 q-pa-md">
-            <q-input type="text" label="Saldo caja" label-color="info"  v-model="acuenta"  outlined/>
+            <q-input type="text" label="Saldo caja" label-color="info"  v-model="porc"  outlined/>
           </div>
           <div class="col-4 q-pa-md">
-            <q-input type="text" label="Por cobrar" label-color="negative"  v-model="acuenta"  outlined/>
+            <q-input type="text" label="Por cobrar" label-color="negative"  v-model="saldoc"  outlined/>
           </div>
         </div>
-
       </q-form>
+    </div>
+    <div class="col-12">
+      <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
     </div>
   </div>
 </q-page>
@@ -136,6 +151,8 @@
 
 <script>
 import {date} from 'quasar'
+import { jsPDF } from "jspdf";
+
 export default {
   name: "Venta",
   data(){
@@ -145,6 +162,7 @@ export default {
       fecha3:date.formatDate(new Date(),'YYYY-MM-DD'),
       responsable:'',
       clientes:[],
+      clientes2:[],
       cliente:'',
       productos:[],
       producto:'',
@@ -164,11 +182,14 @@ export default {
         {name:'acuenta',label:'A cuenta',field:'acuenta'},
         {name:'saldo',label:'Saldo',field:'saldo'},
         {name:'estado',label:'Estado',field:'estado'},
-        {name:'cliente',label:'Cliente',field:'cliente'},
+        {name:'local',label:'Local',field:'local'},
+        {name:'titular',label:'Titular',field:'titular'},
         {name:'user',label:'Usuario',field:'user'},
       ],
       ventas:[],
-      filter:''
+      filter:'',
+      options:[],
+      model:''
     }
   },
   mounted() {
@@ -178,8 +199,21 @@ export default {
     this.misventas()
     // console.log(this.$store.state.login)
     this.$axios.get(process.env.API+'/cliente').then(res=>{
-      this.clientes=res.data
-      this.cliente=res.data[0]
+      // this.clientes=res.data
+      // this.clientes2=res.data
+      // this.cliente=res.data[0]
+      // console.log(res.data)
+      res.data.forEach(r=>{
+        this.clientes.push({
+          label:r.ci+' '+r.titular+' Local: '+r.local,
+          id:r.id,
+          // detalles:r.detalles,
+          // nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+          // padron:r.padron,
+          // ci:r.cliente.ci,
+          // total:r.total,
+        })
+      })
     })
     this.$axios.get(process.env.API+'/producto').then(res=>{
       this.productos=res.data
@@ -197,6 +231,73 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+    imprimir(){
+      let mc=this
+      function header(){
+        var img = new Image()
+        img.src = 'logo.png'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(5, 1, 'Historial de ventas')
+        doc.text(5, 1.5,  'DE '+mc.fecha2+' AL '+mc.fecha3)
+        doc.text(1, 3, 'Total')
+        doc.text(3, 3, 'A cuenta')
+        doc.text(5, 3, 'Saldo')
+        doc.text(7, 3, 'Estado')
+        doc.text(9.5, 3, 'Local')
+        doc.text(13.5, 3, 'Titular')
+        doc.text(18.5, 3, 'Usuario')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(9);
+      // var x=0,y=
+      header()
+      // let xx=x
+      // let yy=y
+      let y=0
+      this.ventas.forEach(r=>{
+        // xx+=0.5
+        y+=0.5
+        doc.text(1, y+3, r.total.toString())
+        doc.text(3, y+3, r.acuenta.toString())
+        doc.text(5, y+3, r.saldo.toString())
+        doc.text(7, y+3, r.estado.toString())
+        doc.text(9.5, y+3, r.local.toString())
+        doc.text(13.5, y+3, r.titular.toString())
+        doc.text(18.5, y+3, r.user.toString())
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })
+      doc.text(2, y+4, 'Ventas totales: ')
+      doc.text(5, y+4, this.ventat+'Bs')
+      doc.text(8, y+4, 'Por cobrar totales: ')
+      doc.text(11, y+4, this.ventat+'Bs')
+      doc.text(14, y+4, 'Saldo totales: ')
+      doc.text(17, y+4, this.ventat+'Bs')
+      // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      window.open(doc.output('bloburl'), '_blank');
+    },
+    filterFn (val, update) {
+      if (val === '') {
+        update(() => {
+          this.options = this.clientes
+          // with Quasar v1.7.4+
+          // here you have access to "ref" which
+          // is the Vue reference of the QSelect
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.options = this.clientes.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
     misventas(){
       this.$q.loading.show()
       this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha2,fecha2:this.fecha3}).then(res=>{
@@ -210,10 +311,12 @@ export default {
             acuenta:r.acuenta,
             saldo:r.saldo,
             estado:r.estado,
-            cliente:r.cliente.local,
+            local:r.cliente.local,
+            titular:r.cliente.titular,
             user:r.user.name,
           })
         })
+        console.log(this.ventas)
       })
     },
     agregar(){
@@ -227,14 +330,14 @@ export default {
       // })
     },
     guardar(){
-      // if (this.detalles.length==0){
-      //   this.$q.notify({
-      //     message:'Tienes que tener un detalle de ventas',
-      //     color:'red',
-      //     icon:'error'
-      //   })
-      //   return false;
-      // }
+      if (this.model==0){
+        this.$q.notify({
+          message:'Tienes que seleccionar cliente',
+          color:'red',
+          icon:'error'
+        })
+        return false;
+      }
       // console.log(this.detalles)
       // return  false
       // return false
@@ -253,7 +356,7 @@ export default {
         saldo:this.saldo,
         estado:this.estado,
         tipo:'LOCAL',
-        cliente_id:this.cliente.id,
+        cliente_id:this.model.id,
         detalles:[{
           nombreproducto:this.producto.nombre,
           precio:this.producto.precio,
@@ -307,6 +410,27 @@ export default {
     },
     saldo(){
       return this.subtotal-this.acuenta
+    },
+    ventat(){
+      let total=0;
+      this.ventas.forEach(r=>{
+        total+= parseFloat(r.total)
+      })
+      return total
+    },
+    porc(){
+      let total=0;
+      this.ventas.forEach(r=>{
+        total+= parseFloat(r.acuenta)
+      })
+      return total
+    },
+    saldoc(){
+      let total=0;
+      this.ventas.forEach(r=>{
+        total+= parseFloat(r.saldo)
+      })
+      return total
     },
   }
 }
