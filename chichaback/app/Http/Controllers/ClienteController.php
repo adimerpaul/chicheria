@@ -38,7 +38,8 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //
-        if(Cliente::find(strtoupper($request->ci)))
+        $resultado=Cliente::where('ci',$request->ci)->where('tipocliente',$request->tipocliente)->get();
+        if($resultado->count()>1)
         return response()->json(['res'=>'Cliente ya registrado'],406);
         $cliente= new Cliente;
         $cliente->local=strtoupper($request->local);
@@ -53,6 +54,7 @@ class ClienteController extends Controller
         $cliente->razon=strtoupper($request->razon);
         $cliente->nit=strtoupper($request->nit);
         $cliente->observacion=strtoupper($request->observacion);
+        $cliente->tipocliente=$request->tipocliente;
         $cliente->save();
         return $cliente;
     }
@@ -63,10 +65,10 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function show($ci)
+    public function show($id)
     {
         // 
-        return Cliente::where('ci',$ci)->get() ;
+        return Cliente::find($id)->get() ;
     }
 
     /**
@@ -92,7 +94,6 @@ class ClienteController extends Controller
         //
         $cliente=Cliente::find($request->id);
         $cliente->local=strtoupper($request->local);
-        $cliente->ci=strtoupper($request->ci);
         $cliente->titular=strtoupper($request->titular);
         $cliente->tipo=$request->tipo;
         $cliente->telefono=strtoupper($request->telefono);
@@ -147,5 +148,21 @@ class ClienteController extends Controller
         (select *,MONTH(fechanac) as mes,DAY(fechanac) as dia from clientes
          where MONTH(fechanac)<=MONTH(CURDATE()) and DAY(fechanac)<DAY(CURDATE()) order by  mes asc, dia asc)');
          return $cliente2;
+    }
+
+    public function listado(){
+        return Cliente::where('tipocliente',$tipocliente)->get();
+    }
+
+    public function buscarci($request){
+        return Cliente::where('tipocliente',$request->tipocliente)->where('ci',$request->ci)->get();
+    }
+
+    public function buscarnombre($request){
+        return Cliente::where('tipocliente',$request->tipocliente)->where('titular',$request->titular)->get();
+    }
+
+    public function buscarlocal($request){
+        return Cliente::where('tipocliente',$request->tipocliente)->where('local',$request->local)->get();
     }
 }

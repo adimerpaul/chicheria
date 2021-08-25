@@ -10,13 +10,30 @@
                 <div class="text-h6">Registro nuevo cliente</div>
               </q-card-section>
               <q-card-section class="q-pt-none">
+                  <div>
+      <q-btn-toggle
+        v-model="tipocliente"
+        @click="onReset"
+        class="my-custom-toggle"
+        no-caps
+        rounded
+        unelevated
+        toggle-color="primary"
+        color="white"
+        text-color="primary"
+        :options="[
+          {label: 'Local', value: 1},
+          {label: 'Persona', value: 0}
+        ]"
+      />
+    </div>
                 <q-form
                   @submit="registrar"
                   @reset="onReset"
                   class="q-gutter-md"
                 >
                 <div class="row">
-                <div class="col-21">
+                <div class="col-2">
                   <q-input
                     outlined
                     type="text"
@@ -25,7 +42,7 @@
                     style="text-transform: uppercase"
                   />
                   </div>
-                  <div class="col-1">
+                  <div class="col-2">
                   <q-input
                     outlined
                     type="text"
@@ -45,9 +62,7 @@
                     :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
                   />
                                     </div>
-                  <div class="col-1">
-                  <q-select outlined v-model="cliente.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
-                                    </div>
+
                   <div class="col-1">
                   <q-input
                     outlined
@@ -74,31 +89,7 @@
                     style="text-transform: uppercase"
                   />
                                     </div>
-                  <div class="col-1">
-                  <q-select outlined v-model="cliente.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad" />
-                                    </div>
-                  <div class="col-1">
-                  <q-select outlined v-model="cliente.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
-                                    </div>
-                  <div class="col-1">
-                  <q-input
-                    type="text"
-                    outlined
-                    v-model="cliente.razon"
-                    label="Razon Social"
-                    style="text-transform: uppercase"
-                  />
-                  </div>
-                  <div class="col-1">
-                  <q-input
-                    outlined
-                    v-model="cliente.nit"
-                    label="NIT"
-                    type="text"
-                    style="text-transform: uppercase"
-                  />
-                  </div>
-                  <div class="col-2">
+                                    <div class="col-2">
                   <q-input
                     outlined
                     v-model="cliente.observacion"
@@ -108,11 +99,41 @@
                   />
 
                   </div>
-                  <div class="col-1 flex flex-center">
+                  <div v-if="tipocliente==1" class="row">
+                  <div class="col-2">
+                  <q-select outlined v-model="cliente.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
+                                    </div>
+                  <div class="col-3">
+                  <q-select outlined v-model="cliente.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad" />
+                                    </div>
+                  <div class="col-3">
+                  <q-select outlined v-model="cliente.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
+                                    </div>
+                  <div class="col-3">
+                  <q-input
+                    type="text"
+                    outlined
+                    v-model="cliente.razon"
+                    label="Razon Social"
+                    style="text-transform: uppercase"
+                  />
+                  </div>
+                  <div class="col-2">
+                  <q-input
+                    outlined
+                    v-model="cliente.nit"
+                    label="NIT"
+                    type="text"
+                    style="text-transform: uppercase"
+                  />
+                  </div>
+                  </div>
+
+                                    <div class="col-1 flex flex-center">
                     <q-btn label="Registrar" icon="send" type="submit" color="primary" />
                   </div>
-                  </div>
                   <div>
+                  </div>
 
                   </div>
                 </q-form>
@@ -126,6 +147,7 @@
             :rows="rows"
             :columns="columns"
             row-key="name">
+
             <template v-slot:body-cell-estado="props" >
               <q-tr :props="props" >
                 <q-td key="estado" :props="props" @click="activar(props)">
@@ -138,6 +160,7 @@
                 </q-td>
               </q-tr>
             </template>
+
             <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
@@ -180,7 +203,7 @@
                     lazy-rules
                     :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
                   />
-                  <q-select v-model="dato.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
+             
 
                   <q-input
                     outlined
@@ -204,6 +227,15 @@
                     label="Direccion*"
                     style="text-transform: uppercase"
                   />
+                  <q-input
+                    outlined
+                    v-model="dato.observacion"
+                    label="Observacion"
+                    type="text"
+                    style="text-transform: uppercase"
+                  />
+                  <div v-if="dato.tipocliente=='1'">
+                  <q-select v-model="dato.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
                   <q-select outlined v-model="dato.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad" />
                   <q-select outlined v-model="dato.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
                   <q-input
@@ -221,14 +253,8 @@
                     type="text"
                     style="text-transform: uppercase"
                   />
+                </div>
 
-                  <q-input
-                    outlined
-                    v-model="dato.observacion"
-                    label="Observacion"
-                    type="text"
-                    style="text-transform: uppercase"
-                  />
 
             <div>
               <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
@@ -268,6 +294,7 @@ export default {
       crear:false,
       dialog_mod:false,
       dialog_del:false,
+      tipocliente:1,
       cliente:{
         fechanac:'2000-01-01'
       },
@@ -293,6 +320,7 @@ export default {
   { name: 'razon', label: 'Razon Social', field: 'razon' },
   { name: 'nit', label: 'Numero NIT', field: 'nit' },
   { name: 'observacion', label: 'Observacion', field: 'observacion' },
+  { name: 'tipocliente', label: 'tipo cliente', field: 'tipocliente' },
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'opcion', label: 'Opciones', field: 'action' }
 ],
@@ -324,6 +352,7 @@ export default {
         this.clientes.razon=el.razon;
         this.clientes.nit=el.nit;
         this.clientes.observacion=el.observacion;
+        this.clientes.tipocliente=el.tipocliente;
         this.clientes.estado=el.estado;
         this.rows.push(this.clientes);
         });
@@ -345,6 +374,7 @@ export default {
         this.clientes.razon=el.razon;
         this.clientes.nit=el.nit;
         this.clientes.observacion=el.observacion;
+        this.clientes.tipocliente=el.tipocliente;
         this.clientes.estado=el.estado;
         this.rows.push(this.clientes);
         });
@@ -352,6 +382,7 @@ export default {
       })
     },
     registrar(){
+        this.cliente.tipocliente=this.tipocliente;
         this.$axios.post(process.env.API+'/cliente', this.cliente).then(res=>{
         this.$q.notify({
           color: 'green-4',
@@ -383,6 +414,7 @@ export default {
       },
   editRow(props){
     this.dato=props.row;
+    console.log(this.dato);
     this.dialog_mod=true;
   },
   delRow(props){
@@ -427,6 +459,7 @@ export default {
     },
   onReset(){
     this.cliente={};
+    console.log(this.tipocliente);
   }
 
   },
