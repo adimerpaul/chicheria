@@ -16,7 +16,7 @@ class CreateInventariosTable extends Migration
         Schema::create('inventarios', function (Blueprint $table) {
             $table->id();
             $table->string("codigo")->nullable();
-            $table->date("fecha")->nullable();
+            $table->date("fecha")->default(date('Y-m-d'));
             $table->string("nombre")->nullable();
             $table->integer("cantidad")->default(0);
             $table->string("detalle")->nullable();

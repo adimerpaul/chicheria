@@ -291,6 +291,7 @@ export default {
       })
     },
     registrar(){
+      this.inventario.producto_id=this.inventario.producto_id.value;
         this.$axios.post(process.env.API+'/inventario', this.inventario).then(res=>{
         this.$q.notify({
           color: 'green-4',
