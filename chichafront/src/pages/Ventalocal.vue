@@ -198,7 +198,7 @@ export default {
     }
     this.misventas()
     // console.log(this.$store.state.login)
-    this.$axios.get(process.env.API+'/cliente').then(res=>{
+    this.$axios.get(process.env.API+'/listacliente').then(res=>{
       // this.clientes=res.data
       // this.clientes2=res.data
       // this.cliente=res.data[0]
@@ -215,7 +215,7 @@ export default {
         })
       })
     })
-    this.$axios.get(process.env.API+'/producto').then(res=>{
+    this.$axios.get(process.env.API+'/listaproducto').then(res=>{
       this.productos=res.data
       this.producto=res.data[0]
     })

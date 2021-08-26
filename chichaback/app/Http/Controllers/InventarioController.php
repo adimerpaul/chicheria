@@ -115,7 +115,7 @@ class InventarioController extends Controller
         $log->save();
 
         $inventario=Inventario::find($request->id);
-        $inventario->stock+=$request->cantidad;
+        $inventario->cantidad+=$request->cantidad;
         return $inventario->save();
     }
 
@@ -130,10 +130,10 @@ class InventarioController extends Controller
         $log->save();
 
         $inventario=Inventario::find($request->id);
-        if($inventario->stock < $request->cantidad)
-            $inventario->stock=0;
+        if($inventario->cantidad < $request->cantidad)
+            $inventario->cantidad=0;
         else
-            $inventario->stock-=$request->cantidad;
+            $inventario->cantidad-=$request->cantidad;
         return $inventario->save();
     }
 }

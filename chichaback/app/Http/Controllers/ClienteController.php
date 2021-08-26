@@ -19,6 +19,9 @@ class ClienteController extends Controller
         return Cliente::all();
     }
 
+    public function listacliente(){
+        return Cliente::where('estado','ACTIVO')->get();
+    }
     /**
      * Show the form for creating a new resource.
      *

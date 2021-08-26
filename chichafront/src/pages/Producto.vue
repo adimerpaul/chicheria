@@ -32,19 +32,11 @@
                     label="Precio"
                   />
                                    </div>
-                  <div class="col-2">
-                  <q-input
-                    outlined
-                    type="number"
-                    v-model="producto.cantidad"
-                    label="Cantidad"
-                    min=0
-                  />
-                                       </div>
+
                   <div class="col-2">              
                   <q-input
                     outlined
-                    type="number"
+                    type="text"
                     v-model="producto.observacion"
                     label="Obervacion"
                     
@@ -80,8 +72,6 @@
             </template>
             <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
-                 <q-btn  dense round flat color="green" @click="addRow(props)" icon="add"></q-btn>
-                <q-btn  dense round flat color="red" @click="substractRow(props)" icon="remove"></q-btn>
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
                 <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
                 </q-td>
@@ -113,14 +103,6 @@
                     label="Precio"
                   />
                   
-                  <q-input
-                    outlined
-                    type="number"
-                    v-model="dato.cantidad"
-                    label="Cantidad"
-                    min=0
-                  />
-                                    
                   <q-input
                     outlined
                     type="text"
@@ -283,7 +265,6 @@ export default {
     sortable: true
   },
   { name: 'precio', align: 'center', label: 'Precio', field: 'precio', sortable: true },
-  { name: 'cantidad', align: 'center', label: 'Cantidad', field: 'cantidad', sortable: true },
   { name: 'observacion', align: 'center', label: 'Observacion', field: 'observacion', sortable: true },
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'opcion', label: 'Opciones', field: 'action' }

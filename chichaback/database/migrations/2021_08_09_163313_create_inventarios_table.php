@@ -15,10 +15,14 @@ class CreateInventariosTable extends Migration
     {
         Schema::create('inventarios', function (Blueprint $table) {
             $table->id();
+            $table->string("codigo")->nullable();
+            $table->date("fecha")->nullable();
             $table->string("nombre")->nullable();
-            $table->integer("stock")->default(0);
+            $table->integer("cantidad")->default(0);
             $table->string("detalle")->nullable();
             $table->string("estado")->default('ACTIVO');
+            $table->unsignedBigInteger('producto_id')->nullable();
+            $table->foreign('producto_id')->references('id')->on('productos');
             $table->timestamps();
         });
     }

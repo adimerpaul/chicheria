@@ -10,9 +10,10 @@ class Inventario extends Model
     use HasFactory;
     protected $fillable=[
         'nombre',
-        'stock',
+        'cantidad',
         'detalle',
         'estado',
+        'producto_id',
     ];
     protected $hidden = ["created_at", "updated_at"];
 }

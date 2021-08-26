@@ -11,12 +11,21 @@
               <q-card-section>
                 <div class="text-h6">Registro nuevo Material</div>
               </q-card-section>
-              <q-card-section class="q-pt-none">
+              <q-card-section>
                 <q-form
                   @submit="registrar"
                   @reset="onReset"
                   class="q-gutter-md"
                 >
+                <q-input
+                    filled
+                    type="text"
+                    v-model="inventario.codigo"
+                    label="Codigo"
+                    lazy-rules
+                    :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
+
+                  />
                   <q-input
                     filled
                     type="text"
@@ -24,13 +33,12 @@
                     label="Nombre"
                     lazy-rules
                     :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
-
                   />
 
                   <q-input
                     filled
                     type="number"
-                    v-model="inventario.stock"
+                    v-model="inventario.cantidad"
                     label="Cantidad"
                   />
 
@@ -38,9 +46,10 @@
                     filled
                     v-model="inventario.detalle"
                     type="text"
-                    label="Detalle"
-  
+                    label="Detalle"  
                   />
+                  <q-select v-model="inventario.producto_id" :options="productos" label="Producto" />
+
  
                   <div>
                     <q-btn label="Registrar" type="submit" color="primary" />
@@ -105,6 +114,8 @@
                     v-model="dato.detalle"
                     label="Detalle"
                   />
+                  <q-select v-model="dato.producto_id" :options="productos" label="Producto" />
+
 
             <div>
               <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
@@ -237,6 +248,7 @@ export default {
       agregar:0,
       disminuir:0,
       inventario:{},
+      productos:[],
       color:'',
       dato:{},
       columns : [
@@ -258,6 +270,7 @@ export default {
   },
   created() {
       this.listado();
+      this.cargar();
   },
   methods: {
     listado(){
@@ -266,6 +279,15 @@ export default {
         console.log(res.data)
         this.rows=res.data;
         this.$q.loading.hide();
+      })
+    },
+    cargar(){
+      this.productos=[];
+      this.$axios.get(process.env.API+'/listaproducto').then(res=>{
+          res.data.forEach(element => {
+            this.productos.push({label:element.nombre,value:element.id});
+            
+          });
       })
     },
     registrar(){

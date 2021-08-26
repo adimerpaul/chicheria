@@ -19,6 +19,12 @@ class ProductoController extends Controller
         return Producto::all();
     }
 
+    public function listaproducto()
+    {
+        //
+        return Producto::where('estado','ACTIVO')->get();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
