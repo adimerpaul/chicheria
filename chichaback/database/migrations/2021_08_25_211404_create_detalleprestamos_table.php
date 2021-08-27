@@ -16,7 +16,6 @@ class CreateDetalleprestamosTable extends Migration
         Schema::create('detalleprestamos', function (Blueprint $table) {
             $table->id();
             $table->integer('cantidad');
-            $table->string('nombre');
             $table->unsignedBigInteger('prestamo_id');
             $table->foreign('prestamo_id')->references('id')->on('prestamos');
             $table->unsignedBigInteger('inventario_id');

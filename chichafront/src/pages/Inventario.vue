@@ -259,11 +259,11 @@ export default {
     field: 'nombre',
     sortable: true
   },
-  { name: 'stock', align: 'center', label: 'Stock', field: 'stock', sortable: true },
+  { name: 'cantidad', align: 'center', label: 'cantidad', field: 'cantidad', sortable: true },
   { name: 'detalle', align: 'center', label: 'Detalle', field: 'detalle', sortable: true },
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'opcion', label: 'Opciones', field: 'action' }
-],
+],  
   rows:[]
 
     }

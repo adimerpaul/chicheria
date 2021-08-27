@@ -14,6 +14,7 @@ class Producto extends Model
         'observacion',
         'estado',
         
+        
     ];
     protected $hidden = ["created_at", "updated_at"];
 }

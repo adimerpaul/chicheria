@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Detalle;
 use App\Models\Venta;
+use App\Models\Prestamo;
+use App\Models\Inventario;
+use App\Models\Detalleprestamo;
 use Illuminate\Http\Request;
 
 class VentaController extends Controller
@@ -70,6 +73,30 @@ class VentaController extends Controller
             $d->save();
 //            echo $detalle;
         }
+        $verificar=0;
+        foreach ($request->prestamo as $pdetalle) {
+            $verificar+=intval($pdetalle['cantidad']);
+        }
+        if($verificar>0){
+        $prestamo=new Prestamo();
+        $prestamo->venta_id=$venta->id;
+        $prestamo->user_id=$request->user()->id;
+        $prestamo->cliente_id=$request->cliente_id;
+        $prestamo->save();
+
+        foreach ($request->prestamo as $pdetalle) {
+            if($pdetalle['cantidad'] >0){
+            $p=new DetallePrestamo();
+            $p->cantidad=$pdetalle['cantidad'];
+            $p->prestamo_id=$prestamo->id;
+            $inv= Inventario::where('producto_id',$pdetalle['producto_id'])->get()[0];
+            $p->inventario_id=$inv->id;
+            $p->save();
+            $inv->cantidad-=intval($pdetalle['cantidad']);
+            $inv->save();
+        
+        }
+        }}
     }
 
     public function directa(Request $request)

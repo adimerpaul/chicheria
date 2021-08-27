@@ -31,15 +31,56 @@
             outlined
             required />
           </div>
-          <div class="col-6 col-sm-2 q-pa-xs">
+                    <div class="col-6 col-sm-2 q-pa-xs">
 <!--            <q-input type="number" label="Cantidad" v-model="cantidad" outlined/>-->
             <q-select label="Cantidad" :options="cantidades" v-model="cantidad" outlined/>
           </div>
+                    <div class="col-6 col-sm-2 q-pa-xs">
+            <q-input
+            type="number"
+            label="Prestamo"
+            v-model="cantidadprestamo"
+            outlined
+            required 
+            :rules="[val => val>=0 && val<=cantidad || 'Field is required']"
+            />
+          </div>
+
+
           <div class="col-6 col-sm-1 q-pa-xs"><q-input type="text" disable label="Subtotal" label-color="white"  bg-color="positive" v-model="subtotal" outlined/></div>
           <div class="col-6 col-sm-1 q-pa-xs"><q-input type="text" label="A cuenta" label-color="white" bg-color="accent" v-model="acuenta" outlined/></div>
           <div class="col-6 col-sm-1 q-pa-xs"><q-input type="text" label="Saldo" v-model="saldo" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" disable outlined/></div>
           <div class="col-6 col-sm-2 q-pa-xs"><q-input type="text" label="Estado" v-model="estado" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" outlined/></div>
           <div class="col-12 col-sm-12 q-pa-xs flex flex-center">
+          <div v-if="saldo>0||cantidadprestamo>0" class="row">
+          <br>
+            <div class="col-6 col-sm-2 q-pa-xs">
+            <q-input
+            type="number"
+            label="Efectivo"
+            v-model="garantia.efectivo"
+            outlined
+             
+            :rules="[val => val>=0  || 'valor min 0']"
+            />
+          </div>
+
+          <div class="col-6 col-sm-2 q-pa-xs">
+            <q-input
+            type="text"
+            label="Fisico"
+            v-model="garantia.fisico"
+            outlined            />
+          </div>
+          
+          <div class="col-6 col-sm-2 q-pa-xs">
+            <q-input
+            type="text"
+            label="Observacion"
+            v-model="garantia.observacion"
+            outlined            />
+          </div>
+          </div>
             <q-btn color="warning" class="full-width"  label="Agregar" icon="send" type="submit" />
           </div>
         </div>
@@ -170,6 +211,9 @@ export default {
       cantidades:[],
       acuenta:0,
       detalles:[],
+      garantia:{},
+      dialog_garantia:false,
+      cantidadprestamo:0,
       columns:[
         {name:'nombreproducto',label:'Nombre producto',field:'nombreproducto'},
         {name:'precio',label:'Precio',field:'precio'},
@@ -350,6 +394,7 @@ export default {
       //   subtotal:this.subtotal,
       // })
       // return false
+
       this.$axios.post(process.env.API+'/venta',{
         total:this.subtotal,
         acuenta:this.acuenta,
@@ -363,7 +408,11 @@ export default {
           producto_id:this.producto.id,
           cantidad:this.cantidad,
           subtotal:this.subtotal,
-        }]
+        }],
+        prestamo:[{cantidad:this.cantidadprestamo,
+          producto_id:this.producto.id
+        }],garantia:this.garantia
+
       }).then(res=>{
         console.log(res.data)
         this.$q.notify({
@@ -432,6 +481,7 @@ export default {
       })
       return total
     },
+
   }
 }
 </script>
