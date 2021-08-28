@@ -21,6 +21,12 @@ class UserSeeder extends Seeder
                 'password'=>Hash::make('admin'),
                 'name'=>'admin',
                 'fechalimite'=>'9999-12-31'
+            ],
+            [
+                'email'=>'lopez@test.com',
+                'password'=>Hash::make('123456'),
+                'name'=>'lopez',
+                'fechalimite'=>'9999-12-31'
             ]
         ]);
     }

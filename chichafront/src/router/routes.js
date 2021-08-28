@@ -7,6 +7,7 @@ import Inventario from "pages/Inventario";
 import Empledo from "pages/Empledo";
 import Ventadirecta from "pages/Ventadirecta";
 import Ventalocal from "pages/Ventalocal";
+import Reporteuser from "pages/Reporteuser";
 
 const routes = [
   {
@@ -23,6 +24,7 @@ const routes = [
       { path: 'garantia', component: Garantia,meta: {requiresAuth: true} },
       { path: 'inventario', component: Inventario,meta: {requiresAuth: true} },
       { path: 'empleado', component: Empledo,meta: {requiresAuth: true} },
+      { path: 'reporteuser', component: Reporteuser,meta: {requiresAuth: true} },
     ]
   },
 

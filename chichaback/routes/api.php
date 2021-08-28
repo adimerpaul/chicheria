@@ -22,6 +22,8 @@ Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
 Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/logout',[\App\Http\Controllers\UserController::class,'logout']);
     Route::post('/me',[\App\Http\Controllers\UserController::class,'me']);
+    Route::post('listuser',[\App\Http\Controllers\UserController::class,'listuser']);
+    
     Route::resource('/cliente',\App\Http\Controllers\ClienteController::class);
     Route::resource('/producto',\App\Http\Controllers\ProductoController::class);
     Route::resource('/venta',\App\Http\Controllers\VentaController::class);
@@ -41,6 +43,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::get('/listaproducto',[\App\Http\Controllers\ProductoController ::class,'listaproducto']);
     Route::get('/listainventario',[\App\Http\Controllers\InventarioController ::class,'listainventario']);
     Route::post('/listaprestamo',[\App\Http\Controllers\GarantiaController ::class,'listaprestamo']);
+    Route::post('/listadoventa',[\App\Http\Controllers\VentaController ::class,'listadoventa']);
     Route::get('/cumple',[\App\Http\Controllers\ClienteController ::class,'ordercumple']);
     Route::get('/cumple2',[\App\Http\Controllers\ClienteController ::class,'ordercumple2']);
     Route::resource('/empleado',\App\Http\Controllers\EmpleadoController::class);

@@ -160,4 +160,12 @@ class VentaController extends Controller
     {
         //
     }
+
+    public function listadoventa(Request $request){
+        return Venta::with('user')
+        ->with('cliente')
+        ->whereDate('fecha',$request->fecha)
+        ->where('user_id',$request->id)
+        ->get();
+    }
 }

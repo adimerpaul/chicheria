@@ -13,6 +13,11 @@ class UserController extends Controller
 //            ->with('permisos')
             ->where('id','!=',1)->get();
     }
+    public function listuser(){
+        return User::
+//            ->with('permisos')
+            all();
+    }
     public function login(Request $request){
         if (!Auth::attempt($request->all())){
             return response()->json(['res'=>'No existe el usuario'],400);
