@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Garantia;
 use App\Models\Gdetalle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GarantiaController extends Controller
 {
@@ -39,23 +40,15 @@ class GarantiaController extends Controller
     {
         //
         $garantia= new Garantia();
-        $garantia->fecha=$request->fecha;
         $garantia->efectivo=$request->efectivo;
         $garantia->fisico=$request->fisico;
-        $garantia->detalle=$request->detalle;
-        $garantia->estado=$request->estado;
-        $garantia->user_id=$request->user()->id;
+        $garantia->observacion=$request->observacion;
+        $garantia->estado='PRESTAMO';
+        $garantia->cantidad=$request->cantidad;
+        $garantia->inventario_id=$request->inventario_id;
         $garantia->cliente_id=$request->cliente_id;
+        $garantia->user_id=$request->user()->id;
         $garantia->save();
-        foreach ($request->detalles as $detalle){
-            $d= new Gdetalle();
-            $d->garantia_id=$garantia->id;
-            $d->user_id=$request->user()->id;
-            $d->inventario_id=$detalle['inventario_id'];
-            $d->cantidad=$detalle['cantidad'];
-            $d->nombreinv=$detalle['nombreinv'];
-            $d->save();
-        }
     }
 
     /**
@@ -103,8 +96,15 @@ class GarantiaController extends Controller
         //
     }
 
-    public function listado(Request $request){
-        return Garantia::with('user')->with('cliente')->whereDate('fecha',$request->fecha)->get();
+    public function listaprestamo(Request $request){
+        return DB::select("
+        SELECT g.id as id,c.titular as titular,g.fecha as fecha,i.nombre as nombre,g.efectivo as efectivo,g.fisico as fisico,
+        g.observacion as observacion,u.name as name, g.estado as estado
+         from garantias g inner join clientes c on g.cliente_id=c.id
+INNER JOIN users u on g.user_id= u.id
+INNER JOIN inventarios i on g.inventario_id= i.id
+where date(g.fecha)>='".$request->fecha1."' and date(g.fecha)<='".$request->fecha2."'
+and c.id='".$request->cliente_id."'");
         
     }
 }

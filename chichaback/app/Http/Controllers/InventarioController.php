@@ -137,4 +137,8 @@ class InventarioController extends Controller
             $inventario->cantidad-=$request->cantidad;
         return $inventario->save();
     }
+
+    public function listainventario(){
+        return Inventario::where('estado','ACTIVO')->get();
+    } 
 }

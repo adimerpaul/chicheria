@@ -20,6 +20,7 @@
               label="Selecionar Cliente"
               :options="options"
               @filter="filterFn"
+              @click="generar"
             />
           </div>
           <div class="col-6 col-sm-2 q-pa-xs"><q-select v-model="producto" outlined :options="productos" option-label="nombre" option-value="id" label="Producto" required/></div>
@@ -198,17 +199,67 @@
             <div class="col-12">
               <div class="text-subtitle1 bg-accent text-center text-white">Historial de prestamos</div>
             </div>
-            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
-            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
+            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha4" outlined required/></div>
+            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha5" outlined required/></div>
             <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
-              <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misventas" />
+              <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="generar" />
+            </div>
+            <div class="row">
+              <q-form
+                  @submit="regprestamo"
+                  @reset="onReset"
+                  class="q-gutter-md"
+                >
+            <div class="row">
+
+                <div class="col-2">
+                <q-select v-model="inventario" outlined :options="inventarios" option-label="nombre" option-value="id" label="Material" required/>
+                  </div>
+                  <div class="col-2">
+                  <q-input
+                    outlined
+                    type="number"
+                    v-model="prestamo.cantidad"
+                    label="Cantidad"
+                    required
+                  />
+                  </div>
+
+                  <div class="col-2">              
+                  <q-input
+                    outlined
+                    type="text"
+                    v-model="prestamo.efectivo"
+                    label="Efectivo"                    
+                  />                  
+                  </div>
+                  <div class="col-2">              
+                  <q-input
+                    outlined
+                    type="text"
+                    v-model="prestamo.fisico"
+                    label="Fisisco"                    
+                  />                  
+                  </div>
+                  <div class="col-2">              
+                  <q-input
+                    outlined
+                    type="text"
+                    v-model="prestamo.observacion"
+                    label="Observacion"                    
+                  />                  
+                  </div>
+                  <div class="col-2 flex flex-center">
+                    <q-btn label="Registrar" type="submit" color="primary" icon="send" />
+                  </div>
+            </div>
+                </q-form>
             </div>
             <div class="col-12">
               <q-table
-                :columns="columns2"
-                :rows="ventas"
-                title="Historial de ventas"
-                :filter="filter"
+                :columns="columns3"
+                :rows="prestamos"
+                title="Historial de Prestamo"
               >
                 <!--        <template v-slot:top-right>-->
                 <!--          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">-->
@@ -217,48 +268,10 @@
                 <!--            </template>-->
                 <!--          </q-input>-->
                 <!--        </template>-->
-                <template v-slot:body="props">
-                  <q-tr :props="props">
-                    <q-td key="total" :props="props">
-                      {{ props.row.total }}
-                    </q-td>
-                    <q-td key="acuenta" :props="props">
-                      {{ props.row.acuenta }}
-                    </q-td>
-                    <q-td key="saldo" :props="props">
-                      {{ props.row.saldo }}
-                    </q-td>
-                    <q-td key="estado" :props="props">
-                      <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
-                    </q-td>
-                    <q-td key="local" :props="props">
-                      {{ props.row.local }}
-                    </q-td>
-                    <q-td key="titular" :props="props">
-                      {{ props.row.titular }}
-                    </q-td>
-                    <q-td key="user" :props="props">
-                      {{ props.row.user }}
-                    </q-td>
-                  </q-tr>
-                </template>
+
               </q-table>
             </div>
-            <div class="col-12">
-              <q-form>
-                <div class="row">
-                  <div class="col-4 q-pa-md">
-                    <q-input type="text" label="Venta total" label-color="positive"  v-model="ventat"  outlined/>
-                  </div>
-                  <div class="col-4 q-pa-md">
-                    <q-input type="text" label="Saldo caja" label-color="info"  v-model="porc"  outlined/>
-                  </div>
-                  <div class="col-4 q-pa-md">
-                    <q-input type="text" label="Por cobrar" label-color="negative"  v-model="saldoc"  outlined/>
-                  </div>
-                </div>
-              </q-form>
-            </div>
+
             <div class="col-12">
               <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
             </div>
@@ -284,11 +297,15 @@ export default {
       fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha3:date.formatDate(new Date(),'YYYY-MM-DD'),
+      fecha4:date.formatDate(new Date(),'YYYY-MM-DD'),
+      fecha5:date.formatDate(new Date(),'YYYY-MM-DD'),
       responsable:'',
       clientes:[],
       clientes2:[],
       cliente:'',
       productos:[],
+      inventarios:[],
+      inventario:{},
       producto:'',
       cantidad:1,
       cantidades:[],
@@ -297,6 +314,7 @@ export default {
       garantia:{},
       dialog_garantia:false,
       cantidadprestamo:0,
+      prestamo:{},
       columns:[
         {name:'nombreproducto',label:'Nombre producto',field:'nombreproducto'},
         {name:'precio',label:'Precio',field:'precio'},
@@ -313,7 +331,17 @@ export default {
         {name:'titular',label:'Titular',field:'titular'},
         {name:'user',label:'Usuario',field:'user'},
       ],
+            columns3:[
+        {name:'fecha',label:'fecha',field:'fecha'},
+        {name:'nombre',label:'Material',field:'nombre'},
+        {name:'efectivo',label:'efectivo',field:'efectivo'},
+        {name:'fisico',label:'fisico',field:'fisico'},
+        {name:'observacion',label:'observacion',field:'observacion'},
+        {name:'estado',label:'Estado',field:'estado'},
+        {name:'user',label:'Usuario',field:'name'},
+      ],
       ventas:[],
+      prestamos:[],
       filter:'',
       options:[],
       model:''
@@ -346,6 +374,10 @@ export default {
       this.productos=res.data
       this.producto=res.data[0]
     })
+        this.$axios.get(process.env.API+'/listainventario').then(res=>{
+      this.inventarios=res.data
+      this.inventario=res.data[0]
+    })
     // this.$axios.post(process.env.API+'/misventas',{fecha:this.fecha2}).then(res=>{
     //   this.venta=res.data
     //   // console.log(this.venta)
@@ -355,6 +387,13 @@ export default {
       // console.log(res.data)
       this.responsable=res.data.name
     })
+    // this.responsable=this.$store.getters["login/user"].name
+
+    // this.$axios.post(process.env.API+'/misventas',{fecha:this.fecha2}).then(res=>{
+    //   this.venta=res.data
+    //   // console.log(this.venta)
+    //   // this.producto=res.data[0]
+    // })
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
@@ -492,9 +531,6 @@ export default {
           cantidad:this.cantidad,
           subtotal:this.subtotal,
         }],
-        prestamo:[{cantidad:this.cantidadprestamo,
-          producto_id:this.producto.id
-        }],garantia:this.garantia
 
       }).then(res=>{
         console.log(res.data)
@@ -516,7 +552,42 @@ export default {
     },
     deleteval(index){
       this.detalles.splice(index, 1);
-    }
+    },
+    generar(){
+      console.log(this.model.id);
+      if(this.model!=''){
+      this.$axios.post(process.env.API+'/listaprestamo',{fecha1:this.fecha4,fecha2:this.fecha5,cliente_id:this.model.id
+      }).then(res=>{
+        console.log(res.data)
+        this.prestamos=res.data;
+
+      })}
+    },
+    regprestamo(){
+      if(this.model!=''){
+        this.prestamo.cliente_id=this.model.id;
+        this.prestamo.inventario_id=this.inventario.id;
+       this.$axios.post(process.env.API+'/garantia',this.prestamo).then(res=>{
+        console.log(res.data)
+        this.$q.notify({
+          message:'Prestamo exitosa',
+          color:'green',
+          icon:'info'
+        })
+        this.misventas()
+      }).catch(err=>{
+        this.$q.loading.hide()
+        console.error(err)
+        this.$q.notify({
+          message:err.response.data.message,
+          color:'red',
+          icon:'error'
+        })
+      })
+      }
+    }, 
+    onReset(){},
+
   },
   computed:{
     subtotal(){

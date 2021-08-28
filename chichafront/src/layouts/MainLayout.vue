@@ -230,6 +230,25 @@
           </q-item-section>
         </q-item>
 
+        <q-item
+          v-if="$store.getters['login/isLoggedIn']"
+          clickable
+          exact
+          to="reporteuser"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="shop" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Reporte Usuario</q-item-label>
+            <q-item-label caption>
+              reporte de Ventas
+            </q-item-label>
+          </q-item-section>
+        </q-item>
 
         <q-item
           v-if="$store.getters['login/isLoggedIn']"

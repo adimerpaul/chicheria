@@ -19,11 +19,12 @@ class CreateGarantiasTable extends Migration
             $table->double("efectivo",11,2)->nullable();
             $table->string("fisico")->nullable();
             $table->string("observacion")->nullable();
+            $table->integer("cantidad")->nullable();
             $table->string("estado")->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-//            $table->unsignedBigInteger('venta_id');
-//            $table->foreign('venta_id')->references('id')->on('ventas');
+            $table->unsignedBigInteger('inventario_id');
+            $table->foreign('inventario_id')->references('id')->on('inventarios');
             $table->unsignedBigInteger('cliente_id');
             $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->timestamps();

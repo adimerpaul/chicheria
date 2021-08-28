@@ -14,8 +14,10 @@ class Garantia extends Model
         'fisico',
         'observacion',
         'estado',
+        'cantidad',
         'user_id',
         'cliente_id',
+        'inventario_id',
     ];
     protected $hidden = ["created_at", "updated_at"];
 
@@ -24,5 +26,8 @@ class Garantia extends Model
     }
     public function cliente(){
         return $this->belongsTo(Cliente::class);
+    }
+    public function inventario(){
+        return $this->belongsTo(Inventario::class);
     }
 }

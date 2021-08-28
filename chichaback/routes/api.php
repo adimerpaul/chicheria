@@ -39,6 +39,8 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/inventariosub',[\App\Http\Controllers\InventarioController ::class,'productsub']);
     Route::get('/listacliente',[\App\Http\Controllers\ClienteController ::class,'listacliente']);
     Route::get('/listaproducto',[\App\Http\Controllers\ProductoController ::class,'listaproducto']);
+    Route::get('/listainventario',[\App\Http\Controllers\InventarioController ::class,'listainventario']);
+    Route::post('/listaprestamo',[\App\Http\Controllers\GarantiaController ::class,'listaprestamo']);
     Route::get('/cumple',[\App\Http\Controllers\ClienteController ::class,'ordercumple']);
     Route::get('/cumple2',[\App\Http\Controllers\ClienteController ::class,'ordercumple2']);
     Route::resource('/empleado',\App\Http\Controllers\EmpleadoController::class);
