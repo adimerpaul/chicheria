@@ -21,8 +21,8 @@ class CreateInventariosTable extends Migration
             $table->integer("cantidad")->default(0);
             $table->string("detalle")->nullable();
             $table->string("estado")->default('ACTIVO');
-            $table->unsignedBigInteger('producto_id')->nullable();
-            $table->foreign('producto_id')->references('id')->on('productos');
+//            $table->unsignedBigInteger('producto_id')->nullable();
+//            $table->foreign('producto_id')->references('id')->on('productos');
             $table->timestamps();
         });
     }

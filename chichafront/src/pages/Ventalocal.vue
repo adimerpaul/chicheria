@@ -35,16 +35,16 @@
 <!--            <q-input type="number" label="Cantidad" v-model="cantidad" outlined/>-->
             <q-select label="Cantidad" :options="cantidades" v-model="cantidad" outlined/>
           </div>
-                    <div class="col-6 col-sm-2 q-pa-xs">
-            <q-input
-            type="number"
-            label="Prestamo"
-            v-model="cantidadprestamo"
-            outlined
-            required 
-            :rules="[val => val>=0 && val<=cantidad || 'Field is required']"
-            />
-          </div>
+<!--                    <div class="col-6 col-sm-2 q-pa-xs">-->
+<!--            <q-input-->
+<!--            type="number"-->
+<!--            label="Prestamo"-->
+<!--            v-model="cantidadprestamo"-->
+<!--            outlined-->
+<!--            required -->
+<!--            :rules="[val => val>=0 && val<=cantidad || 'Field is required']"-->
+<!--            />-->
+<!--          </div>-->
 
 
           <div class="col-6 col-sm-1 q-pa-xs"><q-input type="text" disable label="Subtotal" label-color="white"  bg-color="positive" v-model="subtotal" outlined/></div>
@@ -52,36 +52,36 @@
           <div class="col-6 col-sm-1 q-pa-xs"><q-input type="text" label="Saldo" v-model="saldo" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" disable outlined/></div>
           <div class="col-6 col-sm-2 q-pa-xs"><q-input type="text" label="Estado" v-model="estado" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" outlined/></div>
           <div class="col-12 col-sm-12 q-pa-xs flex flex-center">
-          <div v-if="saldo>0||cantidadprestamo>0" class="row">
-          <br>
-            <div class="col-6 col-sm-2 q-pa-xs">
-            <q-input
-            type="number"
-            label="Efectivo"
-            v-model="garantia.efectivo"
-            outlined
-             
-            :rules="[val => val>=0  || 'valor min 0']"
-            />
-          </div>
+<!--          <div v-if="saldo>0||cantidadprestamo>0" class="row">-->
+<!--          <br>-->
+<!--            <div class="col-6 col-sm-2 q-pa-xs">-->
+<!--            <q-input-->
+<!--            type="number"-->
+<!--            label="Efectivo"-->
+<!--            v-model="garantia.efectivo"-->
+<!--            outlined-->
 
-          <div class="col-6 col-sm-2 q-pa-xs">
-            <q-input
-            type="text"
-            label="Fisico"
-            v-model="garantia.fisico"
-            outlined            />
-          </div>
-          
-          <div class="col-6 col-sm-2 q-pa-xs">
-            <q-input
-            type="text"
-            label="Observacion"
-            v-model="garantia.observacion"
-            outlined            />
-          </div>
-          </div>
-            <q-btn color="warning" class="full-width"  label="Agregar" icon="send" type="submit" />
+<!--            :rules="[val => val>=0  || 'valor min 0']"-->
+<!--            />-->
+<!--          </div>-->
+
+<!--          <div class="col-6 col-sm-2 q-pa-xs">-->
+<!--            <q-input-->
+<!--            type="text"-->
+<!--            label="Fisico"-->
+<!--            v-model="garantia.fisico"-->
+<!--            outlined            />-->
+<!--          </div>-->
+
+<!--          <div class="col-6 col-sm-2 q-pa-xs">-->
+<!--            <q-input-->
+<!--            type="text"-->
+<!--            label="Observacion"-->
+<!--            v-model="garantia.observacion"-->
+<!--            outlined            />-->
+<!--          </div>-->
+<!--          </div>-->
+            <q-btn color="accent" class="full-width"  label="Agregar" icon="send" type="submit" />
           </div>
         </div>
       </q-form>
@@ -119,73 +119,156 @@
 <!--        </div>-->
 <!--      </q-form>-->
 <!--    </div>-->
+
     <div class="col-12">
-      <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas</div>
-    </div>
-    <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
-    <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
-    <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
-      <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misventas" />
-    </div>
-    <div class="col-12">
-      <q-table
-        :columns="columns2"
-        :rows="ventas"
-        title="Historial de ventas"
-        :filter="filter"
-      >
-<!--        <template v-slot:top-right>-->
-<!--          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">-->
-<!--            <template v-slot:append>-->
-<!--              <q-icon name="search" />-->
-<!--            </template>-->
-<!--          </q-input>-->
-<!--        </template>-->
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <q-td key="total" :props="props">
-              {{ props.row.total }}
-            </q-td>
-            <q-td key="acuenta" :props="props">
-              {{ props.row.acuenta }}
-            </q-td>
-            <q-td key="saldo" :props="props">
-              {{ props.row.saldo }}
-            </q-td>
-            <q-td key="estado" :props="props">
-              <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
-            </q-td>
-            <q-td key="local" :props="props">
-              {{ props.row.local }}
-            </q-td>
-            <q-td key="titular" :props="props">
-              {{ props.row.titular }}
-            </q-td>
-            <q-td key="user" :props="props">
-              {{ props.row.user }}
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table>
-    </div>
-    <div class="col-12">
-      <q-form>
-        <div class="row">
-          <div class="col-4 q-pa-md">
-            <q-input type="text" label="Venta total" label-color="positive"  v-model="ventat"  outlined/>
-          </div>
-          <div class="col-4 q-pa-md">
-            <q-input type="text" label="Saldo caja" label-color="info"  v-model="porc"  outlined/>
-          </div>
-          <div class="col-4 q-pa-md">
-            <q-input type="text" label="Por cobrar" label-color="negative"  v-model="saldoc"  outlined/>
+      <div class="row">
+        <div class="col-12 col-sm-6">
+          <div class="row">
+            <div class="col-12">
+              <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas</div>
+            </div>
+            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
+            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
+            <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
+              <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misventas" />
+            </div>
+            <div class="col-12">
+              <q-table
+                :columns="columns2"
+                :rows="ventas"
+                title="Historial de ventas"
+                :filter="filter"
+              >
+                <!--        <template v-slot:top-right>-->
+                <!--          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">-->
+                <!--            <template v-slot:append>-->
+                <!--              <q-icon name="search" />-->
+                <!--            </template>-->
+                <!--          </q-input>-->
+                <!--        </template>-->
+                <template v-slot:body="props">
+                  <q-tr :props="props">
+                    <q-td key="total" :props="props">
+                      {{ props.row.total }}
+                    </q-td>
+                    <q-td key="acuenta" :props="props">
+                      {{ props.row.acuenta }}
+                    </q-td>
+                    <q-td key="saldo" :props="props">
+                      {{ props.row.saldo }}
+                    </q-td>
+                    <q-td key="estado" :props="props">
+                      <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
+                    </q-td>
+                    <q-td key="local" :props="props">
+                      {{ props.row.local }}
+                    </q-td>
+                    <q-td key="titular" :props="props">
+                      {{ props.row.titular }}
+                    </q-td>
+                    <q-td key="user" :props="props">
+                      {{ props.row.user }}
+                    </q-td>
+                  </q-tr>
+                </template>
+              </q-table>
+            </div>
+            <div class="col-12">
+              <q-form>
+                <div class="row">
+                  <div class="col-4 q-pa-md">
+                    <q-input type="text" label="Venta total" label-color="positive"  v-model="ventat"  outlined/>
+                  </div>
+                  <div class="col-4 q-pa-md">
+                    <q-input type="text" label="Saldo caja" label-color="info"  v-model="porc"  outlined/>
+                  </div>
+                  <div class="col-4 q-pa-md">
+                    <q-input type="text" label="Por cobrar" label-color="negative"  v-model="saldoc"  outlined/>
+                  </div>
+                </div>
+              </q-form>
+            </div>
+            <div class="col-12">
+              <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
+            </div>
           </div>
         </div>
-      </q-form>
+        <div class="col-12 col-sm-6">
+          <div class="row">
+            <div class="col-12">
+              <div class="text-subtitle1 bg-accent text-center text-white">Historial de prestamos</div>
+            </div>
+            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
+            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
+            <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
+              <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misventas" />
+            </div>
+            <div class="col-12">
+              <q-table
+                :columns="columns2"
+                :rows="ventas"
+                title="Historial de ventas"
+                :filter="filter"
+              >
+                <!--        <template v-slot:top-right>-->
+                <!--          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">-->
+                <!--            <template v-slot:append>-->
+                <!--              <q-icon name="search" />-->
+                <!--            </template>-->
+                <!--          </q-input>-->
+                <!--        </template>-->
+                <template v-slot:body="props">
+                  <q-tr :props="props">
+                    <q-td key="total" :props="props">
+                      {{ props.row.total }}
+                    </q-td>
+                    <q-td key="acuenta" :props="props">
+                      {{ props.row.acuenta }}
+                    </q-td>
+                    <q-td key="saldo" :props="props">
+                      {{ props.row.saldo }}
+                    </q-td>
+                    <q-td key="estado" :props="props">
+                      <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
+                    </q-td>
+                    <q-td key="local" :props="props">
+                      {{ props.row.local }}
+                    </q-td>
+                    <q-td key="titular" :props="props">
+                      {{ props.row.titular }}
+                    </q-td>
+                    <q-td key="user" :props="props">
+                      {{ props.row.user }}
+                    </q-td>
+                  </q-tr>
+                </template>
+              </q-table>
+            </div>
+            <div class="col-12">
+              <q-form>
+                <div class="row">
+                  <div class="col-4 q-pa-md">
+                    <q-input type="text" label="Venta total" label-color="positive"  v-model="ventat"  outlined/>
+                  </div>
+                  <div class="col-4 q-pa-md">
+                    <q-input type="text" label="Saldo caja" label-color="info"  v-model="porc"  outlined/>
+                  </div>
+                  <div class="col-4 q-pa-md">
+                    <q-input type="text" label="Por cobrar" label-color="negative"  v-model="saldoc"  outlined/>
+                  </div>
+                </div>
+              </q-form>
+            </div>
+            <div class="col-12">
+              <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </div>
-    <div class="col-12">
-      <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
-    </div>
+
   </div>
 </q-page>
 </template>

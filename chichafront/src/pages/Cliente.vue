@@ -99,16 +99,21 @@
                   />
 
                   </div>
+                  <div v-if="tipocliente==0" class="col-1 flex flex-center">
+                    <q-btn label="Registrar" icon="send" type="submit" color="primary" />
+                  </div>
+                </div>
                   <div v-if="tipocliente==1" class="row">
+
                   <div class="col-2">
-                  <q-select outlined v-model="cliente.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
-                                    </div>
+                    <q-select outlined v-model="cliente.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
+                  </div>
                   <div class="col-3">
-                  <q-select outlined v-model="cliente.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad" />
-                                    </div>
+                    <q-select outlined v-model="cliente.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad" />
+                  </div>
                   <div class="col-3">
-                  <q-select outlined v-model="cliente.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
-                                    </div>
+                    <q-select outlined v-model="cliente.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
+                  </div>
                   <div class="col-3">
                   <q-input
                     type="text"
@@ -127,15 +132,15 @@
                     style="text-transform: uppercase"
                   />
                   </div>
-                  </div>
 
-                                    <div class="col-1 flex flex-center">
-                    <q-btn label="Registrar" icon="send" type="submit" color="primary" />
-                  </div>
+
                   <div>
                   </div>
-
+                    <div class="col-1 flex flex-center">
+                      <q-btn label="Registrar" icon="send" type="submit" color="primary" />
+                    </div>
                   </div>
+
                 </q-form>
               </q-card-section>
 
@@ -159,6 +164,18 @@
                   </q-badge>
                 </q-td>
               </q-tr>
+            </template>
+            <template v-slot:body-cell-tipocliente="props" >
+<!--              <q-tr :props="props" >-->
+                <q-td key="tipocliente" :props="props" @click="activar(props)">
+                  <q-badge color="accent" v-if="props.row.tipocliente=='1'">
+                    LOCAL
+                  </q-badge>
+                  <q-badge color="info" v-else>
+                    CLIENTE
+                  </q-badge>
+                </q-td>
+<!--              </q-tr>-->
             </template>
 
             <template v-slot:body-cell-opcion="props" >
@@ -203,7 +220,7 @@
                     lazy-rules
                     :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
                   />
-             
+
 
                   <q-input
                     outlined
@@ -288,6 +305,7 @@
 </template>
 <script>
 
+import { date } from 'quasar'
 export default {
   data(){
     return{
@@ -320,7 +338,7 @@ export default {
   { name: 'razon', label: 'Razon Social', field: 'razon' },
   { name: 'nit', label: 'Numero NIT', field: 'nit' },
   { name: 'observacion', label: 'Observacion', field: 'observacion' },
-  { name: 'tipocliente', label: 'tipo cliente', field: 'tipocliente' },
+  { name: 'tipocliente', label: 'Tipo cliente', field: 'tipocliente' },
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'opcion', label: 'Opciones', field: 'action' }
 ],
@@ -458,7 +476,9 @@ export default {
         this.$q.loading.hide();
     },
   onReset(){
-    this.cliente={};
+    this.cliente={
+      fechanac: '2000-01-01'
+    };
     console.log(this.tipocliente);
   }
 

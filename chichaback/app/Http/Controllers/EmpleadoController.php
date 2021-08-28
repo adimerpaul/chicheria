@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Empleado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmpleadoController extends Controller
 {
@@ -22,10 +23,21 @@ class EmpleadoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return $request;
     }
+    public function missueldos(Request $request){
+//        return $request;
+        return DB::select("
+        SELECT e.nombre,e.salario,
+        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='PAGO' AND fecha >= '".$request->fecha1."' AND fecha<= '".$request->fecha2."') as pago,
+        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='ADELANTO' AND fecha >= '".$request->fecha1."' AND fecha<= '".$request->fecha2."') as adelanto,
+        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='DESCUENTO' AND fecha >= '".$request->fecha1."' AND fecha<= '".$request->fecha2."') as descuento
+        FROM empleados e
+        ");
+    }
+
 
     /**
      * Store a newly created resource in storage.

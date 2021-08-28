@@ -16,7 +16,7 @@ class ProductoSeeder extends Seeder
     {
         DB::table('productos')->insert([
             [
-                'nombre'=>'1 B',
+                'nombre'=>'Barril ',
                 'precio'=>'100'
             ]
         ]);

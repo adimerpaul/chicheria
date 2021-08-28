@@ -19,10 +19,10 @@ class CreateLoginventariosTable extends Migration
             $table->integer("cantidad")->nullable();
             $table->boolean("agregar")->default(true);
             $table->string("motivo")->nullable();
-            $table->unsignedBigInteger('producto_id');
-            $table->foreign('producto_id')->references('id')->on('productos');
+            $table->unsignedBigInteger('inventario_id');
+            $table->foreign('inventario_id')->references('id')->on('inventarios');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');  
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

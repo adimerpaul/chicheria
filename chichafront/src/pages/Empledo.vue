@@ -7,11 +7,12 @@
     <div class="col-12">
       <q-form @submit.prevent="agregar">
         <div class="row">
-          <div class="col-12 col-sm-2"><q-input outlined label="CI" v-model="empleado.ci" required/></div>
-          <div class="col-12 col-sm-3"><q-input outlined label="Nombre" v-model="empleado.nombre" required/></div>
-          <div class="col-12 col-sm-3"><q-input outlined label="Fecha Nacimiento" v-model="empleado.fechanac" required/></div>
-          <div class="col-12 col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>
-          <div class="col-12 col-sm-2 flex flex-center">
+          <div class="col-12 q-pa-xs col-sm-1"><q-input outlined label="CI" v-model="empleado.ci" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Nombre" v-model="empleado.nombre" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" v-model="empleado.fechanac" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>
+          <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
             <q-btn icon="send" :label="boolcrear?'CREAR':'MODIFICAR'" type="submit" :color="boolcrear?'positive':'warning'"/>
           </div>
         </div>
@@ -57,6 +58,63 @@
           </q-td>
         </template>
       </q-table>
+      <div class="row">
+        <div class="col-12">
+          <div class="text-subtitle1 bg-accent text-center text-white">Historial de pagos</div>
+        </div>
+        <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha1" outlined required/></div>
+        <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
+        <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
+          <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="missalarios" />
+        </div>
+        <div class="col-12">
+          <q-table
+            :columns="columns3"
+            :rows="salarios"
+            title="Historial de pagos"
+
+          >
+<!--            :filter="filter"-->
+
+            <!--        <template v-slot:top-right>-->
+            <!--          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">-->
+            <!--            <template v-slot:append>-->
+            <!--              <q-icon name="search" />-->
+            <!--            </template>-->
+            <!--          </q-input>-->
+            <!--        </template>-->
+<!--            <template v-slot:body="props">-->
+<!--              <q-tr :props="props">-->
+<!--                <q-td key="total" :props="props">-->
+<!--                  {{ props.row.total }}-->
+<!--                </q-td>-->
+<!--                <q-td key="acuenta" :props="props">-->
+<!--                  {{ props.row.acuenta }}-->
+<!--                </q-td>-->
+<!--                <q-td key="saldo" :props="props">-->
+<!--                  {{ props.row.saldo }}-->
+<!--                </q-td>-->
+<!--                <q-td key="estado" :props="props">-->
+<!--                  <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>-->
+<!--                </q-td>-->
+<!--                <q-td key="local" :props="props">-->
+<!--                  {{ props.row.local }}-->
+<!--                </q-td>-->
+<!--                <q-td key="titular" :props="props">-->
+<!--                  {{ props.row.titular }}-->
+<!--                </q-td>-->
+<!--                <q-td key="user" :props="props">-->
+<!--                  {{ props.row.user }}-->
+<!--                </q-td>-->
+<!--              </q-tr>-->
+<!--            </template>-->
+          </q-table>
+        </div>
+        <div class="col-12">
+          <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
+        </div>
+      </div>
+
       <q-dialog v-model="pagos" full-width>
         <q-card>
           <q-card-section>
@@ -69,7 +127,7 @@
                   <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
                 </div>
                 <div class="col-4">
-                  <q-input outlined label="Detalle" v-model="pago.detalle"/>
+                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','PAGO']"/>
                 </div>
                 <div class="col-4 flex flex-center">
                   <q-btn label="Agregar" type="submit" icon="send" color="info"/>
@@ -105,25 +163,37 @@ export default {
       empleados:[],
       empleadohistorial:{},
       boolcrear:true,
+      salarios:[],
       empleado:{fechanac:'2000-01-01'},
-
+      fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
+      fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
       columns:[
-        {name:'ci',label:'ci',field:'ci'},
-        {name:'nombre',label:'nombre',field:'nombre'},
-        {name:'fechanac',label:'fechanac',field:'fechanac'},
-        {name:'celular',label:'celular',field:'celular'},
-        {name:'action',label:'action',field:'action'},
+        {name:'ci',label:'CI',field:'ci'},
+        {name:'nombre',label:'Nombre',field:'nombre'},
+        {name:'fechanac',label:'Fechanac',field:'fechanac'},
+        {name:'celular',label:'Celular',field:'celular'},
+        {name:'salario',label:'Salario',field:'salario'},
+        {name:'action',label:'Action',field:'action'},
       ],
       columns2:[
-        {name:'fecha',label:'fecha',field:'fecha'},
-        {name:'hora',label:'hora',field:'hora'},
-        {name:'monto',label:'monto',field:'monto'},
-        {name:'detalle',label:'detalle',field:'detalle'},
-        {name:'action',label:'action',field:'action'},
+        {name:'fecha',label:'Fecha',field:'fecha'},
+        {name:'hora',label:'Hora',field:'hora'},
+        {name:'tipo',label:'Tipo',field:'tipo'},
+        // {name:'detalle',label:'detalle',field:'detalle'},
+        {name:'monto',label:'Monto',field:'monto'},
+      ],
+      columns3:[
+        {name:'nombre',label:'Empleado',field:'nombre'},
+        {name:'salario',label:'Sueldo',field:'salario'},
+        {name:'pago',label:'Pago',field:'pago'},
+        {name:'adelanto',label:'Adelanto',field:'adelanto'},
+        // {name:'detalle',label:'detalle',field:'detalle'},
+        {name:'descuento',label:'Descuento',field:'descuento'},
       ],
     }
   },
   mounted() {
+    this.missalarios()
     this.misempleados()
     // console.log(this.$store.state.login)
     // this.$axios.get(process.env.API+'/cliente').then(res=>{
@@ -146,6 +216,24 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+    imprimir(){
+
+    },
+    missalarios(){
+      this.$q.loading.show()
+      this.$axios.post(process.env.API+'/missueldos',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+        console.log(res.data)
+        this.salarios=res.data
+        this.$q.loading.hide()
+      }).catch(err=>{
+        this.$q.loading.hide()
+        this.$q.notify({
+          color:'red',
+          icon:'error',
+          message:err.response.data.message
+        })
+      })
+    },
     agregarpago(){
       // console.log('a');
       this.pago.empleado_id=this.empleadohistorial.id

@@ -41,7 +41,7 @@ class SueldoController extends Controller
         $sueldo->fecha=date('Y-m-d');
         $sueldo->hora=date('H:i:s');
         $sueldo->monto=$request->monto;
-        $sueldo->detalle=$request->detalle;
+        $sueldo->tipo=$request->tipo;
         $sueldo->empleado_id=$request->empleado_id;
         $sueldo->user_id=$request->user()->id;
         $sueldo->save();

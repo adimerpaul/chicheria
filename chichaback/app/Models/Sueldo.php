@@ -12,8 +12,9 @@ class Sueldo extends Model
         'fecha',
         'hora',
         'monto',
-        'detalle',
+        'tipo',
         'empleado_id',
         'user_id',
+
     ];
 }

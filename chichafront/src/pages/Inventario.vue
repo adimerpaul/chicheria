@@ -3,62 +3,80 @@
       <div class="col-12">
             <div class="text-h6">
               <h5 style="text-align:center">INVENTARIO MATERIALES PRESTAMO</h5>
-              <q-btn label="Registrar" icon="add" color="positive" @click="crear = true" />
+<!--              <q-btn label="Registrar" icon="add" color="positive" @click="crear = true" />-->
             </div>
             <!--            <div class="text-subtitle2">by John Doe</div>-->
-          <q-dialog v-model="crear" >
-            <q-card style="width: 700px; max-width: 80vw;">
-              <q-card-section>
-                <div class="text-h6">Registro nuevo Material</div>
-              </q-card-section>
-              <q-card-section>
+<!--          <q-dialog v-model="crear" >-->
+<!--            <q-card style="width: 700px; max-width: 80vw;">-->
+<!--              <q-card-section>-->
+<!--                <div class="text-h6">Registro nuevo Material</div>-->
+<!--              </q-card-section>-->
+<!--              <q-card-section>-->
                 <q-form
                   @submit="registrar"
                   @reset="onReset"
                   class="q-gutter-md"
                 >
-                <q-input
-                    filled
-                    type="text"
-                    v-model="inventario.codigo"
-                    label="Codigo"
-                    lazy-rules
-                    :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
+                  <div class="row">
+                    <div class="col-12 col-sm-2 q-pa-md ">
+                      <q-input
+                        outlined
+                        type="text"
+                        v-model="inventario.codigo"
+                        label="Codigo"
+                        lazy-rules
+                        :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
 
-                  />
-                  <q-input
-                    filled
-                    type="text"
-                    v-model="inventario.nombre"
-                    label="Nombre"
-                    lazy-rules
-                    :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
-                  />
+                      />
+                    </div>
+                    <div class="col-12 col-sm-2 q-pa-md ">
+                      <q-input
+                        outlined
+                        type="text"
+                        v-model="inventario.nombre"
+                        label="Nombre"
+                        lazy-rules
+                        :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
+                      />
+                    </div>
+                    <div class="col-12 col-sm-2 q-pa-md ">
+                      <q-input
+                        outlined
+                        type="number"
+                        v-model="inventario.cantidad"
+                        label="Cantidad"
+                      />
 
-                  <q-input
-                    filled
-                    type="number"
-                    v-model="inventario.cantidad"
-                    label="Cantidad"
-                  />
+                    </div>
+                    <div class="col-12 col-sm-2 q-pa-md ">
 
-                  <q-input
-                    filled
-                    v-model="inventario.detalle"
-                    type="text"
-                    label="Detalle"  
-                  />
-                  <q-select v-model="inventario.producto_id" :options="productos" label="Producto" />
+                      <q-input
+                        outlined
+                        v-model="inventario.detalle"
+                        type="text"
+                        label="Detalle"
+                      />
+                      <!--                  <q-select v-model="inventario.producto_id" :options="productos" label="Producto" />-->
 
- 
-                  <div>
-                    <q-btn label="Registrar" type="submit" color="primary" />
+
+                    </div>
+                    <div class="col-12 col-sm-2 flex flex-center flex-inline">
+                        <q-btn label="Registrar" type="submit" color="primary" icon="send" />
+                    </div>
+<!--                    <div class="col-sm-2">-->
+
+<!--                    </div>-->
+
                   </div>
-                </q-form>
-              </q-card-section>
 
-            </q-card>
-          </q-dialog>
+
+
+
+                </q-form>
+<!--              </q-card-section>-->
+
+<!--            </q-card>-->
+<!--          </q-dialog>-->
 
         <div class="q-pa-md">
           <q-table
@@ -82,7 +100,7 @@
                 <q-td key="opcion" :props="props" >
                 <q-btn  dense round flat color="green" @click="addRow(props)" icon="add"></q-btn>
                 <q-btn  dense round flat color="red" @click="substractRow(props)" icon="remove"></q-btn>
-            
+
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
                 <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
                 </q-td>
@@ -114,7 +132,7 @@
                     v-model="dato.detalle"
                     label="Detalle"
                   />
-                  <q-select v-model="dato.producto_id" :options="productos" label="Producto" />
+<!--                  <q-select v-model="dato.producto_id" :options="productos" label="Producto" />-->
 
 
             <div>
@@ -263,7 +281,7 @@ export default {
   { name: 'detalle', align: 'center', label: 'Detalle', field: 'detalle', sortable: true },
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'opcion', label: 'Opciones', field: 'action' }
-],  
+],
   rows:[]
 
     }
@@ -276,7 +294,7 @@ export default {
     listado(){
       this.$q.loading.show();
       this.$axios.get(process.env.API+'/inventario').then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         this.rows=res.data;
         this.$q.loading.hide();
       })
@@ -286,12 +304,12 @@ export default {
       this.$axios.get(process.env.API+'/listaproducto').then(res=>{
           res.data.forEach(element => {
             this.productos.push({label:element.nombre,value:element.id});
-            
+
           });
       })
     },
     registrar(){
-      this.inventario.producto_id=this.inventario.producto_id.value;
+      // this.inventario.producto_id=this.inventario.producto_id.value;
         this.$axios.post(process.env.API+'/inventario', this.inventario).then(res=>{
         this.$q.notify({
           color: 'green-4',
@@ -303,7 +321,7 @@ export default {
         this.onReset();
         this.listado();
       }).catch(err=>{
-          
+
           this.$q.notify({
             color: 'red-4',
             textColor: 'white',
@@ -377,15 +395,26 @@ export default {
         this.$q.loading.show();
         this.modprod={id:this.dato.id,cantidad:this.agregar,motivo:this.dato.motivo}
         this.$axios.post(process.env.API+'/inventarioadd',this.modprod).then(res=>{
-         this.$q.notify({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: 'Agregado correctamente'
-        });
+          console.log(res.data)
+          this.$q.notify({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'cloud_done',
+            message: 'Agregado correctamente'
+          })
         this.dialog_add=false;
         this.agregar=0;
-        this.listado();})
+        this.listado();
+        }).catch(err=>{
+          // console.log()
+          this.$q.loading.hide();
+          this.$q.notify({
+            color: 'red',
+            textColor: 'white',
+            icon: 'error',
+            message: err.response.data.message
+          });
+        });
     },
 
 
@@ -406,7 +435,7 @@ export default {
   onReset(){
     this.cliente={};
   }
-    
+
   },
 
 

@@ -13,6 +13,7 @@ class Empleado extends Model
         'nombre',
         'celular',
         'fechanac',
+        'salario'
     ];
     public function sueldos(){
         return $this->hasMany(Sueldo::class);

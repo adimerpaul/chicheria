@@ -105,6 +105,7 @@ class InventarioController extends Controller
     }
 
     public function productadd(Request $request){
+//        return "a";
         $log=new Loginventario();
         $log->cantidad=$request->cantidad;
         $log->inventario_id=$request->id;
