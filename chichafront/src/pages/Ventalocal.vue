@@ -238,7 +238,7 @@
                     outlined
                     type="text"
                     v-model="prestamo.fisico"
-                    label="Fisisco"                    
+                    label="Fisico"                    
                   />                  
                   </div>
                   <div class="col-2">              

@@ -39,7 +39,10 @@ class GarantiaController extends Controller
     public function store(Request $request)
     {
         //
+        $inventario=Inventario::find($request->inventario_id);
+        if($inventario->cantidad>=$request->cantidad){
         $garantia= new Garantia();
+        $garantia->fecha=date('Y-m-d');
         $garantia->efectivo=$request->efectivo;
         $garantia->fisico=$request->fisico;
         $garantia->observacion=$request->observacion;
@@ -49,6 +52,24 @@ class GarantiaController extends Controller
         $garantia->cliente_id=$request->cliente_id;
         $garantia->user_id=$request->user()->id;
         $garantia->save();
+        $inventario->cantidad-=$request->cantidad;
+        $inventario->save();
+        return true;
+        }
+        else return false;
+
+    }
+
+    public function devolver(Request $request){
+        $garantia=Garantia::find($request->id);
+        $garantia->fechadev->date('Y-m-d');
+        $garantia->observacion=$request->observacion;
+        $garantia->estado='DEVUELTO';
+        $garantia->userdev_id=$request->user()->id;
+        $garantia->save();
+        $inventario=Inventario::find($request->inventario_id);
+        $inventario->cantidad+=$request->cantidad;
+        $inventario->save();
     }
 
     /**
