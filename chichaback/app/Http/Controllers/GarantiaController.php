@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Garantia;
-use App\Models\Gdetalle;
+use App\Models\Inventario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -62,13 +62,13 @@ class GarantiaController extends Controller
 
     public function devolver(Request $request){
         $garantia=Garantia::find($request->id);
-        $garantia->fechadev->date('Y-m-d');
+        $garantia->fechadev=date('Y-m-d');
         $garantia->observacion=$request->observacion;
         $garantia->estado='DEVUELTO';
         $garantia->userdev_id=$request->user()->id;
         $garantia->save();
-        $inventario=Inventario::find($request->inventario_id);
-        $inventario->cantidad+=$request->cantidad;
+        $inventario=Inventario::find($garantia->inventario_id);
+        $inventario->cantidad+=intval($garantia->cantidad);
         $inventario->save();
     }
 
@@ -109,9 +109,9 @@ class GarantiaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Garantia  $garantia
-     * @return \Illuminate\Http\Response
-     */
+     * @param  \App\Models\Garantia  $gara  ntia
+     * @return \Illuminate\Http\Response    
+     */     
     public function destroy(Garantia $garantia)
     {
         //
@@ -120,7 +120,7 @@ class GarantiaController extends Controller
     public function listaprestamo(Request $request){
         return DB::select("
         SELECT g.id as id,c.titular as titular,g.fecha as fecha,i.nombre as nombre,g.efectivo as efectivo,g.fisico as fisico,
-        g.observacion as observacion,u.name as name, g.estado as estado
+        g.observacion as observacion,u.name as name, g.estado as estado, g.cantidad as cantidad
          from garantias g inner join clientes c on g.cliente_id=c.id
 INNER JOIN users u on g.user_id= u.id
 INNER JOIN inventarios i on g.inventario_id= i.id

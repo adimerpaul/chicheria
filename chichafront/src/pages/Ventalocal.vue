@@ -268,13 +268,33 @@
                 <!--            </template>-->
                 <!--          </q-input>-->
                 <!--        </template>-->
-
+              <template v-slot:body-cell-opcion="props" >
+                <q-td key="opcion" :props="props" >
+                <q-btn dense round flat color="red" @click="devolver1(props)" icon="undo" v-if="props.row.estado=='PRESTAMO'"></q-btn>
+                </q-td>
+            </template>
               </q-table>
             </div>
 
             <div class="col-12">
               <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
             </div>
+                <q-dialog v-model="dialog_garantia" >
+              <q-card style="min-width: 350px">
+                <q-card-section>
+                  <div class="text-h6">Devolver Material Prestado</div>
+                </q-card-section>
+
+                <q-card-section class="q-pt-none">
+                  <q-input dense v-model="garantia.observacion" autofocus />
+                </q-card-section>
+
+                <q-card-actions align="right" class="text-primary">
+                  <q-btn flat label="Cancel" v-close-popup />
+                  <q-btn flat label="Devolver" @click="devolver" />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
           </div>
         </div>
       </div>
@@ -339,6 +359,7 @@ export default {
         {name:'observacion',label:'observacion',field:'observacion'},
         {name:'estado',label:'Estado',field:'estado'},
         {name:'user',label:'Usuario',field:'name'},
+        {name:'opcion',label:'opcion',field:'opcion'},
       ],
       ventas:[],
       prestamos:[],
@@ -574,7 +595,7 @@ export default {
           color:'green',
           icon:'info'
         })
-        this.misventas()
+        this.generar()
       }).catch(err=>{
         this.$q.loading.hide()
         console.error(err)
@@ -586,6 +607,23 @@ export default {
       })
       }
     }, 
+    devolver1(props){
+      this.garantia=props.row;
+      console.log(this.garantia);
+      this.dialog_garantia=true;        
+    },
+    devolver(){
+      console.log(this.garantia);
+       this.$axios.post(process.env.API+'/devolver',this.garantia).then(res=>{
+                this.$q.notify({
+          message:'Devolucion exitosa',
+          color:'green',
+          icon:'info'
+        })
+       })
+       this.dialog_garantia=false;
+
+    },
     onReset(){},
 
   },

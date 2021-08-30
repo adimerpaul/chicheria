@@ -22,7 +22,7 @@ class CreateGarantiasTable extends Migration
             $table->integer("cantidad")->nullable();
             $table->string("estado")->nullable();
             $table->date("fechadev")->nullable();
-            $table->unsignedBigInteger('userdev_id');
+            $table->unsignedBigInteger('userdev_id')->nullable();
             $table->foreign('userdev_id')->references('id')->on('users');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
