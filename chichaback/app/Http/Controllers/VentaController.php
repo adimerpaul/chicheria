@@ -168,4 +168,12 @@ class VentaController extends Controller
         ->where('user_id',$request->id)
         ->get();
     }
+
+    public function listadodeudores(){
+        return Venta::with('user')
+        ->with('cliente')
+        ->where('estado','POR COBRAR')     
+        ->orderBy('fecha','asc')   
+        ->get();
+    }
 }
