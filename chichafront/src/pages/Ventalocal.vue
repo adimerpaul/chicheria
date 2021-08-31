@@ -225,32 +225,32 @@
                   />
                   </div>
 
-                  <div class="col-2">              
+                  <div class="col-2">
                   <q-input
                     outlined
                     type="text"
                     v-model="prestamo.efectivo"
-                    label="Efectivo"                    
-                  />                  
+                    label="Efectivo"
+                  />
                   </div>
-                  <div class="col-2">              
+                  <div class="col-2">
                   <q-input
                     outlined
                     type="text"
                     v-model="prestamo.fisico"
-                    label="Fisico"                    
-                  />                  
+                    label="Fisico"
+                  />
                   </div>
-                  <div class="col-2">              
+                  <div class="col-2">
                   <q-input
                     outlined
                     type="text"
                     v-model="prestamo.observacion"
-                    label="Observacion"                    
-                  />                  
+                    label="Observacion"
+                  />
                   </div>
                   <div class="col-2 flex flex-center">
-                    <q-btn label="Registrar" type="submit" color="primary" icon="send" />
+                    <q-btn  type="submit" color="primary" icon="send" />
                   </div>
             </div>
                 </q-form>
@@ -463,7 +463,7 @@ export default {
       })
       doc.text(2, y+4, 'Ventas totales: ')
       doc.text(5, y+4, this.ventat+'Bs')
-      doc.text(8, y+4, 'Por cobrar totales: ')
+      doc.text(7, y+4, 'Por cobrar totales: ')
       doc.text(11, y+4, this.ventat+'Bs')
       doc.text(14, y+4, 'Saldo totales: ')
       doc.text(17, y+4, this.ventat+'Bs')
@@ -585,7 +585,9 @@ export default {
       })}
     },
     regprestamo(){
+
       if(this.model!=''){
+        // console.log('a')
         this.prestamo.cliente_id=this.model.id;
         this.prestamo.inventario_id=this.inventario.id;
        this.$axios.post(process.env.API+'/garantia',this.prestamo).then(res=>{
@@ -605,12 +607,18 @@ export default {
           icon:'error'
         })
       })
+      }else{
+        this.$q.notify({
+          message:'Debes seleccionar cliente',
+          color:'green',
+          icon:'info'
+        })
       }
-    }, 
+    },
     devolver1(props){
       this.garantia=props.row;
       console.log(this.garantia);
-      this.dialog_garantia=true;        
+      this.dialog_garantia=true;
     },
     devolver(){
       console.log(this.garantia);
