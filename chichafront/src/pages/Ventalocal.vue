@@ -639,6 +639,15 @@ export default {
       this.detalles.splice(index, 1);
     },
     generar(){
+      if (this.model==0){
+        this.$q.notify({
+          message:'Tienes que seleccionar cliente',
+          color:'red',
+          icon:'error'
+        })
+        return false;
+      }
+
       console.log(this.model.id);
       if(this.model!=''){
       this.$axios.post(process.env.API+'/listaprestamo',{fecha1:this.fecha4,fecha2:this.fecha5,cliente_id:this.model.id
