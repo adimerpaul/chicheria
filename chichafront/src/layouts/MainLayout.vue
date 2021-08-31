@@ -210,6 +210,27 @@
         </q-item>
 
 
+
+        <q-item
+          v-if="$store.getters['login/isLoggedIn']"
+          clickable
+          exact
+          to="gasto"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="code" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Gasto</q-item-label>
+            <q-item-label caption>
+              Control de gastos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item
           v-if="$store.getters['login/isLoggedIn']"
           clickable
