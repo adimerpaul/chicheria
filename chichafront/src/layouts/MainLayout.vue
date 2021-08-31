@@ -183,7 +183,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Venta Local 2</q-item-label>
+            <q-item-label>Venta Local </q-item-label>
             <q-item-label caption>
               Historial de ventas
             </q-item-label>

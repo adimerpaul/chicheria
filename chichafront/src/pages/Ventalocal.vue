@@ -277,7 +277,7 @@
             </div>
 
             <div class="col-12">
-              <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
+              <q-btn label="Imprimir prestamos" icon="print" color="accent" class="full-width" @click="impprestamos"/>
             </div>
                 <q-dialog v-model="dialog_garantia" >
               <q-card style="min-width: 350px">
@@ -369,6 +369,7 @@ export default {
     }
   },
   mounted() {
+
     for (let i=1;i<=100;i++){
       this.cantidades.push(i)
     }
@@ -418,7 +419,70 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+    impprestamos(){
+      if (this.model==''){
+        this.$q.notify({
+          message:'Tienes que seleccionar cliente',
+          color:'red',
+          icon:'error'
+        })
+        return false;
+      }
+      let mc=this
+      console.log(this.model)
+      function header(){
+        var img = new Image()
+        img.src = 'logo.png'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(3, 1, 'Historial de prestmos '+ mc.model.label)
+        doc.text(5, 1.5,  'DE '+mc.fecha4+' AL '+mc.fecha5)
+        doc.text(1, 3, 'Fecha')
+        doc.text(3, 3, 'Material')
+        doc.text(5, 3, 'Efectivo')
+        doc.text(7, 3, 'Fisico')
+        doc.text(9.5, 3, 'Observacion')
+        doc.text(13.5, 3, 'Estado')
+        doc.text(18.5, 3, 'Usuario')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(9);
+      // var x=0,y=
+      header()
+      // let xx=x
+      // let yy=y
+      let y=0
+      this.prestamos.forEach(r=>{
+        // xx+=0.5
+        y+=0.5
+        doc.text(1, y+3, r.fecha.toString())
+        doc.text(3, y+3, r.nombre.toString())
+        doc.text(5, y+3, r.efectivo==null?'':''+r.efectivo)
+        doc.text(7, y+3, r.fisico==null?'':''+r.fisico)
+        doc.text(9.5, y+3, r.observacion==null?'':''+r.observacion)
+        doc.text(13.5, y+3, r.estado.toString())
+        doc.text(18.5, y+3, r.name.toString())
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })
+      // doc.text(2, y+4, 'Ventas totales: ')
+      // doc.text(5, y+4, this.ventat+'Bs')
+      // doc.text(7, y+4, 'Por cobrar totales: ')
+      // doc.text(11, y+4, this.ventat+'Bs')
+      // doc.text(14, y+4, 'Saldo totales: ')
+      // doc.text(17, y+4, this.ventat+'Bs')
+      // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      window.open(doc.output('bloburl'), '_blank');
+    },
     imprimir(){
+
+
       let mc=this
       function header(){
         var img = new Image()
@@ -610,8 +674,8 @@ export default {
       }else{
         this.$q.notify({
           message:'Debes seleccionar cliente',
-          color:'green',
-          icon:'info'
+          color:'red',
+          icon:'error'
         })
       }
     },

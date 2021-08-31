@@ -154,6 +154,7 @@
 
 <script>
 import {date} from 'quasar'
+import {jsPDF} from "jspdf";
 export default {
   name: "Venta",
   data(){
@@ -216,8 +217,58 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
-    imprimir(){
+      imprimir(){
 
+        let mc=this
+        function header(){
+          var img = new Image()
+          img.src = 'logo.png'
+          doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+          doc.setFont(undefined,'bold')
+          doc.text(5, 1, 'Historial de prestmos Sueldos pagos Adelantos')
+          doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+          doc.text(1, 3, 'Empleado')
+          doc.text(5, 3, 'Sueldo')
+          doc.text(7, 3, 'Pago')
+          doc.text(9, 3, 'Adelanto')
+          doc.text(11, 3, 'Descuento')
+          // doc.text(13.5, 3, 'Estado')
+          // doc.text(18.5, 3, 'Usuario')
+          doc.setFont(undefined,'normal')
+        }
+        var doc = new jsPDF('p','cm','letter')
+        // console.log(dat);
+        doc.setFont("courier");
+        doc.setFontSize(9);
+        // var x=0,y=
+        header()
+        // let xx=x
+        // let yy=y
+        let y=0
+        this.salarios.forEach(r=>{
+          // xx+=0.5
+          y+=0.5
+          doc.text(1, y+3, ''+r.nombre)
+          doc.text(5, y+3, ''+r.salario)
+          doc.text(7, y+3, r.pago==null?'':''+r.pago)
+          doc.text(9, y+3, r.adelanto==null?'':''+r.adelanto)
+          doc.text(11, y+3, r.descuento==null?'':''+r.descuento)
+          // doc.text(13.5, y+3, r.estado.toString())
+          // doc.text(18.5, y+3, r.name.toString())
+          if (y+3>25){
+            doc.addPage();
+            header()
+            y=0
+          }
+        })
+        // doc.text(2, y+4, 'Ventas totales: ')
+        // doc.text(5, y+4, this.ventat+'Bs')
+        // doc.text(7, y+4, 'Por cobrar totales: ')
+        // doc.text(11, y+4, this.ventat+'Bs')
+        // doc.text(14, y+4, 'Saldo totales: ')
+        // doc.text(17, y+4, this.ventat+'Bs')
+        // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+        window.open(doc.output('bloburl'), '_blank');
     },
     missalarios(){
       this.$q.loading.show()

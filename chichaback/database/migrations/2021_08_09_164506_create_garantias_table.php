@@ -16,9 +16,9 @@ class CreateGarantiasTable extends Migration
         Schema::create('garantias', function (Blueprint $table) {
             $table->id();
             $table->date("fecha")->nullable()->default(date('Y-m-d'));
-            $table->double("efectivo",11,2)->nullable();
-            $table->string("fisico")->nullable();
-            $table->string("observacion")->nullable();
+            $table->double("efectivo",11,2)->nullable()->default(0);
+            $table->string("fisico")->nullable()->default('');
+            $table->string("observacion")->nullable()->default('');
             $table->integer("cantidad")->nullable();
             $table->string("estado")->nullable();
             $table->date("fechadev")->nullable();
