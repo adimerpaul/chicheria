@@ -40,7 +40,31 @@
           </q-table>
         </div>
 
+            <div class="col-12">
+              <q-form>
+                <div class="row">
+                  <div class="col-4 q-pa-md">
+                    <q-input type="text" label="Venta total" label-color="positive"  v-model="ventat"  outlined/>
+                  </div>
+                  <div class="col-4 q-pa-md">
+                    <q-input type="text" label="Saldo caja" label-color="info"  v-model="porc"  outlined/>
+                  </div>
+                  <div class="col-4 q-pa-md">
+                    <q-input type="text" label="Por cobrar" label-color="negative"  v-model="saldoc"  outlined/>
+                  </div>
+                </div>
+              </q-form>
+            </div>
 
+         <div class="q-pa-md">
+          <q-table
+            title="Reporte Deudores"
+            :rows="deudas"
+            :columns="columns2"
+            row-key="local">
+
+          </q-table>
+        </div>
 
       </div>
     </div>
@@ -56,6 +80,7 @@ export default {
       usuarios:[],
       usuario:'',
       ventas:[],
+      deudas:[],
       dato:{},
       columns : [
   {
@@ -72,11 +97,28 @@ export default {
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'usuario', align: 'center', label: 'usuario', field: 'name' }
 ],
+      columns2 : [
+  {
+    name: 'local',
+    label: 'Local',
+    align: 'center',
+    field: 'local',
+    sortable: true
+  },
+  { name: 'titular', align: 'center', label: 'Titular', field: 'titular', sortable: true },
+  { name: 'total', align: 'center', label: 'Total', field: 'total'},
+  { name: 'cuenta', align: 'center', label: 'Cuenta', field: 'cuenta' },
+  { name: 'saldo', align: 'center', label: 'Saldo', field: 'saldo' },
+  { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha' },
+  { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
+  { name: 'usuario', align: 'center', label: 'usuario', field: 'name' }
+],
 
     }
   },
   created() {
       this.listado();
+      this.deudores();
   },
   methods: {
     listado(){
@@ -87,6 +129,26 @@ export default {
       })
     },
 
+    deudores(){
+      this.deudas=[];
+      this.$axios.post(process.env.API+'/listadodeudores').then(res=>{
+        res.data.forEach(elem => {
+          this.deudas.push({
+            id:elem.id,
+            id:elem.id,
+            local:elem.cliente.local,
+            titular:elem.cliente.titular,
+            total:elem.total,
+            cuenta:elem.acuenta,
+            saldo:elem.saldo,
+            fecha:elem.fecha,
+            estado:elem.estado,
+            name:elem.user.name
+          });
+          
+        });
+      })
+    },
 
     generar(){
             this.ventas=[];
@@ -109,8 +171,29 @@ export default {
     },
 
   },
-
-
+computed:{
+    ventat(){
+      let total=0;
+      this.ventas.forEach(r=>{
+        total+= parseFloat(r.total)
+      })
+      return total
+    },
+    porc(){
+      let total=0;
+      this.ventas.forEach(r=>{
+        total+= parseFloat(r.cuenta)
+      })
+      return total
+    },
+    saldoc(){
+      let total=0;
+      this.ventas.forEach(r=>{
+        total+= parseFloat(r.saldo)
+      })
+      return total
+    },
+}
 
 }
 </script>
