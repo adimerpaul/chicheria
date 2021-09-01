@@ -8,6 +8,7 @@ import Empledo from "pages/Empledo";
 import Ventadirecta from "pages/Ventadirecta";
 import Ventalocal from "pages/Ventalocal";
 import Reporteuser from "pages/Reporteuser";
+import Usuario from "pages/Usuario";
 import Gasto from "pages/Gasto";
 
 const routes = [
@@ -26,6 +27,7 @@ const routes = [
       { path: 'inventario', component: Inventario,meta: {requiresAuth: true} },
       { path: 'empleado', component: Empledo,meta: {requiresAuth: true} },
       { path: 'reporteuser', component: Reporteuser,meta: {requiresAuth: true} },
+      { path: 'usuario', component: Usuario,meta: {requiresAuth: true} },
       { path: 'gasto', component: Gasto,meta: {requiresAuth: true} },
     ]
   },

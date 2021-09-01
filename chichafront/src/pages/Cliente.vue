@@ -167,7 +167,7 @@
             </template>
             <template v-slot:body-cell-tipocliente="props" >
 <!--              <q-tr :props="props" >-->
-                <q-td key="tipocliente" :props="props" @click="activar(props)">
+                <q-td key="tipocliente" :props="props" >
                   <q-badge color="accent" v-if="props.row.tipocliente=='1'">
                     LOCAL
                   </q-badge>
