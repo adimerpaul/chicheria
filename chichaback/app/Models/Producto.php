@@ -13,8 +13,8 @@ class Producto extends Model
         'precio',
         'observacion',
         'estado',
-        
-        
+        'tipo'
+
     ];
     protected $hidden = ["created_at", "updated_at"];
 }

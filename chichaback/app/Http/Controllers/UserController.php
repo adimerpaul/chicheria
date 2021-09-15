@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permiso;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public function index(){
-        return User::with('unid')
-//            ->with('permisos')
+        return User::
+//        with('unid')
+            with('permisos')
             ->where('id','!=',1)->get();
     }
     public function listuser(){
@@ -28,7 +31,7 @@ class UserController extends Controller
 
         $user=User::where('email',$request->email)
 //            ->with('unid')
-//            ->with('permisos')
+            ->with('permisos')
             ->firstOrFail();
         $token=$user->createToken('auth_token')->plainTextToken;
         return response()->json(['token'=>$token,'user'=>$user],200);;
@@ -39,9 +42,9 @@ class UserController extends Controller
         $user->name=$request->name;
         $user->email=$request->email;
         $user->password= Hash::make($request->password) ;
-        $user->unid_id=$request->unid_id;
+//        $user->unid_id=$request->unid_id;
         $user->fechalimite=$request->fechalimite;
-        $user->codigo= strtoupper( substr($request->name,0,3));
+//        $user->codigo= strtoupper( substr($request->name,0,3));
         $user->save();
         $permisos= array();
         foreach ($request->permisos as $permiso){
@@ -86,7 +89,7 @@ class UserController extends Controller
 //        $user=$request->user()
         $user=User::where('id',$request->user()->id)
 //            ->with('unid')
-//            ->with('permisos')
+            ->with('permisos')
             ->firstOrFail();
         return $user;
 

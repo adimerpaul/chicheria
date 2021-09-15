@@ -24,22 +24,29 @@
                   />
                   </div>
                   <div class="col-2">
-
                   <q-input
                     outlined
                     type="number"
                     v-model="producto.precio"
                     label="Precio"
                   />
-                                   </div>
+                  </div>
+                  <div class="col-2">
+                    <q-select
+                      outlined
+                      v-model="producto.tipo"
+                      :options="['LOCAL','DETALLE']"
+                      label="TIPO"
+                    />
+                  </div>
 
-                  <div class="col-2">              
+                  <div class="col-2">
                   <q-input
                     outlined
                     type="text"
                     v-model="producto.observacion"
                     label="Obervacion"
-                    
+
                   />
                   </div>
                   <div class="col-2 flex flex-center">
@@ -59,7 +66,7 @@
             :columns="columns"
             row-key="name">
             <template v-slot:body-cell-estado="props" >
-              <q-tr :props="props" >
+<!--              <q-tr :props="props" >-->
                 <q-td key="estado" :props="props" @click="activar(props)">
                   <q-badge color="green" v-if="props.row.estado=='ACTIVO'">
                     {{ props.row.estado }}
@@ -68,7 +75,19 @@
                     {{ props.row.estado }}
                   </q-badge>
                 </q-td>
-              </q-tr>
+<!--              </q-tr>-->
+            </template>
+            <template v-slot:body-cell-tipo="props" >
+<!--              <q-tr :props="props" >-->
+                <q-td key="estado" :props="props" >
+                  <q-badge color="primary" v-if="props.row.tipo=='LOCAL'">
+                    {{ props.row.tipo }}
+                  </q-badge>
+                  <q-badge color="secondary" v-else>
+                    {{ props.row.tipo }}
+                  </q-badge>
+                </q-td>
+<!--              </q-tr>-->
             </template>
             <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
@@ -102,12 +121,12 @@
                     v-model="dato.precio"
                     label="Precio"
                   />
-                  
+
                   <q-input
                     outlined
                     type="text"
                     v-model="dato.observacion"
-                    label="Obervacion"                   
+                    label="Obervacion"
                   />
 
             <div>
@@ -248,7 +267,7 @@ export default {
     return{
       crear:false,
       dialog_mod:false,
-      dialog_del:false,    
+      dialog_del:false,
       dialog_add:false,
       dialog_sub:false,
       agregar:0,
@@ -266,6 +285,7 @@ export default {
   },
   { name: 'precio', align: 'center', label: 'Precio', field: 'precio', sortable: true },
   { name: 'observacion', align: 'center', label: 'Observacion', field: 'observacion', sortable: true },
+  { name: 'tipo', align: 'center', label: 'tipo', field: 'tipo', sortable: true },
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'opcion', label: 'Opciones', field: 'action' }
 ],
@@ -297,7 +317,7 @@ export default {
         this.onReset();
         this.listado();
       }).catch(err=>{
-          
+
           this.$q.notify({
             color: 'red-4',
             textColor: 'white',
@@ -399,7 +419,7 @@ export default {
   onReset(){
     this.producto={};
   }
-    
+
   },
 
 

@@ -9,6 +9,16 @@ export function auth_success(state, data){
   state.status = 'success'
   state.token = data.token
   state.user = data.user
+  state.usuarios=data.user.permisos.find(p=>p.id===1)!=undefined
+  state.clientes=data.user.permisos.find(p=>p.id===2)!=undefined
+  state.productos=data.user.permisos.find(p=>p.id===3)!=undefined
+  state.inventario=data.user.permisos.find(p=>p.id===4)!=undefined
+  state.ventadetalle=data.user.permisos.find(p=>p.id===5)!=undefined
+  state.historialventadetalle=data.user.permisos.find(p=>p.id===6)!=undefined
+  state.ventalocal=data.user.permisos.find(p=>p.id===7)!=undefined
+  state.historialventalocal=data.user.permisos.find(p=>p.id===8)!=undefined
+  state.empleados=data.user.permisos.find(p=>p.id===9)!=undefined
+  state.reportes=data.user.permisos.find(p=>p.id===10)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -16,4 +26,14 @@ export function   auth_error(state){
 export function salir(state){
   state.status = ''
   state.token = ''
+  state.usuarios=false
+  state.clientes=false
+  state.productos=false
+  state.inventario=false
+  state.ventadetalle=false
+  state.historialventadetalle=false
+  state.ventalocal=false
+  state.historialventalocal=false
+  state.empleados=false
+  state.reportes=false
 }

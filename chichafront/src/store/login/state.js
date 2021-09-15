@@ -3,6 +3,16 @@ export default function () {
     status: '',
     token: localStorage.getItem('tokenchi') || '',
     user : {},
-    pedido:[]
+    pedido:[],
+    usuarios:false,
+    clientes:false,
+    productos:false,
+    inventario:false,
+    ventadetalle:false,
+    historialventadetalle:false,
+    ventalocal:false,
+    historialventalocal:false,
+    empleados:false,
+    reportes:false,
   }
 }

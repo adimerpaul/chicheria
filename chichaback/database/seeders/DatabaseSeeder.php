@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             DetalleSeeder::class,
             EmpleadoSeeder::class,
             SueldoSeeder::class,
+            PermisoSeeder::class,
+            PermisoUserSeeder::class,
         ]);
     }
 }

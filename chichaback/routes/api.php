@@ -23,8 +23,12 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/logout',[\App\Http\Controllers\UserController::class,'logout']);
     Route::post('/me',[\App\Http\Controllers\UserController::class,'me']);
     Route::post('listuser',[\App\Http\Controllers\UserController::class,'listuser']);
-    
+
     Route::resource('/cliente',\App\Http\Controllers\ClienteController::class);
+    Route::resource('/user',\App\Http\Controllers\UserController::class);
+    Route::put('/pass/{user}',[\App\Http\Controllers\UserController::class,'pass']);
+    Route::put('/updatepermisos/{user}',[\App\Http\Controllers\UserController::class,'updatepermisos']);
+    Route::resource('/permiso',\App\Http\Controllers\PermisoController::class);
     Route::resource('/producto',\App\Http\Controllers\ProductoController::class);
     Route::resource('/venta',\App\Http\Controllers\VentaController::class);
     Route::resource('/garantia',\App\Http\Controllers\GarantiaController::class);

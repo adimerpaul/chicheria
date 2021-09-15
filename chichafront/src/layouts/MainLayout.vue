@@ -71,7 +71,27 @@
         </q-item>
 
         <q-item
-          v-if="$store.getters['login/isLoggedIn']"
+          v-if="$store.state.login.usuarios"
+          clickable
+          exact
+          to="user"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="people" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Usuarios</q-item-label>
+            <q-item-label caption>
+              Control de usuarios
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          v-if="$store.state.login.clientes"
           clickable
           exact
           to="cliente"
@@ -79,19 +99,19 @@
           <q-item-section
             avatar
           >
-            <q-icon name="list" />
+            <q-icon name="people" />
           </q-item-section>
 
           <q-item-section>
             <q-item-label>Clientes</q-item-label>
             <q-item-label caption>
-              Informacion de clientes
+              Control de cLientes
             </q-item-label>
           </q-item-section>
         </q-item>
 
         <q-item
-          v-if="$store.getters['login/isLoggedIn']"
+          v-if="$store.state.login.productos"
           clickable
           exact
           to="producto"
@@ -112,7 +132,7 @@
 
 
         <q-item
-          v-if="$store.getters['login/isLoggedIn']"
+          v-if="$store.state.login.inventario"
           clickable
           exact
           to="inventario"
@@ -132,7 +152,7 @@
         </q-item>
 
         <q-item
-          v-if="$store.getters['login/isLoggedIn']"
+          v-if="$store.state.login.ventadetalle"
           clickable
           exact
           to="venta"
@@ -171,7 +191,7 @@
 <!--          </q-item-section>-->
 <!--        </q-item>-->
         <q-item
-          v-if="$store.getters['login/isLoggedIn']"
+          v-if="$store.state.login.ventalocal"
           clickable
           exact
           to="ventalocal"
@@ -190,7 +210,7 @@
           </q-item-section>
         </q-item>
         <q-item
-          v-if="$store.getters['login/isLoggedIn']"
+          v-if="$store.state.login.empleados"
           clickable
           exact
           to="empleado"
@@ -211,7 +231,7 @@
 
 
         <q-item
-          v-if="$store.getters['login/isLoggedIn']"
+          v-if="$store.state.login.reportes"
           clickable
           exact
           to="reporteuser"
