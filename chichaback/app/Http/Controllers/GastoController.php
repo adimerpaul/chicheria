@@ -26,6 +26,9 @@ class GastoController extends Controller
     {
         //
     }
+    public function misgastos(Request  $request){
+        return Gasto::with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +38,13 @@ class GastoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $gasto=new Gasto();
+        $gasto->precio=$request->precio;
+        $gasto->observacion=$request->observacion;
+        $gasto->fecha=$request->fecha;
+        $gasto->hora=$request->hora;
+        $gasto->user_id=$request->user()->id;
+        $gasto->save();
     }
 
     /**
@@ -69,7 +78,7 @@ class GastoController extends Controller
      */
     public function update(Request $request, Gasto $gasto)
     {
-        //
+        $gasto->update($request->all());
     }
 
     /**
@@ -80,6 +89,6 @@ class GastoController extends Controller
      */
     public function destroy(Gasto $gasto)
     {
-        //
+        $gasto->delete();
     }
 }

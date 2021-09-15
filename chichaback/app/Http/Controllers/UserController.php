@@ -12,7 +12,6 @@ class UserController extends Controller
 {
     public function index(){
         return User::
-//        with('unid')
             with('permisos')
             ->where('id','!=',1)->get();
     }
@@ -42,9 +41,6 @@ class UserController extends Controller
         $user->name=$request->name;
         $user->email=$request->email;
         $user->password= Hash::make($request->password) ;
-//        $user->unid_id=$request->unid_id;
-        $user->fechalimite=$request->fechalimite;
-//        $user->codigo= strtoupper( substr($request->name,0,3));
         $user->save();
         $permisos= array();
         foreach ($request->permisos as $permiso){

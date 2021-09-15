@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGastosTable extends Migration
+class CreatePermisoUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,13 @@ class CreateGastosTable extends Migration
      */
     public function up()
     {
-        Schema::create('gastos', function (Blueprint $table) {
+        Schema::create('permiso_user', function (Blueprint $table) {
             $table->id();
-//            $table->string('detalle');
-            $table->string('precio');
-            $table->string('observacion');
-            $table->date('fecha');
-            $table->time('hora');
+            $table->unsignedBigInteger('permiso_id');
+            $table->foreign('permiso_id')->references('id')->on('permisos');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
-
         });
     }
 
@@ -34,6 +30,6 @@ class CreateGastosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gastos');
+        Schema::dropIfExists('permiso_user');
     }
 }

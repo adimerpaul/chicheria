@@ -5,11 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Prestamo extends Model
+class PermisoUser extends Model
 {
     use HasFactory;
-    protected $fillable=[
-        'nombre'        
-    ];
-    protected $hidden = ["created_at", "updated_at"];
+
 }

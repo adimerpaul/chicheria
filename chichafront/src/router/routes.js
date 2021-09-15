@@ -9,6 +9,12 @@ import Ventadirecta from "pages/Ventadirecta";
 import Ventalocal from "pages/Ventalocal";
 import Reporteuser from "pages/Reporteuser";
 import User from "pages/User";
+// <<<<<<< HEAD
+// import User from "pages/User";
+// =======
+// import Usuario from "pages/Usuario";
+// import Gasto from "pages/Gasto";
+// >>>>>>> a64c39b0b8007f2636b9bda84ee6276a638bee19
 
 const routes = [
   {
@@ -27,6 +33,12 @@ const routes = [
       { path: 'empleado', component: Empledo,meta: {requiresAuth: true} },
       { path: 'reporteuser', component: Reporteuser,meta: {requiresAuth: true} },
       { path: 'user', component: User,meta: {requiresAuth: true} },
+// <<<<<<< HEAD
+//       { path: 'user', component: User,meta: {requiresAuth: true} },
+// =======
+//       { path: 'usuario', component: Usuario,meta: {requiresAuth: true} },
+//       { path: 'gasto', component: Gasto,meta: {requiresAuth: true} },
+// >>>>>>> a64c39b0b8007f2636b9bda84ee6276a638bee19
     ]
   },
 
