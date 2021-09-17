@@ -21,6 +21,7 @@
                     type="text"
                     v-model="producto.nombre"
                     label="Nombre"
+                    style="text-transform: uppercase"
                   />
                   </div>
                   <div class="col-2">
@@ -46,7 +47,7 @@
                     type="text"
                     v-model="producto.observacion"
                     label="Obervacion"
-
+                    style="text-transform: uppercase"
                   />
                   </div>
                   <div class="col-2 flex flex-center">
@@ -64,7 +65,16 @@
             title="Productos"
             :rows="rows"
             :columns="columns"
+            :filter="filter"
+
             row-key="name">
+            <template v-slot:top-right>
+              <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </template>
             <template v-slot:body-cell-estado="props" >
 <!--              <q-tr :props="props" >-->
                 <q-td key="estado" :props="props" @click="activar(props)">
@@ -266,6 +276,7 @@ export default {
   data(){
     return{
       crear:false,
+      filter:'',
       dialog_mod:false,
       dialog_del:false,
       dialog_add:false,
@@ -306,6 +317,8 @@ export default {
       })
     },
     registrar(){
+      this.producto.nombre=  this.producto.nombre.toUpperCase()
+      this.producto.observacion=  this.producto.observacion.toUpperCase()
         this.$axios.post(process.env.API+'/producto', this.producto).then(res=>{
         this.$q.notify({
           color: 'green-4',
