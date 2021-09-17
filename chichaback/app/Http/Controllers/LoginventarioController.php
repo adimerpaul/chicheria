@@ -15,7 +15,12 @@ class LoginventarioController extends Controller
     public function index()
     {
         //
+
     }
+
+    public function listlog(Request $request){
+        return Loginventario::where('inventario_id',$request->id)->get();
+    } 
 
     /**
      * Show the form for creating a new resource.

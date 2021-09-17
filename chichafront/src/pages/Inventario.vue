@@ -101,6 +101,7 @@
                 <q-btn  dense round flat color="green" @click="addRow(props)" icon="add"></q-btn>
                 <q-btn  dense round flat color="red" @click="substractRow(props)" icon="remove"></q-btn>
 
+                <q-btn dense round flat color="accent" @click="logRow(props)" icon="list"></q-btn>
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
                 <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
                 </q-td>
@@ -248,6 +249,40 @@
       </q-card>
     </q-dialog>
 
+    <q-dialog v-model="dialog_log" >
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">Log de Inventario</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+                   <q-table
+            title="LOG INVENTARIO"
+            :columns="logcol"
+            :rows="logdata"
+            row-key="name"
+            >
+                        <template v-slot:body-cell-agregar="props" >
+              <q-tr :props="props" >
+                <q-td key="estado" :props="props" @click="activar(props)">
+                  <q-badge color="green" v-if="props.row.agregar==1">
+                    Agregar
+                  </q-badge>
+                  <q-badge color="red" v-else>
+                    Disminuir
+                  </q-badge>
+                </q-td>
+              </q-tr>
+            </template>
+                   </q-table>
+      
+        </q-card-section>
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="Cancel" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
 
       </div>
     </div>
@@ -263,6 +298,7 @@ export default {
       dialog_del:false,
       dialog_add:false,
       dialog_sub:false,
+      dialog_log:false,
       agregar:0,
       disminuir:0,
       inventario:{},
@@ -282,7 +318,20 @@ export default {
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'opcion', label: 'Opciones', field: 'action' }
 ],
-  rows:[]
+  rows:[],
+  logdata:[],
+  logcol : [
+  {
+    name: 'fecha',
+    label: 'fecha',
+    align: 'center',
+    field: 'fecha',
+    sortable: true
+  },
+  { name: 'cantidad', align: 'center', label: 'cantidad', field: 'cantidad', sortable: true },
+  { name: 'agregar', align: 'center', label: 'agregar', field: 'agregar', sortable: true },
+  { name: 'motivo', align: 'center', label: 'motivo', field: 'motivo', sortable: true },
+],
 
     }
   },
@@ -355,6 +404,14 @@ export default {
         this.dato= props.row;
         this.dialog_sub=true;
     },
+        logRow(props){
+        this.dato=props.row;
+        this.$axios.post(process.env.API+'/listlog/',this.dato).then(res=>{
+          console.log(res.data)
+          this.logdata=res.data;
+        })
+        this.dialog_log=true;
+    },
      onMod(){
         this.$q.loading.show();
         this.$axios.put(process.env.API+'/inventario/'+this.dato.id,this.dato).then(res=>{
@@ -391,6 +448,7 @@ export default {
         })
         this.$q.loading.hide();
     },
+    
         onAdd(){
         this.$q.loading.show();
         this.modprod={id:this.dato.id,cantidad:this.agregar,motivo:this.dato.motivo}

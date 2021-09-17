@@ -270,6 +270,7 @@ export default {
       dialog_del:false,
       dialog_add:false,
       dialog_sub:false,
+      dialog_log:false,
       agregar:0,
       disminuir:0,
       producto:{},
@@ -289,10 +290,9 @@ export default {
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'opcion', label: 'Opciones', field: 'action' }
 ],
-  rows:[]
+  rows:[],
 
-    }
-  },
+  }},
   created() {
       this.listado();
   },
@@ -338,6 +338,10 @@ export default {
   editRow(props){
     this.dato=props.row;
     this.dialog_mod=true;
+  },
+    logRow(props){
+    this.dato=props.row;
+    this.dialog_log=true;
   },
   delRow(props){
     this.dato=props.row;
