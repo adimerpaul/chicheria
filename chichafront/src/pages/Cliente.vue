@@ -633,9 +633,9 @@ export default {
       this.$axios.get(process.env.API+'/cumple').then(res=>{
         // console.log(res.data)
         res.data.forEach(el => {
-          // console.log(el)
-          this.days.push( el.fechanac.replaceAll('-','/'))
-          console.log(valor == el.tipocliente)
+           //console.log(valor);
+          this.days.push( el.fechanac.replaceAll('-','/'));
+          //console.log(el.tipocliente);
           if(valor == el.tipocliente){
         this.clientes={};
         this.clientes.id=el.id;
@@ -655,12 +655,11 @@ export default {
         this.clientes.estado=el.estado;
         this.rows.push(this.clientes);}
         });
-      });
       this.$axios.get(process.env.API+'/cumple2').then(res=>{
         // console.log(res.data)
         res.data.forEach(el => {
           this.days.push( el.fechanac.replaceAll('-','/'))
-          console.log(valor == el.tipocliente)
+          //console.log(el.tipocliente)
             if(valor==el.tipocliente){
           this.clientes={};
           this.clientes.id=el.id;
@@ -683,10 +682,12 @@ export default {
         });
         this.$q.loading.hide();
       })
+      });
+
     },
     filtrarlista(){
       if(this.tab=='local') this.listado(1)
-      else this.listado(0)
+      else this.listado(2)
     },
     registrar(tipo){
         this.cliente.tipocliente=tipo;
