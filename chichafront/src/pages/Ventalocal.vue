@@ -17,7 +17,7 @@
               v-model="model"
               use-input
               input-debounce="0"
-              label="Selecionar Cliente"
+              label="Selecionar local"
               :options="options"
               @filter="filterFn"
               @click="generar"
@@ -48,10 +48,21 @@
 <!--          </div>-->
 
 
-          <div class="col-6 col-sm-1 q-pa-xs"><q-input type="text" disable label="Subtotal" label-color="white"  bg-color="positive" v-model="subtotal" outlined/></div>
-          <div class="col-6 col-sm-1 q-pa-xs"><q-input type="text" label="A cuenta" label-color="white" bg-color="accent" v-model="acuenta" outlined/></div>
-          <div class="col-6 col-sm-1 q-pa-xs"><q-input type="text" label="Saldo" v-model="saldo" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" disable outlined/></div>
-          <div class="col-6 col-sm-2 q-pa-xs"><q-input type="text" label="Estado" v-model="estado" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" outlined/></div>
+          <div class="col-6 col-sm-1 q-pa-xs">
+<!--            <q-input type="text" disable label="Subtotal" label-color="white"  bg-color="positive" v-model="subtotal" outlined/>-->
+            <q-badge class="full-width full-height" color="positive">Subtotal <br> {{subtotal}}</q-badge>
+          </div>
+          <div class="col-6 col-sm-1 q-pa-xs">
+            <q-input type="text" label="A cuenta" v-model="acuenta" outlined/>
+          </div>
+          <div class="col-6 col-sm-1 q-pa-xs">
+<!--            <q-input type="text" label="Saldo" v-model="saldo" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" disable outlined/>-->
+            <q-badge class="full-width full-height" :color="subtotal>acuenta?'red-7':'positive'">Subtotal <br> {{saldo}}</q-badge>
+          </div>
+          <div class="col-6 col-sm-2 q-pa-xs">
+<!--            <q-input type="text" label="Estado" v-model="estado" label-color="white" :bg-color="subtotal>acuenta?'red-7':'positive'" outlined/>-->
+            <q-badge class="full-width full-height" :color="subtotal>acuenta?'red-7':'positive'">Subtotal <br> {{estado}}</q-badge>
+          </div>
           <div class="col-12 col-sm-12 q-pa-xs flex flex-center">
 <!--          <div v-if="saldo>0||cantidadprestamo>0" class="row">-->
 <!--          <br>-->
@@ -329,7 +340,7 @@ export default {
       producto:'',
       cantidad:1,
       cantidades:[],
-      acuenta:0,
+      acuenta:'',
       detalles:[],
       garantia:{},
       dialog_garantia:false,
@@ -381,8 +392,9 @@ export default {
       // this.cliente=res.data[0]
       // console.log(res.data)
       res.data.forEach(r=>{
+        if (r.tipocliente==1)
         this.clientes.push({
-          label:r.ci+' '+r.titular+' Local: '+r.local,
+          label:r.local,
           id:r.id,
           // detalles:r.detalles,
           // nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
@@ -393,8 +405,12 @@ export default {
       })
     })
     this.$axios.get(process.env.API+'/listaproducto').then(res=>{
-      this.productos=res.data
-      this.producto=res.data[0]
+      res.data.forEach(r=>{
+        if(r.tipo=='LOCAL')
+          this.productos.push(r);
+      })
+      if (this.producto.length>0)
+        this.producto=this.productos[0]
     })
         this.$axios.get(process.env.API+'/listainventario').then(res=>{
       this.inventarios=res.data
@@ -528,9 +544,9 @@ export default {
       doc.text(2, y+4, 'Ventas totales: ')
       doc.text(5, y+4, this.ventat+'Bs')
       doc.text(7, y+4, 'Por cobrar totales: ')
-      doc.text(11, y+4, this.ventat+'Bs')
+      doc.text(11, y+4, this.porc+'Bs')
       doc.text(14, y+4, 'Saldo totales: ')
-      doc.text(17, y+4, this.ventat+'Bs')
+      doc.text(17, y+4, this.saldoc+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
@@ -557,6 +573,7 @@ export default {
         this.$q.loading.hide()
         this.ventas=[]
         res.data.forEach(r=>{
+          if (r.tipo=='LOCAL')
           this.ventas.push({
             total:r.total,
             acuenta:r.acuenta,
@@ -618,13 +635,22 @@ export default {
         }],
 
       }).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         this.$q.notify({
           message:'Venta exitosa',
           color:'green',
           icon:'info'
         })
         this.misventas()
+
+          this.subtotal=''
+          this.acuenta=''
+          this.saldo=''
+          this.estado=''
+          this.model=''
+          this.producto=''
+          this.cantidad=1
+          this.subtotal=0
       }).catch(err=>{
         this.$q.loading.hide()
         console.error(err)

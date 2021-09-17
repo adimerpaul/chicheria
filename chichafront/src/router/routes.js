@@ -10,6 +10,7 @@ import Ventalocal from "pages/Ventalocal";
 import Reporteuser from "pages/Reporteuser";
 import User from "pages/User";
 import Gasto from "pages/Gasto";
+import Ventadetalle from "pages/Ventadetalle";
 // <<<<<<< HEAD
 // import User from "pages/User";
 // =======
@@ -26,8 +27,8 @@ const routes = [
       { path: 'login', component: Login },
       { path: 'cliente', component: Cliente,meta: {requiresAuth: true} },
       { path: 'producto', component: Producto,meta: {requiresAuth: true} },
-      { path: 'venta', component: Venta,meta: {requiresAuth: true} },
-      { path: 'ventadirecta', component: Ventadirecta,meta: {requiresAuth: true} },
+      { path: 'venta', component: Ventadetalle,meta: {requiresAuth: true} },
+      // { path: 'ventadirecta', component: Ventadirecta,meta: {requiresAuth: true} },
       { path: 'ventalocal', component: Ventalocal,meta: {requiresAuth: true} },
       { path: 'garantia', component: Garantia,meta: {requiresAuth: true} },
       { path: 'inventario', component: Inventario,meta: {requiresAuth: true} },

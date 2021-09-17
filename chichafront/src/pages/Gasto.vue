@@ -159,6 +159,7 @@
 
 <script>
 import {date} from 'quasar'
+import {jsPDF} from "jspdf";
 export default {
   name: "Venta",
   data(){
@@ -223,7 +224,66 @@ export default {
   },
   methods:{
     imprimir(){
+      let mc=this
+      function header(){
+        var img = new Image()
+        img.src = 'logo.png'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(5, 1, 'Historial de gastos')
+        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(1, 3, 'Num')
+        doc.text(3, 3, 'Precio')
+        doc.text(5, 3, 'Observacion')
+        doc.text(9, 3, 'Fecha')
+        doc.text(11.5, 3, 'Hora')
+        doc.text(13.5, 3, 'Usuario')
+        // doc.text(18.5, 3, 'Usuario')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(9);
+      // var x=0,y=
+      header()
+      // let xx=x
+      // let yy=y
+      let y=0
+      let cont=1
+      this.gastos.forEach(r=>{
+        console.log(r)
+        // xx+=0.5
+        y+=0.5
+        // doc.text(1, y+3, r.total.toString())
+        // doc.text(3, y+3, r.acuenta.toString())
+        // doc.text(5, y+3, r.saldo.toString())
+        // doc.text(7, y+3, r.estado.toString())
+        // doc.text(9.5, y+3, r.local.toString())
+        // doc.text(13.5, y+3, r.titular.toString())
+        // doc.text(18.5, y+3, r.user.toString())
+        doc.text(1, y+3, ''+cont)
+        doc.text(3, y+3, r.precio)
+        doc.text(5, y+3, r.observacion)
+        doc.text(9, y+3, r.fecha)
+        doc.text(11.5, y+3, r.hora)
+        doc.text(13.5, y+3, r.user)
 
+        cont++
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })
+      // doc.text(2, y+4, 'Ventas totales: ')
+      // doc.text(5, y+4, this.ventat+'Bs')
+      // doc.text(7, y+4, 'Por cobrar totales: ')
+      // doc.text(11, y+4, this.porc+'Bs')
+      // doc.text(14, y+4, 'Saldo totales: ')
+      // doc.text(17, y+4, this.saldoc+'Bs')
+      // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      window.open(doc.output('bloburl'), '_blank');
     },
     misgastos(){
       this.$q.loading.show()

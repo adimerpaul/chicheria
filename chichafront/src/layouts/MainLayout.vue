@@ -270,25 +270,25 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-<q-item
-          v-if="$store.getters['login/isLoggedIn']"
-          clickable
-          exact
-          to="usuario"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="person" />
-          </q-item-section>
+<!--<q-item-->
+<!--          v-if="$store.getters['login/isLoggedIn']"-->
+<!--          clickable-->
+<!--          exact-->
+<!--          to="usuario"-->
+<!--        >-->
+<!--          <q-item-section-->
+<!--            avatar-->
+<!--          >-->
+<!--            <q-icon name="person" />-->
+<!--          </q-item-section>-->
 
-          <q-item-section>
-            <q-item-label>Usuarios</q-item-label>
-            <q-item-label caption>
-              Datos de Usuarios
-            </q-item-label>
-          </q-item-section>
-        </q-item>
+<!--          <q-item-section>-->
+<!--            <q-item-label>Usuarios</q-item-label>-->
+<!--            <q-item-label caption>-->
+<!--              Datos de Usuarios-->
+<!--            </q-item-label>-->
+<!--          </q-item-section>-->
+<!--        </q-item>-->
 
         <q-item
           v-if="$store.getters['login/isLoggedIn']"
