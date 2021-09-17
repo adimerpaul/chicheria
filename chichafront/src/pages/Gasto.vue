@@ -12,11 +12,11 @@
     <div class="col-12">
       <q-form @submit.prevent="agregar">
         <div class="row">
-          <div class="col-12 q-pa-xs col-sm-1"><q-input outlined label="CI" v-model="empleado.ci" required/></div>
-          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Nombre" v-model="empleado.nombre" required/></div>
-          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" v-model="empleado.fechanac" required/></div>
-          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>
-          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Precio" v-model="empleado.precio" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Observacion" v-model="empleado.observacion" required/></div>
+<!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" v-model="empleado.fechanac" required/></div>-->
+<!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>-->
+<!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>-->
           <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
             <q-btn icon="send" :label="boolcrear?'CREAR':'MODIFICAR'" type="submit" :color="boolcrear?'positive':'warning'"/>
           </div>
@@ -49,71 +49,75 @@
               dense
               @click="deleteval(props.row)"
             />
-            <q-btn
-              color="info"
-              icon-right="list"
-              no-caps
-              label="Sueldos"
-              flat
-              dense
-              @click="pagosval(props.row)"
-            />
+<!--            <q-btn-->
+<!--              color="info"-->
+<!--              icon-right="list"-->
+<!--              no-caps-->
+<!--              label="Sueldos"-->
+<!--              flat-->
+<!--              dense-->
+<!--              @click="pagosval(props.row)"-->
+<!--            />-->
 
             <!--              @click="deleteval(detalles.indexOf(props.row))"-->
           </q-td>
         </template>
       </q-table>
-      <div class="row">
-        <div class="col-12">
-<!--          <div class="text-subtitle1 bg-accent text-center text-white">Historial de pagos</div>-->
-        </div>
 
-        <div class="col-12">
-          <q-table
-            :columns="columns3"
-            :rows="gastos"
-            title="Historial de pagos"
+<!--      <div class="row">-->
+<!--        <div class="col-12">-->
+<!--&lt;!&ndash;          <div class="text-subtitle1 bg-accent text-center text-white">Historial de pagos</div>&ndash;&gt;-->
+<!--        </div>-->
 
-          >
-<!--            :filter="filter"-->
+<!--        <div class="col-12">-->
+<!--          <q-table-->
+<!--            :columns="columns3"-->
+<!--            :rows="gastos"-->
+<!--            title="Historial de pagos"-->
 
-            <!--        <template v-slot:top-right>-->
-            <!--          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">-->
-            <!--            <template v-slot:append>-->
-            <!--              <q-icon name="search" />-->
-            <!--            </template>-->
-            <!--          </q-input>-->
-            <!--        </template>-->
-<!--            <template v-slot:body="props">-->
-<!--              <q-tr :props="props">-->
-<!--                <q-td key="total" :props="props">-->
-<!--                  {{ props.row.total }}-->
-<!--                </q-td>-->
-<!--                <q-td key="acuenta" :props="props">-->
-<!--                  {{ props.row.acuenta }}-->
-<!--                </q-td>-->
-<!--                <q-td key="saldo" :props="props">-->
-<!--                  {{ props.row.saldo }}-->
-<!--                </q-td>-->
-<!--                <q-td key="estado" :props="props">-->
-<!--                  <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>-->
-<!--                </q-td>-->
-<!--                <q-td key="local" :props="props">-->
-<!--                  {{ props.row.local }}-->
-<!--                </q-td>-->
-<!--                <q-td key="titular" :props="props">-->
-<!--                  {{ props.row.titular }}-->
-<!--                </q-td>-->
-<!--                <q-td key="user" :props="props">-->
-<!--                  {{ props.row.user }}-->
-<!--                </q-td>-->
-<!--              </q-tr>-->
-<!--            </template>-->
-          </q-table>
-        </div>
-        <div class="col-12">
-          <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
-        </div>
+<!--          >-->
+<!--&lt;!&ndash;            :filter="filter"&ndash;&gt;-->
+
+<!--            &lt;!&ndash;        <template v-slot:top-right>&ndash;&gt;-->
+<!--            &lt;!&ndash;          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">&ndash;&gt;-->
+<!--            &lt;!&ndash;            <template v-slot:append>&ndash;&gt;-->
+<!--            &lt;!&ndash;              <q-icon name="search" />&ndash;&gt;-->
+<!--            &lt;!&ndash;            </template>&ndash;&gt;-->
+<!--            &lt;!&ndash;          </q-input>&ndash;&gt;-->
+<!--            &lt;!&ndash;        </template>&ndash;&gt;-->
+<!--&lt;!&ndash;            <template v-slot:body="props">&ndash;&gt;-->
+<!--&lt;!&ndash;              <q-tr :props="props">&ndash;&gt;-->
+<!--&lt;!&ndash;                <q-td key="total" :props="props">&ndash;&gt;-->
+<!--&lt;!&ndash;                  {{ props.row.total }}&ndash;&gt;-->
+<!--&lt;!&ndash;                </q-td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <q-td key="acuenta" :props="props">&ndash;&gt;-->
+<!--&lt;!&ndash;                  {{ props.row.acuenta }}&ndash;&gt;-->
+<!--&lt;!&ndash;                </q-td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <q-td key="saldo" :props="props">&ndash;&gt;-->
+<!--&lt;!&ndash;                  {{ props.row.saldo }}&ndash;&gt;-->
+<!--&lt;!&ndash;                </q-td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <q-td key="estado" :props="props">&ndash;&gt;-->
+<!--&lt;!&ndash;                  <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>&ndash;&gt;-->
+<!--&lt;!&ndash;                </q-td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <q-td key="local" :props="props">&ndash;&gt;-->
+<!--&lt;!&ndash;                  {{ props.row.local }}&ndash;&gt;-->
+<!--&lt;!&ndash;                </q-td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <q-td key="titular" :props="props">&ndash;&gt;-->
+<!--&lt;!&ndash;                  {{ props.row.titular }}&ndash;&gt;-->
+<!--&lt;!&ndash;                </q-td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <q-td key="user" :props="props">&ndash;&gt;-->
+<!--&lt;!&ndash;                  {{ props.row.user }}&ndash;&gt;-->
+<!--&lt;!&ndash;                </q-td>&ndash;&gt;-->
+<!--&lt;!&ndash;              </q-tr>&ndash;&gt;-->
+<!--&lt;!&ndash;            </template>&ndash;&gt;-->
+<!--          </q-table>-->
+<!--        </div>-->
+<!--        <div class="col-12">-->
+<!--          <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>-->
+<!--        </div>-->
+<!--      </div>-->
+      <div class="col-12">
+        <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
       </div>
 
       <q-dialog v-model="pagos" full-width>
@@ -196,7 +200,7 @@ export default {
   },
   mounted() {
     this.misgastos()
-    this.misempleados()
+    // this.misempleados()
     // console.log(this.$store.state.login)
     // this.$axios.get(process.env.API+'/cliente').then(res=>{
     //   this.clientes=res.data
@@ -280,13 +284,13 @@ export default {
     agregar(){
       this.$q.loading.show()
       if (this.boolcrear){
-        this.$axios.post(process.env.API+'/empleado',this.empleado).then(res=>{
+        this.$axios.post(process.env.API+'/gasto',this.empleado).then(res=>{
           // this.ventas=res.data
           // console.log(res.data)
           this.$q.loading.hide()
           // this.empleados=res.data
-          this.misempleados()
-          this.empleado={fechanac: '2000-01-01'}
+          this.misgastos()
+          // this.empleado={fechanac: '2000-01-01'}
           this.$q.notify({
             message:'Creado correctamente',
             icon:'info',
@@ -294,14 +298,14 @@ export default {
           })
         })
       }else{
-        this.$axios.put(process.env.API+'/empleado/'+this.empleado.id,this.empleado).then(res=>{
+        this.$axios.put(process.env.API+'/gasto/'+this.empleado.id,this.empleado).then(res=>{
           // this.ventas=res.data
           // console.log(res.data)
           this.$q.loading.hide()
           // this.empleados=res.data
-          this.misempleados()
+          this.misgastos()
           this.boolcrear=true
-          this.empleado={fechanac: '2000-01-01'}
+          // this.empleado={fechanac: '2000-01-01'}
           this.$q.notify({
             message:'Creado correctamente',
             icon:'info',
@@ -350,9 +354,9 @@ export default {
         cancel:true,
       }).onOk(()=>{
         this.$q.loading.show()
-        this.$axios.delete(process.env.API+'/empleado/'+index.id).then(res=>{
+        this.$axios.delete(process.env.API+'/gasto/'+index.id).then(res=>{
           this.$q.loading.hide()
-          this.misempleados()
+          this.misgastos()
           this.$q.notify({
             message:'Borrado correctamente',
             icon:'info',

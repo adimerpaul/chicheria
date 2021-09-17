@@ -9,6 +9,7 @@ import Ventadirecta from "pages/Ventadirecta";
 import Ventalocal from "pages/Ventalocal";
 import Reporteuser from "pages/Reporteuser";
 import User from "pages/User";
+import Gasto from "pages/Gasto";
 // <<<<<<< HEAD
 // import User from "pages/User";
 // =======
@@ -33,6 +34,8 @@ const routes = [
       { path: 'empleado', component: Empledo,meta: {requiresAuth: true} },
       { path: 'reporteuser', component: Reporteuser,meta: {requiresAuth: true} },
       { path: 'user', component: User,meta: {requiresAuth: true} },
+      { path: 'gasto', component: Gasto,meta: {requiresAuth: true} },
+
 // <<<<<<< HEAD
 //       { path: 'user', component: User,meta: {requiresAuth: true} },
 // =======
