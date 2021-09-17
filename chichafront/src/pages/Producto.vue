@@ -46,7 +46,7 @@
                     outlined
                     type="text"
                     v-model="producto.observacion"
-                    label="Obervacion"
+                    label="Observacion"
                     style="text-transform: uppercase"
                   />
                   </div>
@@ -136,7 +136,7 @@
                     outlined
                     type="text"
                     v-model="dato.observacion"
-                    label="Obervacion"
+                    label="Observacion"
                   />
 
             <div>
@@ -318,7 +318,12 @@ export default {
     },
     registrar(){
       this.producto.nombre=  this.producto.nombre.toUpperCase()
-      this.producto.observacion=  this.producto.observacion.toUpperCase()
+
+      // console.log(this.producto.observacion)
+      if (this.producto.observacion!=undefined){
+        this.producto.observacion=  this.producto.observacion.toUpperCase()
+      }
+
         this.$axios.post(process.env.API+'/producto', this.producto).then(res=>{
         this.$q.notify({
           color: 'green-4',

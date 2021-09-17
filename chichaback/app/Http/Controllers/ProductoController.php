@@ -16,7 +16,7 @@ class ProductoController extends Controller
     public function index()
     {
         //
-        return Producto::all();
+        return Producto::orderBy('nombre', 'ASC')->get();
     }
 
     public function listaproducto()
