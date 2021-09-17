@@ -11,6 +11,7 @@
             indicator-color="primary"
             align="justify"
             narrow-indicator
+            @update:model-value="filtrarlista"
           >
             <q-tab name="local" label="Local" />
             <q-tab name="cliente" label="Cliente" />
@@ -520,7 +521,7 @@
                   />
                   <div v-if="dato.tipocliente=='1'">
                   <q-select v-model="dato.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
-                  <q-select outlined v-model="dato.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad" />
+                  <q-select outlined v-model="dato.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad Tributaria" />
                   <q-select outlined v-model="dato.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
                   <q-input
                     type="text"
@@ -623,10 +624,10 @@ export default {
     }
   },
   created() {
-      this.listado();
+      this.filtrarlista();
   },
   methods: {
-    listado(){
+    listado(valor){
       this.$q.loading.show();
       this.rows=[];
       this.$axios.get(process.env.API+'/cumple').then(res=>{
@@ -634,7 +635,9 @@ export default {
         res.data.forEach(el => {
           // console.log(el)
           this.days.push( el.fechanac.replaceAll('-','/'))
-          this.clientes={};
+          console.log(valor == el.tipocliente)
+          if(valor == el.tipocliente){
+        this.clientes={};
         this.clientes.id=el.id;
         this.clientes.local=el.local;
         this.clientes.ci=el.ci;
@@ -650,15 +653,16 @@ export default {
         this.clientes.observacion=el.observacion;
         this.clientes.tipocliente=el.tipocliente;
         this.clientes.estado=el.estado;
-        this.rows.push(this.clientes);
+        this.rows.push(this.clientes);}
         });
       });
       this.$axios.get(process.env.API+'/cumple2').then(res=>{
         // console.log(res.data)
         res.data.forEach(el => {
-          this.clientes={};
           this.days.push( el.fechanac.replaceAll('-','/'))
-
+          console.log(valor == el.tipocliente)
+            if(valor==el.tipocliente){
+          this.clientes={};
           this.clientes.id=el.id;
         this.clientes.local=el.local;
         this.clientes.ci=el.ci;
@@ -674,10 +678,15 @@ export default {
         this.clientes.observacion=el.observacion;
         this.clientes.tipocliente=el.tipocliente;
         this.clientes.estado=el.estado;
-        this.rows.push(this.clientes);
+        this.rows.push(this.clientes);}
+        
         });
         this.$q.loading.hide();
       })
+    },
+    filtrarlista(){
+      if(this.tab=='local') this.listado(1)
+      else this.listado(0)
     },
     registrar(tipo){
         this.cliente.tipocliente=tipo;
@@ -690,7 +699,7 @@ export default {
         });
         this.crear=false;
         this.onReset();
-        this.listado();
+        this.filtrarlista();
       }).catch(err=>{
 
           this.$q.notify({
@@ -706,7 +715,7 @@ export default {
       activar(props){
         this.dato=props.row;
         this.$axios.post(process.env.API+'/activar', this.dato).then(res=>{
-          this.listado();
+          this.filtrarlista();
         });
 
       },
@@ -729,7 +738,7 @@ export default {
           message: 'Modificado correctamente'
         });
         this.dialog_mod=false;
-        this.listado();
+        this.filtrarlista();
        }).catch(err=>{
 
           this.$q.notify({
@@ -751,7 +760,7 @@ export default {
           message: 'Eliminado correctamente'
         });
         this.dialog_del=false;
-        this.listado();
+        this.filtrarlista();
         })
         this.$q.loading.hide();
     },
