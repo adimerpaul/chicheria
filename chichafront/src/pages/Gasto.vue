@@ -12,8 +12,8 @@
     <div class="col-12">
       <q-form @submit.prevent="agregar">
         <div class="row">
-          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Precio" v-model="empleado.precio" required/></div>
-          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Observacion" v-model="empleado.observacion" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined type="number" label="Precio" v-model="empleado.precio" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
 <!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" v-model="empleado.fechanac" required/></div>-->
 <!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>-->
 <!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>-->
@@ -343,6 +343,7 @@ export default {
     },
     agregar(){
       this.$q.loading.show()
+      this.empleado.observacion=this.empleado.observacion.toUpperCase()
       if (this.boolcrear){
         this.$axios.post(process.env.API+'/gasto',this.empleado).then(res=>{
           // this.ventas=res.data
@@ -350,7 +351,7 @@ export default {
           this.$q.loading.hide()
           // this.empleados=res.data
           this.misgastos()
-          // this.empleado={fechanac: '2000-01-01'}
+          this.empleado={}
           this.$q.notify({
             message:'Creado correctamente',
             icon:'info',
@@ -366,6 +367,7 @@ export default {
           this.misgastos()
           this.boolcrear=true
           // this.empleado={fechanac: '2000-01-01'}
+          this.empleado={}
           this.$q.notify({
             message:'Creado correctamente',
             icon:'info',

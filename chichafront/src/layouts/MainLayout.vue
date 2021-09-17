@@ -244,7 +244,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Gasto</q-item-label>
+            <q-item-label>Gastos</q-item-label>
             <q-item-label caption>
               Control de gastos
             </q-item-label>
