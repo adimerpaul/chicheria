@@ -19,7 +19,7 @@ class CreateEmpleadosTable extends Migration
             $table->string('nombre');
             $table->integer('salario');
             $table->string('fechanac');
-            $table->interger('dias');
+            $table->integer('dias')->default(0);
             $table->string('celular')->nullable()->default('');
             $table->timestamps();
         });

@@ -26,6 +26,7 @@ class PermisoSeeder extends Seeder
             ['nombre'=>'Ver historial local'],
             ['nombre'=>'Controlar empleados'],
             ['nombre'=>'Reporte empleados'],
+            ['nombre'=>'Controlar gastos'],
         ]);
 //=======
 //        //

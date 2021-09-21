@@ -14,5 +14,6 @@ export default function () {
     historialventalocal:false,
     empleados:false,
     reportes:false,
+    gastos:false,
   }
 }
