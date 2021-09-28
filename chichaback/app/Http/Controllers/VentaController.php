@@ -162,18 +162,27 @@ class VentaController extends Controller
     }
 
     public function listadoventa(Request $request){
-        return Venta::with('user')
-        ->with('cliente')
-        ->whereDate('fecha',$request->fecha)
-        ->where('user_id',$request->id)
-        ->get();
+        if ($request->id==0){
+            return Venta::with('user')
+                ->with('cliente')
+                ->whereDate('fecha',$request->fecha)
+//                ->where('user_id',$request->id)
+                ->get();
+        }else{
+            return Venta::with('user')
+                ->with('cliente')
+                ->whereDate('fecha',$request->fecha)
+                ->where('user_id',$request->id)
+                ->get();
+        }
+
     }
 
     public function listadodeudores(){
         return Venta::with('user')
         ->with('cliente')
-        ->where('estado','POR COBRAR')     
-        ->orderBy('fecha','asc')   
+        ->where('estado','POR COBRAR')
+        ->orderBy('fecha','asc')
         ->get();
     }
 }

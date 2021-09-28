@@ -4,7 +4,7 @@
             <div class="text-h6">
               <h5 style="text-align:center">Reporte de Ventas por Usuario</h5>
             </div>
- 
+
                 <q-form
                   @submit="generar"
                   >
@@ -95,6 +95,7 @@ export default {
   { name: 'cuenta', align: 'center', label: 'cuenta', field: 'cuenta' },
   { name: 'saldo', align: 'center', label: 'saldo', field: 'saldo' },
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
+  { name: 'tipo', align: 'center', label: 'Tipo', field: 'tipo' },
   { name: 'usuario', align: 'center', label: 'usuario', field: 'name' }
 ],
       columns2 : [
@@ -124,7 +125,11 @@ export default {
     listado(){
       this.$axios.post(process.env.API+'/listuser').then(res=>{
         console.log(res.data)
-        this.usuarios=res.data;
+        this.usuarios.push({id:'0',name:'Todos'})
+        res.data.forEach(r=>{
+          this.usuarios.push(r)
+        })
+        if (this.usuarios.length>0)
         this.usuario=res.data[0];
       })
     },
@@ -134,7 +139,7 @@ export default {
       this.$axios.post(process.env.API+'/listadodeudores').then(res=>{
         res.data.forEach(elem => {
           this.deudas.push({
-            id:elem.id,
+            // id:elem.id,
             id:elem.id,
             local:elem.cliente.local,
             titular:elem.cliente.titular,
@@ -145,28 +150,30 @@ export default {
             estado:elem.estado,
             name:elem.user.name
           });
-          
+
         });
       })
     },
 
     generar(){
             this.ventas=[];
+            this.$q.loading.show()
         this.$axios.post(process.env.API+'/listadoventa',{fecha:this.fecha,id:this.usuario.id}).then(res=>{
-            console.log(res.data); 
+            console.log(res.data);
+          this.$q.loading.hide()
             res.data.forEach(el => {
                 this.ventas.push({
                     local:el.cliente.local,
+                    tipo:el.tipo,
                     titular:el.cliente.titular,
                     cuenta:el.acuenta,
                     saldo:el.saldo,
                     total:el.total,
                     estado:el.estado,
                     name:el.user.name
-
                 })
             });
-        
+
         })
     },
 
