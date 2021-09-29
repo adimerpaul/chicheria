@@ -16,17 +16,18 @@ class PermisoSeeder extends Seeder
     {
 //<<<<<<< HEAD
         DB::table('permisos')->insert([
-            ['nombre'=>'Controlar usuarios'],
-            ['nombre'=>'Controlar clientes'],
-            ['nombre'=>'Controlar productos'],
-            ['nombre'=>'Controlar inventario'],
-            ['nombre'=>'Venta detalle'],
-            ['nombre'=>'Ver historial detalle'],
-            ['nombre'=>'Venta local'],
-            ['nombre'=>'Ver historial local'],
-            ['nombre'=>'Controlar empleados'],
-            ['nombre'=>'Reporte empleados'],
-            ['nombre'=>'Controlar gastos'],
+            ['id'=>1,'nombre'=>'Controlar usuarios'],
+            ['id'=>2,'nombre'=>'Controlar clientes'],
+            ['id'=>3,'nombre'=>'Controlar productos'],
+            ['id'=>4,'nombre'=>'Controlar inventario'],
+            ['id'=>5,'nombre'=>'Venta detalle'],
+            ['id'=>6,'nombre'=>'Ver historial detalle'],
+            ['id'=>7,'nombre'=>'Venta local'],
+            ['id'=>8,'nombre'=>'Ver historial local'],
+            ['id'=>9,'nombre'=>'Controlar empleados'],
+            ['id'=>10,'nombre'=>'Reporte empleados'],
+            ['id'=>11,'nombre'=>'Controlar gastos'],
+            ['id'=>12,'nombre'=>'Historial prestamos'],
         ]);
 //=======
 //        //

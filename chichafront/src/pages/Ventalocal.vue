@@ -139,11 +139,13 @@
             <div class="col-12">
               <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas</div>
             </div>
+            <template v-if="$store.state.login.historialventalocal">
             <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
             <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
             <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
               <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misventas" />
             </div>
+            </template>
             <div class="col-12">
               <q-table
                 :columns="columns2"

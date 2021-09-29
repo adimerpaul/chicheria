@@ -30,7 +30,7 @@
           header
           class="text-grey-8"
         >
-          Essential Links
+          Opciones del menu
         </q-item-label>
         <q-item
           clickable
@@ -210,7 +210,7 @@
           </q-item-section>
         </q-item>
         <q-item
-          v-if="$store.state.login.ventalocal"
+          v-if="$store.state.login.historialprestamo"
           clickable
           exact
           to="prestamos"

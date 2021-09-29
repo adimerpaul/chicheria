@@ -15,5 +15,6 @@ export default function () {
     empleados:false,
     reportes:false,
     gastos:false,
+    historialprestamo:false,
   }
 }

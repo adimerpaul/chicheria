@@ -20,6 +20,7 @@ export function auth_success(state, data){
   state.empleados=data.user.permisos.find(p=>p.id===9)!=undefined
   state.reportes=data.user.permisos.find(p=>p.id===10)!=undefined
   state.gastos=data.user.permisos.find(p=>p.id===11)!=undefined
+  state.historialprestamo=data.user.permisos.find(p=>p.id===12)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -38,4 +39,5 @@ export function salir(state){
   state.empleados=false
   state.reportes=false
   state.gastos=false
+  state.historialprestamo=false
 }

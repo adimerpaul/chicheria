@@ -658,8 +658,12 @@ export default {
       this.$axios.get(process.env.API+'/cumple2').then(res=>{
         // console.log(res.data)
         res.data.forEach(el => {
-          this.days.push( el.fechanac.replaceAll('-','/'))
-          //console.log(el.tipocliente)
+          // this.days.push( el.fechanac.replaceAll('-','/'))
+          const fecha = date.extractDate(el.fechanac, 'YYYY-MM-DD')
+
+          console.log(date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'))
+          this.days.push(date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'))
+
             if(valor==el.tipocliente){
           this.clientes={};
           this.clientes.id=el.id;
@@ -678,7 +682,6 @@ export default {
         this.clientes.tipocliente=el.tipocliente;
         this.clientes.estado=el.estado;
         this.rows.push(this.clientes);}
-        
         });
         this.$q.loading.hide();
       })
