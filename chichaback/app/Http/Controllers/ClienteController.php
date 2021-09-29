@@ -140,7 +140,6 @@ class ClienteController extends Controller
 
     public function ordercumple(){
 
-
          $cliente=DB::select('(select *,MONTH(fechanac) as mes,DAY(fechanac) as dia from clientes
          where MONTH(fechanac)>=MONTH(CURDATE()) and DAY(fechanac)>=DAY(CURDATE()) order by  mes asc, dia asc)
          ');

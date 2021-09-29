@@ -635,8 +635,8 @@ export default {
         res.data.forEach(el => {
            //console.log(valor);
           this.days.push( el.fechanac.replaceAll('-','/'));
-          //console.log(el.tipocliente);
-          if(valor == el.tipocliente){
+          console.log(el.tipocliente);
+          if(valor == el){
         this.clientes={};
         this.clientes.id=el.id;
         this.clientes.local=el.local;
@@ -661,7 +661,7 @@ export default {
           // this.days.push( el.fechanac.replaceAll('-','/'))
           const fecha = date.extractDate(el.fechanac, 'YYYY-MM-DD')
 
-          console.log(date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'))
+          // console.log(date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'))
           this.days.push(date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'))
 
             if(valor==el.tipocliente){
