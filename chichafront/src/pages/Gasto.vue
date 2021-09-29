@@ -117,7 +117,13 @@
 <!--        </div>-->
 <!--      </div>-->
       <div class="col-12">
-        <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
+        <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir"/>
+      </div>
+      <div class="col-12">
+        <q-btn label="Imprimir mis ventas" icon="print" color="teal" class="full-width" @click="imprimirmisventas"/>
+      </div>
+      <div class="col-12">
+        <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="imprimirmisventasygastos"/>
       </div>
 
       <q-dialog v-model="pagos" full-width>
@@ -223,6 +229,143 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+    imprimirmisventasygastos(){
+      let mc=this
+      function header(){
+        var img = new Image()
+        img.src = 'logo.png'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(5, 1, 'Historial de ventas y gastos')
+        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        // doc.text(1, 3, 'Total')
+        doc.text(3, 3, 'Monto')
+        // doc.text(5, 3, 'Saldo')
+        doc.text(7, 3, 'Tipo')
+        doc.text(9.5, 3, 'Local')
+        doc.text(13.5, 3, 'Titular')
+        doc.text(18.5, 3, 'Usuario')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(9);
+      // var x=0,y=
+      header()
+      // let xx=x
+      // let yy=y
+      let y=0
+      let ventas=0
+      this.ventas.forEach(r=>{
+        // xx+=0.5
+        y+=0.5
+        // doc.text(1, y+3, r.total.toString())
+        doc.text(3, y+3, r.acuenta.toString()+' Bs.')
+        ventas+=parseFloat(r.acuenta)
+        // doc.text(5, y+3, r.saldo.toString())
+        doc.text(7, y+3, 'Cobro')
+        doc.text(9.5, y+3, r.local.toString())
+        doc.text(13.5, y+3, r.titular.toString())
+        doc.text(18.5, y+3, r.user.toString())
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })
+      let gastos=0
+      this.gastos.forEach(r=>{
+        // console.log(r)
+        // xx+=0.5
+        y+=0.5
+        // doc.text(1, y+3, r.total.toString())
+        // doc.text(3, y+3, r.acuenta.toString())
+        // doc.text(5, y+3, r.saldo.toString())
+        // doc.text(7, y+3, r.estado.toString())
+        // doc.text(9.5, y+3, r.local.toString())
+        // doc.text(13.5, y+3, r.titular.toString())
+        // doc.text(18.5, y+3, r.user.toString())
+
+        // doc.text(1, y+3, ''+cont)
+        doc.text(3, y+3, r.precio+' Bs.')
+        gastos+=parseFloat(r.precio)
+        doc.text(7, y+3, 'Gasto')
+        doc.text(9.5, y+3, r.observacion)
+        // doc.text(9, y+3, r.fecha)
+        // doc.text(11.5, y+3, r.hora)
+        doc.text(18.5, y+3, r.user)
+
+        // cont++
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })
+      doc.setFont(undefined,'bold')
+
+      doc.text(2, y+4, 'Monto cobrado: ')
+      doc.text(5, y+4, ventas+'Bs')
+      doc.text(7, y+4, 'Monto gasto: ')
+      doc.text(11, y+4, gastos+'Bs')
+      doc.text(14, y+4, 'Total saldo: ')
+      doc.text(17, y+4, (ventas-gastos)+'Bs')
+      // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      window.open(doc.output('bloburl'), '_blank');
+    },
+    imprimirmisventas(){
+      let mc=this
+      function header(){
+        var img = new Image()
+        img.src = 'logo.png'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(5, 1, 'Historial de ventas')
+        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(1, 3, 'Total')
+        doc.text(3, 3, 'A cuenta')
+        doc.text(5, 3, 'Saldo')
+        doc.text(7, 3, 'Estado')
+        doc.text(9.5, 3, 'Local')
+        doc.text(13.5, 3, 'Titular')
+        doc.text(18.5, 3, 'Usuario')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(9);
+      // var x=0,y=
+      header()
+      // let xx=x
+      // let yy=y
+      let y=0
+      this.ventas.forEach(r=>{
+        // xx+=0.5
+        y+=0.5
+        doc.text(1, y+3, r.total.toString())
+        doc.text(3, y+3, r.acuenta.toString())
+        doc.text(5, y+3, r.saldo.toString())
+        doc.text(7, y+3, r.estado.toString())
+        doc.text(9.5, y+3, r.local.toString())
+        doc.text(13.5, y+3, r.titular.toString())
+        doc.text(18.5, y+3, r.user.toString())
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })
+      doc.text(2, y+4, 'Ventas totales: ')
+      doc.text(5, y+4, this.ventat+'Bs')
+      doc.text(7, y+4, 'Por cobrar totales: ')
+      doc.text(11, y+4, this.porc+'Bs')
+      doc.text(14, y+4, 'Saldo totales: ')
+      doc.text(17, y+4, this.saldoc+'Bs')
+      // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      window.open(doc.output('bloburl'), '_blank');
+    },
     imprimir(){
       let mc=this
       function header(){
@@ -289,7 +432,7 @@ export default {
       this.$q.loading.show()
       this.gastos=[]
       this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         // this.gastos=res.data
         res.data.forEach(r=>{
           this.gastos.push({
@@ -302,6 +445,29 @@ export default {
           })
         })
         this.$q.loading.hide()
+
+        this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha2,fecha2:this.fecha2}).then(res=>{
+          // this.ventas=res.data
+          // console.log(res.data)
+          this.$q.loading.hide()
+          this.ventas=[]
+          res.data.forEach(r=>{
+            // if (r.tipo=='LOCAL')
+              this.ventas.push({
+                total:r.total,
+                tipo:r.tipo,
+                acuenta:r.acuenta,
+                saldo:r.saldo,
+                estado:r.estado,
+                local:r.cliente.local,
+                titular:r.cliente.titular,
+                user:r.user.name,
+              })
+          })
+          // console.log(this.ventas)
+        })
+
+
       }).catch(err=>{
         this.$q.loading.hide()
         this.$q.notify({
@@ -466,32 +632,29 @@ export default {
       })
     }
   },
-  // computed:{
-  //   subtotal(){
-  //     if (this.producto.precio!=undefined && this.producto.precio!=NaN){
-  //       return parseFloat(this.producto.precio)* parseFloat(this.cantidad)
-  //     }
-  //     else{
-  //       return 0
-  //     }
-  //   },
-  //   total(){
-  //     let total=0;
-  //     this.detalles.forEach(r=>{
-  //       total+= parseFloat(r.subtotal)
-  //     })
-  //     return total
-  //   },
-  //   estado(){
-  //     if (this.acuenta<this.total)
-  //       return 'POR COBRAR'
-  //     else
-  //       return 'CANCELADO'
-  //   },
-  //   saldo(){
-  //     return this.total-this.acuenta
-  //   }
-  // }
+  computed:{
+    ventat(){
+      let total=0;
+      this.ventas.forEach(r=>{
+        total+= parseFloat(r.total)
+      })
+      return total
+    },
+    porc(){
+      let total=0;
+      this.ventas.forEach(r=>{
+        total+= parseFloat(r.acuenta)
+      })
+      return total
+    },
+    saldoc(){
+      let total=0;
+      this.ventas.forEach(r=>{
+        total+= parseFloat(r.saldo)
+      })
+      return total
+    },
+  }
 }
 </script>
 

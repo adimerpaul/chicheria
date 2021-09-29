@@ -11,6 +11,7 @@ import Reporteuser from "pages/Reporteuser";
 import User from "pages/User";
 import Gasto from "pages/Gasto";
 import Ventadetalle from "pages/Ventadetalle";
+import Prestamos from "pages/Prestamos";
 // <<<<<<< HEAD
 // import User from "pages/User";
 // =======
@@ -36,6 +37,7 @@ const routes = [
       { path: 'reporteuser', component: Reporteuser,meta: {requiresAuth: true} },
       { path: 'user', component: User,meta: {requiresAuth: true} },
       { path: 'gasto', component: Gasto,meta: {requiresAuth: true} },
+      { path: 'prestamos', component: Prestamos,meta: {requiresAuth: true} },
 
 // <<<<<<< HEAD
 //       { path: 'user', component: User,meta: {requiresAuth: true} },

@@ -16,7 +16,7 @@ class ClienteController extends Controller
     public function index()
     {
         //
-        return Cliente::all();
+        return Cliente::with('prestamos')->get();
     }
 
     public function listacliente(){
@@ -70,7 +70,7 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        // 
+        //
         return Cliente::find($id)->get() ;
     }
 
@@ -137,11 +137,11 @@ class ClienteController extends Controller
         $cliente->delete();
         return response()->json(['res'=>'Borrado exitoso'],200);
     }
-    
+
     public function ordercumple(){
 
-        
-         $cliente=DB::select('(select *,MONTH(fechanac) as mes,DAY(fechanac) as dia from clientes 
+
+         $cliente=DB::select('(select *,MONTH(fechanac) as mes,DAY(fechanac) as dia from clientes
          where MONTH(fechanac)>=MONTH(CURDATE()) and DAY(fechanac)>=DAY(CURDATE()) order by  mes asc, dia asc)
          ');
          return $cliente;

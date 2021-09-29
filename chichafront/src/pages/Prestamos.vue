@@ -1,0 +1,126 @@
+<template>
+<q-page class="q-pa-xs">
+  <q-form @submit.prevent="agregar">
+  <div class="row">
+    <div class="col-12 col-sm-3 q-pa-xs">
+      <q-select outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
+    </div>
+    <div class="col-12 col-sm-3 q-pa-xs">
+      <q-select outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
+    </div>
+    <div class="col-12 col-sm-3 q-pa-xs">
+      <q-select outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades"/>
+    </div>
+    <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
+      <q-btn label="agregar" icon="send" color="positive" type="submit"/>
+    </div>
+  </div>
+  </q-form>
+<!--  {{cliente}}-->
+  <table class="table" style="width: 100%">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Inventario</th>
+      <th>Fecha</th>
+      <th>Estado</th>
+      <th>Cantidad</th>
+      <th>Devolver</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr v-for="(p,i) in cliente.prestamos" :key="i">
+      <td>{{i+1}}</td>
+      <td>{{p.inventario.nombre}}</td>
+      <td>{{p.fecha}}</td>
+      <td><q-badge :color="p.estado=='EN PRESTAMO'?'negative':'aceent'">{{p.estado}}</q-badge></td>
+      <td>{{p.cantidad}}</td>
+      <td>
+        <q-btn @click="devolver(p)" v-if="p.estado=='EN PRESTAMO'" label="devolver" color="primary" icon="refresh"/>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</q-page>
+</template>
+
+<script>
+import {date} from 'quasar'
+import { jsPDF } from "jspdf";
+export default {
+  name: "Venta",
+  data(){
+    return{
+      prestamos:[],
+      cliente:'',
+      inventarios:[],
+      inventario:'',
+      cantidades:[],
+      cantidad:1,
+    }
+  },
+  created(){
+    for (let i=1;i<=100;i++){
+      this.cantidades.push(i);
+    }
+    // this.misprestamos()
+    this.$axios.get(process.env.API+'/inventario').then(res=>{
+      // console.log(res.data)
+      this.inventarios=res.data
+      this.inventario=this.inventarios[0]
+    })
+
+      this.$q.loading.show()
+      this.$axios.get(process.env.API+'/cliente').then(res=>{
+        // console.log(res.data)
+        this.prestamos=res.data
+        this.$q.loading.hide()
+        this.cliente=this.prestamos[0]
+      })
+  },
+  methods: {
+    misprestamos(){
+      this.$q.loading.show()
+      this.$axios.get(process.env.API+'/cliente').then(res=>{
+        // console.log(res.data)
+        this.prestamos=res.data
+        this.$q.loading.hide()
+        this.cliente=this.prestamos[0]
+      })
+    },
+    agregar(){
+      this.$q.loading.show()
+      this.$axios.post(process.env.API+'/prestamo',{
+        cantidad:this.cantidad,
+        cliente_id:this.cliente.id,
+        inventario_id:this.inventario.id,
+      }).then(res=>{
+        console.log(res.data)
+        // this.prestamos=res.data
+        this.$q.loading.hide()
+        this.misprestamos()
+        // this.cliente=this.prestamos[0]
+      })
+    },
+    devolver(prestamo){
+      this.$q.loading.show()
+      this.$axios.put(process.env.API+'/prestamo/'+prestamo.id,{
+        estado:'DEVUELTO',
+      }).then(res=>{
+        console.log(res.data)
+        // this.prestamos=res.data
+        this.$q.loading.hide()
+        this.misprestamos()
+        // this.cliente=this.prestamos[0]
+      })
+    }
+  }
+}
+</script>
+
+<style scoped>
+.table , th , td  {
+  border: 0.2px solid black;
+  border-collapse: collapse;
+}
+</style>

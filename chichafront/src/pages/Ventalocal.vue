@@ -134,7 +134,7 @@
 
     <div class="col-12">
       <div class="row">
-        <div class="col-12 col-sm-6">
+        <div class="col-12 col-sm-12">
           <div class="row">
             <div class="col-12">
               <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas</div>
@@ -205,109 +205,109 @@
             </div>
           </div>
         </div>
-        <div class="col-12 col-sm-6">
-          <div class="row">
-            <div class="col-12">
-              <div class="text-subtitle1 bg-accent text-center text-white">Historial de prestamos</div>
-            </div>
-            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha4" outlined required/></div>
-            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha5" outlined required/></div>
-            <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
-              <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="generar" />
-            </div>
-            <div class="row">
-              <q-form
-                  @submit="regprestamo"
-                  @reset="onReset"
-                  class="q-gutter-md"
-                >
-            <div class="row">
+<!--        <div class="col-12 col-sm-6">-->
+<!--          <div class="row">-->
+<!--            <div class="col-12">-->
+<!--              <div class="text-subtitle1 bg-accent text-center text-white">Historial de prestamos</div>-->
+<!--            </div>-->
+<!--            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha4" outlined required/></div>-->
+<!--            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha5" outlined required/></div>-->
+<!--            <div class="col-6 col-sm-4 q-pa-xs flex flex-center">-->
+<!--              <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="generar" />-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--              <q-form-->
+<!--                  @submit="regprestamo"-->
+<!--                  @reset="onReset"-->
+<!--                  class="q-gutter-md"-->
+<!--                >-->
+<!--            <div class="row">-->
 
-                <div class="col-2">
-                <q-select v-model="inventario" outlined :options="inventarios" option-label="nombre" option-value="id" label="Material" required/>
-                  </div>
-                  <div class="col-2">
-                  <q-input
-                    outlined
-                    type="number"
-                    v-model="prestamo.cantidad"
-                    label="Cantidad"
-                    required
-                  />
-                  </div>
+<!--                <div class="col-2">-->
+<!--                <q-select v-model="inventario" outlined :options="inventarios" option-label="nombre" option-value="id" label="Material" required/>-->
+<!--                  </div>-->
+<!--                  <div class="col-2">-->
+<!--                  <q-input-->
+<!--                    outlined-->
+<!--                    type="number"-->
+<!--                    v-model="prestamo.cantidad"-->
+<!--                    label="Cantidad"-->
+<!--                    required-->
+<!--                  />-->
+<!--                  </div>-->
 
-                  <div class="col-2">
-                  <q-input
-                    outlined
-                    type="text"
-                    v-model="prestamo.efectivo"
-                    label="Efectivo"
-                  />
-                  </div>
-                  <div class="col-2">
-                  <q-input
-                    outlined
-                    type="text"
-                    v-model="prestamo.fisico"
-                    label="Fisico"
-                  />
-                  </div>
-                  <div class="col-2">
-                  <q-input
-                    outlined
-                    type="text"
-                    v-model="prestamo.observacion"
-                    label="Observacion"
-                  />
-                  </div>
-                  <div class="col-2 flex flex-center">
-                    <q-btn  type="submit" color="primary" icon="send" />
-                  </div>
-            </div>
-                </q-form>
-            </div>
-            <div class="col-12">
-              <q-table
-                :columns="columns3"
-                :rows="prestamos"
-                title="Historial de Prestamo"
-              >
-                <!--        <template v-slot:top-right>-->
-                <!--          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">-->
-                <!--            <template v-slot:append>-->
-                <!--              <q-icon name="search" />-->
-                <!--            </template>-->
-                <!--          </q-input>-->
-                <!--        </template>-->
-              <template v-slot:body-cell-opcion="props" >
-                <q-td key="opcion" :props="props" >
-                <q-btn dense round flat color="red" @click="devolver1(props)" icon="undo" v-if="props.row.estado=='PRESTAMO'"></q-btn>
-                </q-td>
-            </template>
-              </q-table>
-            </div>
+<!--                  <div class="col-2">-->
+<!--                  <q-input-->
+<!--                    outlined-->
+<!--                    type="text"-->
+<!--                    v-model="prestamo.efectivo"-->
+<!--                    label="Efectivo"-->
+<!--                  />-->
+<!--                  </div>-->
+<!--                  <div class="col-2">-->
+<!--                  <q-input-->
+<!--                    outlined-->
+<!--                    type="text"-->
+<!--                    v-model="prestamo.fisico"-->
+<!--                    label="Fisico"-->
+<!--                  />-->
+<!--                  </div>-->
+<!--                  <div class="col-2">-->
+<!--                  <q-input-->
+<!--                    outlined-->
+<!--                    type="text"-->
+<!--                    v-model="prestamo.observacion"-->
+<!--                    label="Observacion"-->
+<!--                  />-->
+<!--                  </div>-->
+<!--                  <div class="col-2 flex flex-center">-->
+<!--                    <q-btn  type="submit" color="primary" icon="send" />-->
+<!--                  </div>-->
+<!--            </div>-->
+<!--                </q-form>-->
+<!--            </div>-->
+<!--            <div class="col-12">-->
+<!--              <q-table-->
+<!--                :columns="columns3"-->
+<!--                :rows="prestamos"-->
+<!--                title="Historial de Prestamo"-->
+<!--              >-->
+<!--                &lt;!&ndash;        <template v-slot:top-right>&ndash;&gt;-->
+<!--                &lt;!&ndash;          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">&ndash;&gt;-->
+<!--                &lt;!&ndash;            <template v-slot:append>&ndash;&gt;-->
+<!--                &lt;!&ndash;              <q-icon name="search" />&ndash;&gt;-->
+<!--                &lt;!&ndash;            </template>&ndash;&gt;-->
+<!--                &lt;!&ndash;          </q-input>&ndash;&gt;-->
+<!--                &lt;!&ndash;        </template>&ndash;&gt;-->
+<!--              <template v-slot:body-cell-opcion="props" >-->
+<!--                <q-td key="opcion" :props="props" >-->
+<!--                <q-btn dense round flat color="red" @click="devolver1(props)" icon="undo" v-if="props.row.estado=='PRESTAMO'"></q-btn>-->
+<!--                </q-td>-->
+<!--            </template>-->
+<!--              </q-table>-->
+<!--            </div>-->
 
-            <div class="col-12">
-              <q-btn label="Imprimir prestamos" icon="print" color="accent" class="full-width" @click="impprestamos"/>
-            </div>
-                <q-dialog v-model="dialog_garantia" >
-              <q-card style="min-width: 350px">
-                <q-card-section>
-                  <div class="text-h6">Devolver Material Prestado</div>
-                </q-card-section>
+<!--            <div class="col-12">-->
+<!--              <q-btn label="Imprimir prestamos" icon="print" color="accent" class="full-width" @click="impprestamos"/>-->
+<!--            </div>-->
+<!--                <q-dialog v-model="dialog_garantia" >-->
+<!--              <q-card style="min-width: 350px">-->
+<!--                <q-card-section>-->
+<!--                  <div class="text-h6">Devolver Material Prestado</div>-->
+<!--                </q-card-section>-->
 
-                <q-card-section class="q-pt-none">
-                  <q-input dense v-model="garantia.observacion" autofocus />
-                </q-card-section>
+<!--                <q-card-section class="q-pt-none">-->
+<!--                  <q-input dense v-model="garantia.observacion" autofocus />-->
+<!--                </q-card-section>-->
 
-                <q-card-actions align="right" class="text-primary">
-                  <q-btn flat label="Cancel" v-close-popup />
-                  <q-btn flat label="Devolver" @click="devolver" />
-                </q-card-actions>
-              </q-card>
-            </q-dialog>
-          </div>
-        </div>
+<!--                <q-card-actions align="right" class="text-primary">-->
+<!--                  <q-btn flat label="Cancel" v-close-popup />-->
+<!--                  <q-btn flat label="Devolver" @click="devolver" />-->
+<!--                </q-card-actions>-->
+<!--              </q-card>-->
+<!--            </q-dialog>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
 
 

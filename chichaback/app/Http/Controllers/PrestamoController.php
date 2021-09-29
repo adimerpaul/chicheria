@@ -35,7 +35,16 @@ class PrestamoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+//        return $request;
+        $prestamo=new Prestamo();
+        $prestamo->fecha=date('Y-m-d');
+//        $prestamo->estado='DEVUELTO';
+        $prestamo->cantidad=$request->cantidad;
+        $prestamo->user_id=$request->user()->id;
+        $prestamo->cliente_id=$request->cliente_id;
+        $prestamo->inventario_id=$request->inventario_id;
+        $prestamo->save();
+//        return $prestamo->
     }
 
     /**
@@ -69,7 +78,7 @@ class PrestamoController extends Controller
      */
     public function update(Request $request, Prestamo $prestamo)
     {
-        //
+        $prestamo->update($request->all());
     }
 
     /**

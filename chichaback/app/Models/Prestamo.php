@@ -9,7 +9,15 @@ class Prestamo extends Model
 {
     use HasFactory;
     protected $fillable=[
-        'nombre'        
+        'fecha',
+        'estado',
+        'cantidad',
+        'user_id',
+        'cliente_id',
+        'inventario_id',
     ];
     protected $hidden = ["created_at", "updated_at"];
+    public function inventario(){
+        return $this->belongsTo(Inventario::class);
+    }
 }

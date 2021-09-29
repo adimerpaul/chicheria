@@ -210,6 +210,26 @@
           </q-item-section>
         </q-item>
         <q-item
+          v-if="$store.state.login.ventalocal"
+          clickable
+          exact
+          to="prestamos"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="task" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Historial de prestamos </q-item-label>
+            <q-item-label caption>
+              Historial de prestamos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
           v-if="$store.state.login.empleados"
           clickable
           exact

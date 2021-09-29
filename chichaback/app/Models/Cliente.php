@@ -25,4 +25,9 @@ class Cliente extends Model
         'estado',
     ];
     protected $hidden = ["created_at", "updated_at"];
+
+    public function prestamos(){
+        return $this->hasMany(Prestamo::class)->with('inventario');
+    }
+
 }

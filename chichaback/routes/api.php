@@ -35,6 +35,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::resource('/inventario',\App\Http\Controllers\InventarioController::class);
     Route::resource('/loginventario',\App\Http\Controllers\LoginventarioController::class);
     Route::resource('/gasto',\App\Http\Controllers\GastoController::class);
+    Route::resource('/prestamo',\App\Http\Controllers\PrestamoController::class);
     Route::post('/misgastos',[\App\Http\Controllers\GastoController::class,'misgastos']);
 
     Route::resource('/user',\App\Http\Controllers\UserController::class);
