@@ -82,15 +82,7 @@
                               style="text-transform: uppercase"
                             />
                             </div>
-                            <div class="col-12 col-sm-2">
-                            <q-input
-                              outlined
-                              v-model="cliente.observacion"
-                              label="Observacion"
-                              type="text"
-                              style="text-transform: uppercase"
-                            />
-                            </div>
+
                             <div class="col-12 col-sm-2">
                               <q-select outlined v-model="cliente.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
                             </div>
@@ -117,6 +109,15 @@
                                 type="text"
                                 style="text-transform: uppercase"
                               />
+                            </div>
+                            <div class="col-12 col-sm-2">
+                            <q-input
+                              outlined
+                              v-model="cliente.observacion"
+                              label="Observacion"
+                              type="text"
+                              style="text-transform: uppercase"
+                            />
                             </div>
                             <div class="col-12 flex flex-center">
                               <q-btn label="Registrar" icon="send" type="submit" color="primary" class="full-width" />

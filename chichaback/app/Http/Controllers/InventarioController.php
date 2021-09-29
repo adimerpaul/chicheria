@@ -37,8 +37,15 @@ class InventarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $inventario=Inventario::create($request->all());
+        //        
+        
+        $inventario=new Inventario;
+        $inventario->codigo=strtoupper($request->codigo);
+        $inventario->nombre=strtoupper($request->nombre);
+        $inventario->cantidad=$request->cantidad;
+        $inventario->detalle=strtoupper($request->detalle);
+        $inventario->save();
+
         return $inventario;
     }
 
@@ -73,8 +80,13 @@ class InventarioController extends Controller
      */
     public function update(Request $request, Inventario $inventario)
     {
-        //
-        $inventario->update($request->all());
+        //    
+        $inventario=Inventario::find($request->id);
+        $inventario->codigo=strtoupper($request->codigo);
+        $inventario->nombre=strtoupper($request->nombre);
+        $inventario->detalle=strtoupper($request->detalle);
+        $inventario->save();
+
         return $inventario;
     }
 

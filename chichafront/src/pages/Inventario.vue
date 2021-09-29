@@ -24,6 +24,7 @@
                         type="text"
                         v-model="inventario.codigo"
                         label="Codigo"
+                              style="text-transform: uppercase"
                         lazy-rules
                         :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
 
@@ -34,6 +35,7 @@
                         outlined
                         type="text"
                         v-model="inventario.nombre"
+                              style="text-transform: uppercase"
                         label="Nombre"
                         lazy-rules
                         :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
@@ -55,6 +57,7 @@
                         v-model="inventario.detalle"
                         type="text"
                         label="Detalle"
+                              style="text-transform: uppercase"
                       />
                       <!--                  <q-select v-model="inventario.producto_id" :options="productos" label="Producto" />-->
 
@@ -124,6 +127,7 @@
                     type="text"
                     v-model="dato.nombre"
                     label="Nombre"
+                              style="text-transform: uppercase"
                     lazy-rules
                     :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
                   />
@@ -131,6 +135,7 @@
                     filled
                     type="text"
                     v-model="dato.detalle"
+                              style="text-transform: uppercase"
                     label="Detalle"
                   />
 <!--                  <q-select v-model="dato.producto_id" :options="productos" label="Producto" />-->
@@ -491,7 +496,7 @@ export default {
         this.listado();})
     },
   onReset(){
-    this.cliente={};
+    this.inventario={};
   }
 
   },
