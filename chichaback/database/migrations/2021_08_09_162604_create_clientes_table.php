@@ -16,7 +16,7 @@ class CreateClientesTable extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
             $table->string("local")->nullable()->default('');
-            $table->string("ci");
+            $table->string("ci")->unique();
             $table->string("titular")->nullable()->default('');
             $table->string("tipo")->nullable()->default('');
             $table->string("telefono")->nullable()->default('');
@@ -29,7 +29,6 @@ class CreateClientesTable extends Migration
             $table->string("observacion")->nullable()->default('');
             $table->boolean('tipocliente')->default(true);
             $table->string("estado")->nullable()->default('ACTIVO');
-            $table->unique(['ci','tipocliente'],'clienteunique');
             $table->timestamps();
         });
     }
