@@ -13,6 +13,7 @@ class Sueldo extends Model
         'hora',
         'monto',
         'tipo',
+        'observacion',
         'empleado_id',
         'user_id',
 

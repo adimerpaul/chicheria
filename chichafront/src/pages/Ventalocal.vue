@@ -93,7 +93,7 @@
 <!--            outlined            />-->
 <!--          </div>-->
 <!--          </div>-->
-            <q-btn color="accent" class="full-width"  label="Agregar" icon="send" type="submit" />
+            <q-btn color="accent" class="full-width"  label="Generar Venta" icon="send" type="submit" />
           </div>
         </div>
       </q-form>
@@ -608,6 +608,14 @@ export default {
         })
         return false;
       }
+            if (this.fecha==undefined){
+        this.$q.notify({
+          message:'Tienes que seleccionar fecha',
+          color:'red',
+          icon:'error'
+        })
+        return false;
+      }
       // console.log(this.detalles)
       // return  false
       // return false
@@ -622,6 +630,7 @@ export default {
       // return false
 
       this.$axios.post(process.env.API+'/venta',{
+        fecha:this.fecha,
         total:this.subtotal,
         acuenta:this.acuenta,
         saldo:this.saldo,
@@ -653,6 +662,7 @@ export default {
           this.producto=''
           this.cantidad=1
           this.subtotal=0
+        this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
       }).catch(err=>{
         this.$q.loading.hide()
         console.error(err)

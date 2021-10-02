@@ -100,6 +100,9 @@ export default {
         this.$q.loading.hide()
         this.misprestamos()
         // this.cliente=this.prestamos[0]
+        this.cantidad=1;
+        this.cliente=this.cliente[0];
+        this.inventario=this.inventario[0];
       })
     },
     devolver(prestamo){

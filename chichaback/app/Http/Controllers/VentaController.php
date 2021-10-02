@@ -49,7 +49,7 @@ class VentaController extends Controller
     {
 //        return $request->user();
         $venta= new Venta();
-        $venta->fecha=date('Y-m-d');
+        $venta->fecha=$request->fecha;
         $venta->total=$request->total;
         $venta->tipo=$request->tipo;
         $venta->acuenta=$request->acuenta;
@@ -79,7 +79,7 @@ class VentaController extends Controller
     public function directa(Request $request)
     {
         $venta= new Venta();
-        $venta->fecha=date('Y-m-d');
+        $venta->fecha=$request->fecha;
         $venta->total=$request->total;
         $venta->acuenta=$request->acuenta;
         $venta->saldo=$request->saldo;

@@ -7,14 +7,15 @@
             v-model="tab"
             dense
             class="text-grey"
-            active-color="primary"
+            active-color="dark"
             indicator-color="primary"
             align="justify"
             narrow-indicator
             @update:model-value="filtrarlista"
+            active-bg-color="accent"
           >
             <q-tab name="local" label="Local" />
-            <q-tab name="cliente" label="Cliente" />
+            <q-tab name="cliente" label="Cliente"  />
 <!--            <q-tab name="movies" label="Movies" />-->
           </q-tabs>
 
@@ -632,12 +633,12 @@ export default {
       this.$q.loading.show();
       this.rows=[];
       this.$axios.get(process.env.API+'/cumple').then(res=>{
-        // console.log(res.data)
+         console.log(res.data)
         res.data.forEach(el => {
            //console.log(valor);
           this.days.push( el.fechanac.replaceAll('-','/'));
           console.log(el.tipocliente);
-          if(valor == el){
+          if(valor == el.tipocliente){
         this.clientes={};
         this.clientes.id=el.id;
         this.clientes.local=el.local;
@@ -657,7 +658,7 @@ export default {
         this.rows.push(this.clientes);}
         });
       this.$axios.get(process.env.API+'/cumple2').then(res=>{
-        // console.log(res.data)
+         console.log(res.data)
         res.data.forEach(el => {
           // this.days.push( el.fechanac.replaceAll('-','/'))
           const fecha = date.extractDate(el.fechanac, 'YYYY-MM-DD')

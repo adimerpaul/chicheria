@@ -16,7 +16,11 @@ class CreatePrestamosTable extends Migration
         Schema::create('prestamos', function (Blueprint $table) {
             $table->id();
             $table->date('fecha')->default(date('Y-m-d'));
+            $table->date('fechadev')->nullable();
             $table->string('estado')->default('EN PRESTAMO');
+            $table->double("efectivo",11,2)->nullable()->default(0);
+            $table->string('fisico')->default('')->nullable();
+            $table->string('observacion')->default('')->nullable();
             $table->integer('cantidad');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

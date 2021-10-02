@@ -93,7 +93,7 @@
               <!--            outlined            />-->
               <!--          </div>-->
               <!--          </div>-->
-              <q-btn color="accent" class="full-width"  label="Agregar" icon="send" type="submit" />
+              <q-btn color="accent" class="full-width"  label="Generar Venta" icon="send" type="submit" />
             </div>
           </div>
         </q-form>
@@ -361,7 +361,7 @@ export default {
         {name:'saldo',label:'Saldo',field:'saldo'},
         {name:'estado',label:'Estado',field:'estado'},
         {name:'local',label:'Local',field:'local'},
-        {name:'titular',label:'Titular',field:'titular'},
+        {name:'titular',label:'Cliente',field:'titular'},
         {name:'user',label:'Usuario',field:'user'},
       ],
       columns3:[
@@ -609,6 +609,14 @@ export default {
         })
         return false;
       }
+      if (this.fecha==undefined){
+        this.$q.notify({
+          message:'Tienes que seleccionar fecha',
+          color:'red',
+          icon:'error'
+        })
+        return false;
+      }
       // console.log(this.detalles)
       // return  false
       // return false
@@ -623,6 +631,7 @@ export default {
       // return false
 
       this.$axios.post(process.env.API+'/venta',{
+        fecha:this.fecha,
         total:this.subtotal,
         acuenta:this.acuenta,
         saldo:this.saldo,
@@ -647,6 +656,7 @@ export default {
         this.producto=''
         this.cantidad=1
         this.subtotal=0
+        this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
         this.$q.notify({
           message:'Venta exitosa',
           color:'green',

@@ -127,7 +127,10 @@
                   <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
                 </div>
                 <div class="col-4">
-                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','PAGO']"/>
+                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','PAGO','BONO']"/>
+                </div>
+                <div class="col-4">
+                  <q-input outlined type="text" label="observacion" v-model="pago.observacion" />
                 </div>
                 <div class="col-4 flex flex-center">
                   <q-btn label="Agregar" type="submit" icon="send" color="info"/>
@@ -190,6 +193,7 @@ export default {
         {name:'adelanto',label:'Adelanto',field:'adelanto'},
         // {name:'detalle',label:'detalle',field:'detalle'},
         {name:'descuento',label:'Descuento',field:'descuento'},
+        {name:'bono',label:'Bono',field:'bono'},
       ],
     }
   },
@@ -232,6 +236,7 @@ export default {
           doc.text(7, 3, 'Pago')
           doc.text(9, 3, 'Adelanto')
           doc.text(11, 3, 'Descuento')
+          doc.text(14, 3, 'Bono')
           // doc.text(13.5, 3, 'Estado')
           // doc.text(18.5, 3, 'Usuario')
           doc.setFont(undefined,'normal')
@@ -253,6 +258,7 @@ export default {
           doc.text(7, y+3, r.pago==null?'':''+r.pago)
           doc.text(9, y+3, r.adelanto==null?'':''+r.adelanto)
           doc.text(11, y+3, r.descuento==null?'':''+r.descuento)
+          doc.text(14, y+3, r.bono==null?'':''+r.bono)
           // doc.text(13.5, y+3, r.estado.toString())
           // doc.text(18.5, y+3, r.name.toString())
           if (y+3>25){
