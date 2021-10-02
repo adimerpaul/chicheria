@@ -40,6 +40,9 @@ class PrestamoController extends Controller
         $prestamo->fecha=date('Y-m-d');
 //        $prestamo->estado='DEVUELTO';
         $prestamo->cantidad=$request->cantidad;
+        $prestamo->efectivo=$request->efectivo;
+        $prestamo->fisico=$request->fisico;
+        $prestamo->observacion=$request->observacion;
         $prestamo->user_id=$request->user()->id;
         $prestamo->cliente_id=$request->cliente_id;
         $prestamo->inventario_id=$request->inventario_id;

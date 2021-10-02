@@ -185,4 +185,27 @@ class VentaController extends Controller
         ->orderBy('fecha','asc')
         ->get();
     }
+
+    public function impresiondetalle($id){
+        $cadena='
+        <style>
+        .textcnt{
+            text-align:center;
+        }</style>
+        <div class="textcnt"> CHICERIA DOÑA NATY</div>
+        <div lass="textcnt">Oruro - Bolivia</div>
+        <hr>
+        <div>Fecha</div>
+        <div>Señor(es)</div>
+        <div>NIT/CI</div>
+        <hr>
+        <div>DETALLE</div>
+        <div></div>  
+        <div></div>  
+        <div></div>  
+        <div></div>  
+        <div></div>  
+        <div></div>  
+              ';
+    }
 }

@@ -11,6 +11,15 @@
     <div class="col-12 col-sm-3 q-pa-xs">
       <q-select outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades"/>
     </div>
+    <div class="col-12 col-sm-3 q-pa-xs">
+      <q-input outlined label="Efectivo" v-model="efectivo" />
+    </div>
+    <div class="col-12 col-sm-3 q-pa-xs">
+      <q-input outlined label="Fisico" v-model="fisico" />
+    </div>
+    <div class="col-12 col-sm-3 q-pa-xs">
+      <q-input outlined label="Observacion" v-model="observacion" />
+    </div>
     <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
       <q-btn label="agregar" icon="send" color="positive" type="submit"/>
     </div>
@@ -25,6 +34,10 @@
       <th>Fecha</th>
       <th>Estado</th>
       <th>Cantidad</th>
+      <th>Efectivo</th>
+      <th>Fisico</th>
+      <th>Observacion</th>
+      <th>Fecha Dev</th>
       <th>Devolver</th>
     </tr>
     </thead>
@@ -35,6 +48,10 @@
       <td>{{p.fecha}}</td>
       <td><q-badge :color="p.estado=='EN PRESTAMO'?'negative':'aceent'">{{p.estado}}</q-badge></td>
       <td>{{p.cantidad}}</td>
+      <td>{{p.efectivo}}</td>
+      <td>{{p.fisico}}</td>
+      <td>{{p.observacion}}</td>
+      <td>{{p.fechadev}}</td>
       <td>
         <q-btn @click="devolver(p)" v-if="p.estado=='EN PRESTAMO'" label="devolver" color="primary" icon="refresh"/>
       </td>
@@ -57,6 +74,9 @@ export default {
       inventario:'',
       cantidades:[],
       cantidad:1,
+      fisico:'',
+      efectivo:'',
+      observacion:'',
     }
   },
   created(){
@@ -66,16 +86,16 @@ export default {
     // this.misprestamos()
     this.$axios.get(process.env.API+'/inventario').then(res=>{
       // console.log(res.data)
-      this.inventarios=res.data
-      this.inventario=this.inventarios[0]
+      this.inventarios=res.data;
+      this.inventario=this.inventarios[0];
     })
 
       this.$q.loading.show()
       this.$axios.get(process.env.API+'/cliente').then(res=>{
         // console.log(res.data)
-        this.prestamos=res.data
-        this.$q.loading.hide()
-        this.cliente=this.prestamos[0]
+        this.prestamos=res.data;
+        this.$q.loading.hide();
+        this.cliente=this.prestamos[0];
       })
   },
   methods: {
@@ -83,22 +103,25 @@ export default {
       this.$q.loading.show()
       this.$axios.get(process.env.API+'/cliente').then(res=>{
         // console.log(res.data)
-        this.prestamos=res.data
-        this.$q.loading.hide()
-        this.cliente=this.prestamos[0]
+        this.prestamos=res.data;
+        this.$q.loading.hide();
+        this.cliente=this.prestamos[0];
       })
     },
     agregar(){
-      this.$q.loading.show()
+      this.$q.loading.show();
       this.$axios.post(process.env.API+'/prestamo',{
+        efectivo:this.efectivo,
+        fisico:this.fisico,
+        observacion:this.observacion,
         cantidad:this.cantidad,
         cliente_id:this.cliente.id,
         inventario_id:this.inventario.id,
       }).then(res=>{
         console.log(res.data)
         // this.prestamos=res.data
-        this.$q.loading.hide()
-        this.misprestamos()
+        this.$q.loading.hide();
+        this.misprestamos();
         // this.cliente=this.prestamos[0]
         this.cantidad=1;
         this.cliente=this.cliente[0];
@@ -108,12 +131,13 @@ export default {
     devolver(prestamo){
       this.$q.loading.show()
       this.$axios.put(process.env.API+'/prestamo/'+prestamo.id,{
+        fechadev:date.formatDate(new Date(),'YYYY-MM-DD'),
         estado:'DEVUELTO',
       }).then(res=>{
         console.log(res.data)
         // this.prestamos=res.data
-        this.$q.loading.hide()
-        this.misprestamos()
+        this.$q.loading.hide();
+        this.misprestamos();
         // this.cliente=this.prestamos[0]
       })
     }
