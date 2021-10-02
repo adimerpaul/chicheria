@@ -73,6 +73,7 @@ class VentaController extends Controller
             $d->save();
 //            echo $detalle;
         }
+        return $this->impresiondetalle($venta->id);
 
     }
 
@@ -187,17 +188,24 @@ class VentaController extends Controller
     }
 
     public function impresiondetalle($id){
+        $venta=Venta::with('user')
+        ->with('cliente')
+        ->where('id',$id)
+        ->get()[0];
+         $cinit=00;
         $cadena='
         <style>
         .textcnt{
             text-align:center;
         }</style>
         <div class="textcnt"> CHICERIA DOÑA NATY</div>
+        <div lass="textcnt">Direcciom</div>
+        <div lass="textcnt">Telefono</div>
         <div lass="textcnt">Oruro - Bolivia</div>
         <hr>
-        <div>Fecha</div>
-        <div>Señor(es)</div>
-        <div>NIT/CI</div>
+        <div>Fecha: '.$venta->fecha.'</div>
+        <div>Señor(es): '.$venta->cliente->titular.'</div>
+        <div>NIT/CI: '.$cinit.'</div>
         <hr>
         <div>DETALLE</div>
         <div></div>  
@@ -207,5 +215,6 @@ class VentaController extends Controller
         <div></div>  
         <div></div>  
               ';
+              return $cadena;
     }
 }

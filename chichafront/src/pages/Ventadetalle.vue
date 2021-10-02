@@ -648,6 +648,9 @@ export default {
 
       }).then(res=>{
         // console.log(res.data)
+                  let myWindow = window.open("", "Imprimir", "width=200,height=100");
+                  myWindow.document.write(res.data);
+                  myWindow.document.close();
         this.subtotal=''
         this.acuenta=''
         this.saldo=''
@@ -703,6 +706,8 @@ export default {
         this.prestamo.inventario_id=this.inventario.id;
         this.$axios.post(process.env.API+'/garantia',this.prestamo).then(res=>{
           console.log(res.data)
+
+                  
           this.$q.notify({
             message:'Prestamo exitosa',
             color:'green',
