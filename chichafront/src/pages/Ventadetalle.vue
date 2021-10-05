@@ -162,6 +162,9 @@
                   <!--        </template>-->
                   <template v-slot:body="props">
                     <q-tr :props="props">
+                      <q-td key="fecha" :props="props">
+                        {{ props.row.fecha }}
+                      </q-td>
                       <q-td key="total" :props="props">
                         {{ props.row.total }}
                       </q-td>
@@ -356,6 +359,7 @@ export default {
         { name: 'action', label: 'Borrar', field: 'action' }
       ],
       columns2:[
+        {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'total',label:'Total',field:'total'},
         {name:'acuenta',label:'A cuenta',field:'acuenta'},
         {name:'saldo',label:'Saldo',field:'saldo'},
@@ -578,6 +582,7 @@ export default {
         res.data.forEach(r=>{
           if (r.tipo=='DETALLE')
             this.ventas.push({
+              fecha:r.fecha,
               total:r.total,
               acuenta:r.acuenta,
               saldo:r.saldo,

@@ -174,6 +174,7 @@
               v-model="dato.motivo"
               type="text"
               label="Motivo Description"
+              style="text-transform: uppercase;"
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Por favor Valor']"
             />
@@ -190,6 +191,7 @@
 
              <div>
               <q-btn label="Agregar" type="submit" color="positive" icon="add_circle"/>
+              <q-btn flat label="Cancelar" v-close-popup color="teal" icon="cancel"/>
             </div>
           </q-form>
         </q-card-section>
@@ -219,6 +221,7 @@
               v-model="dato.motivo"
               type="text"
               label="Motivo Description"
+              style="text-transform: uppercase;"
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Por favor Valor']"
             />
@@ -234,6 +237,7 @@
 
              <div>
               <q-btn label="Retirar" type="submit" color="red" icon="remove_circle"/>
+              <q-btn flat label="Cancelar" v-close-popup color="teal" icon="cancel"/>
             </div>
           </q-form>
         </q-card-section>
@@ -467,6 +471,7 @@ export default {
           })
         this.dialog_add=false;
         this.agregar=0;
+        this.dato.motivo='';
         this.listado();
         }).catch(err=>{
           // console.log()
@@ -493,6 +498,7 @@ export default {
         });
         this.dialog_sub=false;
         this.disminuir=0;
+        this.dato.motivo='';
         this.listado();})
     },
   onReset(){

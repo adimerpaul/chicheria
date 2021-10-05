@@ -1,5 +1,20 @@
 <template>
 <q-page class="q-pa-xs">
+          <q-tabs
+            v-model="tab"
+            dense
+            class="text-grey"
+            active-color="dark"
+            indicator-color="primary"
+            align="justify"
+            narrow-indicator
+            @update:model-value="filtrarlista"
+            active-bg-color="accent"
+          >
+            <q-tab name="local" label="Local" />
+            <q-tab name="cliente" label="Cliente"  />
+<!--            <q-tab name="movies" label="Movies" />-->
+          </q-tabs>
   <q-form @submit.prevent="agregar">
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
@@ -68,6 +83,7 @@ export default {
   name: "Venta",
   data(){
     return{
+      tab:'local',
       prestamos:[],
       cliente:'',
       inventarios:[],
@@ -89,16 +105,32 @@ export default {
       this.inventarios=res.data;
       this.inventario=this.inventarios[0];
     })
+      this.listclientes();
 
-      this.$q.loading.show()
-      this.$axios.get(process.env.API+'/cliente').then(res=>{
-        // console.log(res.data)
-        this.prestamos=res.data;
-        this.$q.loading.hide();
-        this.cliente=this.prestamos[0];
-      })
+
   },
   methods: {
+    filtrarlista(){
+      this.listclientes();
+    },
+    listclientes(){
+      this.$q.loading.show();
+      this.prestamos=[];
+      this.$axios.get(process.env.API+'/cliente').then(res=>{
+        // console.log(res.data)
+        res.data.forEach(element => {
+            if(this.tab=='local' && element.tipocliente=='1')
+              this.prestamos.push(element);
+            if(this.tab=='cliente' && element.tipocliente=='2')
+              this.prestamos.push(element);
+
+        });
+        this.$q.loading.hide();
+        if(this.prestamos.length>0)
+          this.cliente=this.prestamos[0];
+      })
+    }
+    ,
     misprestamos(){
       this.$q.loading.show()
       this.$axios.get(process.env.API+'/cliente').then(res=>{
@@ -121,7 +153,7 @@ export default {
         console.log(res.data)
         // this.prestamos=res.data
         this.$q.loading.hide();
-        this.misprestamos();
+        this.listclientes();
         // this.cliente=this.prestamos[0]
         this.cantidad=1;
         this.cliente=this.cliente[0];
@@ -137,7 +169,7 @@ export default {
         console.log(res.data)
         // this.prestamos=res.data
         this.$q.loading.hide();
-        this.misprestamos();
+        this.listclientes();
         // this.cliente=this.prestamos[0]
       })
     }

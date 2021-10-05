@@ -124,7 +124,7 @@ class InventarioController extends Controller
         $log->fecha=date('Y-m-d');
         $log->agregar=true;
         $log->user_id=$request->user()->id;
-        $log->motivo=$request->motivo;
+        $log->motivo=strtoupper($request->motivo);
         $log->save();
 
         $inventario=Inventario::find($request->id);
@@ -139,7 +139,7 @@ class InventarioController extends Controller
         $log->agregar=false;
         $log->fecha=date('Y-m-d');
         $log->user_id=$request->user()->id;
-        $log->motivo=$request->motivo;
+        $log->motivo=strtoupper($request->motivo);
         $log->save();
 
         $inventario=Inventario::find($request->id);
