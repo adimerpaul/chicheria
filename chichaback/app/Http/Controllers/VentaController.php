@@ -189,6 +189,7 @@ class VentaController extends Controller
 
     public function impresiondetalle($id){
         $venta=Venta::with('user')
+        ->with('detalles')
         ->with('cliente')
         ->where('id',$id)
         ->get()[0];
@@ -198,22 +199,14 @@ class VentaController extends Controller
         .textcnt{
             text-align:center;
         }</style>
-        <div class="textcnt"> CHICERIA DOÑA NATY</div>
-        <div lass="textcnt">Direcciom</div>
-        <div lass="textcnt">Telefono</div>
-        <div lass="textcnt">Oruro - Bolivia</div>
+        <div class="textcnt"> CONTROL DESPACHO</div>
+        <div class="textcnt">Nro '.$venta->id.'</div>
         <hr>
+        <div>Nombre: '.$venta->cliente->titular.'</div>
         <div>Fecha: '.$venta->fecha.'</div>
-        <div>Señor(es): '.$venta->cliente->titular.'</div>
-        <div>NIT/CI: '.$cinit.'</div>
         <hr>
-        <div>DETALLE</div>
-        <div></div>  
-        <div></div>  
-        <div></div>  
-        <div></div>  
-        <div></div>  
-        <div></div>  
+        <div>Cantidad '.$venta->detalle[0]->cantidad.'</div>
+        <div>Producto: '.$venta->detalle[0]->nombreproducto.'</div>
               ';
               return $cadena;
     }

@@ -632,6 +632,7 @@ export default {
     listado(valor){
       this.$q.loading.show();
       this.rows=[];
+      this.days=[];
       this.$axios.get(process.env.API+'/cumple').then(res=>{
          console.log(res.data)
         res.data.forEach(el => {
