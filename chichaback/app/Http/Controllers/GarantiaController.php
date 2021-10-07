@@ -128,4 +128,22 @@ where date(g.fecha)>='".$request->fecha1."' and date(g.fecha)<='".$request->fech
 and c.id='".$request->cliente_id."'");
         
     }
+
+    public function impgarantia($id){
+        $garantia=Garantia::with('cliente')->get();
+        $cadena='
+        <style>
+        .textc{text-align:center}
+        </style>
+        <div>N '.$garantia->id.'</div>
+        <div>Nombre: '.$garantia->cliente->titular.'</div>
+        <div>Telefono: '.$garantia->cliente->telefono.'</div>
+        <div>Efectivo '.$garantia->Efectivo.'</div>
+        <div>Detalle '.$garantia->fisico.'</div>
+        <div>Fecha '.$garantia->fecha.'</div>
+        <br>
+        <div class="textc">Firma</div>
+        ';
+        return $cadena;
+    }
 }

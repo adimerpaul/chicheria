@@ -210,4 +210,47 @@ class VentaController extends Controller
               ';
               return $cadena;
     }
+
+    public function impruta($id){
+        $venta=Venta::with('user')
+        ->with('detalles')
+        ->with('cliente')
+        ->where('id',$id)
+        ->get()[0];
+         $cinit=00;
+        $cadena='
+        <style>
+        .textcnt{
+            text-align:center;
+        }</style>
+        <div class="textcnt"> HOJA DE RUTA</div>
+        <div class="textcnt">Nro '.$venta->id.'</div>
+        <hr>
+        <div>Nombre: '.$venta->cliente->titular.'</div>
+        <div>Direccion: '.$venta->cliente->direccion.'</div>
+        <div>Telefono: '.$venta->cliente->telefono.'</div>
+        <div>Fecha: '.$venta->fecha.'</div>
+        <hr>
+        <div>Cantidad '.$venta->detalle[0]->cantidad.'</div>
+        <div>Producto: '.$venta->detalle[0]->nombreproducto.'</div>
+        <div>Total: '.$venta->detalle[0]->total.'</div>
+        <div>A cuenta: '.$venta->detalle[0]->acuenta.'</div>
+        <div>Saldo: '.$venta->detalle[0]->saldo.'</div>
+
+              ';
+              return $cadena;
+    }
+
+    public function anular($id){
+        $venta=Venta::find($id);
+        $venta->estado='ANULADO';
+        $venta->total=0;
+        $venta->acuenta=0;
+        $venta->saldo=0;
+        $venta->save();
+
+    }
+
+
+
 }
