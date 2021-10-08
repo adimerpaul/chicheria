@@ -211,7 +211,7 @@ class VentaController extends Controller
               return $cadena;
     }
 
-    public function impruta($id){
+    public function ruta($id){
         $venta=Venta::with('user')
         ->with('detalle')
         ->with('cliente')

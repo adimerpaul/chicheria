@@ -165,6 +165,9 @@
                       <q-td key="fecha" :props="props">
                         {{ props.row.fecha }}
                       </q-td>
+                      <q-td key="titular" :props="props">
+                        {{ props.row.titular }}
+                      </q-td>
                       <q-td key="total" :props="props">
                         {{ props.row.total }}
                       </q-td>
@@ -178,9 +181,7 @@
                         <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
                       </q-td>
 
-                      <q-td key="titular" :props="props">
-                        {{ props.row.titular }}
-                      </q-td>
+
                       <q-td key="user" :props="props">
                         {{ props.row.user }}
                       </q-td>
@@ -362,11 +363,11 @@ export default {
       ],
       columns2:[
         {name:'fecha',label:'Fecha',field:'fecha'},
+        {name:'titular',label:'Cliente',field:'titular'},
         {name:'total',label:'Total',field:'total'},
         {name:'acuenta',label:'A cuenta',field:'acuenta'},
         {name:'saldo',label:'Saldo',field:'saldo'},
         {name:'estado',label:'Estado',field:'estado'},
-        {name:'titular',label:'Cliente',field:'titular'},
         {name:'user',label:'Usuario',field:'user'},
         {name:'opcion',label:'Opcion',field:'opcion'},
       ],
@@ -445,7 +446,12 @@ export default {
   },
   methods:{
     impruta(venta){
-      
+      this.$axios.post(process.env.API+'/ruta/'+venta.id)
+        .then(res=>{
+                            let myWindow = window.open("", "Imprimir", "width=200,height=100");
+                  myWindow.document.write(res.data);
+                  myWindow.document.close();
+          })
     },
     anular(venta){
       console.log(venta)

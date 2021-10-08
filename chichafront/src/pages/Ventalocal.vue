@@ -162,6 +162,17 @@
                 <!--        </template>-->
                 <template v-slot:body="props">
                   <q-tr :props="props">
+                    <q-td key="fecha" :props="props">
+                      {{ props.row.fecha }}
+                    </q-td>
+
+                    <q-td key="local" :props="props">
+                      {{ props.row.local }}
+                    </q-td>
+                    <q-td key="titular" :props="props">
+                      {{ props.row.titular }}
+                    </q-td>
+  
                     <q-td key="total" :props="props">
                       {{ props.row.total }}
                     </q-td>
@@ -174,13 +185,7 @@
                     <q-td key="estado" :props="props">
                       <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
                     </q-td>
-                    <q-td key="local" :props="props">
-                      {{ props.row.local }}
-                    </q-td>
-                    <q-td key="titular" :props="props">
-                      {{ props.row.titular }}
-                    </q-td>
-                    <q-td key="user" :props="props">
+                  <q-td key="user" :props="props">
                       {{ props.row.user }}
                     </q-td>
                       <q-td key="opcion" :props="props">
@@ -359,12 +364,13 @@ export default {
         { name: 'action', label: 'Borrar', field: 'action' }
       ],
       columns2:[
+        {name:'fecha',label:'Fecha',field:'fecha'},
+        {name:'local',label:'Local',field:'local'},
+        {name:'titular',label:'Titular',field:'titular'},
         {name:'total',label:'Total',field:'total'},
         {name:'acuenta',label:'A cuenta',field:'acuenta'},
         {name:'saldo',label:'Saldo',field:'saldo'},
         {name:'estado',label:'Estado',field:'estado'},
-        {name:'local',label:'Local',field:'local'},
-        {name:'titular',label:'Titular',field:'titular'},
         {name:'user',label:'Usuario',field:'user'},
         {name:'opcion',label:'Opcion',field:'opcion'},
       ],
@@ -607,6 +613,7 @@ export default {
           if (r.tipo=='LOCAL')
           this.ventas.push({
             id:r.id,
+            fecha:r.fecha,
             total:r.total,
             acuenta:r.acuenta,
             saldo:r.saldo,
