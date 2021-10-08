@@ -295,8 +295,8 @@ export default {
     field: 'nombre',
     sortable: true
   },
-  { name: 'precio', align: 'center', label: 'Precio', field: 'precio', sortable: true },
-  { name: 'observacion', align: 'center', label: 'Observacion', field: 'observacion', sortable: true },
+  { name: 'precio', align: 'center', label: 'PRECIO', field: 'precio', sortable: true },
+  { name: 'observacion', align: 'center', label: 'OBSERVACIÓN', field: 'observacion', sortable: true },
   { name: 'tipo', align: 'center', label: 'tipo', field: 'tipo', sortable: true },
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
   { name: 'opcion', label: 'Opciones', field: 'action' }

@@ -601,13 +601,13 @@ export default {
       columns : [
   {
     name: 'local',
-    label: 'Codigo',
+    label: 'CODIGO',
     align: 'center',
     field: 'local',
     sortable: true
   },
   { name: 'ci', align: 'center', label: 'CI', field: 'ci', sortable: true },
-  { name: 'titular', align: 'center', label: 'Titular', field: 'titular', sortable: true },
+  { name: 'titular', align: 'center', label: 'TITULAR', field: 'titular', sortable: true },
   { name: 'tipo', label: 'Tipo', field: 'tipo' },
   { name: 'telefono', label: 'telefono', field: 'telefono' },
   { name: 'fecha nac', label: 'Fecha Nac', field: 'fechanac' },
