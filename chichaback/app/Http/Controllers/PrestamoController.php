@@ -46,7 +46,8 @@ class PrestamoController extends Controller
         $prestamo->user_id=$request->user()->id;
         $prestamo->cliente_id=$request->cliente_id;
         $prestamo->inventario_id=$request->inventario_id;
-        $prestamo->save();
+         $prestamo->save();
+         return $this->impresion($prestamo->id);
 //        return $prestamo->
     }
 
@@ -93,5 +94,24 @@ class PrestamoController extends Controller
     public function destroy(Prestamo $prestamo)
     {
         //
+    }
+
+    public function impresion($id){
+        $garantia=Prestamo::with('cliente')->where('id',$id)->get()[0];
+        $cadena='
+        <style>
+        .textc{text-align:center}
+        </style>
+        <div>N '.$garantia->id.'</div>
+        <div>Nombre: '.$garantia->cliente->titular.'</div>
+        <div>Telefono: '.$garantia->cliente->telefono.'</div>
+        <div>Efectivo '.$garantia->efectivo.'</div>
+        <div>Detalle '.$garantia->fisico.'</div>
+        <div>Fecha '.$garantia->fecha.'</div>
+        <br>
+        <div class="textc">Firma</div>
+        ';
+        return $cadena;
+
     }
 }

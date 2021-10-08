@@ -151,6 +151,9 @@ export default {
         inventario_id:this.inventario.id,
       }).then(res=>{
         console.log(res.data)
+                          let myWindow = window.open("", "Imprimir", "width=200,height=100");
+                  myWindow.document.write(res.data);
+                  myWindow.document.close();
         // this.prestamos=res.data
         this.$q.loading.hide();
         this.listclientes();
