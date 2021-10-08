@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-      <div class="col-12"><q-badge label="Control de clientes" color="teal" class="full-width text-h6"/></div>
+      <div class="col-12"><q-badge label="REGISTRO DE NUEVOS LOCALES Y CLIENTES" color="teal" class="full-width text-h6"/></div>
       <div class="col-12">
         <q-card>
           <q-tabs
@@ -460,7 +460,7 @@
     <q-dialog v-model="dialog_mod">
       <q-card>
         <q-card-section class="bg-green-14 text-white">
-          <div class="text-h6">Modificar Cliente</div>
+          <div class="text-h7">MODIFICAR REGISTRO CLIENTE</div>
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form
@@ -608,18 +608,18 @@ export default {
   },
   { name: 'ci', align: 'center', label: 'CI', field: 'ci', sortable: true },
   { name: 'titular', align: 'center', label: 'TITULAR', field: 'titular', sortable: true },
-  { name: 'tipo', label: 'Tipo', field: 'tipo' },
-  { name: 'telefono', label: 'telefono', field: 'telefono' },
-  { name: 'fecha nac', label: 'Fecha Nac', field: 'fechanac' },
-  { name: 'direccion', label: 'Direccion', field: 'direccion' },
-  { name: 'legalidad', label: 'Legalidad', field: 'legalidad' },
-  { name: 'categoria', label: 'Categoria NIT', field: 'categoria' },
-  { name: 'razon', label: 'Razon Social', field: 'razon' },
-  { name: 'nit', label: 'Numero NIT', field: 'nit' },
-  { name: 'observacion', label: 'Observacion', field: 'observacion' },
-  { name: 'tipocliente', label: 'Tipo cliente', field: 'tipocliente' },
-  { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
-  { name: 'opcion', label: 'Opciones', field: 'action' }
+  { name: 'tipo', label: 'TIPO', field: 'tipo' },
+  { name: 'telefono', label: 'TELÉFONO', field: 'telefono' },
+  { name: 'fecha nac', label: 'FECHA NAC', field: 'fechanac' },
+  { name: 'direccion', label: 'DIRECCIÓN', field: 'direccion' },
+  { name: 'legalidad', label: 'LEGALIDAD', field: 'legalidad' },
+  { name: 'categoria', label: 'CATEGORIA NIT', field: 'categoria' },
+  { name: 'razon', label: 'RAZON SOCIAL', field: 'razon' },
+  { name: 'nit', label: 'NÚMERO NIT', field: 'nit' },
+  { name: 'observacion', label: 'OBSERVACIÓN', field: 'observacion' },
+  { name: 'tipocliente', label: 'TIPO CLIENTE', field: 'tipocliente' },
+  { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
+  { name: 'opcion', label: 'OPCIONES', field: 'action' }
 ],
   rows:[]
 

@@ -2,11 +2,11 @@
     <div class="row">
       <div class="col-12">
             <div class="text-h6">
-              <h5 style="text-align:center">INFORMACION DE PRODUCTOS</h5>
+              <h5 style="text-align:center">INFORMACIÓN DE PRODUCTOS</h5>
             </div>
             <q-card style="width: 100%;">
               <q-card-section>
-                <div class="text-h6">Registro nuevo Producto</div>
+                <div class="text-h6">REGISTRO NUEVO PRODUCTO</div>
               </q-card-section>
               <q-card-section class="q-pt-none">
                 <q-form
@@ -29,7 +29,7 @@
                     outlined
                     type="number"
                     v-model="producto.precio"
-                    label="Precio"
+                    label="PRECIO"
                   />
                   </div>
                   <div class="col-2">
@@ -62,7 +62,7 @@
 
         <div class="q-pa-md">
           <q-table
-            title="Productos"
+            title="LISTA DE PRODUCTOS REGISTRADOS"
             :rows="rows"
             :columns="columns"
             :filter="filter"
@@ -111,7 +111,7 @@
     <q-dialog v-model="dialog_mod">
       <q-card>
         <q-card-section class="bg-green-14 text-white">
-          <div class="text-h6">Modificar Cliente</div>
+          <div class="text-h7">MODIFICAR REGISTRO PRODUCTO</div>
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form
@@ -290,16 +290,16 @@ export default {
       columns : [
   {
     name: 'nombre',
-    label: 'Nombre',
+    label: 'NOMBRE',
     align: 'center',
     field: 'nombre',
     sortable: true
   },
   { name: 'precio', align: 'center', label: 'PRECIO', field: 'precio', sortable: true },
   { name: 'observacion', align: 'center', label: 'OBSERVACIÓN', field: 'observacion', sortable: true },
-  { name: 'tipo', align: 'center', label: 'tipo', field: 'tipo', sortable: true },
-  { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
-  { name: 'opcion', label: 'Opciones', field: 'action' }
+  { name: 'tipo', align: 'center', label: 'TIPO', field: 'tipo', sortable: true },
+  { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
+  { name: 'opcion', label: 'OPCIONES', field: 'action' }
 ],
   rows:[],
 

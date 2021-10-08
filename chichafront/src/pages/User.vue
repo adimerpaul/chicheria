@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-btn
-      label="Nuevo Usuario"
+      label="Nuevo usuario"
       color="positive"
       @click="alert = true"
       icon="add_circle"
@@ -104,7 +104,7 @@
       </q-card>
     </q-dialog>
 
-    <q-table :filter="filter" title="Unidades" :rows="data" :columns="columns" row-key="name" :rows-per-page-options="[50,100]">
+    <q-table :filter="filter" title="REGISTRO DE USUARIOS" :rows="data" :columns="columns" row-key="name" :rows-per-page-options="[50,100]">
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
@@ -368,15 +368,15 @@ export default {
       modelpermiso:false,
       uni:{},
       columns: [
-        {name: "name", align: "left", label: "Nombre ", field: "name", sortable: true,},
+        {name: "name", align: "left", label: "NOMBRE ", field: "name", sortable: true,},
         // {name: "celular", align: "left", label: "Celular ", field: "celular", sortable: true,},
         // {name: "carnet", align: "left", label: "Carnet ", field: "carnet", sortable: true,},
         // {name: "unid", align: "left", label: "Unidad", field: "unid", sortable: true,},
         // {name: "codigo", align: "left", label: "Codigo", field: "codigo", sortable: true,},
-        {name: "email", align: "left", label: "Email", field: "email", sortable: true,},
-        {name: "permisos", align: "left", label: "permisos", field: "permisos", sortable: true,},
-        {name: "fechalimite", align: "left", label: "Fecha limite", field: "fechalimite", sortable: true,},
-        { name: "opcion", label: "Opcion", field: "action", sortable: false },
+        {name: "email", align: "left", label: "E-MAIL", field: "email", sortable: true,},
+        {name: "permisos", align: "left", label: "PERMISOS", field: "permisos", sortable: true,},
+        {name: "fechalimite", align: "left", label: "FECHA LÍMITE", field: "fechalimite", sortable: true,},
+        { name: "opcion", label: "OPCIÓN", field: "action", sortable: false },
       ],
       data: [],
     };
