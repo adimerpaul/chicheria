@@ -2,7 +2,7 @@
     <div class="row">
       <div class="col-12">
             <div class="text-h6">
-              <h5 style="text-align:center">INVENTARIO MATERIALES PRESTAMO</h5>
+              <h5 style="text-align:center">REGISTRO DE INVENTARIO DE MATERIALES</h5>
 <!--              <q-btn label="Registrar" icon="add" color="positive" @click="crear = true" />-->
             </div>
             <!--            <div class="text-subtitle2">by John Doe</div>-->
@@ -46,7 +46,7 @@
                         outlined
                         type="number"
                         v-model="inventario.cantidad"
-                        label="Cantidad"
+                        label="CANTIDAD"
                       />
 
                     </div>
@@ -83,7 +83,7 @@
 
         <div class="q-pa-md">
           <q-table
-            title="INVENTARIO"
+            title="INVENTARIO DE MATERIALES"
             :rows="rows"
             :columns="columns"
             row-key="name">
@@ -115,7 +115,7 @@
     <q-dialog v-model="dialog_mod">
       <q-card>
         <q-card-section class="bg-green-14 text-white">
-          <div class="text-h6">Modificar Inventario</div>
+          <div class="text-h7">MODIFICAR INVENTARIO</div>
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form
@@ -155,7 +155,7 @@
 <q-dialog v-model="dialog_add">
       <q-card>
         <q-card-section class="bg-amber-14 text-white">
-          <div class="text-h6">Agregar Cantidad Material</div>
+          <div class="text-h7">AGREGAR CANTIDAD DE MATERIAL</div>
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form
@@ -173,7 +173,7 @@
               filled
               v-model="dato.motivo"
               type="text"
-              label="Motivo Description"
+              label="Motivo Descripción"
               style="text-transform: uppercase;"
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Por favor Valor']"
@@ -202,7 +202,7 @@
 <q-dialog v-model="dialog_sub">
       <q-card>
         <q-card-section class="bg-amber-14 text-white">
-          <div class="text-h6">Retirar Material </div>
+          <div class="text-h7">DAR DE BAJA - MATERIALES </div>
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form
@@ -261,12 +261,12 @@
     <q-dialog v-model="dialog_log" >
       <q-card style="min-width: 350px">
         <q-card-section>
-          <div class="text-h6">Log de Inventario</div>
+          <div class="text-h7">DETALLE DE REGISTRO DE MATERIALES</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
                    <q-table
-            title="LOG INVENTARIO"
+            title="REGISTRO DE MATERIALES"
             :columns="logcol"
             :rows="logdata"
             row-key="name"
@@ -317,29 +317,29 @@ export default {
       columns : [
   {
     name: 'nombre',
-    label: 'Nombre',
+    label: 'NOMBRE',
     align: 'center',
     field: 'nombre',
     sortable: true
   },
-  { name: 'cantidad', align: 'center', label: 'cantidad', field: 'cantidad', sortable: true },
-  { name: 'detalle', align: 'center', label: 'Detalle', field: 'detalle', sortable: true },
-  { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
-  { name: 'opcion', label: 'Opciones', field: 'action' }
+  { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
+  { name: 'detalle', align: 'center', label: 'DETALLE', field: 'detalle', sortable: true },
+  { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
+  { name: 'opcion', label: 'OPCIONES', field: 'action' }
 ],
   rows:[],
   logdata:[],
   logcol : [
   {
     name: 'fecha',
-    label: 'fecha',
+    label: 'FECHA',
     align: 'center',
     field: 'fecha',
     sortable: true
   },
-  { name: 'cantidad', align: 'center', label: 'cantidad', field: 'cantidad', sortable: true },
-  { name: 'agregar', align: 'center', label: 'agregar', field: 'agregar', sortable: true },
-  { name: 'motivo', align: 'center', label: 'motivo', field: 'motivo', sortable: true },
+  { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
+  { name: 'agregar', align: 'center', label: 'AGREGAR', field: 'agregar', sortable: true },
+  { name: 'motivo', align: 'center', label: 'MOTIVO', field: 'motivo', sortable: true },
 ],
 
     }

@@ -11,7 +11,7 @@
     <q-dialog v-model="alert">
       <q-card style="max-width: 80%; width: 50%">
         <q-card-section class="bg-green-14 text-white">
-          <div class="text-h6"><q-icon name="add_circle" /> Nuevo Usuario</div>
+          <div class="text-h7"><q-icon name="add_circle" /> REGISTRO DE NUEVO USUARIO</div>
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
@@ -237,7 +237,7 @@
     <q-dialog v-model="dialog_mod">
       <q-card style="max-width: 80%; width: 50%">
         <q-card-section class="bg-warning text-white">
-          <div class="text-h6"> <q-icon name="edit"/> Modificar</div>
+          <div class="text-h7"> <q-icon name="edit"/> MODIFICAR DATOS DE USUARIO</div>
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form @submit="onMod" class="q-gutter-md">
@@ -328,7 +328,7 @@
     <q-dialog v-model="modelpermiso">
       <q-card style="width: 700px;max-width: 80vw">
         <q-card-section class="bg-info">
-          <div class="text-h6 text-white"><q-icon name="folder"/> Permisos Usuario</div>
+          <div class="text-h7 text-white"><q-icon name="folder"/> PERMISOS DE ACCESO</div>
         </q-card-section>
         <q-card-section>
           <q-form @submit.prevent="updatepermisos">
@@ -540,7 +540,7 @@ export default {
     cambiopass (i) {
       // console.log(i.row);
       this.$q.dialog({
-        title: 'Cambiar password',
+        title: 'CAMBIAR PASSWORD',
         message: 'Ingresar nueva contraseña',
         prompt: {
           model: '',
