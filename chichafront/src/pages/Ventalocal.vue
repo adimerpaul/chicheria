@@ -190,6 +190,7 @@
                     </q-td>
                       <q-td key="opcion" :props="props">
                         <q-btn icon="cancel" color="red" v-if="props.row.estado!='ANULADO'" @click="anular(props.row)" />
+                        <q-btn icon="send" color="amber" v-if="props.row.estado!='ANULADO'" @click="impruta(props.row)"/>
                       </q-td>
                   </q-tr>
                 </template>
@@ -447,7 +448,14 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
-
+    impruta(venta){
+      this.$axios.post(process.env.API+'/ruta/'+venta.id)
+        .then(res=>{
+                            let myWindow = window.open("", "Imprimir", "width=200,height=100");
+                  myWindow.document.write(res.data);
+                  myWindow.document.close();
+          })
+    },
         anular(venta){
       console.log(venta)
       this.$q.dialog({

@@ -187,7 +187,6 @@
                       </q-td>
                       <q-td key="opcion" :props="props">
                         <q-btn icon="cancel" color="red" v-if="props.row.estado!='ANULADO'" @click="anular(props.row)" />
-                        <q-btn icon="send" color="amber" v-if="props.row.estado!='ANULADO'" @click="impruta(props.row)"/>
                       </q-td>
                     </q-tr>
                   </template>
