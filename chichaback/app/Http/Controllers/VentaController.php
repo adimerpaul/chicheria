@@ -189,7 +189,7 @@ class VentaController extends Controller
 
     public function impresiondetalle($id){
         $venta=Venta::with('user')
-        ->with('detalles')
+        ->with('detalle')
         ->with('cliente')
         ->where('id',$id)
         ->get()[0];
@@ -205,15 +205,15 @@ class VentaController extends Controller
         <div>Nombre: '.$venta->cliente->titular.'</div>
         <div>Fecha: '.$venta->fecha.'</div>
         <hr>
-        <div>Cantidad '.$venta->detalle[0]->cantidad.'</div>
-        <div>Producto: '.$venta->detalle[0]->nombreproducto.'</div>
+        <div>Cantidad '.$venta->detalle->cantidad.'</div>
+        <div>Producto: '.$venta->detalle->nombreproducto.'</div>
               ';
               return $cadena;
     }
 
     public function impruta($id){
         $venta=Venta::with('user')
-        ->with('detalles')
+        ->with('detalle')
         ->with('cliente')
         ->where('id',$id)
         ->get()[0];
@@ -231,11 +231,11 @@ class VentaController extends Controller
         <div>Telefono: '.$venta->cliente->telefono.'</div>
         <div>Fecha: '.$venta->fecha.'</div>
         <hr>
-        <div>Cantidad '.$venta->detalle[0]->cantidad.'</div>
-        <div>Producto: '.$venta->detalle[0]->nombreproducto.'</div>
-        <div>Total: '.$venta->detalle[0]->total.'</div>
-        <div>A cuenta: '.$venta->detalle[0]->acuenta.'</div>
-        <div>Saldo: '.$venta->detalle[0]->saldo.'</div>
+        <div>Cantidad '.$venta->detalle->cantidad.'</div>
+        <div>Producto: '.$venta->detalle->nombreproducto.'</div>
+        <div>Total: '.$venta->total.'</div>
+        <div>A cuenta: '.$venta->acuenta.'</div>
+        <div>Saldo: '.$venta->saldo.'</div>
 
               ';
               return $cadena;
@@ -247,7 +247,7 @@ class VentaController extends Controller
         $venta->total=0;
         $venta->acuenta=0;
         $venta->saldo=0;
-        $venta->save();
+        return $venta->save();
 
     }
 

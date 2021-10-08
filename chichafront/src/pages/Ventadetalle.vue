@@ -177,14 +177,16 @@
                       <q-td key="estado" :props="props">
                         <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
                       </q-td>
-                      <q-td key="local" :props="props">
-                        {{ props.row.local }}
-                      </q-td>
+
                       <q-td key="titular" :props="props">
                         {{ props.row.titular }}
                       </q-td>
                       <q-td key="user" :props="props">
                         {{ props.row.user }}
+                      </q-td>
+                      <q-td key="opcion" :props="props">
+                        <q-btn icon="cancel" color="red" v-if="props.row.estado!='ANULADO'" @click="anular(props.row)" />
+                        <q-btn icon="send" color="amber" v-if="props.row.estado!='ANULADO'" @click="impruta(props.row)"/>
                       </q-td>
                     </q-tr>
                   </template>
@@ -364,9 +366,9 @@ export default {
         {name:'acuenta',label:'A cuenta',field:'acuenta'},
         {name:'saldo',label:'Saldo',field:'saldo'},
         {name:'estado',label:'Estado',field:'estado'},
-        {name:'local',label:'Local',field:'local'},
         {name:'titular',label:'Cliente',field:'titular'},
         {name:'user',label:'Usuario',field:'user'},
+        {name:'opcion',label:'Opcion',field:'opcion'},
       ],
       columns3:[
         {name:'fecha',label:'fecha',field:'fecha'},
@@ -442,6 +444,33 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+    impruta(venta){
+      
+    },
+    anular(venta){
+      console.log(venta)
+      this.$q.dialog({
+        title: 'Anular Venta',
+        message: 'Esta Seguro de Anular Venta?',
+        cancel: true,
+      }).onOk(() => {
+      this.$axios.post(process.env.API+'/anular/'+venta.id)
+        .then(res=>{
+        this.misventas();
+
+          this.$q.notify({
+            message:'Venta Anulado ',
+            color:'green',
+            icon:'info'
+          })})
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
     impprestamos(){
       if (this.model==''){
         this.$q.notify({
@@ -582,6 +611,7 @@ export default {
         res.data.forEach(r=>{
           if (r.tipo=='DETALLE')
             this.ventas.push({
+              id:r.id,
               fecha:r.fecha,
               total:r.total,
               acuenta:r.acuenta,

@@ -62,6 +62,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::get('/cumple',[\App\Http\Controllers\ClienteController ::class,'ordercumple']);
     Route::get('/cumple2',[\App\Http\Controllers\ClienteController ::class,'ordercumple2']);
     Route::post('/impresiondetalle\{id}',[\App\Http\Controllers\VentaController ::class,'impresiondetalle']);
+    Route::post('/anular/{id}',[\App\Http\Controllers\VentaController ::class,'anular']);
     
     Route::resource('/empleado',\App\Http\Controllers\EmpleadoController::class);
     Route::post('/missueldos',[\App\Http\Controllers\EmpleadoController::class,'missueldos']);

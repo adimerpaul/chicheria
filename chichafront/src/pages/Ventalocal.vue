@@ -183,6 +183,9 @@
                     <q-td key="user" :props="props">
                       {{ props.row.user }}
                     </q-td>
+                      <q-td key="opcion" :props="props">
+                        <q-btn icon="cancel" color="red" v-if="props.row.estado!='ANULADO'" @click="anular(props.row)" />
+                      </q-td>
                   </q-tr>
                 </template>
               </q-table>
@@ -363,6 +366,7 @@ export default {
         {name:'local',label:'Local',field:'local'},
         {name:'titular',label:'Titular',field:'titular'},
         {name:'user',label:'Usuario',field:'user'},
+        {name:'opcion',label:'Opcion',field:'opcion'},
       ],
             columns3:[
         {name:'fecha',label:'fecha',field:'fecha'},
@@ -437,6 +441,31 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+
+        anular(venta){
+      console.log(venta)
+      this.$q.dialog({
+        title: 'Anular Venta',
+        message: 'Esta Seguro de Anular Venta?',
+        cancel: true,
+      }).onOk(() => {
+      this.$axios.post(process.env.API+'/anular/'+venta.id)
+        .then(res=>{
+        this.misventas();
+
+          this.$q.notify({
+            message:'Venta Anulado ',
+            color:'green',
+            icon:'info'
+          })})
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
     impprestamos(){
       if (this.model==''){
         this.$q.notify({
@@ -577,6 +606,7 @@ export default {
         res.data.forEach(r=>{
           if (r.tipo=='LOCAL')
           this.ventas.push({
+            id:r.id,
             total:r.total,
             acuenta:r.acuenta,
             saldo:r.saldo,
@@ -652,6 +682,9 @@ export default {
           color:'green',
           icon:'info'
         })
+                  let myWindow = window.open("", "Imprimir", "width=200,height=100");
+                  myWindow.document.write(res.data);
+                  myWindow.document.close();
         this.misventas()
 
           this.subtotal=''
