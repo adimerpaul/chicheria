@@ -1,3 +1,4 @@
+
 <template>
   <q-page class="q-pa-xs">
   <div class="row">
@@ -189,7 +190,6 @@ export default {
       columns3:[
         {name:'nombre',label:'Empleado',field:'nombre'},
         {name:'salario',label:'Sueldo',field:'salario'},
-        {name:'pago',label:'Pago',field:'pago'},
         {name:'adelanto',label:'Adelanto',field:'adelanto'},
         // {name:'detalle',label:'detalle',field:'detalle'},
         {name:'descuento',label:'Descuento',field:'descuento'},
