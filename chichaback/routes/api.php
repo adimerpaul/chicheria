@@ -42,9 +42,11 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::put('/pass/{user}',[\App\Http\Controllers\UserController::class,'pass']);
     Route::put('/updatepermisos/{user}',[\App\Http\Controllers\UserController::class,'updatepermisos']);
     Route::resource('/permiso',\App\Http\Controllers\PermisoController::class);
+    Route::resource('/pago',\App\Http\Controllers\PagoController::class);
 
     Route::post('/listlog',[\App\Http\Controllers\LoginventarioController::class,'listlog']);
     Route::post('/misventas',[\App\Http\Controllers\VentaController::class,'misventas']);
+    Route::post('/listventa',[\App\Http\Controllers\VentaController::class,'listventa']);
     Route::post('/directa',[\App\Http\Controllers\VentaController::class,'directa']);
     Route::post('/listado',[\App\Http\Controllers\GarantiaController::class,'listado']);
     Route::post('/activar',[\App\Http\Controllers\ClienteController::class,'activar']);

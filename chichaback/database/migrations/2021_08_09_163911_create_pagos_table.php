@@ -15,12 +15,14 @@ class CreatePagosTable extends Migration
     {
         Schema::create('pagos', function (Blueprint $table) {
             $table->id();
+            $table->date('fecha');
+            $table->double('monto',11,2);
+            $table->string('obervacion')->nullable();
             $table->unsignedBigInteger('venta_id');
             $table->foreign('venta_id')->references('id')->on('ventas');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->date('fecha');
-            $table->double('monto',11,2);
+
             $table->timestamps();
         });
     }

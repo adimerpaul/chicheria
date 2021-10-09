@@ -209,6 +209,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+
         <q-item
           v-if="$store.state.login.historialprestamo"
           clickable
@@ -225,6 +226,26 @@
             <q-item-label>Historial de prestamos </q-item-label>
             <q-item-label caption>
               Historial de prestamos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          v-if="$store.state.login.historialprestamo"
+          clickable
+          exact
+          to="historial"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="task" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Historial de Venta </q-item-label>
+            <q-item-label caption>
+              Historial de venta 
             </q-item-label>
           </q-item-section>
         </q-item>

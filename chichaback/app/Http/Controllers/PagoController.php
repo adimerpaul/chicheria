@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pagos;
+use App\Models\Pago;
+use App\Models\Venta;
 use Illuminate\Http\Request;
 
-class PagosController extends Controller
+class PagoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,6 +37,18 @@ class PagosController extends Controller
     public function store(Request $request)
     {
         //
+        $pago=new Pago;
+        $pago->fecha=date('Y-m-d');
+        $pago->venta_id=$request->venta_id;
+        $pago->user_id=$request->user()->id;
+        $pago->monto=$request->monto;
+        $pago->observacion=$request->observacion;
+        $pago->save();
+        $venta=Venta::find($request->venta_id);
+        $venta->saldo=$venta->saldo - $request->monto;
+        if($venta->saldo==0)
+        $venta->estado='CANCELADO';
+        return $venta->save();
     }
 
     /**

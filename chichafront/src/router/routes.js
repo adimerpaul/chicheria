@@ -12,6 +12,7 @@ import User from "pages/User";
 import Gasto from "pages/Gasto";
 import Ventadetalle from "pages/Ventadetalle";
 import Prestamos from "pages/Prestamos";
+import Historial from "pages/Historial";
 // <<<<<<< HEAD
 // import User from "pages/User";
 // =======
@@ -38,6 +39,7 @@ const routes = [
       { path: 'user', component: User,meta: {requiresAuth: true} },
       { path: 'gasto', component: Gasto,meta: {requiresAuth: true} },
       { path: 'prestamos', component: Prestamos,meta: {requiresAuth: true} },
+      { path: 'historial', component: Historial,meta: {requiresAuth: true} },
 
 // <<<<<<< HEAD
 //       { path: 'user', component: User,meta: {requiresAuth: true} },

@@ -28,4 +28,8 @@ class Venta extends Model
         return $this->hasOne(Detalle::class);
 
     }
+
+    public function pagos(){
+        return $this->hasMany(Pago::class);
+    }
 }

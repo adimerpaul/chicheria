@@ -6,6 +6,7 @@ use App\Models\Detalle;
 use App\Models\Venta;
 use App\Models\Prestamo;
 use App\Models\Inventario;
+use App\Models\Pago;
 use App\Models\Detalleprestamo;
 use Illuminate\Http\Request;
 
@@ -24,6 +25,16 @@ class VentaController extends Controller
             ->get();
     }
 
+    public function listventa(Request $request){
+        return Venta::with('user')
+            ->with('cliente')
+            ->with('pagos')
+            ->whereDate('fecha','>=',$request->fecha1)
+            ->whereDate('fecha','<=',$request->fecha2)
+            ->where('estado','<>','ANULADO')
+            ->orderBy('estado','desc')
+            ->get();
+    }
     public function index(Request $request)
     {
         return $request;

@@ -127,7 +127,7 @@
                   <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
                 </div>
                 <div class="col-4">
-                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','PAGO','BONO']"/>
+                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','BONO']"/>
                 </div>
                 <div class="col-4">
                   <q-input outlined type="text" label="observacion" v-model="pago.observacion" />
@@ -230,13 +230,13 @@ export default {
           doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
           doc.setFont(undefined,'bold')
           doc.text(5, 1, 'Historial de prestmos Sueldos pagos Adelantos')
-          doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+          doc.text(5, 1.5,  'DE '+mc.fecha1)
           doc.text(1, 3, 'Empleado')
           doc.text(5, 3, 'Sueldo')
-          doc.text(7, 3, 'Pago')
+          doc.text(7, 3, 'Bono')
           doc.text(9, 3, 'Adelanto')
           doc.text(11, 3, 'Descuento')
-          doc.text(14, 3, 'Bono')
+          doc.text(14, 3, 'Pago')
           // doc.text(13.5, 3, 'Estado')
           // doc.text(18.5, 3, 'Usuario')
           doc.setFont(undefined,'normal')
@@ -252,13 +252,17 @@ export default {
         let y=0
         this.salarios.forEach(r=>{
           // xx+=0.5
+          let bono=r.bono==null?0:r.bono;
+          let adelanto=r.adelanto==null?0:r.adelanto;
+          let descuento=r.descuento==null?0:r.descuento;
+          let total= r.salario + bono - adelanto - descuento; 
           y+=0.5
           doc.text(1, y+3, ''+r.nombre)
           doc.text(5, y+3, ''+r.salario)
-          doc.text(7, y+3, r.pago==null?'':''+r.pago)
+          doc.text(7, y+3, r.bono==null?'':''+r.bono)
           doc.text(9, y+3, r.adelanto==null?'':''+r.adelanto)
           doc.text(11, y+3, r.descuento==null?'':''+r.descuento)
-          doc.text(14, y+3, r.bono==null?'':''+r.bono)
+          doc.text(14, y+3, ''+total)
           // doc.text(13.5, y+3, r.estado.toString())
           // doc.text(18.5, y+3, r.name.toString())
           if (y+3>25){
