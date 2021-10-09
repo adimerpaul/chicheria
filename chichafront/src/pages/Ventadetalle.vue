@@ -186,7 +186,7 @@
                         {{ props.row.user }}
                       </q-td>
                       <q-td key="opcion" :props="props">
-                        <q-btn icon="cancel" color="red" v-if="props.row.estado!='ANULADO'" @click="anular(props.row)" />
+                        <q-btn icon="cancel" color="red" v-if="props.row.estado!='ANULADO' && $store.state.login.anular" @click="anular(props.row)" />
                       </q-td>
                     </q-tr>
                   </template>

@@ -231,7 +231,7 @@
         </q-item>
 
         <q-item
-          v-if="$store.state.login.historialprestamo"
+          v-if="$store.state.login.historialventa"
           clickable
           exact
           to="historial"

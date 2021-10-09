@@ -28,6 +28,8 @@ class PermisoSeeder extends Seeder
             ['id'=>10,'nombre'=>'Reporte empleados'],
             ['id'=>11,'nombre'=>'Controlar gastos'],
             ['id'=>12,'nombre'=>'Historial prestamos'],
+            ['id'=>13,'nombre'=>'Historial venta'],
+            ['id'=>14,'nombre'=>'Historial Anular'],
         ]);
 //=======
 //        //
