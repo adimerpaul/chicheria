@@ -12,7 +12,7 @@
             <div class="col-12">
               <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas</div>
             </div>
-            <template v-if="$store.state.login.historialventalocal">
+            <template>
             <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
             <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
             <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
@@ -97,7 +97,7 @@
                     </q-card-section>
 
                     <q-card-section class="q-pt-none">
-                    <q-form @submit="onPago" class="q-gutter-md" >
+                    <q-form @submit.prevent="onPago" class="q-gutter-md" >
 
                     <q-input filled v-model="regpago.monto" 
                     label="Monto" 
@@ -111,7 +111,7 @@
                     label="Observacion" 
                     />
                     <div>
-                    <q-btn label="Regsitrar" type="submit" color="green"/>
+                    <q-btn label="Registrar" type="submit" color="green"/>
                     <q-btn flat label="Cancelar" color="primary" v-close-popup />
                     </div>
                     </q-form>
@@ -184,7 +184,7 @@ export default {
       columns:[
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'monto',label:'Monto',field:'monto'},
-        {name:'Observacion',label:'Observacion',field:'Observacion'},
+        {name:'Observacion',label:'Observacion',field:'observacion'},
       ],
       columns2:[
         {name:'fecha',label:'Fecha',field:'fecha'},

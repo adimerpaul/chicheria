@@ -17,7 +17,7 @@ class CreatePagosTable extends Migration
             $table->id();
             $table->date('fecha');
             $table->double('monto',11,2);
-            $table->string('obervacion')->nullable();
+            $table->string('observacion')->nullable();
             $table->unsignedBigInteger('venta_id');
             $table->foreign('venta_id')->references('id')->on('ventas');
             $table->unsignedBigInteger('user_id');
