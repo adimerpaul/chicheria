@@ -402,7 +402,7 @@ export default {
       res.data.forEach(r=>{
         if (r.tipocliente==2)
           this.clientes.push({
-            label:r.titular,
+            label:r.ci+' '+r.titular,
             id:r.id,
             // detalles:r.detalles,
             // nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
@@ -747,7 +747,7 @@ export default {
         this.$axios.post(process.env.API+'/garantia',this.prestamo).then(res=>{
           console.log(res.data)
 
-                  
+
           this.$q.notify({
             message:'Prestamo exitosa',
             color:'green',
