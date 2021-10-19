@@ -13,7 +13,7 @@ class CreateLoginventariosTable extends Migration
      */
     public function up()
     {
-        Schema::create('Loginventarios', function (Blueprint $table) {
+        Schema::create('loginventarios', function (Blueprint $table) {
             $table->id();
             $table->date("fecha")->nullable();
             $table->integer("cantidad")->nullable();
