@@ -138,6 +138,12 @@
                     v-model="dato.observacion"
                     label="Observacion"
                   />
+                    <q-select
+                      outlined
+                      v-model="dato.tipo"
+                      :options="['LOCAL','DETALLE']"
+                      label="TIPO"
+                    />
 
             <div>
               <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
