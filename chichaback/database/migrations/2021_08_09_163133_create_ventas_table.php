@@ -21,6 +21,13 @@ class CreateVentasTable extends Migration
             $table->double("saldo",11,2)->nullable();
             $table->string("estado")->nullable();
             $table->string("tipo")->nullable();
+            $table->string("turno")->nullable();
+            $table->string("hora")->nullable();
+            $table->string("telefono1")->default('')->nullable();
+            $table->string("telefono2")->default('')->nullable();
+            $table->string("direccion")->default('')->nullable();
+            $table->string("envase")->default('')->nullable();
+            $table->string("observacion")->default('NINGUNO');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('cliente_id');
