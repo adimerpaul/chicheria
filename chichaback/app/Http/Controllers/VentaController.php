@@ -21,6 +21,7 @@ class VentaController extends Controller
         return Venta::with('user')
             ->with('cliente')
             ->with('pagos')
+            ->with('detalle')
             ->whereDate('fecha','>=',$request->fecha1)
             ->whereDate('fecha','<=',$request->fecha2)
             ->get();
@@ -170,7 +171,7 @@ class VentaController extends Controller
      */
     public function update(Request $request, Venta $venta)
     {
-        //
+        $venta->update($request->all());
     }
 
     /**

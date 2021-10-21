@@ -18,6 +18,9 @@ class ClienteController extends Controller
         //
         return Cliente::with('prestamos')->get();
     }
+    public function agregarcliente(Request $request){
+        Cliente::create($request->all());
+    }
 
     public function listacliente(){
         return Cliente::where('estado','ACTIVO')->get();
