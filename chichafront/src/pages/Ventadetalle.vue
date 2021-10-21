@@ -662,11 +662,15 @@ export default {
     anular(venta){
       // console.log(venta)
       this.$q.dialog({
-        title: 'Anular Venta',
-        message: 'Esta Seguro de Anular Venta?',
+        title: 'Anular Venta?',
+        message: 'Motivo?',
         cancel: true,
-      }).onOk(() => {
-      this.$axios.post(process.env.API+'/anular/'+venta.id)
+        prompt:{
+          model:'',
+          type:'text',
+        }
+      }).onOk((data) => {
+      this.$axios.post(process.env.API+'/anular/'+venta.id,{observacion:data})
         .then(res=>{
         this.misventas();
 

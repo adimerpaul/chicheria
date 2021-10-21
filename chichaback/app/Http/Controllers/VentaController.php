@@ -266,12 +266,13 @@ class VentaController extends Controller
               return $cadena;
     }
 
-    public function anular($id){
+    public function anular(Request $request,$id){
         $venta=Venta::find($id);
         $venta->estado='ANULADO';
         $venta->total=0;
         $venta->acuenta=0;
         $venta->saldo=0;
+        $venta->observacion=$request->observacion;
         return $venta->save();
 
     }
