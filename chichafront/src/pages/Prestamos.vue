@@ -73,8 +73,10 @@
       <td>{{p.fisico}}</td>
       <td>{{p.observacion}}</td>
       <td>
-        <q-btn @click="onDev(p)" v-if="p.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
-        <q-btn @click="onList(p)"  color="green" icon="list"/>
+        <q-btn-group>
+          <q-btn size="xs" @click="onDev(p)" v-if="p.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
+          <q-btn size="xs" @click="onList(p)"  color="green" icon="list"/>
+        </q-btn-group>
       </td>
     </tr>
     </tbody>
@@ -94,9 +96,9 @@
           <q-input dense v-model="dev.cantidad" autofocus type="number" label="Cantidad"
           :rules="[ val => val > 1 && val<=datoprestamo.prestado || 'Ingrese la cantidad correcta' ]"
           />
-          
+
           <q-input dense v-model="dev.motivo" label="Observacion"
-          
+
           />
         </q-card-section>
           <div>
@@ -122,7 +124,7 @@
       :rows="listado"
       :columns="colum"
       row-key="name"
-    />          
+    />
         </q-card-section>
 
 
@@ -155,7 +157,7 @@ export default {
       datoprestamo:{},
       listado:[],
       dev:{},
-      colum:[  
+      colum:[
   { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha', sortable: true },
   { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
   { name: 'motivo', label: 'Observacion', field: 'motivo' },
@@ -241,10 +243,12 @@ export default {
         cliente_id:this.cliente.id,
         inventario_id:this.inventario.id,
       }).then(res=>{
-        console.log(res.data)
-                          let myWindow = window.open("", "Imprimir", "width=200,height=100");
-                  myWindow.document.write(res.data);
-                  myWindow.document.close();
+        // console.log(res.data)
+        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
         // this.prestamos=res.data
         this.$q.loading.hide();
         this.listclientes();

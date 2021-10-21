@@ -427,6 +427,9 @@
                 <q-input required outlined label="observacion" v-model="venta.observacion"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="envase" v-model="venta.envase"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
                 <q-input required outlined label="precio" v-model="venta.precio"  disable/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
@@ -612,6 +615,11 @@ export default {
         observacion:this.venta.observacion,
       }).then((res)=>{
         // console.log(res.data)
+        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
 
         this.$q.loading.hide()
         // this.misclientes()
