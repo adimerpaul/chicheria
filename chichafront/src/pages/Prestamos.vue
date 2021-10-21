@@ -74,7 +74,7 @@
       <td>{{p.observacion}}</td>
       <td>
         <q-btn @click="onDev(p)" v-if="p.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
-        <q-btn @click="listado(p)"  color="green" icon="list"/>
+        <q-btn @click="onList(p)"  color="green" icon="list"/>
       </td>
     </tr>
     </tbody>
@@ -108,6 +108,27 @@
 
       </q-card>
     </q-dialog>
+
+          <q-dialog v-model="dialog_list" >
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">Listado Devolucion </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+
+        <q-table
+      title="Datos de Devolucion"
+      :rows="listado"
+      :columns="colum"
+      row-key="name"
+    />          
+        </q-card-section>
+
+
+      </q-card>
+    </q-dialog>
+
 </q-page>
 </template>
 
@@ -130,8 +151,15 @@ export default {
       observacion:'',
       totalefectivo:0,
       dialog_dev:false,
+      dialog_list:false,
       datoprestamo:{},
-      dev:{}
+      listado:[],
+      dev:{},
+      colum:[  
+  { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha', sortable: true },
+  { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
+  { name: 'motivo', label: 'Observacion', field: 'motivo' },
+]
     }
   },
   created(){
@@ -153,6 +181,10 @@ export default {
       console.log(p);
       this.datoprestamo=p;
       this.dialog_dev=true;
+    },
+    onList(p){
+      this.listado=p.logprestamos;
+      this.dialog_list=true;
     },
     cajaprestamo(){
       this.$axios.post(process.env.API+'/tefectivo').then(res=>{
