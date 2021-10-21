@@ -19,7 +19,14 @@ class ClienteController extends Controller
         return Cliente::with('prestamos')->get();
     }
     public function agregarcliente(Request $request){
-        Cliente::create($request->all());
+        $cliente= new Cliente();
+        $cliente->ci=$request->ci;
+        $cliente->titular= strtoupper( $request->titular);
+        $cliente->telefono=$request->telefono;
+        $cliente->direccion=$request->direccion;
+        $cliente->tipocliente=$request->tipocliente;
+        $cliente->save();
+//        Cliente::create($request->all());
     }
 
     public function listacliente(){

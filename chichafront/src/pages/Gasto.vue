@@ -14,7 +14,7 @@
         <div class="row">
           <div class="col-12 q-pa-xs col-sm-3"><q-input outlined type="number" label="Precio" v-model="empleado.precio" required/></div>
           <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
-          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha " v-model="empleado.fecha" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha " type="date" v-model="empleado.fecha" required/></div>
 <!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>-->
 <!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>-->
           <div class="col-12 q-pa-xs col-sm-2 flex flex-center">

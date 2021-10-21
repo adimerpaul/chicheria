@@ -348,7 +348,7 @@
                 <q-input required outlined label="ci" v-model="newcliente.ci"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required outlined label="titular" v-model="newcliente.titular"/>
+                <q-input required outlined label="titular" style="text-transform: uppercase" v-model="newcliente.titular"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
                 <q-input required outlined label="telefono" v-model="newcliente.telefono"/>
