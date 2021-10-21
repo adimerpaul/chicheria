@@ -7,25 +7,38 @@
       <div class="col-12">
         <q-form @submit.prevent="guardar">
           <div class="row">
-            <div class="col-6 col-sm-6 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha" outlined required/></div>
-            <div class="col-6 col-sm-6 q-pa-xs"><q-input type="text" label="Responsable" v-model="responsable" outlined required/></div>
+            <div class="col-6 col-sm-6 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha" outlined required/></div>
+            <div class="col-6 col-sm-6 q-pa-xs"><q-input dense type="text" label="Responsable" v-model="responsable" outlined required/></div>
           </div>
           <div class="row">
             <div class="col-6 col-sm-2 q-pa-xs">
-              <q-select
-                outlined
-                v-model="model"
-                use-input
-                input-debounce="0"
-                label="Selecionar Cliente"
-                :options="options"
-                @filter="filterFn"
-                @click="generar"
-              />
+              <div class="row">
+                <div class="col-2">
+                  <q-btn @click="modalregistro=true" class="full-width full-height" color="green" icon="add_circle" size="xs" />
+                </div>
+                <div class="col-10">
+                  <q-select
+                    outlined
+                    v-model="model"
+                    use-input
+                    input-debounce="0"
+                    label="Seleccionar Cliente"
+                    :options="options"
+                    @filter="filterFn"
+                    @click="generar"
+                    dense
+                  />
+                </div>
+
+              </div>
+
             </div>
-            <div class="col-6 col-sm-2 q-pa-xs"><q-select v-model="producto" outlined :options="productos" option-label="nombre" option-value="id" label="Producto" required/></div>
+            <div class="col-6 col-sm-2 q-pa-xs">
+              <q-select dense v-model="producto" outlined :options="productos" option-label="nombre" option-value="id" label="Producto" required/>
+            </div>
             <div class="col-6 col-sm-1 q-pa-xs">
               <q-input
+                dense
                 type="number"
                 label="precio"
                 v-model="producto.precio"
@@ -34,7 +47,7 @@
             </div>
             <div class="col-6 col-sm-2 q-pa-xs">
               <!--            <q-input type="number" label="Cantidad" v-model="cantidad" outlined/>-->
-              <q-select label="Cantidad" :options="cantidades" v-model="cantidad" outlined/>
+              <q-select dense label="Cantidad" :options="cantidades" v-model="cantidad" outlined/>
             </div>
             <!--                    <div class="col-6 col-sm-2 q-pa-xs">-->
             <!--            <q-input-->
@@ -53,7 +66,7 @@
               <q-badge class="full-width full-height" color="positive">Subtotal <br> {{subtotal}}</q-badge>
             </div>
             <div class="col-6 col-sm-1 q-pa-xs">
-              <q-input type="text" label="A cuenta"  v-model="acuenta" outlined/>
+              <q-input dense type="number" label="A cuenta"  v-model="acuenta" outlined/>
             </div>
             <div class="col-6 col-sm-1 q-pa-xs">
               <!--            <q-input type="text" label="Saldo" v-model="saldo" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" disable outlined/>-->
@@ -186,7 +199,11 @@
                         {{ props.row.user }}
                       </q-td>
                       <q-td key="opcion" :props="props">
-                        <q-btn icon="cancel" color="red" v-if="props.row.estado!='ANULADO' && $store.state.login.anular" @click="anular(props.row)" />
+                        <q-btn-group v-if="props.row.estado!='ANULADO' && $store.state.login.anular" >
+                          <q-btn icon="cancel" color="red" @click="anular(props.row)" size="xs" />
+                          <q-btn icon="list" color="info"   @click="clickhojaruta(props.row)" size="xs" />
+                        </q-btn-group>
+
                       </q-td>
                     </q-tr>
                   </template>
@@ -321,6 +338,111 @@
       </div>
 
     </div>
+    <q-dialog v-model="modalregistro">
+      <q-card style="width: 700px;min-width: 80vw">
+        <q-card-section ><div class="text-h6">Registro de cliente</div></q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-form @submit.prevent="agregarcliente">
+            <div class="row">
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="ci" v-model="newcliente.ci"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="titular" v-model="newcliente.titular"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="telefono" v-model="newcliente.telefono"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="direccion" v-model="newcliente.direccion"/>
+              </div>
+
+              <div class="col-12  q-pa-xs flex flex-center">
+                <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Registrar"/>
+              </div>
+            </div>
+          </q-form>
+        </q-card-section>
+        <q-card-section align="right" class="">
+          <q-btn flat label="Cerrar" icon="delete" color="negative" v-close-popup/>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="modalgarantia">
+      <q-card style="width: 700px;min-width: 80vw">
+        <q-card-section ><div class="text-h6">Garantia</div></q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-form @submit.prevent="agregargarantia">
+            <div class="row">
+              <div class="col-12 col-md-6 q-pa-xs">
+<!--                <q-input required outlined label="ci" v-model="newgarantia.ci"/>-->
+                <q-select required outlined label="inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required type="number"  outlined label="cantidad" v-model="newgarantia.cantidad"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input  outlined type="number" label="efectivo" v-model="newgarantia.efectivo"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input  outlined label="fisico" v-model="newgarantia.fisico"/>
+              </div>
+              <div class="col-12  q-pa-xs flex flex-center">
+                <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Registrar"/>
+              </div>
+            </div>
+          </q-form>
+        </q-card-section>
+        <q-card-section align="right" class="">
+          <q-btn flat label="Cerrar" icon="delete" color="negative" v-close-popup/>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="modalhojaruta">
+      <q-card style="width: 700px;min-width: 80vw">
+        <q-card-section ><div class="text-h6">Hoja ruta {{venta.titular }} {{venta.direccion }}</div></q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-form @submit.prevent="actualizarventa">
+            <div class="row">
+<!--              <div class="col-12 col-md-6 q-pa-xs">-->
+<!--                                <q-input required outlined label="cantidad" v-model="venta.cantidad"/>-->
+<!--&lt;!&ndash;                <q-select required outlined label="inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>&ndash;&gt;-->
+<!--              </div>-->
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required type="number"  outlined label="turno" v-model="venta.turno"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input  outlined type="number" label="telefono1" v-model="venta.telefono1"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input  outlined type="number" label="telefono2" v-model="venta.telefono2"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input  outlined label="direccion" v-model="venta.direccion"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="precio" v-model="venta.precio"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="acuenta" v-model="venta.acuenta"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="saldo" v-model="venta.saldo"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="observacion" v-model="venta.observacion"/>
+              </div>
+              <div class="col-12  q-pa-xs flex flex-center">
+                <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Imprimir"/>
+              </div>
+            </div>
+          </q-form>
+        </q-card-section>
+        <q-card-section align="right" class="">
+          <q-btn flat label="Cerrar" icon="delete" color="negative" v-close-popup/>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -332,12 +454,15 @@ export default {
   name: "Venta",
   data(){
     return{
+      modalregistro:false,
       fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha3:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha4:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha5:date.formatDate(new Date(),'YYYY-MM-DD'),
       responsable:'',
+      newgarantia:{},
+      newcliente:{},
       clientes:[],
       clientes2:[],
       cliente:'',
@@ -353,6 +478,8 @@ export default {
       dialog_garantia:false,
       cantidadprestamo:0,
       prestamo:{},
+      modalgarantia:false,
+      modalhojaruta:false,
       columns:[
         {name:'nombreproducto',label:'Nombre producto',field:'nombreproducto'},
         {name:'precio',label:'Precio',field:'precio'},
@@ -381,6 +508,7 @@ export default {
         {name:'opcion',label:'opcion',field:'opcion'},
       ],
       ventas:[],
+      venta:{},
       prestamos:[],
       filter:'',
       options:[],
@@ -393,25 +521,9 @@ export default {
       this.cantidades.push(i)
     }
     this.misventas()
+    this.misclientes()
     // console.log(this.$store.state.login)
-    this.$axios.get(process.env.API+'/listacliente').then(res=>{
-      // this.clientes=res.data
-      // this.clientes2=res.data
-      // this.cliente=res.data[0]
-      // console.log(res.data)
-      res.data.forEach(r=>{
-        if (r.tipocliente==2)
-          this.clientes.push({
-            label:r.ci+' '+r.titular,
-            id:r.id,
-            // detalles:r.detalles,
-            // nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
-            // padron:r.padron,
-            // ci:r.cliente.ci,
-            // total:r.total,
-          })
-      })
-    })
+
     this.$axios.get(process.env.API+'/listaproducto').then(res=>{
       // this.productos=res.data
       res.data.forEach(r=>{
@@ -421,6 +533,11 @@ export default {
       if (this.producto.length>0)
       this.producto=this.productos[0]
     })
+    this.$axios.get(process.env.API+'/listainventario').then(res=>{
+      this.inventarios=res.data
+      this.inventario=res.data[0]
+    })
+
     this.$axios.get(process.env.API+'/listainventario').then(res=>{
       this.inventarios=res.data
       this.inventario=res.data[0]
@@ -444,16 +561,106 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+    misclientes(){
+      this.$axios.get(process.env.API+'/listacliente').then(res=>{
+        // this.clientes=res.data
+        // this.clientes2=res.data
+        // this.cliente=res.data[0]
+        // console.log(res.data)
+        this.clientes=[]
+        res.data.forEach(r=>{
+          if (r.tipocliente==2)
+            this.clientes.push({
+              label:r.ci+' '+r.titular,
+              id:r.id,
+              // detalles:r.detalles,
+              // nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+              // padron:r.padron,
+              // ci:r.cliente.ci,
+              // total:r.total,
+            })
+        })
+      })
+    },
+    agregarcliente(){
+      this.$q.loading.show()
+      this.newcliente.tipocliente=2
+      this.$axios.post(process.env.API+'/agregarcliente',this.newcliente).then(()=>{
+        this.$q.loading.hide()
+        this.misclientes()
+        this.modalregistro=false
+        this.newcliente={}
+      })
+    },
+    actualizarventa(){
+      this.$q.loading.show()
+      this.$axios.put(process.env.API+'/venta/'+this.ventas,{
+
+      }).then(()=>{
+        this.$q.loading.hide()
+        this.misclientes()
+        this.modalregistro=false
+        this.newcliente={}
+      })
+    },
+    agregargarantia(){
+      this.$q.loading.show()
+      this.newcliente.tipocliente=2
+      this.$axios.post(process.env.API+'/prestamo',{
+        inventario_id:this.inventario.id,
+        cantidad:this.cantidad,
+        efectivo:this.efectivo,
+        fisico:this.fisico,
+        observacion:'',
+        cliente_id:this.model.id,
+      }).then(()=>{
+        this.$q.loading.hide()
+        this.misclientes()
+        this.modalregistro=false
+        this.newcliente={}
+        this.subtotal=''
+        this.acuenta=''
+        this.saldo=''
+        this.estado=''
+        this.model=''
+        this.producto=''
+        this.cantidad=1
+        this.subtotal=0
+        this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
+        this.modalgarantia=false
+      }).catch(err=>{
+        this.$q.loading.hide()
+
+        this.$q.notify({
+          message:err.response.data.message,
+          color:'red',
+          icon:'error'
+        })
+      })
+    },
     impruta(venta){
-      this.$axios.post(process.env.API+'/ruta/'+venta.id)
-        .then(res=>{
-                            let myWindow = window.open("", "Imprimir", "width=200,height=100");
-                  myWindow.document.write(res.data);
-                  myWindow.document.close();
-          })
+      this.$axios.post(process.env.API+'/ruta/'+venta.id).then(res=>{
+          // let myWindow = window.open("", "Imprimir", "width=200,height=100");
+          // myWindow.document.write(res.data);
+          // myWindow.document.close();
+        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.focus();
+        setTimeout(function(){
+          myWindow.print();
+          myWindow.close();
+          // this.comanda(sale_id);
+          //    impAniv(response);
+        },500);
+      })
+    },
+    clickhojaruta(venta){
+      this.venta=venta
+      this.modalhojaruta=true
     },
     anular(venta){
-      console.log(venta)
+      // console.log(venta)
       this.$q.dialog({
         title: 'Anular Venta',
         message: 'Esta Seguro de Anular Venta?',
@@ -615,15 +822,19 @@ export default {
         this.ventas=[]
         res.data.forEach(r=>{
           if (r.tipo=='DETALLE')
+            // console.log(r)
             this.ventas.push({
               id:r.id,
               fecha:r.fecha,
+              precio:r.total,
               total:r.total,
               acuenta:r.acuenta,
               saldo:r.saldo,
               estado:r.estado,
               local:r.cliente.local,
               titular:r.cliente.titular,
+              direccion:r.cliente.direccion,
+              telefono1:r.cliente.telefono,
               user:r.user.name,
             })
         })
@@ -688,27 +899,45 @@ export default {
 
       }).then(res=>{
         // console.log(res.data)
-                  let myWindow = window.open("", "Imprimir", "width=200,height=100");
-                  myWindow.document.write(res.data);
-                  myWindow.document.close();
-        this.subtotal=''
-        this.acuenta=''
-        this.saldo=''
-        this.estado=''
-        this.model=''
-        this.producto=''
-        this.cantidad=1
-        this.subtotal=0
-        this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
+        // let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        // myWindow.document.write(res.data);
+        // myWindow.document.close();
+
+        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.focus();
+        // setTimeout(function(){
+          myWindow.print();
+          myWindow.close();
+        // },500);
+
         this.$q.notify({
           message:'Venta exitosa',
           color:'green',
           icon:'info'
         })
         this.misventas()
+        this.$q.dialog({
+          message:'Deseas registrar garantia?',
+          title:'Garantia?',
+          cancel: true,
+        }).onOk(()=>{
+          this.modalgarantia=true
+        }).onCancel(()=>{
+          this.subtotal=''
+          this.acuenta=''
+          this.saldo=''
+          this.estado=''
+          this.model=''
+          this.producto=''
+          this.cantidad=1
+          this.subtotal=0
+          this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
+        })
       }).catch(err=>{
         this.$q.loading.hide()
-        console.error(err)
+        // console.error(err)
         this.$q.notify({
           message:err.response.data.message,
           color:'red',
