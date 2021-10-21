@@ -354,7 +354,7 @@
                 <q-input required outlined label="telefono" v-model="newcliente.telefono"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required outlined label="direccion" v-model="newcliente.direccion"/>
+                <q-input required outlined label="direccion" style="text-transform: uppercase" v-model="newcliente.direccion"/>
               </div>
 
               <div class="col-12  q-pa-xs flex flex-center">

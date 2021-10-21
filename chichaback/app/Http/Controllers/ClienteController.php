@@ -23,7 +23,7 @@ class ClienteController extends Controller
         $cliente->ci=$request->ci;
         $cliente->titular= strtoupper( $request->titular);
         $cliente->telefono=$request->telefono;
-        $cliente->direccion=$request->direccion;
+        $cliente->direccion= strtoupper($request->direccion);
         $cliente->tipocliente=$request->tipocliente;
         $cliente->save();
 //        Cliente::create($request->all());
