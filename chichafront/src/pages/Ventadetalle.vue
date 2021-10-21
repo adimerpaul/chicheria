@@ -613,7 +613,7 @@ export default {
         acuenta:this.venta.acuenta,
         saldo:this.venta.saldo,
         observacion:this.venta.observacion,
-      }).then((res)=>{
+      }).then(res=>{
         // console.log(res.data)
         let myWindow = window.open("", "Imprimir", "width=200,height=100");
         myWindow.document.write(res.data);
