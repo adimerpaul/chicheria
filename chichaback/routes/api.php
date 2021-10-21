@@ -68,6 +68,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/impresiondetalle\{id}',[\App\Http\Controllers\VentaController ::class,'impresiondetalle']);
     Route::post('/anular/{id}',[\App\Http\Controllers\VentaController ::class,'anular']);
     Route::post('/ruta/{id}',[\App\Http\Controllers\VentaController ::class,'ruta']);
+    Route::resource('/logprestamo',\App\Http\Controllers\LogprestamoController ::class);
     
     Route::resource('/empleado',\App\Http\Controllers\EmpleadoController::class);
     Route::post('/missueldos',[\App\Http\Controllers\EmpleadoController::class,'missueldos']);

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Logprestamo;
+use App\Models\Prestamo;
+use App\Models\Inventario;
 use Illuminate\Http\Request;
 
 class LogprestamoController extends Controller
@@ -36,6 +38,23 @@ class LogprestamoController extends Controller
     public function store(Request $request)
     {
         //
+        $logpres= new Logprestamo;
+        $logpres->fecha=$request->fecha;
+        $logpres->cantidad=$request->cantidad;
+        $logpres->motivo=$request->motivo;
+        $logpres->prestamo_id=$request->id;
+        $logpres->user_id=$request->user()->id;
+        $logpres->save();
+        $prestamo=Prestamo::find($request->id);
+        $prestamo->prestado = $prestamo->prestado - $request->cantidad;
+        if($prestamo->prestado == 0) 
+        $prestamo->estado='DEVUELTO';
+        $prestamo->save();
+        $inv=Inventario::find($request->inventario_id); 
+        $inv->cantidad= $inv->cantidad + $request->cantidad;
+        $inv->save();
+        return true;
+
     }
 
     /**

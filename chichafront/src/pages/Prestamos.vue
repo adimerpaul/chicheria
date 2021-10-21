@@ -11,8 +11,8 @@
             @update:model-value="filtrarlista"
             active-bg-color="accent"
           >
-            <q-tab name="local" label="Local" />
-            <q-tab name="cliente" label="Cliente"  />
+            <q-tab name="local" label="Local" style="width:50%"/>
+            <q-tab name="cliente" label="Cliente"  style="width:50%"/>
 <!--            <q-tab name="movies" label="Movies" />-->
           </q-tabs>
   <q-form @submit.prevent="agregar">
@@ -46,34 +46,68 @@
     <thead>
     <tr>
       <th>#</th>
+      <th>Local</th>
+      <th>Titular</th>
       <th>Inventario</th>
       <th>Fecha</th>
       <th>Estado</th>
       <th>Cantidad</th>
+      <th>Faltante</th>
       <th>Efectivo</th>
       <th>Fisico</th>
       <th>Observacion</th>
-      <th>Fecha Dev</th>
-      <th>Devolver</th>
+      <th>Opcion</th>
     </tr>
     </thead>
     <tbody>
     <tr v-for="(p,i) in cliente.prestamos" :key="i">
       <td>{{i+1}}</td>
+      <td>{{cliente.local}}</td>
+      <td>{{cliente.titular}}</td>
       <td>{{p.inventario.nombre}}</td>
       <td>{{p.fecha}}</td>
       <td><q-badge :color="p.estado=='EN PRESTAMO'?'negative':'aceent'">{{p.estado}}</q-badge></td>
       <td>{{p.cantidad}}</td>
+      <td>{{p.prestado}}</td>
       <td>{{p.efectivo}}</td>
       <td>{{p.fisico}}</td>
       <td>{{p.observacion}}</td>
-      <td>{{p.fechadev}}</td>
       <td>
-        <q-btn @click="devolver(p)" v-if="p.estado=='EN PRESTAMO'" label="devolver" color="primary" icon="refresh"/>
+        <q-btn @click="onDev(p)" v-if="p.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
+        <q-btn @click="listado(p)"  color="green" icon="list"/>
       </td>
     </tr>
     </tbody>
   </table>
+      <q-dialog v-model="dialog_dev" >
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">Devolucion de prestamo</div>
+        </q-card-section>
+
+        <q-form
+          @submit="devolver"
+          @reset="onReset"
+          class="q-gutter-md"
+        >
+        <q-card-section class="q-pt-none">
+          <q-input dense v-model="dev.cantidad" autofocus type="number" label="Cantidad"
+          :rules="[ val => val > 1 && val<=datoprestamo.prestado || 'Ingrese la cantidad correcta' ]"
+          />
+          
+          <q-input dense v-model="dev.motivo" label="Observacion"
+          
+          />
+        </q-card-section>
+          <div>
+            <q-btn label="Devolver" type="submit" color="primary"/>
+            <q-btn label="Cancel"  color="red" v-close-popup/>
+          </div>
+        </q-form>
+
+
+      </q-card>
+    </q-dialog>
 </q-page>
 </template>
 
@@ -94,7 +128,10 @@ export default {
       fisico:'',
       efectivo:'',
       observacion:'',
-      totalefectivo:0
+      totalefectivo:0,
+      dialog_dev:false,
+      datoprestamo:{},
+      dev:{}
     }
   },
   created(){
@@ -112,6 +149,11 @@ export default {
 
   },
   methods: {
+    onDev(p){
+      console.log(p);
+      this.datoprestamo=p;
+      this.dialog_dev=true;
+    },
     cajaprestamo(){
       this.$axios.post(process.env.API+'/tefectivo').then(res=>{
         this.totalefectivo=res.data[0].total;
@@ -125,7 +167,7 @@ export default {
       this.$q.loading.show();
       this.prestamos=[];
       this.$axios.get(process.env.API+'/cliente').then(res=>{
-        // console.log(res.data)
+         console.log(res.data)
         res.data.forEach(element => {
             if(this.tab=='local' && element.tipocliente=='1')
               this.prestamos.push(element);
@@ -181,14 +223,19 @@ export default {
       })
       this.cajaprestamo();
     },
-    devolver(prestamo){
+    devolver(){
       this.$q.loading.show()
-      this.$axios.put(process.env.API+'/prestamo/'+prestamo.id,{
-        fechadev:date.formatDate(new Date(),'YYYY-MM-DD'),
-        estado:'DEVUELTO',
+      this.$axios.post(process.env.API+'/logprestamo',{
+        fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
+        cantidad:this.dev.cantidad,
+        motivo:this.dev.motivo,
+        inventario_id:this.datoprestamo.inventario_id,
+        id:this.datoprestamo.id,
       }).then(res=>{
         console.log(res.data)
         // this.prestamos=res.data
+        this.dialog_dev=false;
+        this.dev={};
         this.$q.loading.hide();
         this.listclientes();
         // this.cliente=this.prestamos[0]
