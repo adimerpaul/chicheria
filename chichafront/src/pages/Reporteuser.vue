@@ -187,7 +187,7 @@ export default {
   { name: 'saldo', align: 'center', label: 'Saldo', field: 'saldo' },
   { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha' },
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
-  { name: 'tipo', align: 'center', label: 'tipo', field: 'tipo' },
+  { name: 'tipo', align: 'center', label: 'tipo', field: 'tipocliente' },
   { name: 'usuario', align: 'center', label: 'usuario', field: 'name' },
   { name: 'opcion', align: 'center', label: 'opcion' ,field:'opcion'}
 ],
@@ -229,6 +229,8 @@ export default {
       this.$axios.post(process.env.API+'/listadodeudores').then(res=>{
         console.log(res.data)
         res.data.forEach(elem => {
+          let tip=''
+          if(elem.cliente.tipocliente==1) tip='LOCAL'; else tip='DETALLE';
           this.deudas.push({
             // id:elem.id,
             id:elem.id,
@@ -237,7 +239,7 @@ export default {
             total:elem.total,
             cuenta:elem.acuenta,
             saldo:elem.saldo,
-            tipo:elem.tipo,
+            tipocliente:tip,
             fecha:elem.fecha,
             estado:elem.estado,
             name:elem.user.name,

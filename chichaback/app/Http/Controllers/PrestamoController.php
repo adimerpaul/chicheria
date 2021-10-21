@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Prestamo;
+use App\Models\Inventario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PrestamoController extends Controller
 {
@@ -36,6 +38,8 @@ class PrestamoController extends Controller
     public function store(Request $request)
     {
 //        return $request;
+         $inv=Inventario::find($request->inventario_id);
+         if( $inv->cantidad>=$request->cantidad){
         $prestamo=new Prestamo();
         $prestamo->fecha=date('Y-m-d');
 //        $prestamo->estado='DEVUELTO';
@@ -51,7 +55,9 @@ class PrestamoController extends Controller
          $inv=Inventario::find($request->inventario_id);
          $inv->cantidad=$inv->cantidad - $request->cantidad;
          $inv->save(); 
-         return $this->impresion($prestamo->id);
+         return $this->impresion($prestamo->id);}
+         else
+            return response()->json(['error' => 'No se cuenta con la cantidad'], 404);
 //        return $prestamo->
     }
 
@@ -117,5 +123,9 @@ class PrestamoController extends Controller
         ';
         return $cadena;
 
+    }
+
+    public function tefectivo(){
+        return DB::SELECT('SELECT SUM(efectivo) as total from prestamos where estado="EN PRESTAMO"');
     }
 }

@@ -22,7 +22,7 @@ class CreatePrestamosTable extends Migration
             $table->string('fisico')->default('')->nullable();
             $table->string('observacion')->default('')->nullable();
             $table->integer('cantidad');
-            $table->integer('prestado');
+            $table->integer('prestado')->default(0);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('cliente_id');

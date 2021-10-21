@@ -61,6 +61,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/listadoventa',[\App\Http\Controllers\VentaController ::class,'listadoventa']);
     Route::post('/listadorep',[\App\Http\Controllers\VentaController ::class,'listado']);
     Route::post('/listadodeudores',[\App\Http\Controllers\VentaController ::class,'listadodeudores']);
+    Route::post('/tefectivo',[\App\Http\Controllers\PrestamoController ::class,'tefectivo']);
     Route::post('/devolver',[\App\Http\Controllers\GarantiaController ::class,'devolver']);
     Route::get('/cumple',[\App\Http\Controllers\ClienteController ::class,'ordercumple']);
     Route::get('/cumple2',[\App\Http\Controllers\ClienteController ::class,'ordercumple2']);

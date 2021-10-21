@@ -27,7 +27,7 @@
       <q-select outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input outlined label="Efectivo" v-model="efectivo" />
+      <q-input outlined label="Efectivo" v-model="efectivo" type="number"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
       <q-input outlined label="Fisico" v-model="fisico" />
@@ -40,6 +40,7 @@
     </div>
   </div>
   </q-form>
+  <div>TOTAL EN CAJA: {{totalefectivo}} Bs.</div>
 <!--  {{cliente}}-->
   <table class="table" style="width: 100%">
     <thead>
@@ -93,6 +94,7 @@ export default {
       fisico:'',
       efectivo:'',
       observacion:'',
+      totalefectivo:0
     }
   },
   created(){
@@ -106,11 +108,17 @@ export default {
       this.inventario=this.inventarios[0];
     })
       this.listclientes();
-
+      this.cajaprestamo();
 
   },
   methods: {
-    filtrarlista(){
+    cajaprestamo(){
+      this.$axios.post(process.env.API+'/tefectivo').then(res=>{
+        this.totalefectivo=res.data[0].total;
+      })
+
+    },
+        filtrarlista(){
       this.listclientes();
     },
     listclientes(){
@@ -141,6 +149,15 @@ export default {
       })
     },
     agregar(){
+      if(this.inventario.cantidad<this.cantidad)
+      {
+                this.$q.notify({
+          message: 'No ay sufuciente en Inventario',
+          color: 'red',
+          icon:'warning'
+        })
+        return false;
+      }
       this.$q.loading.show();
       this.$axios.post(process.env.API+'/prestamo',{
         efectivo:this.efectivo,
@@ -162,6 +179,7 @@ export default {
         this.cliente=this.cliente[0];
         this.inventario=this.inventario[0];
       })
+      this.cajaprestamo();
     },
     devolver(prestamo){
       this.$q.loading.show()
