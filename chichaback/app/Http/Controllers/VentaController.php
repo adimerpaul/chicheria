@@ -172,6 +172,7 @@ class VentaController extends Controller
     public function update(Request $request, $idventa)
     {
 //        $venta->update($request->all());
+//        return $request;
         $venta=Venta::find($idventa);
         $venta->update($request->all());
         return $this->ruta($venta->id);
@@ -254,6 +255,7 @@ class VentaController extends Controller
         <div class="textcnt"> HOJA DE RUTA</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
         <div>Fecha: '.$venta->fecha.'</div>
+        <div>Fecha entrega: '.$venta->fechaentrega.'</div>
         <hr>
         <div>Cantidad '.$venta->detalle->cantidad.'</div>
         <div>Turno: '.$venta->turno.' Hora: '.$venta->hora.'</div>

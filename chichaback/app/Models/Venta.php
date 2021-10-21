@@ -24,6 +24,7 @@ class Venta extends Model
         "observacion",
         'user_id',
         'cliente_id',
+        'fechaentrega'
     ];
     public function user(){
         return $this->belongsTo(User::class);

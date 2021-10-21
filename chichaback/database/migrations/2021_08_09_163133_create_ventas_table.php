@@ -19,10 +19,11 @@ class CreateVentasTable extends Migration
             $table->double("total",11,2)->nullable();
             $table->double("acuenta",11,2)->nullable();
             $table->double("saldo",11,2)->nullable();
-            $table->string("estado")->nullable();
-            $table->string("tipo")->nullable();
-            $table->string("turno")->nullable();
-            $table->string("hora")->nullable();
+            $table->string("estado")->default('')->nullable();
+            $table->string("tipo")->default('')->nullable();
+            $table->string("turno")->default('')->nullable();
+            $table->string("hora")->default('')->nullable();
+            $table->string("fechaentrega")->default('')->nullable();
             $table->string("telefono1")->default('')->nullable();
             $table->string("telefono2")->default('')->nullable();
             $table->string("direccion")->default('')->nullable();

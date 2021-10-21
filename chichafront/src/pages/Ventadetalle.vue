@@ -201,7 +201,7 @@
                       <q-td key="opcion" :props="props">
                         <q-btn-group v-if="props.row.estado!='ANULADO' && $store.state.login.anular" >
                           <q-btn icon="cancel" color="red" @click="anular(props.row)" size="xs" />
-                          <q-btn icon="list" color="info"   @click="clickhojaruta(props.row)" size="xs" />
+                          <q-btn icon="local_shipping" color="info"   @click="clickhojaruta(props.row)" size="xs" />
                         </q-btn-group>
 
                       </q-td>
@@ -430,6 +430,9 @@
                 <q-input required outlined label="envase" v-model="venta.envase"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
+                <q-input type="date" outlined label="fechaentrega" v-model="venta.fechaentrega"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
                 <q-input required outlined label="precio" v-model="venta.precio"  disable/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
@@ -597,6 +600,13 @@ export default {
         this.misclientes()
         this.modalregistro=false
         this.newcliente={}
+      }).catch(err=>{
+        this.$q.loading.hide()
+        this.$q.notify({
+          message:err.response.data.message,
+          color:'red',
+          icon:'error'
+        })
       })
     },
     actualizarventa(){
@@ -613,8 +623,9 @@ export default {
         acuenta:this.venta.acuenta,
         saldo:this.venta.saldo,
         observacion:this.venta.observacion,
+        fechaentrega:this.venta.fechaentrega,
       }).then(res=>{
-        // console.log(res.data)
+        console.log(res.data)
         let myWindow = window.open("", "Imprimir", "width=200,height=100");
         myWindow.document.write(res.data);
         myWindow.document.close();
@@ -863,7 +874,8 @@ export default {
               local:r.cliente.local,
               titular:r.cliente.titular,
               direccion:r.cliente.direccion,
-              telefono1:r.telefono1,
+              telefono1:r.cliente.telefono,
+              fechaentrega:date.formatDate(Date.now(),'YYYY-MM-DD'),
               telefono2:r.telefono2,
               user:r.user.name,
               turno:r.turno,
