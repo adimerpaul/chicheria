@@ -54,7 +54,7 @@ class PrestamoController extends Controller
          $prestamo->save();
          $inv=Inventario::find($request->inventario_id);
          $inv->cantidad=$inv->cantidad - $request->cantidad;
-         $inv->save(); 
+         $inv->save();
          return $this->impresion($prestamo->id);}
          else
             return response()->json(['error' => 'No se cuenta con la cantidad'], 404);
@@ -103,7 +103,8 @@ class PrestamoController extends Controller
      */
     public function destroy(Prestamo $prestamo)
     {
-        //
+//        return $prestamo;
+        $prestamo->delete();
     }
 
     public function impresion($id){

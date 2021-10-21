@@ -76,6 +76,7 @@
         <q-btn-group>
           <q-btn size="xs" @click="onDev(p)" v-if="p.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
           <q-btn size="xs" @click="onList(p)"  color="green" icon="list"/>
+          <q-btn size="xs" @click="onEliminar(p)"  color="negative" icon="delete"/>
         </q-btn-group>
       </td>
     </tr>
@@ -89,7 +90,6 @@
 
         <q-form
           @submit="devolver"
-          @reset="onReset"
           class="q-gutter-md"
         >
         <q-card-section class="q-pt-none">
@@ -180,9 +180,20 @@ export default {
   },
   methods: {
     onDev(p){
-      console.log(p);
+      // console.log(p);
       this.datoprestamo=p;
       this.dialog_dev=true;
+    },
+    onEliminar(p){
+      if (confirm('seguro de eliminar?')){
+        this.$axios.delete(process.env.API+'/prestamo/'+p.id).then(res=>{
+          // this.totalefectivo=res.data[0].total;
+          this.listclientes()
+          this.cajaprestamo()
+          console.log(res.data)
+        })
+      }
+
     },
     onList(p){
       this.listado=p.logprestamos;
