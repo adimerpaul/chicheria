@@ -169,9 +169,12 @@ class VentaController extends Controller
      * @param  \App\Models\Venta  $venta
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Venta $venta)
+    public function update(Request $request, $idventa)
     {
+//        $venta->update($request->all());
+        $venta=Venta::find($idventa);
         $venta->update($request->all());
+        return $venta;
     }
 
     /**

@@ -409,29 +409,33 @@
 <!--&lt;!&ndash;                <q-select required outlined label="inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>&ndash;&gt;-->
 <!--              </div>-->
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required type="number"  outlined label="turno" v-model="venta.turno"/>
+                <q-input required type="text"  outlined label="turno" v-model="venta.turno"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input  outlined type="number" label="telefono1" v-model="venta.telefono1"/>
+                <q-input required type="text"  outlined label="hora" v-model="venta.hora"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input  outlined type="number" label="telefono2" v-model="venta.telefono2"/>
+                <q-input  outlined type="text" label="telefono1" v-model="venta.telefono1"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input  outlined type="text" label="telefono2" v-model="venta.telefono2"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
                 <q-input  outlined label="direccion" v-model="venta.direccion"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required outlined label="precio" v-model="venta.precio"/>
-              </div>
-              <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required outlined label="acuenta" v-model="venta.acuenta"/>
-              </div>
-              <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required outlined label="saldo" v-model="venta.saldo"/>
-              </div>
-              <div class="col-12 col-md-6 q-pa-xs">
                 <q-input required outlined label="observacion" v-model="venta.observacion"/>
               </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="precio" v-model="venta.precio"  disable/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="acuenta" v-model="venta.acuenta" disable/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input required outlined label="saldo" v-model="venta.saldo" disable/>
+              </div>
+
               <div class="col-12  q-pa-xs flex flex-center">
                 <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Imprimir"/>
               </div>
@@ -594,13 +598,26 @@ export default {
     },
     actualizarventa(){
       this.$q.loading.show()
-      this.$axios.put(process.env.API+'/venta/'+this.ventas,{
+      // console.log(this.venta)
+      this.$axios.put(process.env.API+'/venta/'+this.venta.id,{
+        turno:this.venta.turno,
+        hora:this.venta.hora,
+        telefono1:this.venta.telefono1,
+        telefono2:this.venta.telefono2,
+        envase:this.venta.envase,
+        direccion:this.venta.direccion,
+        // total:this.venta.total,
+        acuenta:this.venta.acuenta,
+        saldo:this.venta.saldo,
+        observacion:this.venta.observacion,
+      }).then((res)=>{
+        // console.log(res.data)
 
-      }).then(()=>{
         this.$q.loading.hide()
-        this.misclientes()
-        this.modalregistro=false
-        this.newcliente={}
+        // this.misclientes()
+        this.misventas()
+        this.modalhojaruta=false
+        // this.newcliente={}
       })
     },
     agregargarantia(){
@@ -838,8 +855,12 @@ export default {
               local:r.cliente.local,
               titular:r.cliente.titular,
               direccion:r.cliente.direccion,
-              telefono1:r.cliente.telefono,
+              telefono1:r.telefono1,
+              telefono2:r.telefono2,
               user:r.user.name,
+              turno:r.turno,
+              hora:r.hora,
+              observacion:r.observacion,
             })
         })
         console.log(this.ventas)
