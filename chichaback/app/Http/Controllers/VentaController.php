@@ -174,7 +174,7 @@ class VentaController extends Controller
 //        $venta->update($request->all());
         $venta=Venta::find($idventa);
         $venta->update($request->all());
-        return $venta;
+        return $this->ruta($venta->id);
     }
 
     /**
@@ -253,17 +253,20 @@ class VentaController extends Controller
         }</style>
         <div class="textcnt"> HOJA DE RUTA</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
-        <hr>
-        <div>Nombre: '.$venta->cliente->titular.'</div>
-        <div>Direccion: '.$venta->cliente->direccion.'</div>
-        <div>Telefono: '.$venta->cliente->telefono.'</div>
         <div>Fecha: '.$venta->fecha.'</div>
         <hr>
         <div>Cantidad '.$venta->detalle->cantidad.'</div>
+        <div>Turno: '.$venta->turno.' Hora: '.$venta->hora.'</div>
+        <div>Nombre: '.$venta->cliente->titular.'</div>
+        <div>Tel1: '.$venta->telefono1. ' Tel2:'.$venta->telefono1.'</div>
+        <div>Direccion: '.$venta->cliente->direccion.'</div>
+        <div>Envase: '.$venta->envase.'</div>
+        <hr>
         <div>Producto: '.$venta->detalle->nombreproducto.'</div>
         <div>Total: '.$venta->total.'</div>
         <div>A cuenta: '.$venta->acuenta.'</div>
         <div>Saldo: '.$venta->saldo.'</div>
+        <div>Observacion: '.$venta->observacion.'</div>
 
               ';
               return $cadena;
