@@ -185,14 +185,7 @@
                       style="text-transform: uppercase"
                     />
                   </div>
-                  <div class="col-12 col-sm-2">
-                    <q-input
-                      type="date"
-                      outlined
-                      v-model="cliente.fechanac"
-                      label="Fecha Nac"
-                    />
-                  </div>
+
                   <div class="col-12 col-sm-2">
                     <q-input
                       type="text"
@@ -504,8 +497,7 @@
                     outlined
                     v-model="dato.fechanac"
                     label="Fecha Nac"
-                    lazy-rules
-                    :rules="[ val => val && val.length > 0 || 'Por favor ingresar fechas']"
+
                   />
                   <q-input
                     type="text"
@@ -698,6 +690,8 @@ export default {
     },
     registrar(tipo){
         this.cliente.tipocliente=tipo;
+        if(tipo=='2')
+        this.cliente.fechanac=null;
         this.$axios.post(process.env.API+'/cliente', this.cliente).then(res=>{
         this.$q.notify({
           color: 'green-4',

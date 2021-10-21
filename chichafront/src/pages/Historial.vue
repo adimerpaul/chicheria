@@ -73,6 +73,7 @@
                 </template>
               </q-table>
             </div>
+            
                 <q-dialog v-model="alert">
                 <q-card>
                     <q-card-section>
@@ -253,7 +254,7 @@ export default {
 
     misventas(){
       this.$q.loading.show()
-      this.$axios.post(process.env.API+'/listventa',{fecha1:this.fecha2,fecha2:this.fecha3}).then(res=>{
+      this.$axios.post(process.env.API+'/listadorep').then(res=>{
         // this.ventas=res.data
         // console.log(res.data)
         this.$q.loading.hide()
@@ -276,16 +277,7 @@ export default {
         console.log(this.ventas)
       })
     },
-    agregar(){
-      // console.log('a')
-      // this.detalles.push({
-      //   nombreproducto:this.producto.nombre,
-      //   precio:this.producto.precio,
-      //   producto_id:this.producto.id,
-      //   cantidad:this.cantidad,
-      //   subtotal:this.subtotal,
-      // })
-    },
+
     guardar(){
       if (this.model==0){
         this.$q.notify({

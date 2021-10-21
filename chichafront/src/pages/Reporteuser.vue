@@ -17,8 +17,18 @@
                     outlined
                     type="date"
                     v-model="fecha"
-                    label="Fecha"
+                    label="Fecha ini"
                     required
+                  />
+                  </div>
+                  <div class="col-2">
+                  <q-input
+                    outlined
+                    type="date"
+                    v-model="fecha2"
+                    label="Fecha fin"
+                    required
+                    :rules="[ val => val>=fecha || 'Fecha debe ser mayor o igual']"
                   />
                   </div>
 
@@ -37,7 +47,57 @@
             :columns="columns"
             row-key="local">
 
+
           </q-table>
+                      
+                <q-dialog v-model="alert">
+                <q-card>
+                    <q-card-section>
+                    <div class="text-h6">Pagos Realizados</div>
+                    </q-card-section>
+
+                    <q-card-section class="q-pt-none">
+                    <q-table title="Pagos" :rows="pagos" :columns="colrep" row-key="name" />
+                    
+                    </q-card-section>
+
+                    <q-card-actions align="right">
+                    <q-btn flat label="OK" color="primary" v-close-popup />
+                    </q-card-actions>
+                </q-card>
+                </q-dialog>
+
+                <q-dialog v-model="dialog_pago">
+                <q-card>
+                    <q-card-section>
+                    <div class="text-h6">Registrar Pago</div>
+                    </q-card-section>
+
+                    <q-card-section class="q-pt-none">
+                    <q-form @submit.prevent="onPago" class="q-gutter-md" >
+
+                    <q-input filled v-model="regpago.monto" 
+                    label="Monto" 
+                    hint="Efectivo"
+                    type="number"
+                    lazy-rules 
+                    :rules="[ val => val && val > 0 && val <=regpago.saldo || 'Please type something']"
+                    />
+                    <q-input filled type="text" 
+                    v-model="regpago.observacion" 
+                    label="Observacion" 
+                    />
+                    <div>
+                    <q-btn label="Registrar" type="submit" color="green"/>
+                    <q-btn flat label="Cancelar" color="primary" v-close-popup />
+                    </div>
+                    </q-form>
+                                        
+                    </q-card-section>
+
+                </q-card>
+                </q-dialog>
+
         </div>
 
             <div class="col-12">
@@ -62,7 +122,12 @@
             :rows="deudas"
             :columns="columns2"
             row-key="local">
-
+      <template v-slot:body-cell-opcion="props">
+        <q-td :props="props">
+                        <q-btn icon="segment" color="green"  @click="listpago(props.row)" />
+                        <q-btn icon="monetization_on" color="amber" v-if="props.row.estado=='POR COBRAR'" @click="pago(props.row)"/>
+        </q-td>
+      </template>
           </q-table>
         </div>
 
@@ -77,11 +142,21 @@ export default {
   data(){
     return{
       fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
+      fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       usuarios:[],
       usuario:'',
       ventas:[],
       deudas:[],
+      regpago:{}, 
+      pagos:{},
       dato:{},
+      alert:false,
+      dialog_pago:false,
+            colrep:[
+        {name:'fecha',label:'Fecha',field:'fecha'},
+        {name:'monto',label:'Monto',field:'monto'},
+        {name:'Observacion',label:'Observacion',field:'observacion'},
+      ],
       columns : [
   {
     name: 'local',
@@ -112,7 +187,9 @@ export default {
   { name: 'saldo', align: 'center', label: 'Saldo', field: 'saldo' },
   { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha' },
   { name: 'estado', align: 'center', label: 'Estado', field: 'estado' },
-  { name: 'usuario', align: 'center', label: 'usuario', field: 'name' }
+  { name: 'tipo', align: 'center', label: 'tipo', field: 'tipo' },
+  { name: 'usuario', align: 'center', label: 'usuario', field: 'name' },
+  { name: 'opcion', align: 'center', label: 'opcion' ,field:'opcion'}
 ],
 
     }
@@ -122,6 +199,19 @@ export default {
       this.deudores();
   },
   methods: {
+          onPago(){
+      this.$axios.post(process.env.API+'/pago',this.regpago).then(res=>{
+          this.regpago={};
+          this.dialog_pago=false;
+          this.deudores();
+                  this.$q.notify({
+          message:'Registro correcto',
+          color:'green',
+          icon:'send'
+        })
+      })
+
+      },
     listado(){
       this.$axios.post(process.env.API+'/listuser').then(res=>{
         console.log(res.data)
@@ -137,6 +227,7 @@ export default {
     deudores(){
       this.deudas=[];
       this.$axios.post(process.env.API+'/listadodeudores').then(res=>{
+        console.log(res.data)
         res.data.forEach(elem => {
           this.deudas.push({
             // id:elem.id,
@@ -146,9 +237,11 @@ export default {
             total:elem.total,
             cuenta:elem.acuenta,
             saldo:elem.saldo,
+            tipo:elem.tipo,
             fecha:elem.fecha,
             estado:elem.estado,
-            name:elem.user.name
+            name:elem.user.name,
+            pagos:elem.pagos
           });
 
         });
@@ -158,7 +251,7 @@ export default {
     generar(){
             this.ventas=[];
             this.$q.loading.show()
-        this.$axios.post(process.env.API+'/listadoventa',{fecha:this.fecha,id:this.usuario.id}).then(res=>{
+        this.$axios.post(process.env.API+'/listadoventa',{fecha:this.fecha,fin:this.fecha2,id:this.usuario.id}).then(res=>{
             console.log(res.data);
           this.$q.loading.hide()
             res.data.forEach(el => {
@@ -176,7 +269,16 @@ export default {
 
         })
     },
-
+          pago(props){
+          this.regpago.venta_id=props.id;
+          this.regpago.saldo=props.saldo;
+        this.dialog_pago=true;
+      },
+    listpago(dato){
+        this.pagos=dato.pagos;
+        this.alert=true;
+    },
+    
   },
 computed:{
     ventat(){

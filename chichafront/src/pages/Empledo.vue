@@ -10,7 +10,7 @@
         <div class="row">
           <div class="col-12 q-pa-xs col-sm-1"><q-input outlined label="CI" v-model="empleado.ci" required/></div>
           <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Nombre" v-model="empleado.nombre" required/></div>
-          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" v-model="empleado.fechanac" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" type="date" v-model="empleado.fechanac" required/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>
           <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
@@ -64,7 +64,6 @@
           <div class="text-subtitle1 bg-accent text-center text-white">Historial de pagos</div>
         </div>
         <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha1" outlined required/></div>
-        <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
         <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
           <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="missalarios" />
         </div>
@@ -109,6 +108,13 @@
 <!--                </q-td>-->
 <!--              </q-tr>-->
 <!--            </template>-->
+      <template v-slot:body-cell-opcion="props">
+        <q-td :props="props">
+          <div>
+            <q-btn icon="print" color="yellow" @click="imprimirboleta(props.row)"/>
+          </div>
+        </q-td>
+      </template>
           </q-table>
         </div>
         <div class="col-12">
@@ -128,7 +134,7 @@
                   <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
                 </div>
                 <div class="col-4">
-                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','BONO']"/>
+                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA']"/>
                 </div>
                 <div class="col-4">
                   <q-input outlined type="text" label="observacion" v-model="pago.observacion" />
@@ -193,7 +199,8 @@ export default {
         {name:'adelanto',label:'Adelanto',field:'adelanto'},
         // {name:'detalle',label:'detalle',field:'detalle'},
         {name:'descuento',label:'Descuento',field:'descuento'},
-        {name:'bono',label:'Bono',field:'bono'},
+        {name:'extra',label:'Extra',field:'extra'},
+        {name:'opcion',label:'opcion',field:'opcion'},
       ],
     }
   },
@@ -221,6 +228,19 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+    imprimirboleta(boleta){
+      let cadena='<div>nombre: '+boleta.nombre+'</div><div>Salario: '+boleta.salario+'</div><div>adelanto: '+boleta.adelanto+'</div><div>descuento: '+boleta.descuento+'</div><br><br><div style="text-align:center">FIRMA</div>';
+            let myWindow = window.open("", "Imprimir", "width=200,height=100");
+            myWindow.document.write(cadena);
+            myWindow.document.close();
+            myWindow.focus();
+            setTimeout(function(){
+              myWindow.print();
+              myWindow.close();
+              // impDetalle(response);
+              //    impAniv(response);
+            },500);
+    },
       imprimir(){
 
         let mc=this
@@ -233,7 +253,7 @@ export default {
           doc.text(5, 1.5,  'DE '+mc.fecha1)
           doc.text(1, 3, 'Empleado')
           doc.text(5, 3, 'Sueldo')
-          doc.text(7, 3, 'Bono')
+          doc.text(7, 3, 'Extra')
           doc.text(9, 3, 'Adelanto')
           doc.text(11, 3, 'Descuento')
           doc.text(14, 3, 'Pago')
@@ -252,14 +272,14 @@ export default {
         let y=0
         this.salarios.forEach(r=>{
           // xx+=0.5
-          let bono=r.bono==null?0:r.bono;
+          let extra=r.extra==null?0:r.extra;
           let adelanto=r.adelanto==null?0:r.adelanto;
           let descuento=r.descuento==null?0:r.descuento;
-          let total= r.salario + bono - adelanto - descuento; 
+          let total= r.salario - adelanto - descuento; 
           y+=0.5
           doc.text(1, y+3, ''+r.nombre)
           doc.text(5, y+3, ''+r.salario)
-          doc.text(7, y+3, r.bono==null?'':''+r.bono)
+          doc.text(7, y+3, r.extra==null?'':''+r.extra)
           doc.text(9, y+3, r.adelanto==null?'':''+r.adelanto)
           doc.text(11, y+3, r.descuento==null?'':''+r.descuento)
           doc.text(14, y+3, ''+total)

@@ -40,6 +40,7 @@ class PrestamoController extends Controller
         $prestamo->fecha=date('Y-m-d');
 //        $prestamo->estado='DEVUELTO';
         $prestamo->cantidad=$request->cantidad;
+        $prestamo->prestado=$request->cantidad;
         $prestamo->efectivo=$request->efectivo;
         $prestamo->fisico=$request->fisico;
         $prestamo->observacion=$request->observacion;
@@ -47,6 +48,9 @@ class PrestamoController extends Controller
         $prestamo->cliente_id=$request->cliente_id;
         $prestamo->inventario_id=$request->inventario_id;
          $prestamo->save();
+         $inv=Inventario::find($request->inventario_id);
+         $inv->cantidad=$inv->cantidad - $request->cantidad;
+         $inv->save(); 
          return $this->impresion($prestamo->id);
 //        return $prestamo->
     }

@@ -20,6 +20,7 @@ class VentaController extends Controller
     public function misventas(Request $request){
         return Venta::with('user')
             ->with('cliente')
+            ->with('pagos')
             ->whereDate('fecha','>=',$request->fecha1)
             ->whereDate('fecha','<=',$request->fecha2)
             ->get();
@@ -35,6 +36,16 @@ class VentaController extends Controller
             ->orderBy('estado','desc')
             ->get();
     }
+
+    public function listado(Request $request){
+        return Venta::with('user')
+            ->with('cliente')
+            ->with('pagos')
+            ->where('estado','<>','ANULADO')
+            ->orderBy('estado','desc')
+            ->get();
+    }
+
     public function index(Request $request)
     {
         return $request;
@@ -174,17 +185,18 @@ class VentaController extends Controller
     }
 
     public function listadoventa(Request $request){
-        if ($request->id==0){
+        if ($request->id==0 || $request->id == ''){
             return Venta::with('user')
                 ->with('cliente')
-                ->whereDate('fecha',$request->fecha)
+                ->whereDate('fecha','>=',$request->fecha)
+                ->whereDate('fecha','<=',$request->fin)
 //                ->where('user_id',$request->id)
                 ->get();
         }else{
             return Venta::with('user')
                 ->with('cliente')
-                ->whereDate('fecha',$request->fecha)
-                ->where('user_id',$request->id)
+                ->whereDate('fecha','>=',$request->fecha)
+                ->whereDate('fecha','<=',$request->fin)
                 ->get();
         }
 
@@ -193,6 +205,7 @@ class VentaController extends Controller
     public function listadodeudores(){
         return Venta::with('user')
         ->with('cliente')
+        ->with('pagos')
         ->where('estado','POR COBRAR')
         ->orderBy('fecha','asc')
         ->get();

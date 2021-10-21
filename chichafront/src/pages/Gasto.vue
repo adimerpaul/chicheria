@@ -119,8 +119,13 @@
       <div class="col-12">
         <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir"/>
       </div>
-      <div class="col-12">
-        <q-btn label="Imprimir mis ventas" icon="print" color="teal" class="full-width" @click="imprimirmisventas"/>
+      <div class="row">
+        <div class="col-6">
+          <q-btn label="Imprimir mis ventas Detalle" icon="print" color="teal" style="width:100%"  @click="imprimirmisventasdetalle"/>
+        </div>
+        <div class="col-6">
+          <q-btn label="Imprimir mis ventas Local" icon="print" color="warning" style="width:100%"  @click="imprimirmisventaslocal"/>
+        </div>
       </div>
       <div class="col-12">
         <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="imprimirmisventasygastos"/>
@@ -314,14 +319,14 @@ export default {
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
-    imprimirmisventas(){
+    imprimirmisventasdetalle(){
       let mc=this
       function header(){
         var img = new Image()
         img.src = 'logo.png'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
-        doc.text(5, 1, 'Historial de ventas')
+        doc.text(5, 1, 'Historial de ventas DETALLE')
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         doc.text(1, 3, 'Total')
         doc.text(3, 3, 'A cuenta')
@@ -341,7 +346,14 @@ export default {
       // let xx=x
       // let yy=y
       let y=0
+      let tsaldo=0
+      let tacuenta=0
+      let total=0
       this.ventas.forEach(r=>{
+        if(r.tipo=='DETALLE'){
+        tsaldo=tsaldo+r.saldo;
+        tacuenta=tacuenta+r.acuenta;
+        total=total+r.total;
         // xx+=0.5
         y+=0.5
         doc.text(1, y+3, r.total.toString())
@@ -355,17 +367,78 @@ export default {
           doc.addPage();
           header()
           y=0
-        }
+        }}
       })
       doc.text(2, y+4, 'Ventas totales: ')
-      doc.text(5, y+4, this.ventat+'Bs')
+      doc.text(5, y+4, total+'Bs')
       doc.text(7, y+4, 'Por cobrar totales: ')
-      doc.text(11, y+4, this.porc+'Bs')
+      doc.text(11, y+4, tacuenta+'Bs')
       doc.text(14, y+4, 'Saldo totales: ')
-      doc.text(17, y+4, this.saldoc+'Bs')
+      doc.text(17, y+4, tsaldo+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
+
+    imprimirmisventaslocal(){
+      let mc=this
+      function header(){
+        var img = new Image()
+        img.src = 'logo.png'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(5, 1, 'Historial de ventas LOCAL')
+        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(1, 3, 'Total')
+        doc.text(3, 3, 'A cuenta')
+        doc.text(5, 3, 'Saldo')
+        doc.text(7, 3, 'Estado')
+        doc.text(9.5, 3, 'Local')
+        doc.text(13.5, 3, 'Titular')
+        doc.text(18.5, 3, 'Usuario')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(9);
+      // var x=0,y=
+      header()
+      // let xx=x
+      // let yy=y
+      let y=0
+      let tsaldo=0
+      let tacuenta=0
+      let total=0
+      this.ventas.forEach(r=>{
+        if(r.tipo=='LOCAL'){
+        tsaldo=tsaldo+r.saldo;
+        tacuenta=tacuenta+r.acuenta;
+        total=total+r.total;
+        // xx+=0.5
+        y+=0.5
+        doc.text(1, y+3, r.total.toString())
+        doc.text(3, y+3, r.acuenta.toString())
+        doc.text(5, y+3, r.saldo.toString())
+        doc.text(7, y+3, r.estado.toString())
+        doc.text(9.5, y+3, r.local.toString())
+        doc.text(13.5, y+3, r.titular.toString())
+        doc.text(18.5, y+3, r.user.toString())
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }}
+      })
+      doc.text(2, y+4, 'Ventas totales: ')
+      doc.text(5, y+4, total+'Bs')
+      doc.text(7, y+4, 'Por cobrar totales: ')
+      doc.text(11, y+4, tacuenta+'Bs')
+      doc.text(14, y+4, 'Saldo totales: ')
+      doc.text(17, y+4, tsaldo+'Bs')
+      // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      window.open(doc.output('bloburl'), '_blank');
+    },
+
     imprimir(){
       let mc=this
       function header(){
