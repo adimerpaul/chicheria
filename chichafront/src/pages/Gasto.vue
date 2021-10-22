@@ -270,9 +270,9 @@ export default {
         ventas+=parseFloat(r.acuenta)
         // doc.text(5, y+3, r.saldo.toString())
         doc.text(7, y+3, 'Cobro')
-        doc.text(9.5, y+3, r.local.toString())
-        doc.text(13.5, y+3, r.titular.toString())
-        doc.text(18.5, y+3, r.user.toString())
+        doc.text(9.5, y+3, r.local!=null?r.local.toString():'')
+        doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
+        doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
         if (y+3>25){
           doc.addPage();
           header()
@@ -296,10 +296,10 @@ export default {
         doc.text(3, y+3, r.precio+' Bs.')
         gastos+=parseFloat(r.precio)
         doc.text(7, y+3, 'Gasto')
-        doc.text(9.5, y+3, r.observacion)
-        // doc.text(9, y+3, r.fecha)
-        // doc.text(11.5, y+3, r.hora)
-        doc.text(18.5, y+3, r.user)
+        doc.text(9.5, y+3, r.observacion!=null?r.observacion:'')
+        doc.text(9, y+3, r.fecha!=null?r.fecha:'')
+        doc.text(11.5, y+3, r.hora!=null?r.hora:'')
+        doc.text(18.5, y+3, r.user!=null?r.user:'')
 
         // cont++
         if (y+3>25){
@@ -416,13 +416,13 @@ export default {
         total=total+r.total;
         // xx+=0.5
         y+=0.5
-        doc.text(1, y+3, r.total.toString())
-        doc.text(3, y+3, r.acuenta.toString())
-        doc.text(5, y+3, r.saldo.toString())
-        doc.text(7, y+3, r.estado.toString())
-        doc.text(9.5, y+3, r.local.toString())
-        doc.text(13.5, y+3, r.titular.toString())
-        doc.text(18.5, y+3, r.user.toString())
+        doc.text(1, y+3, r.total!=null?r.total.toString():'')
+        doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():'')
+        doc.text(5, y+3, r.saldo!=null?r.saldo.toString():'')
+        doc.text(7, y+3, r.estado!=null?r.estado.toString():'')
+        doc.text(9.5, y+3, r.local!=null?r.local.toString():'')
+        doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
+        doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
         if (y+3>25){
           doc.addPage();
           header()
