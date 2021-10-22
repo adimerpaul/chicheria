@@ -246,8 +246,8 @@ export default {
         // doc.text(1, 3, 'Total')
         doc.text(3, 3, 'Monto')
         // doc.text(5, 3, 'Saldo')
-        doc.text(7, 3, 'Tipo')
-        doc.text(9.5, 3, 'Local')
+        doc.text(5, 3, 'Tipo')
+        doc.text(9.5, 3, 'TIpo')
         doc.text(13.5, 3, 'Titular')
         doc.text(18.5, 3, 'Usuario')
         doc.setFont(undefined,'normal')
@@ -263,14 +263,12 @@ export default {
       let y=0
       let ventas=0
       this.ventas.forEach(r=>{
-        // xx+=0.5
         y+=0.5
-        // doc.text(1, y+3, r.total.toString())
-        doc.text(3, y+3, r.acuenta.toString()+' Bs.')
+        // console.log(r)
+        doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventas+=parseFloat(r.acuenta)
-        // doc.text(5, y+3, r.saldo.toString())
-        doc.text(7, y+3, 'Cobro')
-        doc.text(9.5, y+3, r.local!=null?r.local.toString():'')
+        doc.text(5, y+3, 'Cobro')
+        doc.text(9.5, y+3, r.detalle!=null?r.detalle.toString():'')
         doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
         doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
         if (y+3>25){
@@ -281,27 +279,15 @@ export default {
       })
       let gastos=0
       this.gastos.forEach(r=>{
-        // console.log(r)
-        // xx+=0.5
         y+=0.5
-        // doc.text(1, y+3, r.total.toString())
-        // doc.text(3, y+3, r.acuenta.toString())
-        // doc.text(5, y+3, r.saldo.toString())
-        // doc.text(7, y+3, r.estado.toString())
-        // doc.text(9.5, y+3, r.local.toString())
-        // doc.text(13.5, y+3, r.titular.toString())
-        // doc.text(18.5, y+3, r.user.toString())
-
-        // doc.text(1, y+3, ''+cont)
-        doc.text(3, y+3, r.precio+' Bs.')
+        // console.log(r)
+        doc.text(3, y+3, r.precio!=null?r.precio.toString():''+'Bs.')
         gastos+=parseFloat(r.precio)
-        doc.text(7, y+3, 'Gasto')
+        doc.text(5, y+3, 'Gasto')
         doc.text(9.5, y+3, r.observacion!=null?r.observacion.toString():'')
-        doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
-        doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
+        // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
+        // doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
         doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
-
-        // cont++
         if (y+3>25){
           doc.addPage();
           header()
@@ -535,6 +521,7 @@ export default {
                 local:r.cliente.local,
                 titular:r.cliente.titular,
                 user:r.user.name,
+                detalle:r.detalle.nombreproducto,
               })
           })
           // console.log(this.ventas)
