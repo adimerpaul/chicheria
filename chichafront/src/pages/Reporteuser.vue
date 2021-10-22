@@ -49,7 +49,7 @@
 
 
           </q-table>
-                      
+
                 <q-dialog v-model="alert">
                 <q-card>
                     <q-card-section>
@@ -58,7 +58,7 @@
 
                     <q-card-section class="q-pt-none">
                     <q-table title="Pagos" :rows="pagos" :columns="colrep" row-key="name" />
-                    
+
                     </q-card-section>
 
                     <q-card-actions align="right">
@@ -76,23 +76,23 @@
                     <q-card-section class="q-pt-none">
                     <q-form @submit.prevent="onPago" class="q-gutter-md" >
 
-                    <q-input filled v-model="regpago.monto" 
-                    label="Monto" 
+                    <q-input filled v-model="regpago.monto"
+                    label="Monto"
                     hint="Efectivo"
                     type="number"
-                    lazy-rules 
+                    lazy-rules
                     :rules="[ val => val && val > 0 && val <=regpago.saldo || 'Please type something']"
                     />
-                    <q-input filled type="text" 
-                    v-model="regpago.observacion" 
-                    label="Observacion" 
+                    <q-input filled type="text"
+                    v-model="regpago.observacion"
+                    label="Observacion"
                     />
                     <div>
                     <q-btn label="Registrar" type="submit" color="green"/>
                     <q-btn flat label="Cancelar" color="primary" v-close-popup />
                     </div>
                     </q-form>
-                                        
+
                     </q-card-section>
 
                 </q-card>
@@ -121,13 +121,22 @@
             title="Reporte Deudores"
             :rows="deudas"
             :columns="columns2"
-            row-key="local">
-      <template v-slot:body-cell-opcion="props">
-        <q-td :props="props">
-                        <q-btn icon="segment" color="green"  @click="listpago(props.row)" />
-                        <q-btn icon="monetization_on" color="amber" v-if="props.row.estado=='POR COBRAR'" @click="pago(props.row)"/>
-        </q-td>
-      </template>
+            row-key="local"
+            :filter="filter"
+          >
+            <template v-slot:body-cell-opcion="props">
+              <q-td :props="props">
+                              <q-btn icon="segment" color="green"  @click="listpago(props.row)" />
+                              <q-btn icon="monetization_on" color="amber" v-if="props.row.estado=='POR COBRAR'" @click="pago(props.row)"/>
+              </q-td>
+            </template>
+            <template v-slot:top-right>
+              <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </template>
           </q-table>
         </div>
 
@@ -144,10 +153,11 @@ export default {
       fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       usuarios:[],
+      filter:'',
       usuario:'',
       ventas:[],
       deudas:[],
-      regpago:{}, 
+      regpago:{},
       pagos:{},
       dato:{},
       alert:false,
@@ -280,7 +290,7 @@ export default {
         this.pagos=dato.pagos;
         this.alert=true;
     },
-    
+
   },
 computed:{
     ventat(){
