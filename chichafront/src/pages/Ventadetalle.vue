@@ -181,6 +181,12 @@
                       <q-td key="titular" :props="props">
                         {{ props.row.titular }}
                       </q-td>
+                      <q-td key="cantidad" :props="props">
+                        {{ props.row.cantidad }}
+                      </q-td>
+                      <q-td key="producto" :props="props">
+                        {{ props.row.producto }}
+                      </q-td>
                       <q-td key="total" :props="props">
                         {{ props.row.total }}
                       </q-td>
@@ -501,6 +507,8 @@ export default {
       columns2:[
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'titular',label:'Cliente',field:'titular'},
+        {name:'cantidad',label:'cantidad',field:'cantidad'},
+        {name:'producto',label:'Producto',field:'producto'},
         {name:'total',label:'Total',field:'total'},
         {name:'acuenta',label:'A cuenta',field:'acuenta'},
         {name:'saldo',label:'Saldo',field:'saldo'},
@@ -883,6 +891,8 @@ export default {
               turno:r.turno,
               hora:r.hora,
               observacion:r.observacion,
+              producto:r.detalle.nombreproducto,
+              cantidad:r.detalle.cantidad,
             })
         })
         console.log(this.ventas)
