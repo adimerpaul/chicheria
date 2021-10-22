@@ -204,10 +204,17 @@ export default {
       })
 
     },
-        listadoprestamo(){
+    listadoprestamo(){
       this.$axios.get(process.env.API+'/prestamo').then(res=>{
         console.log(res.data);
-        this.listadop=res.data;
+        this.listadop=[];
+        res.data.forEach(element => {
+            if(this.tab=='local' && element.cliente.tipocliente=='1')
+              this.listadop.push(element);
+            if(this.tab=='cliente' && element.cliente.tipocliente=='2')
+              this.listadop.push(element);
+        });
+
       })
     },
     onDev(p){
@@ -237,7 +244,7 @@ export default {
 
     },
         filtrarlista(){
-      this.listclientes();
+      this.listadoprestamo();
     },
     listclientes(){
       this.$q.loading.show();
