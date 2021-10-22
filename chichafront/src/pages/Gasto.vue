@@ -264,12 +264,13 @@ export default {
       let ventas=0
       this.ventas.forEach(r=>{
         y+=0.5
+        console.log(r)
         doc.text(3, y+3, r.acuenta.toString()+' Bs.')
         ventas+=parseFloat(r.acuenta)
         doc.text(5, y+3, 'Cobro')
-        doc.text(9.5, y+3, r.local!=undefined?r.local.toString():'')
-        doc.text(13.5, y+3, r.titular!=undefined?r.titular.toString():'')
-        doc.text(18.5, y+3, r.user!=undefined?r.user.toString():'')
+        doc.text(9.5, y+3, r.local!=null?r.local.toString():'')
+        doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
+        doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
         if (y+3>25){
           doc.addPage();
           header()
@@ -279,15 +280,14 @@ export default {
       let gastos=0
       this.gastos.forEach(r=>{
         y+=0.5
+        console.log(r)
         doc.text(3, y+3, r.precio+' Bs.')
         gastos+=parseFloat(r.precio)
         doc.text(5, y+3, 'Gasto')
-        doc.text(9.5, y+3, r.observacion!=undefined?r.observacion.toString():'')
-        doc.text(9, y+3, r.fecha!=undefined?r.fecha.toString():'')
-        doc.text(11.5, y+3, r.hora!=undefined?r.hora.toString():'')
-        doc.text(18.5, y+3, r.user!=undefined?r.user.toString():'')
-
-        // cont++
+        doc.text(9.5, y+3, r.observacion!=null?r.observacion.toString():'')
+        doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
+        doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
+        doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
         if (y+3>25){
           doc.addPage();
           header()
