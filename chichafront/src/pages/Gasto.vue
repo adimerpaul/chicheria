@@ -247,7 +247,8 @@ export default {
         doc.text(3, 3, 'Monto')
         // doc.text(5, 3, 'Saldo')
         doc.text(5, 3, 'Tipo')
-        doc.text(9.5, 3, 'TIpo')
+        doc.text(7, 3, 'Cantidad')
+        doc.text(9.5, 3, 'Producto')
         doc.text(13.5, 3, 'Titular')
         doc.text(18.5, 3, 'Usuario')
         doc.setFont(undefined,'normal')
@@ -268,6 +269,7 @@ export default {
         doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventas+=parseFloat(r.acuenta)
         doc.text(5, y+3, 'Cobro')
+        doc.text(7, y+3, r.cantidad!=null?r.cantidad.toString():'')
         doc.text(9.5, y+3, r.detalle!=null?r.detalle.toString():'')
         doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
         doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
@@ -522,6 +524,7 @@ export default {
                 titular:r.cliente.titular,
                 user:r.user.name,
                 detalle:r.detalle.nombreproducto,
+                cantidad:r.detalle.cantidad,
               })
           })
           // console.log(this.ventas)
