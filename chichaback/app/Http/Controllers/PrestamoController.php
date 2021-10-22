@@ -20,6 +20,10 @@ class PrestamoController extends Controller
         return Prestamo::with('cliente')->with('inventario')->with('logprestamos')->get();
     }
 
+    public function reportecliente(){
+        return DB::SELECT('select local,titular,i.id,i.nombre,sum(p.prestado) as total from prestamos p inner join clientes c on p.cliente_id=c.id inner join inventarios i on p.inventario_id = i.id where p.prestado>0 group by local,titular,i.id,i.nombre');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

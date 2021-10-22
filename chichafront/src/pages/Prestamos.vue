@@ -84,6 +84,19 @@
     </tr>
     </tbody>
   </table>
+  <hr>
+  <table>
+    <thead><tr><th>Local</th><th>Titular</th><th>Material</th><th>Total</th></tr></thead>
+    <tbody>
+      <tr v-for="r of reportepres" :key="r">
+        <td>{{r.local}}</td>
+        <td>{{r.titular}}</td>
+        <td>{{r.nombre}}</td>
+        <td>{{r.total}}</td>
+
+      </tr>
+    </tbody>
+  </table>
       <q-dialog v-model="dialog_dev" >
       <q-card style="min-width: 350px">
         <q-card-section>
@@ -135,7 +148,7 @@
 
 </q-page>
 </template>
-
+-
 <script>
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
@@ -160,6 +173,7 @@ export default {
       listado:[],
       listadop:[],
       dev:{},
+      reportepres:[],
       colum:[
   { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha', sortable: true },
   { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
@@ -180,8 +194,16 @@ export default {
       this.listclientes();
       this.cajaprestamo();
     this.listadoprestamo();
+    this.reporte();
   },
   methods: {
+    reporte(){
+      this.$axios.post(process.env.API+'/reportecliente').then(res=>{
+        console.log(res.data);
+        this.reportepres=res.data;
+      })
+
+    },
         listadoprestamo(){
       this.$axios.get(process.env.API+'/prestamo').then(res=>{
         console.log(res.data);
