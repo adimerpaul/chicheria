@@ -61,11 +61,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(p,i) in cliente.prestamos" :key="i">
+    <tr v-for="(p,i) in listadop" :key="i">
       <td>{{i+1}}</td>
-      <td>{{cliente.local}}</td>
-      <td>{{cliente.titular}}</td>
-      <td>{{cliente.telefono}}</td>
+      <td>{{p.cliente.local}}</td>
+      <td>{{p.cliente.titular}}</td>
+      <td>{{p.cliente.telefono}}</td>
       <td>{{p.inventario.nombre}}</td>
       <td>{{p.fecha}}</td>
       <td><q-badge :color="p.estado=='EN PRESTAMO'?'negative':'aceent'">{{p.estado}}</q-badge></td>
@@ -158,6 +158,7 @@ export default {
       dialog_list:false,
       datoprestamo:{},
       listado:[],
+      listadop:[],
       dev:{},
       colum:[
   { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha', sortable: true },
@@ -178,9 +179,15 @@ export default {
     })
       this.listclientes();
       this.cajaprestamo();
-
+    this.listadoprestamo();
   },
   methods: {
+        listadoprestamo(){
+      this.$axios.get(process.env.API+'/prestamo').then(res=>{
+        console.log(res.data);
+        this.listadop=res.data;
+      })
+    },
     onDev(p){
       // console.log(p);
       this.datoprestamo=p;
@@ -263,6 +270,7 @@ export default {
         myWindow.print();
         myWindow.close();
         // this.prestamos=res.data
+        this.listadoprestamo();
         this.$q.loading.hide();
         this.listclientes();
         // this.cliente=this.prestamos[0]

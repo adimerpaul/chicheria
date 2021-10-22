@@ -17,6 +17,7 @@ class PrestamoController extends Controller
     public function index()
     {
         //
+        return Prestamo::with('cliente')->with('inventario')->with('logprestamos')->get();
     }
 
     /**
