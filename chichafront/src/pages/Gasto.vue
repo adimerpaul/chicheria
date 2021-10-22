@@ -296,10 +296,10 @@ export default {
         doc.text(3, y+3, r.precio+' Bs.')
         gastos+=parseFloat(r.precio)
         doc.text(7, y+3, 'Gasto')
-        doc.text(9.5, y+3, r.observacion!=null?r.observacion:'')
-        doc.text(9, y+3, r.fecha!=null?r.fecha:'')
-        doc.text(11.5, y+3, r.hora!=null?r.hora:'')
-        doc.text(18.5, y+3, r.user!=null?r.user:'')
+        doc.text(9.5, y+3, r.observacion!=null?r.observacion.toString():'')
+        doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
+        doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
+        doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
 
         // cont++
         if (y+3>25){
