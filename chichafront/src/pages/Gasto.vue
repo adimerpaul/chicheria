@@ -264,11 +264,11 @@ export default {
       let ventas=0
       this.ventas.forEach(r=>{
         y+=0.5
-        console.log(r)
+        // console.log(r)
         doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventas+=parseFloat(r.acuenta)
         doc.text(5, y+3, 'Cobro')
-        doc.text(9.5, y+3, r.local!=null?r.local.toString():'')
+        doc.text(9.5, y+3, r.detalle!=null?r.detalle.toString():'')
         doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
         doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
         if (y+3>25){
@@ -280,7 +280,7 @@ export default {
       let gastos=0
       this.gastos.forEach(r=>{
         y+=0.5
-        console.log(r)
+        // console.log(r)
         doc.text(3, y+3, r.precio!=null?r.precio.toString():''+'Bs.')
         gastos+=parseFloat(r.precio)
         doc.text(5, y+3, 'Gasto')
@@ -521,6 +521,7 @@ export default {
                 local:r.cliente.local,
                 titular:r.cliente.titular,
                 user:r.user.name,
+                detalle:r.detalle.nombreproducto,
               })
           })
           // console.log(this.ventas)
