@@ -229,7 +229,9 @@ export default {
   },
   methods:{
     imprimirboleta(boleta){
-      let cadena='<div>nombre: '+boleta.nombre+'</div><div>Salario: '+boleta.salario+'</div><div>adelanto: '+boleta.adelanto+'</div><div>descuento: '+boleta.descuento+'</div><br><br><div style="text-align:center">FIRMA</div>';
+      let total=0;
+      total = boleta.salario - boleta.adelanto - boleta.descuento;
+      let cadena='<div>nombre: '+boleta.nombre+'</div><div>Salario: '+boleta.salario+'</div><div>adelanto: '+boleta.adelanto+'</div><div>descuento: '+boleta.descuento+'</div> <div>Total: '+total+'</div><br><br><div style="text-align:center">FIRMA</div>';
             let myWindow = window.open("", "Imprimir", "width=200,height=100");
             myWindow.document.write(cadena);
             myWindow.document.close();
