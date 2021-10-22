@@ -265,7 +265,7 @@ export default {
       this.ventas.forEach(r=>{
         y+=0.5
         console.log(r)
-        doc.text(3, y+3, r.acuenta.toString()+' Bs.')
+        doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventas+=parseFloat(r.acuenta)
         doc.text(5, y+3, 'Cobro')
         doc.text(9.5, y+3, r.local!=null?r.local.toString():'')
@@ -281,7 +281,7 @@ export default {
       this.gastos.forEach(r=>{
         y+=0.5
         console.log(r)
-        doc.text(3, y+3, r.precio+' Bs.')
+        doc.text(3, y+3, r.precio!=null?r.precio.toString():''+'Bs.')
         gastos+=parseFloat(r.precio)
         doc.text(5, y+3, 'Gasto')
         doc.text(9.5, y+3, r.observacion!=null?r.observacion.toString():'')
