@@ -193,10 +193,11 @@
                       <q-td key="estado" :props="props">
                         <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
                       </q-td>
-
-
                       <q-td key="user" :props="props">
                         {{ props.row.user }}
+                      </q-td>
+                      <q-td key="observacion" :props="props">
+                        <q-badge :color="props.row.observacion=='CANCELADO'?'positive':'negative'">{{ props.row.observacion }}</q-badge>
                       </q-td>
                       <q-td key="opcion" :props="props">
                         <q-btn-group v-if="props.row.estado!='ANULADO' && $store.state.login.anular" >
@@ -505,6 +506,7 @@ export default {
         {name:'saldo',label:'Saldo',field:'saldo'},
         {name:'estado',label:'Estado',field:'estado'},
         {name:'user',label:'Usuario',field:'user'},
+        {name:'observacion',label:'Observacion',field:'observacion'},
         {name:'opcion',label:'Opcion',field:'opcion'},
       ],
       columns3:[
