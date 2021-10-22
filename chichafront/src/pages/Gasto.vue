@@ -247,7 +247,7 @@ export default {
         doc.text(3, 3, 'Monto')
         // doc.text(5, 3, 'Saldo')
         doc.text(5, 3, 'Tipo')
-        doc.text(9.5, 3, 'Local')
+        doc.text(9.5, 3, 'TIpo')
         doc.text(13.5, 3, 'Titular')
         doc.text(18.5, 3, 'Usuario')
         doc.setFont(undefined,'normal')
@@ -285,8 +285,8 @@ export default {
         gastos+=parseFloat(r.precio)
         doc.text(5, y+3, 'Gasto')
         doc.text(9.5, y+3, r.observacion!=null?r.observacion.toString():'')
-        doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
-        doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
+        // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
+        // doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
         doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
         if (y+3>25){
           doc.addPage();
