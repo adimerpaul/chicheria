@@ -48,6 +48,7 @@
       <th>#</th>
       <th>Local</th>
       <th>Titular</th>
+      <th>Telefono</th>
       <th>Inventario</th>
       <th>Fecha</th>
       <th>Estado</th>
@@ -64,6 +65,7 @@
       <td>{{i+1}}</td>
       <td>{{cliente.local}}</td>
       <td>{{cliente.titular}}</td>
+      <td>{{cliente.telefono}}</td>
       <td>{{p.inventario.nombre}}</td>
       <td>{{p.fecha}}</td>
       <td><q-badge :color="p.estado=='EN PRESTAMO'?'negative':'aceent'">{{p.estado}}</q-badge></td>
