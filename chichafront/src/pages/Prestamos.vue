@@ -18,7 +18,8 @@
   <q-form @submit.prevent="agregar">
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
+      <q-select v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" option-label="titular"/>
+      <q-select v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
       <q-select outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
@@ -203,7 +204,7 @@ export default {
         console.log(res.data);
         this.reportepres=[];
         res.data.forEach(element => {
-          
+
             if(this.tab=='local' && element.tipocliente=='1')
               this.reportepres.push(element);
             if(this.tab=='cliente' && element.tipocliente=='2')
@@ -261,12 +262,14 @@ export default {
       this.prestamos=[];
       this.$axios.get(process.env.API+'/cliente').then(res=>{
          console.log(res.data)
-        res.data.forEach(element => {
-            if(this.tab=='local' && element.tipocliente=='1')
-              this.prestamos.push(element);
-            if(this.tab=='cliente' && element.tipocliente=='2')
-              this.prestamos.push(element);
-
+        res.data.forEach(r => {
+            if(this.tab=='local' && r.tipocliente=='1'){
+              r.titular=r.local
+              this.prestamos.push(r);
+            }
+            if(this.tab=='cliente' && r.tipocliente=='2'){
+              this.prestamos.push(r);
+            }
         });
         this.$q.loading.hide();
         if(this.prestamos.length>0)
@@ -336,7 +339,7 @@ export default {
         this.listclientes();
         // this.cliente=this.prestamos[0]
       })
-    },      
+    },
     imprimir(){
 
         let mc=this
@@ -346,7 +349,7 @@ export default {
           doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
           doc.setFont(undefined,'bold')
           doc.text(5, 1, 'Historial de prestamos Pendientes')
-  
+
           doc.text(1, 3, 'Local')
           doc.text(5, 3, 'Titular')
           doc.text(11, 3, 'Material')
