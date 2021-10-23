@@ -257,6 +257,7 @@ class VentaController extends Controller
         <div>Fecha: '.$venta->fecha.'</div>
         <div>Fecha entrega: '.$venta->fechaentrega.'</div>
         <hr>
+        <div>Producto: '.$venta->detalle->nombreproducto.'</div>
         <div>Cantidad '.$venta->detalle->cantidad.'</div>
         <div>Turno: '.$venta->turno.' Hora: '.$venta->hora.'</div>
         <div>Nombre: '.$venta->cliente->titular.'</div>
@@ -264,7 +265,6 @@ class VentaController extends Controller
         <div>Direccion: '.$venta->cliente->direccion.'</div>
         <div>Envase: '.$venta->envase.'</div>
         <hr>
-        <div>Producto: '.$venta->detalle->nombreproducto.'</div>
         <div>Total: '.$venta->total.'</div>
         <div>A cuenta: '.$venta->acuenta.'</div>
         <div>Saldo: '.$venta->saldo.'</div>
