@@ -654,9 +654,9 @@ export default {
       this.newcliente.tipocliente=2
       this.$axios.post(process.env.API+'/prestamo',{
         inventario_id:this.inventario.id,
-        cantidad:this.cantidad,
-        efectivo:this.efectivo,
-        fisico:this.fisico,
+        cantidad:this.newgarantia.cantidad,
+        efectivo:this.newgarantia.efectivo,
+        fisico:this.newgarantia.fisico,
         observacion:'',
         cliente_id:this.model.id,
       }).then(()=>{

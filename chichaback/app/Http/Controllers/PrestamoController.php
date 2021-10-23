@@ -21,7 +21,7 @@ class PrestamoController extends Controller
     }
 
     public function reportecliente(){
-        return DB::SELECT('select local,titular,i.id,i.nombre,sum(p.prestado) as total from prestamos p inner join clientes c on p.cliente_id=c.id inner join inventarios i on p.inventario_id = i.id where p.prestado>0 group by local,titular,i.id,i.nombre');
+        return DB::SELECT('select local,titular,i.id,i.nombre,sum(p.prestado) as total,tipocliente from prestamos p inner join clientes c on p.cliente_id=c.id inner join inventarios i on p.inventario_id = i.id where p.prestado>0 group by local,titular,i.id,i.nombre,tipocliente');
     }
 
     /**

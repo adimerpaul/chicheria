@@ -41,6 +41,7 @@
   </div>
   </q-form>
   <div>TOTAL EN CAJA: {{totalefectivo}} Bs.</div>
+  <div><q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/></div>
 <!--  {{cliente}}-->
   <table class="table" style="width: 100%">
     <thead>
@@ -200,7 +201,14 @@ export default {
     reporte(){
       this.$axios.post(process.env.API+'/reportecliente').then(res=>{
         console.log(res.data);
-        this.reportepres=res.data;
+        this.reportepres=[];
+        res.data.forEach(element => {
+          
+            if(this.tab=='local' && element.tipocliente=='1')
+              this.reportepres.push(element);
+            if(this.tab=='cliente' && element.tipocliente=='2')
+              this.reportepres.push(element);
+        });
       })
 
     },
@@ -245,6 +253,8 @@ export default {
     },
         filtrarlista(){
       this.listadoprestamo();
+      this.listclientes();
+      this.reporte();
     },
     listclientes(){
       this.$q.loading.show();
@@ -326,7 +336,50 @@ export default {
         this.listclientes();
         // this.cliente=this.prestamos[0]
       })
-    }
+    },      
+    imprimir(){
+
+        let mc=this
+        function header(){
+          var img = new Image()
+          img.src = 'logo.png'
+          doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+          doc.setFont(undefined,'bold')
+          doc.text(5, 1, 'Historial de prestamos Pendientes')
+  
+          doc.text(1, 3, 'Local')
+          doc.text(5, 3, 'Titular')
+          doc.text(11, 3, 'Material')
+          doc.text(13, 3, 'Cantidad')
+          // doc.text(13.5, 3, 'Estado')
+          // doc.text(18.5, 3, 'Usuario')
+          doc.setFont(undefined,'normal')
+        }
+        var doc = new jsPDF('p','cm','letter')
+        // console.log(dat);
+        doc.setFont("courier");
+        doc.setFontSize(9);
+        // var x=0,y=
+        header()
+        // let xx=x
+        // let yy=y
+        let y=0
+        this.reportepres.forEach(r=>{
+          // xx+=0.5
+          y+=0.5
+          doc.text(1, y+3, ''+r.local)
+          doc.text(5, y+3, ''+r.titular)
+          doc.text(11, y+3, ''+r.nombre)
+          doc.text(13, y+3, ''+r.total)
+          if (y+3>25){
+            doc.addPage();
+            header()
+            y=0
+          }
+        })
+        window.open(doc.output('bloburl'), '_blank');
+    },
+
   }
 }
 </script>
