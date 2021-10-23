@@ -381,8 +381,19 @@
         <q-card-section class="q-pt-none">
           <q-form @submit.prevent="agregargarantia">
             <div class="row">
+<!--              {{model}}-->
+
+              <div class="col-12 col-md-4 q-pa-xs">
+                <q-input required type="text"  outlined label="Cliente" v-model="model.label" disable/>
+              </div>
+              <div class="col-12 col-md-4 q-pa-xs">
+                <q-input required type="text"  outlined label="telefono" v-model="model.telefono" disable/>
+              </div>
+              <div class="col-12 col-md-4 q-pa-xs">
+                <q-input required type="text"  outlined label="direccion" v-model="model.direccion" disable/>
+              </div>
               <div class="col-12 col-md-6 q-pa-xs">
-<!--                <q-input required outlined label="ci" v-model="newgarantia.ci"/>-->
+                <!--                <q-input required outlined label="ci" v-model="newgarantia.ci"/>-->
                 <q-select required outlined label="inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
@@ -593,6 +604,8 @@ export default {
             this.clientes.push({
               label:r.ci+' '+r.titular,
               id:r.id,
+              telefono:r.telefono,
+              direccion:r.direccion,
               // detalles:r.detalles,
               // nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
               // padron:r.padron,
@@ -659,7 +672,13 @@ export default {
         fisico:this.newgarantia.fisico,
         observacion:'',
         cliente_id:this.model.id,
-      }).then(()=>{
+      }).then((res)=>{
+
+        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
         this.$q.loading.hide()
         this.misclientes()
         this.modalregistro=false
@@ -676,9 +695,8 @@ export default {
         this.modalgarantia=false
       }).catch(err=>{
         this.$q.loading.hide()
-
         this.$q.notify({
-          message:err.response.data.message,
+          message:err.response.data.message.error,
           color:'red',
           icon:'error'
         })
