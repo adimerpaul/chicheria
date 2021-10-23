@@ -4,7 +4,7 @@
             v-model="tab"
             dense
             class="text-grey"
-            active-color="dark"
+            active-color="white"
             indicator-color="primary"
             align="justify"
             narrow-indicator
