@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Logprestamo;
 use App\Models\Prestamo;
 use App\Models\Inventario;
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 
 class LogprestamoController extends Controller
@@ -53,7 +54,17 @@ class LogprestamoController extends Controller
         $inv=Inventario::find($request->inventario_id); 
         $inv->cantidad= $inv->cantidad + $request->cantidad;
         $inv->save();
-        return true;
+        $cliente=Cliente::find($prestamo->cliente_id);
+        $cadena="
+        <div> Fecha: $logpres->fecha</div>
+        <div>Cliente: $cliente->local  $cliente->titular</div>
+        <div>Item: $inv->nombre</div>
+        <div>Cantidad: $logpres->cantidad</div>
+        <div>Efectivo: $prestamo->efectivo</div>
+        <div>Fisico: $prestamo->fisico</div><br><br>
+        <div style='text-align:center'>FIRMA</div>
+";
+        return $cadena;
 
     }
 

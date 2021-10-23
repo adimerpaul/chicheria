@@ -109,9 +109,10 @@
           @submit="devolver"
           class="q-gutter-md"
         >
+        
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="dev.cantidad" autofocus type="number" label="Cantidad"
-          :rules="[ val => val > 1 && val<=datoprestamo.prestado || 'Ingrese la cantidad correcta' ]"
+          <q-input dense v-model="dev.cantidad" autofocus type="number" label="Cantidad" required min=1
+          :rules="[ val => val<=datoprestamo.prestado || 'Ingrese la cantidad correcta' ]"
           />
 
           <q-input dense v-model="dev.motivo" label="Observacion"
@@ -332,7 +333,15 @@ export default {
         inventario_id:this.datoprestamo.inventario_id,
         id:this.datoprestamo.id,
       }).then(res=>{
-        console.log(res.data)
+        console.log(res.data);
+        
+        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.focus();
+        // setTimeout(function(){
+          myWindow.print();
+          myWindow.close();
         // this.prestamos=res.data
         this.dialog_dev=false;
         this.dev={};
