@@ -317,7 +317,7 @@ export default {
       columns : [
   {
     name: 'nombre',
-    label: 'NOMBRE',
+    label: 'ITEM',
     align: 'center',
     field: 'nombre',
     sortable: true

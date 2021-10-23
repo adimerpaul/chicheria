@@ -41,7 +41,7 @@
     </div>
   </div>
   </q-form>
-  <div>TOTAL EN CAJA: {{totalefectivo}} Bs.</div>
+  <div v-if="tab=='cliente'">TOTAL EN CAJA: {{totalefectivo}} Bs.</div>
   <div><q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/></div>
 <!--  {{cliente}}-->
   <table class="table" style="width: 100%">
@@ -55,7 +55,7 @@
       <th>Fecha</th>
       <th>Estado</th>
       <th>Cantidad</th>
-      <th>Faltante</th>
+      <th>Pendiente</th>
       <th>Efectivo</th>
       <th>Fisico</th>
       <th>Observacion</th>
@@ -320,6 +320,7 @@ export default {
         this.cliente=this.cliente[0];
         this.inventario=this.inventario[0];
       })
+      this.filtrarlista();
       this.cajaprestamo();
     },
     devolver(){
@@ -336,7 +337,8 @@ export default {
         this.dialog_dev=false;
         this.dev={};
         this.$q.loading.hide();
-        this.listclientes();
+        this.filtrarlista();
+        //this.listclientes();
         // this.cliente=this.prestamos[0]
       })
     },
@@ -353,7 +355,7 @@ export default {
           doc.text(1, 3, 'Local')
           doc.text(5, 3, 'Titular')
           doc.text(11, 3, 'Material')
-          doc.text(13, 3, 'Cantidad')
+          doc.text(15, 3, 'Cantidad')
           // doc.text(13.5, 3, 'Estado')
           // doc.text(18.5, 3, 'Usuario')
           doc.setFont(undefined,'normal')
@@ -373,7 +375,7 @@ export default {
           doc.text(1, y+3, ''+r.local)
           doc.text(5, y+3, ''+r.titular)
           doc.text(11, y+3, ''+r.nombre)
-          doc.text(13, y+3, ''+r.total)
+          doc.text(16.5, y+3, ''+r.total,{align:'right'})
           if (y+3>25){
             doc.addPage();
             header()
