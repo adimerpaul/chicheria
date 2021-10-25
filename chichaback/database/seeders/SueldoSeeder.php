@@ -14,16 +14,16 @@ class SueldoSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('sueldos')->insert([
-            [
-                'fecha'=>date('Y-m-d'),
-                'hora'=>date('H:i:s'),
-                'monto'=>'100',
-                'tipo'=>'ADELANTO',
-                'empleado_id'=>1,
-                'user_id'=>1
-            ]
+        // DB::table('sueldos')->insert([
+        //     [
+        //         'fecha'=>date('Y-m-d'),
+        //         'hora'=>date('H:i:s'),
+        //         'monto'=>'100',
+        //         'tipo'=>'ADELANTO',
+        //         'empleado_id'=>1,
+        //         'user_id'=>1
+        //     ]
 
-        ]);
+        // ]);
     }
 }

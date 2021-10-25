@@ -14,15 +14,15 @@ class InventarioSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('inventarios')->insert([
-            [
-                "codigo"=>'0001',
-                "fecha"=>now(),
-                "nombre"=>'TURRIL ',
-                "cantidad"=>'10',
-                "detalle"=>'NINGUNA',
-//                "estado"=>'',
-            ]
-        ]);
+//         DB::table('inventarios')->insert([
+//             [
+//                 "codigo"=>'0001',
+//                 "fecha"=>now(),
+//                 "nombre"=>'TURRIL ',
+//                 "cantidad"=>'10',
+//                 "detalle"=>'NINGUNA',
+// //                "estado"=>'',
+//             ]
+//         ]);
     }
 }

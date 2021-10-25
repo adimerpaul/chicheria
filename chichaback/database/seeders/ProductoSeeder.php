@@ -14,11 +14,11 @@ class ProductoSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('productos')->insert([
-            [
-                'nombre'=>'Barril ',
-                'precio'=>'100'
-            ]
-        ]);
+        // DB::table('productos')->insert([
+        //     [
+        //         'nombre'=>'Barril ',
+        //         'precio'=>'100'
+        //     ]
+        // ]);
     }
 }

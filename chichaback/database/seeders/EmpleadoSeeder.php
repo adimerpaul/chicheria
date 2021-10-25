@@ -14,12 +14,12 @@ class EmpleadoSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('empleados')->insert([
-           'ci'=>'1010',
-           'nombre'=>'JUAN LOPEZ',
-            'fechanac'=>'2000-01-01',
-            'celular'=>'7232358',
-            'salario'=>'2500'
-        ]);
+        // DB::table('empleados')->insert([
+        //    'ci'=>'1010',
+        //    'nombre'=>'JUAN LOPEZ',
+        //     'fechanac'=>'2000-01-01',
+        //     'celular'=>'7232358',
+        //     'salario'=>'2500'
+        // ]);
     }
 }

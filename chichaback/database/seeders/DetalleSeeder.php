@@ -14,16 +14,16 @@ class DetalleSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('detalles')->insert([
-            [
-                'venta_id'=>'1',
-                'user_id'=>'1',
-                'producto_id'=>'1',
-                'cantidad'=>'1',
-                'nombreproducto'=>'1 G',
-                'precio'=>'100',
-                'subtotal'=>'100',
-            ],
-        ]);
+        // DB::table('detalles')->insert([
+        //     [
+        //         'venta_id'=>'1',
+        //         'user_id'=>'1',
+        //         'producto_id'=>'1',
+        //         'cantidad'=>'1',
+        //         'nombreproducto'=>'1 G',
+        //         'precio'=>'100',
+        //         'subtotal'=>'100',
+        //     ],
+        // ]);
     }
 }
