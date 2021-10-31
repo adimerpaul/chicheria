@@ -25,9 +25,9 @@ class DatabaseSeeder extends Seeder
             SueldoSeeder::class,
             PermisoSeeder::class,
             PermisoUserSeeder::class,
-InventarioSeeder::class,
+            InventarioSeeder::class,
 //            GastoSeeder::class
-        PrestamoSeeder::class
+            PrestamoSeeder::class
         ]);
     }
 }
