@@ -44,6 +44,43 @@
   <div v-if="tab=='cliente'">TOTAL EN CAJA: {{totalefectivo}} Bs.</div>
   <div><q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/></div>
 <!--  {{cliente}}-->
+  <q-table            title="LISTA DE PRESTAMOS"
+            :rows="listapod"
+            :columns="colprestamo"
+            :filter="filter"
+
+            row-key="name">
+
+          <template v-slot:top-right>
+              <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </template>
+
+              <template v-slot:body="props" >
+                <q-td key="local" :props="props"> {{props.row.cliente.local}}
+                </q-td>
+                <q-td key="estado" :props="props" @click="activar(props)">
+                  <q-badge color="green" v-if="props.row.estado=='ACTIVO'">
+                    {{ props.row.estado }}
+                  </q-badge>
+                  <q-badge color="red" v-else>
+                    {{ props.row.estado }}
+                  </q-badge>
+                </q-td>
+<!--              </q-tr>-->
+            </template>
+                        <template v-slot:body-cell-opcion="props" >
+                <q-td key="opcion" :props="props" > 
+                          <q-btn size="xs" @click="onDev(p)" v-if="p.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
+          <q-btn size="xs" @click="onList(p)"  color="green" icon="list"/>
+          <q-btn size="xs" @click="onEliminar(p)"  color="negative" icon="delete"/>
+                </q-td>
+            </template>
+
+  </q-table>
   <table class="table" style="width: 100%">
     <thead>
     <tr>
@@ -181,7 +218,21 @@ export default {
   { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha', sortable: true },
   { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
   { name: 'motivo', label: 'Observacion', field: 'motivo' },
-]
+],
+      colprestamo:[
+  { name: 'local', label: 'local', field: row=row.cliente.local, sortable: true },
+  { name: 'titular', label: 'titular', field: 'titular', sortable: true },
+  { name: 'telefono', label: 'telefono', field: 'telefono', sortable: true },
+  { name: 'Inventario', label: 'Inventario', field: 'Inventario', sortable: true },
+  { name: 'fecha', label: 'fecha', field: 'fecha', sortable: true },
+  { name: 'estado', label: 'estado', field: 'estado', sortable: true },
+  { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
+  { name: 'prestado', label: 'Pendiente', field: 'prestado', sortable: true },
+  { name: 'efectivo', label: 'efectivo', field: 'efectivo', sortable: true },
+  { name: 'fisico', label: 'fisico', field: 'fisico', sortable: true },
+  { name: 'observacion', label: 'Observacion', field: 'observacion' },
+  { name: 'opcion', label: 'opcion', field: 'opcion' },
+],
     }
   },
   created(){
