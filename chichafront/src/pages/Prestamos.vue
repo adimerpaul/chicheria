@@ -72,55 +72,14 @@
             </template>
                         <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" > 
-                          <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
-          <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
-          <q-btn size="xs" @click="onEliminar(props.row)"  color="negative" icon="delete"/>
+                    <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
+                    <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
+                    <q-btn size="xs" @click="onEliminar(props.row)"  color="negative" icon="delete"/>
                 </q-td>
             </template>
 
   </q-table>
-  <table class="table" style="width: 100%">
-    <thead>
-    <tr>
-      <th>#</th>
-      <th>Local</th>
-      <th>Titular</th>
-      <th>Telefono</th>
-      <th>Inventario</th>
-      <th>Fecha</th>
-      <th>Estado</th>
-      <th>Cantidad</th>
-      <th>Pendiente</th>
-      <th>Efectivo</th>
-      <th>Fisico</th>
-      <th>Observacion</th>
-      <th>Opcion</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr v-for="(p,i) in listadop" :key="i">
-      <td>{{i+1}}</td>
-      <td>{{p.cliente.local}}</td>
-      <td>{{p.cliente.titular}}</td>
-      <td>{{p.cliente.telefono}}</td>
-      <td>{{p.inventario.nombre}}</td>
-      <td>{{p.fecha}}</td>
-      <td><q-badge :color="p.estado=='EN PRESTAMO'?'negative':'aceent'">{{p.estado}}</q-badge></td>
-      <td>{{p.cantidad}}</td>
-      <td>{{p.prestado}}</td>
-      <td>{{p.efectivo}}</td>
-      <td>{{p.fisico}}</td>
-      <td>{{p.observacion}}</td>
-      <td>
-        <q-btn-group>
-          <q-btn size="xs" @click="onDev(p)" v-if="p.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
-          <q-btn size="xs" @click="onList(p)"  color="green" icon="list"/>
-          <q-btn size="xs" @click="onEliminar(p)"  color="negative" icon="delete"/>
-        </q-btn-group>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+
   <hr>
   <table>
     <thead><tr><th>Local</th><th>Titular</th><th>Material</th><th>Total</th></tr></thead>
@@ -219,18 +178,18 @@ export default {
   { name: 'motivo', label: 'Observacion', field: 'motivo' },
 ],
       colprestamo:[
-  { name: 'local', label: 'local', field: row=>row.cliente.local, sortable: true },
-  { name: 'titular', label: 'titular', field: row=>row.cliente.titular, sortable: true },
-  { name: 'telefono', label: 'telefono', field: row=>row.cliente.telefono, sortable: true },
-  { name: 'Inventario', label: 'Inventario', field: row=>row.inventario.nombre, sortable: true },
-  { name: 'fecha', label: 'fecha', field: 'fecha', sortable: true },
-  { name: 'estado', label: 'estado', field: 'estado', sortable: true },
-  { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
-  { name: 'prestado', label: 'Pendiente', field: 'prestado', sortable: true },
-  { name: 'efectivo', label: 'efectivo', field: 'efectivo', sortable: true },
-  { name: 'fisico', label: 'fisico', field: 'fisico', sortable: true },
-  { name: 'observacion', label: 'Observacion', field: 'observacion' },
-  { name: 'opcion', label: 'opcion', field: 'opcion' },
+  { name: 'local', label: 'LOCAL', field: row=>row.cliente.local, sortable: true },
+  { name: 'titular', label: 'TITULAR', field: row=>row.cliente.titular, sortable: true },
+  { name: 'telefono', label: 'TELEFONO', field: row=>row.cliente.telefono, sortable: true },
+  { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true },
+  { name: 'fecha', label: 'FECHA', field: 'fecha', sortable: true },
+  { name: 'estado', label: 'ESTADO', field: 'estado', sortable: true },
+  { name: 'cantidad', label: 'CANTIDAD', field: 'cantidad', sortable: true },
+  { name: 'prestado', label: 'PENDIENTE', field: 'prestado', sortable: true },
+  { name: 'efectivo', label: 'EFECTIVO', field: 'efectivo', sortable: true },
+  { name: 'fisico', label: 'FISICO', field: 'fisico', sortable: true },
+  { name: 'observacion', label: 'OBSERVACION', field: 'observacion' },
+  { name: 'opcion', label: 'OPCION', field: 'opcion' },
 ],
     }
   },
@@ -288,6 +247,7 @@ export default {
           // this.totalefectivo=res.data[0].total;
           this.listclientes()
           this.cajaprestamo()
+          this.listadoprestamo()
           console.log(res.data)
         })
       }

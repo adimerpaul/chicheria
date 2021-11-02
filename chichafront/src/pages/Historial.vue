@@ -12,13 +12,16 @@
             <div class="col-12">
               <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas</div>
             </div>
-            <template>
-            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
-            <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
-            <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
-              <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misventas" />
+            <q-form @submit.prevent="misventas">
+            <div class="row">
+            <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
+            <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
+            <div class="col-4 col-sm-4 q-pa-xs flex flex-center">
+              <q-btn color="info"  label="Consultar" icon="search" type="submit" />
+
             </div>
-            </template>
+            </div>
+            </q-form>
             <div class="col-12">
               <q-table
                 :columns="columns2"
@@ -33,6 +36,13 @@
                 <!--            </template>-->
                 <!--          </q-input>-->
                 <!--        </template>-->
+            <template v-slot:top-right>
+              <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </template>
                 <template v-slot:body="props">
                   <q-tr :props="props">
                     <q-td key="fecha" :props="props">
@@ -218,7 +228,7 @@ export default {
   },
   mounted() {
 
-    this.misventas()
+    //this.misventas()
     // console.log(this.$store.state.login)
 
 
@@ -254,7 +264,8 @@ export default {
 
     misventas(){
       this.$q.loading.show()
-      this.$axios.post(process.env.API+'/listadorep').then(res=>{
+      this.ventas=[];
+      this.$axios.post(process.env.API+'/listadoventa',{ini:this.fecha2,fin:this.fecha3}).then(res=>{
         // this.ventas=res.data
         // console.log(res.data)
         this.$q.loading.hide()
@@ -314,6 +325,7 @@ export default {
         acuenta:this.acuenta,
         saldo:this.saldo,
         estado:this.estado,
+        filtro:'',
         tipo:'LOCAL',
         cliente_id:this.model.id,
         detalles:[{

@@ -190,20 +190,20 @@ class VentaController extends Controller
     }
 
     public function listadoventa(Request $request){
-        if ($request->id==0 || $request->id == ''){
-            return Venta::with('user')
-                ->with('cliente')
-                ->whereDate('fecha','>=',$request->fecha)
-                ->whereDate('fecha','<=',$request->fin)
+       // if ($request->id==0 || $request->id == ''){
+           // return Venta::with('user')
+        //        ->with('cliente')
+         //      ->whereDate('fecha','>=',$request->fecha)
+        //        ->whereDate('fecha','<=',$request->fin)
 //                ->where('user_id',$request->id)
-                ->get();
-        }else{
+        //        ->get();
+       // }else{
             return Venta::with('user')
                 ->with('cliente')
-                ->whereDate('fecha','>=',$request->fecha)
+                ->whereDate('fecha','>=',$request->ini)
                 ->whereDate('fecha','<=',$request->fin)
                 ->get();
-        }
+       // }
 
     }
 
