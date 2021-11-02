@@ -45,7 +45,7 @@
   <div><q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/></div>
 <!--  {{cliente}}-->
   <q-table            title="LISTA DE PRESTAMOS"
-            :rows="listapod"
+            :rows="listadop"
             :columns="colprestamo"
             :filter="filter"
 
@@ -59,14 +59,12 @@
               </q-input>
             </template>
 
-              <template v-slot:body="props" >
-                <q-td key="local" :props="props"> {{props.row.cliente.local}}
-                </q-td>
-                <q-td key="estado" :props="props" @click="activar(props)">
-                  <q-badge color="green" v-if="props.row.estado=='ACTIVO'">
+              <template v-slot:body-cell-estado="props" >
+                <q-td key="estado" :props="props">
+                  <q-badge color="negative" v-if="props.row.estado=='EN PRESTAMO'">
                     {{ props.row.estado }}
                   </q-badge>
-                  <q-badge color="red" v-else>
+                  <q-badge color="accent" v-else>
                     {{ props.row.estado }}
                   </q-badge>
                 </q-td>
@@ -74,9 +72,9 @@
             </template>
                         <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" > 
-                          <q-btn size="xs" @click="onDev(p)" v-if="p.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
-          <q-btn size="xs" @click="onList(p)"  color="green" icon="list"/>
-          <q-btn size="xs" @click="onEliminar(p)"  color="negative" icon="delete"/>
+                          <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
+          <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
+          <q-btn size="xs" @click="onEliminar(props.row)"  color="negative" icon="delete"/>
                 </q-td>
             </template>
 
@@ -214,16 +212,17 @@ export default {
       listadop:[],
       dev:{},
       reportepres:[],
+      filter:'',
       colum:[
   { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha', sortable: true },
   { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
   { name: 'motivo', label: 'Observacion', field: 'motivo' },
 ],
       colprestamo:[
-  { name: 'local', label: 'local', field: row=row.cliente.local, sortable: true },
-  { name: 'titular', label: 'titular', field: 'titular', sortable: true },
-  { name: 'telefono', label: 'telefono', field: 'telefono', sortable: true },
-  { name: 'Inventario', label: 'Inventario', field: 'Inventario', sortable: true },
+  { name: 'local', label: 'local', field: row=>row.cliente.local, sortable: true },
+  { name: 'titular', label: 'titular', field: row=>row.cliente.titular, sortable: true },
+  { name: 'telefono', label: 'telefono', field: row=>row.cliente.telefono, sortable: true },
+  { name: 'Inventario', label: 'Inventario', field: row=>row.inventario.nombre, sortable: true },
   { name: 'fecha', label: 'fecha', field: 'fecha', sortable: true },
   { name: 'estado', label: 'estado', field: 'estado', sortable: true },
   { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
