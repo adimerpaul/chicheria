@@ -12,8 +12,8 @@ class UserController extends Controller
 {
     public function index(){
         return User::
-            with('permisos')
-            ->where('id','!=',1)->get();
+            with('permisos')->get();
+            //->where('id','!=',1)->get();
     }
     public function listuser(){
         return User::
