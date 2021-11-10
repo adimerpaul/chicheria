@@ -251,6 +251,26 @@
         </q-item>
 
         <q-item
+          v-if="$store.state.login.historialventa"
+          clickable
+          exact
+          to="historialruta"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="task" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Historial de Rutas </q-item-label>
+            <q-item-label caption>
+              Historial de venta Ruta
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
           v-if="$store.state.login.empleados"
           clickable
           exact

@@ -207,6 +207,17 @@ class VentaController extends Controller
 
     }
 
+    public function listadoventaruta(Request $request){
+             return Venta::with('user')
+                 ->with('cliente')
+                 ->whereDate('fecha','>=',$request->ini)
+                 ->whereDate('fecha','<=',$request->fin)
+                 ->where('direccion','<>','')
+                 ->Where('fecha','<>','')
+                 ->get();
+ 
+     }
+
     public function listadodeudores(){
         return Venta::with('user')
         ->with('cliente')

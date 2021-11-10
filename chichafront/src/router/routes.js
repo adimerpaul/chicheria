@@ -13,6 +13,7 @@ import Gasto from "pages/Gasto";
 import Ventadetalle from "pages/Ventadetalle";
 import Prestamos from "pages/Prestamos";
 import Historial from "pages/Historial";
+import Historialruta from "pages/Historialruta";
 // <<<<<<< HEAD
 // import User from "pages/User";
 // =======
@@ -40,6 +41,7 @@ const routes = [
       { path: 'gasto', component: Gasto,meta: {requiresAuth: true} },
       { path: 'prestamos', component: Prestamos,meta: {requiresAuth: true} },
       { path: 'historial', component: Historial,meta: {requiresAuth: true} },
+      { path: 'historialruta', component: Historialruta,meta: {requiresAuth: true} },
 
 // <<<<<<< HEAD
 //       { path: 'user', component: User,meta: {requiresAuth: true} },
