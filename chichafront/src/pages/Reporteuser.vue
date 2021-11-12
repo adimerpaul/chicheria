@@ -263,7 +263,7 @@ export default {
     generar(){
             this.ventas=[];
             this.$q.loading.show()
-        this.$axios.post(process.env.API+'/listadoventa',{fecha:this.fecha,fin:this.fecha2,id:this.usuario.id}).then(res=>{
+        this.$axios.post(process.env.API+'/listadoventa',{ini:this.fecha,fin:this.fecha2,id:this.usuario.id}).then(res=>{
             console.log(res.data);
           this.$q.loading.hide()
             res.data.forEach(el => {
