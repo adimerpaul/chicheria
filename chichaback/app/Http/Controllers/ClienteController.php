@@ -151,14 +151,14 @@ class ClienteController extends Controller
     public function ordercumple(){
 
          $cliente=DB::select('(select *,MONTH(fechanac) as mes,DAY(fechanac) as dia from clientes
-         where MONTH(fechanac)>=MONTH(CURDATE()) and DAY(fechanac)>=DAY(CURDATE()) order by  mes asc, dia asc)
+         where MONTH(fechanac)>=MONTH(CURDATE()) order by  mes asc, dia asc)
          ');
          return $cliente;
     }
     public function ordercumple2(){
         $cliente2=DB::select('
         (select *,MONTH(fechanac) as mes,DAY(fechanac) as dia from clientes
-         where MONTH(fechanac)<=MONTH(CURDATE()) and DAY(fechanac)<DAY(CURDATE()) order by  mes asc, dia asc)
+         where MONTH(fechanac)<MONTH(CURDATE()) order by  mes asc, dia asc)
          union (select *,"" as mes,"" as dia from clientes where fechanac is null)');
          return $cliente2;
     }
@@ -166,6 +166,7 @@ class ClienteController extends Controller
     public function listado(){
         return Cliente::where('tipocliente',$tipocliente)->get();
     }
+    
 
     public function buscarci($request){
         return Cliente::where('tipocliente',$request->tipocliente)->where('ci',$request->ci)->get();

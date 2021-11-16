@@ -41,7 +41,7 @@
     </div>
   </div>
   </q-form>
-  <div v-if="tab=='cliente'">TOTAL EN CAJA: {{totalefectivo}} Bs.</div>
+  <div class="text-h5" v-if="tab=='cliente'">TOTAL EN CAJA: {{totalefectivo}} Bs.</div>
   <div><q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/></div>
 <!--  {{cliente}}-->
   <q-table            title="LISTA DE PRESTAMOS"
@@ -82,13 +82,14 @@
 
   <hr>
   <table>
-    <thead><tr><th>Local</th><th>Titular</th><th>Material</th><th>Total</th></tr></thead>
+    <thead><tr><th>Local</th><th>Titular</th><th>Material</th><th>Total</th> <th>Monto</th></tr></thead>
     <tbody>
       <tr v-for="r of reportepres" :key="r">
         <td>{{r.local}}</td>
         <td>{{r.titular}}</td>
         <td>{{r.nombre}}</td>
         <td>{{r.total}}</td>
+        <td>{{r.monto}}</td>
 
       </tr>
     </tbody>
@@ -375,7 +376,7 @@ export default {
           doc.text(5, 3, 'Titular')
           doc.text(11, 3, 'Material')
           doc.text(15, 3, 'Cantidad')
-          // doc.text(13.5, 3, 'Estado')
+           doc.text(17.5, 3, 'Monto')
           // doc.text(18.5, 3, 'Usuario')
           doc.setFont(undefined,'normal')
         }
@@ -395,6 +396,7 @@ export default {
           doc.text(5, y+3, ''+r.titular)
           doc.text(11, y+3, ''+r.nombre)
           doc.text(16.5, y+3, ''+r.total,{align:'right'})
+          doc.text(17.5, y+3, ''+r.monto,{align:'right'})
           if (y+3>25){
             doc.addPage();
             header()
