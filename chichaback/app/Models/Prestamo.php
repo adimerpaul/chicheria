@@ -25,6 +25,10 @@ class Prestamo extends Model
         return $this->belongsTo(Cliente::class);
     }
 
+    public function Usuario(){
+        return $this->belongsTo(User::class);
+    }
+
     public function inventario(){
         return $this->belongsTo(Inventario::class);
     }

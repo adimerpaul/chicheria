@@ -181,6 +181,7 @@ export default {
       empleadohistorial:{},
       boolcrear:true,
       gastos:[],
+      anulados:[],
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -296,7 +297,16 @@ export default {
           y=0
         }
       })
-      doc.setFont(undefined,'bold')
+      if(this.totalanulado>0){
+        ventas=ventas+this.totalanulado;
+              y+=0.5
+        doc.text(3, y+3, this.totalanulado.toString())
+        doc.text(5, y+3, 'Prestamo')
+        doc.text(7, y+3, '')
+        doc.text(9.5, y+3, 'ANULADOS')
+        doc.text(13.5, y+3, '')
+        doc.text(18.5, y+3, '')
+      }
 
       doc.text(2, y+4, 'Monto cobrado: ')
       doc.text(5, y+4, ventas+'Bs')
@@ -527,7 +537,15 @@ export default {
                 cantidad:r.detalle.cantidad,
               })
           })
-          // console.log(this.ventas)
+
+          this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha2,fecha2:this.fecha2}).then(res=>{
+            console.log(res.data)
+          this.anulados=[];
+          res.data.forEach(r=>{
+            // if (r.tipo=='LOCAL')
+              this.anulados=res.data;
+            })
+          })
         })
 
 
@@ -717,6 +735,13 @@ export default {
       })
       return total
     },
+    totalanulado(){
+      let total=0;
+      this.anulados.forEach(r=>{
+        total+=parseFloat(r.efectivo)
+      })
+      return total;
+    }
   }
 }
 </script>

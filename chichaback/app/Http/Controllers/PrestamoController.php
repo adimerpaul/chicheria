@@ -118,6 +118,16 @@ class PrestamoController extends Controller
         $prestamo->delete();
     }
 
+    public function misanulados(Request $request){
+        return Prestamo::with('cliente')
+        
+            ->where('estado','ANULADO')
+            ->where('efectivo','>',0)
+            ->whereDate('updated_at','>=',$request->fecha1)
+            ->whereDate('updated_at','<=',$request->fecha2)
+            ->get();
+    }
+
     public function impresion($id){
         $garantia=Prestamo::with('cliente')->where('id',$id)->get()[0];
         $cadena='

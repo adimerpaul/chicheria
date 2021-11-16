@@ -103,9 +103,29 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Clientes</q-item-label>
+            <q-item-label>Clientes Detalle</q-item-label>
             <q-item-label caption>
               Control de cLientes
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+                <q-item
+          v-if="$store.state.login.clientes"
+          clickable
+          exact
+          to="clientelocal"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="people" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Clientes Local</q-item-label>
+            <q-item-label caption>
+              Control de cLientes Local
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -223,7 +243,27 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Historial de prestamos </q-item-label>
+            <q-item-label>Historial de prestamos Detalle</q-item-label>
+            <q-item-label caption>
+              Historial de prestamos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          v-if="$store.state.login.historialprestamo"
+          clickable
+          exact
+          to="prestamoslocal"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="task" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Historial de prestamos Local</q-item-label>
             <q-item-label caption>
               Historial de prestamos
             </q-item-label>

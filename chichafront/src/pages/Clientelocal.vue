@@ -1,68 +1,117 @@
 <template>
     <div class="row">
-      <div class="col-12"><q-badge label="REGISTRO DE NUEVOS CLIENTES" color="teal" class="full-width text-h6"/></div>
+      <div class="col-12"><q-badge label="REGISTRO DE NUEVOS LOCALES " color="teal" class="full-width text-h6"/></div>
       <div class="col-12">
-<q-card>
-              <q-form @submit="registrar(2)" class="q-gutter-md">
-                <div class="row">
-                  <div class="col-12 col-sm-2">
-                    <q-input
-                      outlined
-                      type="text"
-                      v-model="cliente.ci"
-                      label="Cedula Identidad"
-                      style="text-transform: uppercase"
-                    />
-                  </div>
-                  <div class="col-12 col-sm-2">
-                    <q-input
-                      outlined
-                      v-model="cliente.titular"
-                      type="text"
-                      label="Nombre Completo"
-                      style="text-transform: uppercase"
-                      lazy-rules
-                      :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
-                    />
-                  </div>
+        <q-card>
 
-                  <div class="col-12 col-sm-2">
-                    <q-input
-                      outlined
-                      type="text"
-                      v-model="cliente.telefono"
-                      label="Telefono o Celular"
-                      style="text-transform: uppercase"
-                    />
-                  </div>
+          <q-separator />
 
-                  <div class="col-12 col-sm-2">
-                    <q-input
-                      type="text"
-                      outlined
-                      v-model="cliente.direccion"
-                      label="Direccion*"
-                      style="text-transform: uppercase"
-                    />
-                  </div>
-                  <div class="col-12 col-sm-2">
-                    <q-input
-                      outlined
-                      v-model="cliente.observacion"
-                      label="Observacion"
-                      type="text"
-                      style="text-transform: uppercase"
-                    />
-                  </div>
-                  <div class="col-12 flex flex-center">
-                    <q-btn label="Registrar" icon="send" type="submit" color="primary" class="full-width" />
-                  </div>
-                </div>
-                <div>
-                </div>
+                          <q-form @submit="registrar(1)" class="q-gutter-md">
+                          <div class="row">
+                          <div class="col-12 col-sm-2">
+                            <q-input
+                              outlined
+                              type="text"
+                              v-model="cliente.local"
+                              label="Local"
+                              style="text-transform: uppercase"
+                            />
+                            </div>
+                            <div class="col-12 col-sm-2">
+                            <q-input
+                              outlined
+                              type="text"
+                              v-model="cliente.ci"
+                              label="Cedula Identidad"
+                              style="text-transform: uppercase"
+                            />
+                            </div>
+                            <div class="col-12 col-sm-2">
+                            <q-input
+                              outlined
+                              v-model="cliente.titular"
+                              type="text"
+                              label="Nombre Completo"
+                              style="text-transform: uppercase"
+                              lazy-rules
+                              :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
+                            />
+                                              </div>
 
-              </q-form>
+                            <div class="col-12 col-sm-2">
+                            <q-input
+                              outlined
+                              type="text"
+                              v-model="cliente.telefono"
+                              label="Telefono o Celular"
+                              style="text-transform: uppercase"
+                            />
+                                              </div>
+                            <div class="col-12 col-sm-2">
+                            <q-input
+                              type="date"
+                              outlined
+                              v-model="cliente.fechanac"
+                              label="Fecha Nac"
+                            />
+                                              </div>
+                            <div class="col-12 col-sm-2">
+                            <q-input
+                              type="text"
+                              outlined
+                              v-model="cliente.direccion"
+                              label="Direccion*"
+                              style="text-transform: uppercase"
+                            />
+                            </div>
 
+                            <div class="col-12 col-sm-2">
+                              <q-select outlined v-model="cliente.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
+                            </div>
+                            <div class="col-12 col-sm-2">
+                              <q-select outlined v-model="cliente.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad" />
+                            </div>
+                            <div class="col-12 col-sm-2">
+                              <q-select outlined v-model="cliente.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
+                            </div>
+                            <div class="col-12 col-sm-2">
+                              <q-input
+                                type="text"
+                                outlined
+                                v-model="cliente.razon"
+                                label="Razon Social"
+                                style="text-transform: uppercase"
+                              />
+                            </div>
+                            <div class="col-12 col-sm-2">
+                              <q-input
+                                outlined
+                                v-model="cliente.nit"
+                                label="NIT"
+                                type="text"
+                                style="text-transform: uppercase"
+                              />
+                            </div>
+                            <div class="col-12 col-sm-2">
+                            <q-input
+                              outlined
+                              v-model="cliente.observacion"
+                              label="Observacion"
+                              type="text"
+                              style="text-transform: uppercase"
+                            />
+                            </div>
+                            <div class="col-12 flex flex-center">
+                              <q-btn label="Registrar" icon="send" type="submit" color="primary" class="full-width" />
+                            </div>
+
+                          </div>
+
+                            <div>
+                            </div>
+
+
+                              </q-form>
         </q-card>
       </div>
       <div class="col-12">
@@ -128,7 +177,13 @@
             @submit="onMod"
             class="q-gutter-md"
           >
-
+                  <q-input
+                    outlined
+                    type="text"
+                    v-model="dato.local"
+                    label="Local"
+                    style="text-transform: uppercase"
+                  />
                   <q-input
                     outlined
                     type="text"
@@ -154,7 +209,13 @@
                     label="Telefono o Celular"
                     style="text-transform: uppercase"
                   />
+                  <q-input
+                    type="date"
+                    outlined
+                    v-model="dato.fechanac"
+                    label="Fecha Nac"
 
+                  />
                   <q-input
                     type="text"
                     outlined
@@ -170,7 +231,16 @@
                     style="text-transform: uppercase"
                   />
                   <div v-if="dato.tipocliente=='1'">
-
+                  <q-select v-model="dato.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
+                  <q-select outlined v-model="dato.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad Tributaria" />
+                  <q-select outlined v-model="dato.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
+                  <q-input
+                    type="text"
+                    outlined
+                    v-model="dato.razon"
+                    label="Razon Social"
+                    style="text-transform: uppercase"
+                  />
 
                   <q-input
                     outlined
@@ -209,7 +279,13 @@
 
 
       </div>
+      <div class="col-12">
+<!--        <div class="q-pb-sm">-->
+<!--          Model: {{ days }}-->
+<!--        </div>-->
 
+        <q-date v-model="days" multiple />
+      </div>
     </div>
 </template>
 <script>
@@ -218,7 +294,7 @@ import { date } from 'quasar'
 export default {
   data(){
     return{
-      tab:'cliente',
+      tab:'local',
       // days:[{id :'2019/02/01'}, {id:'2019/02/10'} ],
       days:[],filter:'',
       crear:false,
@@ -232,11 +308,23 @@ export default {
       color:'',
       dato:{},
       columns : [
-
+  {
+    name: 'local',
+    label: 'CODIGO',
+    align: 'center',
+    field: 'local',
+    sortable: true
+  },
   { name: 'ci', align: 'center', label: 'CI', field: 'ci', sortable: true },
   { name: 'titular', align: 'center', label: 'TITULAR', field: 'titular', sortable: true },
+  { name: 'tipo', label: 'TIPO', field: 'tipo' },
   { name: 'telefono', label: 'TELÉFONO', field: 'telefono' },
+  { name: 'fecha nac', label: 'FECHA NAC', field: 'fechanac' },
   { name: 'direccion', label: 'DIRECCIÓN', field: 'direccion' },
+  { name: 'legalidad', label: 'LEGALIDAD', field: 'legalidad' },
+  { name: 'categoria', label: 'CATEGORIA NIT', field: 'categoria' },
+  { name: 'razon', label: 'RAZON SOCIAL', field: 'razon' },
+  { name: 'nit', label: 'NÚMERO NIT', field: 'nit' },
   { name: 'observacion', label: 'OBSERVACIÓN', field: 'observacion' },
   { name: 'tipocliente', label: 'TIPO CLIENTE', field: 'tipocliente' },
   { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },

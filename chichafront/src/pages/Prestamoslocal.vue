@@ -30,7 +30,7 @@
   <div class="text-h5" v-if="tab=='cliente'">TOTAL EN CAJA: {{totalefectivo}} Bs.</div>
   <div><q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/></div>
 <!--  {{cliente}}-->
-  <q-table            title="LISTA DE PRESTAMOS DETALLE"
+  <q-table            title="LISTA DE PRESTAMOS LOCAL"
             :rows="listadop"
             :columns="colprestamo"
             :filter="filter"
@@ -140,7 +140,7 @@ export default {
   name: "Venta",
   data(){
     return{
-      tab:'cliente',
+      tab:'local',
       prestamos:[],
       cliente:'',
       inventarios:[],
@@ -165,6 +165,7 @@ export default {
   { name: 'motivo', label: 'Observacion', field: 'motivo' },
 ],
       colprestamo:[
+  { name: 'local', label: 'LOCAL', field: row=>row.cliente.local, sortable: true },
   { name: 'titular', label: 'TITULAR', field: row=>row.cliente.titular, sortable: true },
   { name: 'telefono', label: 'TELEFONO', field: row=>row.cliente.telefono, sortable: true },
   { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true },

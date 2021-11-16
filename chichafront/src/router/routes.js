@@ -1,5 +1,6 @@
 import Login from '../pages/Login';
 import Cliente from "pages/Cliente";
+import Clientelocal from "pages/Clientelocal";
 import Producto from "pages/Producto";
 import Venta from "pages/Venta";
 import Garantia from "pages/Garantia";
@@ -12,6 +13,7 @@ import User from "pages/User";
 import Gasto from "pages/Gasto";
 import Ventadetalle from "pages/Ventadetalle";
 import Prestamos from "pages/Prestamos";
+import Prestamoslocal from "pages/Prestamoslocal";
 import Historial from "pages/Historial";
 import Historialruta from "pages/Historialruta";
 // <<<<<<< HEAD
@@ -29,6 +31,7 @@ const routes = [
       { path: '', component: () => import('pages/Index.vue') },
       { path: 'login', component: Login },
       { path: 'cliente', component: Cliente,meta: {requiresAuth: true} },
+      { path: 'clientelocal', component: Clientelocal,meta: {requiresAuth: true} },
       { path: 'producto', component: Producto,meta: {requiresAuth: true} },
       { path: 'venta', component: Ventadetalle,meta: {requiresAuth: true} },
       // { path: 'ventadirecta', component: Ventadirecta,meta: {requiresAuth: true} },
@@ -40,6 +43,7 @@ const routes = [
       { path: 'user', component: User,meta: {requiresAuth: true} },
       { path: 'gasto', component: Gasto,meta: {requiresAuth: true} },
       { path: 'prestamos', component: Prestamos,meta: {requiresAuth: true} },
+      { path: 'prestamoslocal', component: Prestamoslocal,meta: {requiresAuth: true} },
       { path: 'historial', component: Historial,meta: {requiresAuth: true} },
       { path: 'historialruta', component: Historialruta,meta: {requiresAuth: true} },
 
