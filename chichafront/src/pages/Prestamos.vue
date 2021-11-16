@@ -74,7 +74,7 @@
                 <q-td key="opcion" :props="props" > 
                     <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
                     <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
-                    <q-btn size="xs" @click="onEliminar(props.row)"  color="negative" icon="delete"/>
+                    <q-btn size="xs" @click="onEliminar(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="negative" icon="delete"/>
                 </q-td>
             </template>
 
@@ -244,7 +244,7 @@ export default {
     },
     onEliminar(p){
       if (confirm('seguro de eliminar?')){
-        this.$axios.delete(process.env.API+'/prestamo/'+p.id).then(res=>{
+        this.$axios.post(process.env.API+'/anularprestamo/'+p.id).then(res=>{
           // this.totalefectivo=res.data[0].total;
           this.listclientes()
           this.cajaprestamo()

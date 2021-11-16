@@ -76,4 +76,5 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::resource('/sueldo',\App\Http\Controllers\SueldoController::class);
     Route::post('/agregarcliente',[\App\Http\Controllers\ClienteController::class,'agregarcliente']);
     Route::post('/reportecliente',[\App\Http\Controllers\PrestamoController::class,'reportecliente']);
+    Route::post('/anularprestamo/{id}',[\App\Http\Controllers\PrestamoController::class,'anularprestamo']);
 });

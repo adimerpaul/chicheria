@@ -72,6 +72,12 @@ class PrestamoController extends Controller
      * @param  \App\Models\Prestamo  $prestamo
      * @return \Illuminate\Http\Response
      */
+    public function anularprestamo($id){
+        $prestamo=Prestamo::find($id);
+        $prestamo->estado='ANULADO';
+        return $prestamo->save();
+    }
+
     public function show(Prestamo $prestamo)
     {
         //
