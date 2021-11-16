@@ -81,7 +81,7 @@
   </q-table>
 
   <hr>
-  <table>
+  <table v-if="tab=='local'">
     <thead><tr><th>Local</th><th>Titular</th><th>Material</th><th>Total</th> <th>Monto</th></tr></thead>
     <tbody>
       <tr v-for="r of reportepres" :key="r">

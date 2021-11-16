@@ -174,7 +174,14 @@ class VentaController extends Controller
 //        $venta->update($request->all());
 //        return $request;
         $venta=Venta::find($idventa);
-        $venta->update($request->all());
+        $venta->turno=strtoupper($request->turno);
+        $venta->hora=strtoupper($request->hora);
+        $venta->telefono1=strtoupper($request->telefono1);
+        $venta->telefono2=strtoupper($request->telefono2);
+        $venta->direccion=strtoupper($request->direccion);
+        $venta->observacion=strtoupper($request->observacion);
+        $venta->envase=strtoupper($request->envase);
+        $venta->save();
         return $this->ruta($venta->id);
     }
 

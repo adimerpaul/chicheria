@@ -427,25 +427,25 @@
 <!--&lt;!&ndash;                <q-select required outlined label="inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>&ndash;&gt;-->
 <!--              </div>-->
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required type="text"  outlined label="turno" v-model="venta.turno"/>
+                <q-input required type="text" style="text-transform: uppercase;" outlined label="turno" v-model="venta.turno"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required type="text"  outlined label="hora" v-model="venta.hora"/>
+                <q-input required type="text"  style="text-transform: uppercase;" outlined label="hora" v-model="venta.hora"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input  outlined type="text" label="telefono1" v-model="venta.telefono1"/>
+                <q-input  outlined type="text" style="text-transform: uppercase;" label="telefono1" v-model="venta.telefono1"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input  outlined type="text" label="telefono2" v-model="venta.telefono2"/>
+                <q-input  outlined type="text" style="text-transform: uppercase;" label="telefono2" v-model="venta.telefono2"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input  outlined label="direccion" v-model="venta.direccion"/>
+                <q-input  outlined label="direccion" style="text-transform: uppercase;" v-model="venta.direccion"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required outlined label="observacion" v-model="venta.observacion"/>
+                <q-input required outlined label="observacion" style="text-transform: uppercase;" v-model="venta.observacion"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required outlined label="envase" v-model="venta.envase"/>
+                <q-input required outlined label="envase" style="text-transform: uppercase;" v-model="venta.envase"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
                 <q-input type="date" outlined label="fechaentrega" v-model="venta.fechaentrega"/>
