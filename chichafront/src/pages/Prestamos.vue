@@ -23,7 +23,8 @@
       <q-input outlined label="Observacion" v-model="observacion" />
     </div>
     <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
-      <q-btn label="agregar" icon="send" color="positive" type="submit"/>
+      <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod"/>
+      <q-btn label="agregar" icon="send" color="positive" type="submit" v-else/>
     </div>
   </div>
   </q-form>
@@ -60,6 +61,7 @@
                 <q-td key="opcion" :props="props" > 
                     <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
                     <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
+                    <q-btn size="xs" @click="onMod(props.row)"  color="yellow" icon="edit" v-if="props.row.estado=='EN PRESTAMO'"/>
                     <q-btn size="xs" @click="onEliminar(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="negative" icon="delete"/>
                 </q-td>
             </template>
@@ -158,6 +160,7 @@ export default {
       listadop:[],
       dev:{},
       reportepres:[],
+      boolmod:false,
       filter:'',
       colum:[
   { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha', sortable: true },
@@ -242,6 +245,16 @@ export default {
     onList(p){
       this.listado=p.logprestamos;
       this.dialog_list=true;
+    },
+    onMod(prop){
+      console.log(prop)
+        this.boolmod=true
+        this.efectivo=prop.efectivo;
+        this.fisico=prop.fisico;
+        this.observacion=prop.observacion;
+        this.cantidad=prop.cantidad;
+        this.cliente=prop.cliente;
+        this.inventario=prop.inventario;
     },
     cajaprestamo(){
       this.$axios.post(process.env.API+'/tefectivo').then(res=>{
