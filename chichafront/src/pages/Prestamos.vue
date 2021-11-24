@@ -28,7 +28,8 @@
     </div>
   </div>
   </q-form>
-  <div class="text-h5" v-if="tab=='cliente'">TOTAL EN CAJA: {{totalefectivo}} Bs.</div>
+  <q-badge class="full-width text-h5 flex flex-center" color="red" v-if="tab=='cliente'">TOTAL EN CAJA: {{totalefectivo}} Bs.</q-badge>
+
   <div><q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/></div>
 <!--  {{cliente}}-->
   <q-table            title="LISTA DE PRESTAMOS DETALLE"
