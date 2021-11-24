@@ -23,7 +23,7 @@
       <q-input outlined label="Observacion" v-model="observacion" />
     </div>
     <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
-      <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod"/>
+      <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
       <q-btn label="agregar" icon="send" color="positive" type="submit" v-else/>
     </div>
   </div>
@@ -156,6 +156,7 @@ export default {
       dialog_dev:false,
       dialog_list:false,
       datoprestamo:{},
+      prestamo_id:'',
       listado:[],
       listadop:[],
       dev:{},
@@ -198,6 +199,39 @@ export default {
     this.reporte();
   },
   methods: {
+    modificar(){
+      if(this.inventario.cantidad<this.cantidad)
+      {
+                this.$q.notify({
+          message: 'No ay sufuciente en Inventario',
+          color: 'red',
+          icon:'warning'
+        })
+        return false;
+      }
+      this.$q.loading.show();
+      this.$axios.post(process.env.API+'/modprestamo',{
+        id:this.prestamo_id,
+        efectivo:this.efectivo,
+        fisico:this.fisico,
+        observacion:this.observacion,
+        cantidad:this.cantidad,
+        cliente_id:this.cliente.id,
+        inventario_id:this.inventario.id,
+      }).then(res=>{
+        // console.log(res.data)
+        this.listadoprestamo();
+        this.boolmod=false
+        this.$q.loading.hide();
+        this.listclientes();
+        // this.cliente=this.prestamos[0]
+        this.cantidad=1;
+        this.cliente=this.cliente[0];
+        this.inventario=this.inventario[0];
+      })
+      this.filtrarlista();
+      this.cajaprestamo();
+    },
     reporte(){
       this.$axios.post(process.env.API+'/reportecliente').then(res=>{
         console.log(res.data);
@@ -249,6 +283,7 @@ export default {
     onMod(prop){
       console.log(prop)
         this.boolmod=true
+        this.prestamo_id=prop.id
         this.efectivo=prop.efectivo;
         this.fisico=prop.fisico;
         this.observacion=prop.observacion;

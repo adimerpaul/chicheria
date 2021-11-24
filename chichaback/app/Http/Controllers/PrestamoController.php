@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Prestamo;
 use App\Models\Inventario;
+use App\Models\Logprestamo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -48,7 +49,7 @@ class PrestamoController extends Controller
         $prestamo=new Prestamo();
         $prestamo->fecha=date('Y-m-d');
 //        $prestamo->estado='DEVUELTO';
-        $prestamo->cantidad=$request->cantidad;
+        $prestamo->cantidad=$request->cantidad;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
         $prestamo->prestado=$request->cantidad;
         $prestamo->efectivo=$request->efectivo;
         $prestamo->fisico=$request->fisico;
@@ -103,9 +104,66 @@ class PrestamoController extends Controller
      */
     public function update(Request $request, Prestamo $prestamo)
     {
-        $prestamo->update($request->all());
+       // $prestamo->update($request->all());
+
+        $inv=Inventario::find($request->inventario_id);
+        if( $inv->cantidad>=$request->cantidad){
+
+       $prestamo=Prestamo::find($request->id);
+            if(Logprestamo::where('prestamo_id',$prestamo->id)->get()->count()>0){
+                $inv=Inventario::find($prestamo->inventario_id);
+                $inv->cantidad=$inv->cantidad + $prestamo->cantidad;
+                $inv->save();
+                $prestamo->cliente_id=$request->cliente_id;
+                $prestamo->cantidad=$request->cantidad;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                $prestamo->prestado=$request->cantidad;
+                $prestamo->inventario_id=$request->inventario_id;
+                $inv2=Inventario::find($request->inventario_id);
+                $inv2->cantidad=$inv->cantidad - $request->cantidad;
+                $inv2->save();
+        }
+       $prestamo->efectivo=$request->efectivo;
+       $prestamo->fisico=$request->fisico;
+       $prestamo->observacion=$request->observacion;
+        $prestamo->save();
+
+
+        return true;}
+        else
+           return response()->json(['error' => 'No se cuenta con la cantidad'], 404);
     }
 
+    public function modprestamo(Request $request)
+    {
+       // $prestamo->update($request->all());
+
+        $inv=Inventario::find($request->inventario_id);
+        if( $inv->cantidad>=$request->cantidad){
+
+       $prestamo=Prestamo::find($request->id);
+            if(Logprestamo::where('prestamo_id',$prestamo->id)->count()==0){
+                $inv=Inventario::find($prestamo->inventario_id);
+                $inv->cantidad=$inv->cantidad + $prestamo->cantidad;
+                $inv->save();
+                $prestamo->cliente_id=$request->cliente_id;
+                $prestamo->cantidad=$request->cantidad;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                $prestamo->prestado=$request->cantidad;
+                $prestamo->inventario_id=$request->inventario_id;
+                $inv2=Inventario::find($request->inventario_id);
+                $inv2->cantidad=$inv->cantidad - $request->cantidad;
+                $inv2->save();
+        }
+       $prestamo->efectivo=$request->efectivo;
+       $prestamo->fisico=$request->fisico;
+       $prestamo->observacion=$request->observacion;
+        $prestamo->save();
+
+
+        return true;}
+        else
+           return response()->json(['error' => 'No se cuenta con la cantidad'], 404);
+    
+    }
     /**
      * Remove the specified resource from storage.
      *
