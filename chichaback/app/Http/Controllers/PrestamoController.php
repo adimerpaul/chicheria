@@ -200,6 +200,8 @@ class PrestamoController extends Controller
         <div>Fecha '.$garantia->fecha.'</div>
         <br>
         <div class="textc">Firma</div>
+        <br>
+        <br>
         ';
         return $cadena;
 

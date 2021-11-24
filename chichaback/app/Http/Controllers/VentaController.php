@@ -174,6 +174,7 @@ class VentaController extends Controller
 //        $venta->update($request->all());
 //        return $request;
         $venta=Venta::find($idventa);
+        $venta->fechaentrega=$request->fechaentrega;
         $venta->turno=strtoupper($request->turno);
         $venta->hora=strtoupper($request->hora);
         $venta->telefono1=strtoupper($request->telefono1);
@@ -255,6 +256,8 @@ class VentaController extends Controller
         <hr>
         <div>Cantidad '.$venta->detalle->cantidad.'</div>
         <div>Producto: '.$venta->detalle->nombreproducto.'</div>
+        <br>
+        <br>
               ';
               return $cadena;
     }
