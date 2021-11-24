@@ -247,16 +247,20 @@ class VentaController extends Controller
         <style>
         .textcnt{
             text-align:center;
-        }</style>
+        }
+        table{width:100%;}
+        </style>
         <div class="textcnt"> CONTROL DESPACHO</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
         <hr>
         <div>Nombre: '.$venta->cliente->titular.'</div>
         <div>Fecha: '.$venta->fecha.'</div>
         <hr>
-        <div>Cantidad <b>'.$venta->detalle->cantidad.'</b></div>
-        <div>Producto: <b>'.$venta->detalle->nombreproducto.'</b></div>
-        <div >Codigo:<b>'.$venta->total.'</b></div>
+        <table>
+        <tr><td>Cantidad: </td><td><b>'.$venta->detalle->cantidad.'</b></td></tr>
+        <tr><td>Producto: </td><td><b>'.$venta->detalle->nombreproducto.'</b></td></tr>
+        <tr><td>Codigo: </td><td><b>'.$venta->total.'</b></td></tr>
+        </table>
         <div style="color:white">-----------------</div>
         <br>
               ';
