@@ -308,19 +308,20 @@ export default {
         doc.text(18.5, y+3, '')
       }
       doc.setFontSize(11);
-        doc.setFont(undefined,'bold')
+        doc.setFont(undefined,'normal')
 
       doc.text(2, y+4, 'Monto cobrado: ')
-        doc.setFont(undefined,'normal')
+        doc.setFont(undefined,'bold')
       doc.text(5.5, y+4, ventas+'Bs')
-        doc.setFont(undefined,'bold')
+        doc.setFont(undefined,'normal')
       doc.text(7, y+4, 'Monto gasto: ')
-        doc.setFont(undefined,'normal')
-      doc.text(11, y+4, gastos+'Bs')
         doc.setFont(undefined,'bold')
-      doc.text(14, y+4, 'Total saldo: ')
+      doc.text(11, y+4, gastos+'Bs')
         doc.setFont(undefined,'normal')
+      doc.text(14, y+4, 'Total saldo: ')
+        doc.setFont(undefined,'bold')
       doc.text(17, y+4, (ventas-gastos)+'Bs')
+        doc.setFont(undefined,'normal')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },

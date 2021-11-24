@@ -282,7 +282,7 @@ class VentaController extends Controller
         <div class="textcnt"> HOJA DE RUTA</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
         <div>Fecha: '.$venta->fecha.'</div>
-        <div>Fecha entrega: '.$venta->fechaentrega.'</div>
+        <div>Fecha entrega: <b>'.$venta->fechaentrega.'</b></div>
         <hr>
         <div>Producto: '.$venta->detalle->nombreproducto.'</div>
         <div>Cantidad '.$venta->detalle->cantidad.'</div>
@@ -290,11 +290,11 @@ class VentaController extends Controller
         <div>Nombre: '.$venta->cliente->titular.'</div>
         <div>Tel1: '.$venta->telefono1. ' Tel2:'.$venta->telefono1.'</div>
         <div>Direccion: '.$venta->cliente->direccion.'</div>
-        <div>Envase: '.$venta->envase.'</div>
+        <div>Envase: <b>'.$venta->envase.'</b></div>
         <hr>
         <div>Total: '.$venta->total.'</div>
         <div>A cuenta: '.$venta->acuenta.'</div>
-        <div>Saldo: '.$venta->saldo.'</div>
+        <div>Saldo: <b>'.$venta->saldo.'</b></div>
         <div>Observacion: '.$venta->observacion.'</div>
 
               ';
