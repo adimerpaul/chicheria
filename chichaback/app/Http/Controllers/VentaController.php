@@ -254,9 +254,10 @@ class VentaController extends Controller
         <div>Nombre: '.$venta->cliente->titular.'</div>
         <div>Fecha: '.$venta->fecha.'</div>
         <hr>
-        <div>Cantidad '.$venta->detalle->cantidad.'</div>
-        <div>Producto: '.$venta->detalle->nombreproducto.'</div>
-        <br>
+        <div>Cantidad <b>'.$venta->detalle->cantidad.'</b></div>
+        <div>Producto: <b>'.$venta->detalle->nombreproducto.'</b></div>
+        <div >Codigo:<b>'.$venta->total.'</b></div>
+        <div style="color:white">-----------------</div>
         <br>
               ';
               return $cadena;
