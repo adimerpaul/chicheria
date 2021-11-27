@@ -30,7 +30,7 @@ class ClienteController extends Controller
     }
 
     public function listacliente(){
-        return Cliente::where('estado','ACTIVO')->get();
+        return Cliente::where('estado','ACTIVO')->orderBy('titular')->get();
     }
     /**
      * Show the form for creating a new resource.

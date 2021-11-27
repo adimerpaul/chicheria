@@ -147,7 +147,7 @@
             </div>
             </template>
             <div class="col-12">
-              <q-table
+              <q-table dense
                 :columns="columns2"
                 :rows="ventas"
                 title="Historial de ventas"
@@ -189,8 +189,7 @@
                       {{ props.row.user }}
                     </q-td>
                       <q-td key="opcion" :props="props">
-                        <q-btn icon="cancel" color="red" v-if="props.row.estado!='ANULADO'" @click="anular(props.row)" />
-                        <q-btn icon="send" color="amber" v-if="props.row.estado!='ANULADO'" @click="impruta(props.row)"/>
+                        <q-btn dense icon="cancel" color="red" v-if="props.row.estado!='ANULADO'" @click="anular(props.row)" />
                       </q-td>
                   </q-tr>
                 </template>
@@ -456,14 +455,18 @@ export default {
                   myWindow.document.close();
           })
     },
-        anular(venta){
-      console.log(venta)
+    anular(venta){
+      // console.log(venta)
       this.$q.dialog({
-        title: 'Anular Venta',
-        message: 'Esta Seguro de Anular Venta?',
+        title: 'Anular Venta?',
+        message: 'Motivo?',
         cancel: true,
-      }).onOk(() => {
-      this.$axios.post(process.env.API+'/anular/'+venta.id)
+        prompt:{
+          model:'',
+          type:'text',
+        }
+      }).onOk((data) => {
+      this.$axios.post(process.env.API+'/anular/'+venta.id,{observacion:data})
         .then(res=>{
         this.misventas();
 

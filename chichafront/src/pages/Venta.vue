@@ -31,6 +31,7 @@
     </div>
     <div class="col-12">
       <q-table
+      dense
       :columns="columns"
       :rows="detalles"
       >
@@ -71,7 +72,7 @@
       <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misventas" />
     </div>
     <div class="col-12">
-      <q-table
+      <q-table dense
         :columns="columns2"
         :rows="ventas"
         title="Historial de ventas"

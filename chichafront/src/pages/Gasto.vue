@@ -245,13 +245,14 @@ export default {
         doc.text(5, 1, 'Historial de ventas y gastos')
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         // doc.text(1, 3, 'Total')
+        doc.text(1, 3, 'Ruta/tip')
         doc.text(3, 3, 'Monto')
         // doc.text(5, 3, 'Saldo')
         doc.text(5, 3, 'Tipo')
         doc.text(7, 3, 'Cantidad')
         doc.text(9.5, 3, 'Producto')
         doc.text(13.5, 3, 'Titular')
-        doc.text(18.5, 3, 'Usuario')
+        doc.text(18.5, 3, 'Local')
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
@@ -267,13 +268,16 @@ export default {
       this.ventas.forEach(r=>{
         y+=0.5
         // console.log(r)
+       doc.setFontSize(6);
+        doc.text(1, y+3, r.fechaentrega!=''?'Ruta '+r.tipo:''+r.tipo)
+      doc.setFontSize(9);
         doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventas+=parseFloat(r.acuenta)
         doc.text(5, y+3, 'Cobro')
         doc.text(7, y+3, r.cantidad!=null?r.cantidad.toString():'')
         doc.text(9.5, y+3, r.detalle!=null?r.detalle.toString():'')
         doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
-        doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
+        doc.text(18.5, y+3, r.local!=null?r.local.toString():'')
         if (y+3>25){
           doc.addPage();
           header()
@@ -290,7 +294,7 @@ export default {
         doc.text(9.5, y+3, r.observacion!=null?r.observacion.toString():'')
         // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
         // doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
-        doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
+        //doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
         if (y+3>25){
           doc.addPage();
           header()
@@ -531,7 +535,7 @@ export default {
           this.$q.loading.hide()
           this.ventas=[]
           res.data.forEach(r=>{
-            // if (r.tipo=='LOCAL')
+             if (r.estado!='ANULADO'){
               this.ventas.push({
                 total:r.total,
                 tipo:r.tipo,
@@ -543,7 +547,9 @@ export default {
                 user:r.user.name,
                 detalle:r.detalle.nombreproducto,
                 cantidad:r.detalle.cantidad,
-              })
+                fechaentrega:r.fechaentrega,
+                tipo:r.tipo
+              })}
           })
 
           this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha2,fecha2:this.fecha2}).then(res=>{

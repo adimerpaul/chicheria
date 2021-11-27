@@ -278,25 +278,32 @@ class VentaController extends Controller
         <style>
         .textcnt{
             text-align:center;
-        }</style>
+        }
+        table{width:100%}
+        </style>
         <div class="textcnt"> HOJA DE RUTA</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
-        <div>Fecha: '.$venta->fecha.'</div>
-        <div>Fecha entrega: <b>'.$venta->fechaentrega.'</b></div>
+        <table><tr>
+        <td>Fecha: </td><td>'.$venta->fecha.'</td></tr>
+        <tr><td>Fecha entrega: </td><td><b>'.$venta->fechaentrega.'</b></td>
+        </tr></table>
         <hr>
-        <div>Producto: '.$venta->detalle->nombreproducto.'</div>
-        <div>Cantidad '.$venta->detalle->cantidad.'</div>
-        <div>Turno: '.$venta->turno.' Hora: '.$venta->hora.'</div>
-        <div>Nombre: '.$venta->cliente->titular.'</div>
-        <div>Tel1: '.$venta->telefono1. ' Tel2:'.$venta->telefono1.'</div>
-        <div>Direccion: '.$venta->cliente->direccion.'</div>
-        <div>Envase: <b>'.$venta->envase.'</b></div>
+        <table>
+        <tr><td>Producto: </td><td>'.$venta->detalle->nombreproducto.'</td></tr>
+        <tr><td>Cantidad </td><td>'.$venta->detalle->cantidad.'</td></tr>
+        <tr><td>Turno: </td><td>'.$venta->turno.' Hora: '.$venta->hora.'</td></tr>
+        <tr><td>Nombre: </td><td>'.$venta->cliente->titular.'</td></tr>
+        <tr><td>Tel1: </td><td>'.$venta->telefono1. ' Tel2:'.$venta->telefono1.'</td></tr>
+        <tr><td>Direccion: </td><td>'.$venta->cliente->direccion.'</td></tr>
+        <tr><td>Envase: </td><td><b>'.$venta->envase.'</b></td></tr>
+        </table>
         <hr>
-        <div>Total: '.$venta->total.'</div>
-        <div>A cuenta: '.$venta->acuenta.'</div>
-        <div>Saldo: <b>'.$venta->saldo.'</b></div>
-        <div>Observacion: '.$venta->observacion.'</div>
-
+        <table>
+        <tr><td>Total: </td><td>'.$venta->total.'</td></tr>
+        <tr><td>A cuenta: </td><td>'.$venta->acuenta.'</td></tr>
+        <tr><td>Saldo: </td><td><b>'.$venta->saldo.'</b></td></tr>
+        <tr><td>Observacion: </td><td>'.$venta->observacion.'</td></tr>
+        </table>
               ';
               return $cadena;
     }

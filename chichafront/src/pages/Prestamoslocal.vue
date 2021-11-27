@@ -259,7 +259,7 @@ export default {
     listclientes(){
       this.$q.loading.show();
       this.prestamos=[];
-      this.$axios.get(process.env.API+'/cliente').then(res=>{
+      this.$axios.get(process.env.API+'/listacliente').then(res=>{
          console.log(res.data)
         res.data.forEach(r => {
             if(this.tab=='local' && r.tipocliente=='1'){

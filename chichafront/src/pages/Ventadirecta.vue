@@ -59,6 +59,7 @@
     </div>
     <div class="col-12">
       <q-table
+      dense
         :columns="columns2"
         :rows="ventas"
         title="Historial de ventas"
