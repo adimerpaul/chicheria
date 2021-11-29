@@ -51,9 +51,6 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //
-        $resultado=Cliente::where('ci',$request->ci)->get();
-        if($resultado->count()>0)
-        return response()->json(['res'=>'Cliente ya registrado'],406);
         $cliente= new Cliente;
         $cliente->local=strtoupper($request->local);
         $cliente->ci=strtoupper($request->ci);
