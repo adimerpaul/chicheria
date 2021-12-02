@@ -16,5 +16,8 @@ export default function () {
     reportes:false,
     gastos:false,
     historialprestamo:false,
+    anularventa:false,
+    ruta:false,
+    anularprestamo:false,
   }
 }

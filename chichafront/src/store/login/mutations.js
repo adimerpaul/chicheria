@@ -22,7 +22,9 @@ export function auth_success(state, data){
   state.gastos=data.user.permisos.find(p=>p.id===11)!=undefined
   state.historialprestamo=data.user.permisos.find(p=>p.id===12)!=undefined
   state.historialventa=data.user.permisos.find(p=>p.id===13)!=undefined
-  state.anular=data.user.permisos.find(p=>p.id===14)!=undefined
+  state.anularventa=data.user.permisos.find(p=>p.id===14)!=undefined
+  state.ruta=data.user.permisos.find(p=>p.id===15)!=undefined
+  state.anularprestamo=data.user.permisos.find(p=>p.id===16)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -43,5 +45,7 @@ export function salir(state){
   state.gastos=false
   state.historialprestamo=false
   state.historialventa=false
-  state.anular=false
+  state.anularventa=false
+  state.ruta=false
+  state.anularprestamo=false
 }

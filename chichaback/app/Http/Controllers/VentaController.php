@@ -293,7 +293,7 @@ class VentaController extends Controller
         <tr><td>Cantidad </td><td>'.$venta->detalle->cantidad.'</td></tr>
         <tr><td>Turno: </td><td>'.$venta->turno.' Hora: '.$venta->hora.'</td></tr>
         <tr><td>Nombre: </td><td>'.$venta->cliente->titular.'</td></tr>
-        <tr><td>Tel1: </td><td>'.$venta->telefono1. ' Tel2:'.$venta->telefono1.'</td></tr>
+        <tr><td>Tel1: </td><td>'.$venta->telefono1. ' Tel2:'.$venta->telefono2.'</td></tr>
         <tr><td>Direccion: </td><td>'.$venta->cliente->direccion.'</td></tr>
         <tr><td>Envase: </td><td><b>'.$venta->envase.'</b></td></tr>
         </table>

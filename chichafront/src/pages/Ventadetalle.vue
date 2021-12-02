@@ -206,9 +206,9 @@
                         <q-badge :color="props.row.observacion=='CANCELADO'?'positive':'negative'">{{ props.row.observacion }}</q-badge>
                       </q-td>
                       <q-td key="opcion" :props="props">
-                        <q-btn-group v-if="props.row.estado!='ANULADO' && $store.state.login.anular" >
-                          <q-btn icon="cancel" color="red" @click="anular(props.row)" size="xs" />
-                          <q-btn icon="local_shipping" color="info"   @click="clickhojaruta(props.row)" size="xs" />
+                        <q-btn-group v-if="props.row.estado!='ANULADO'" >
+                          <q-btn icon="cancel" color="red" @click="anular(props.row)" size="xs" v-if="$store.state.login.anularventa"/>
+                          <q-btn icon="local_shipping" color="info"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta"/>
                         </q-btn-group>
 
                       </q-td>

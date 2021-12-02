@@ -30,6 +30,8 @@ class PermisoSeeder extends Seeder
             ['id'=>12,'nombre'=>'Historial prestamos'],
             ['id'=>13,'nombre'=>'Historial venta'],
             ['id'=>14,'nombre'=>'Historial Anular'],
+            ['id'=>15,'nombre'=>'Generar Ruta'],
+            ['id'=>16,'nombre'=>'Anular Prestamo'],
         ]);
 //=======
 //        //
