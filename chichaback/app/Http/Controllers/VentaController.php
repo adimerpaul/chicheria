@@ -78,6 +78,7 @@ class VentaController extends Controller
         $venta->acuenta=$request->acuenta;
         $venta->saldo=$request->saldo;
         $venta->estado=$request->estado;
+        $venta->observacion=$request->observacion;
         $venta->user_id=$request->user()->id;
         $venta->cliente_id=$request->cliente_id;
         $venta->save();
@@ -109,6 +110,7 @@ class VentaController extends Controller
         $venta->saldo=$request->saldo;
         $venta->estado=$request->estado;
         $venta->user_id=$request->user()->id;
+        $venta->observacion=$request->observacion;
         $venta->cliente_id=$request->cliente_id;
         $venta->save();
         foreach ($request->detalles as $detalle){
@@ -260,6 +262,7 @@ class VentaController extends Controller
         <tr><td>Cantidad: </td><td><b>'.$venta->detalle->cantidad.'</b></td></tr>
         <tr><td>Producto: </td><td><b>'.$venta->detalle->nombreproducto.'</b></td></tr>
         <tr><td>Codigo: </td><td><b>'.$venta->total.'</b></td></tr>
+        <tr><td>Observacion: </td><td><b>'.$venta->observacion.'</b></td></tr>
         </table>
         <div style="color:white">-----------------</div>
         <br>

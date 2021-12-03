@@ -45,9 +45,20 @@
                 outlined
                 required />
             </div>
-            <div class="col-6 col-sm-2 q-pa-xs">
+            <div class="col-4 col-sm-1 q-pa-xs">
               <!--            <q-input type="number" label="Cantidad" v-model="cantidad" outlined/>-->
               <q-select dense label="Cantidad" :options="cantidades" v-model="cantidad" outlined/>
+            </div>
+            <div class="col-4 col-sm-2 q-pa-xs">
+              <!--            <q-input type="number" label="Cantidad" v-model="cantidad" outlined/>-->
+                            <q-input
+                dense
+                type="text"
+                label="Observacion"
+                v-model="observacion"
+                outlined
+                required
+                 />
             </div>
             <!--                    <div class="col-6 col-sm-2 q-pa-xs">-->
             <!--            <q-input-->
@@ -72,7 +83,7 @@
               <!--            <q-input type="text" label="Saldo" v-model="saldo" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" disable outlined/>-->
               <q-badge class="full-width full-height" :color="subtotal>acuenta?'red-7':'positive'">Subtotal <br> {{saldo}}</q-badge>
             </div>
-            <div class="col-6 col-sm-2 q-pa-xs">
+            <div class="col-6 col-sm-1 q-pa-xs">
               <!--            <q-input type="text" label="Estado" v-model="estado" label-color="white" :bg-color="subtotal>acuenta?'red-7':'positive'" outlined/>-->
               <q-badge class="full-width full-height" :color="subtotal>acuenta?'red-7':'positive'">Subtotal <br> {{estado}}</q-badge>
             </div>
@@ -498,6 +509,7 @@ export default {
       inventarios:[],
       inventario:{},
       producto:'',
+      observacion:'NINGUNA',
       cantidad:1,
       cantidades:[],
       acuenta:'',
@@ -962,6 +974,7 @@ export default {
         acuenta:this.acuenta,
         saldo:this.saldo,
         estado:this.estado,
+        observacion:this.observacion,
         tipo:'DETALLE',
         cliente_id:this.model.id,
         detalles:[{
@@ -1006,6 +1019,7 @@ export default {
           this.estado=''
           this.model=''
           this.producto=''
+          this.observacion='NINGUNA'
           this.cantidad=1
           this.subtotal=0
           this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
