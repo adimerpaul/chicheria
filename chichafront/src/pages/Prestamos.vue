@@ -36,7 +36,7 @@
             :rows="listadop"
             :columns="colprestamo"
             :filter="filter"
-
+            :pagination="pagination"
             row-key="name">
 
           <template v-slot:top-right>
@@ -149,6 +149,7 @@ export default {
       inventarios:[],
       inventario:'',
       cantidades:[],
+      pagination: { rowsPerPage: 20 },
       cantidad:1,
       fisico:'',
       efectivo:'',
@@ -388,6 +389,8 @@ export default {
           myWindow.print();
           myWindow.close();
         // this.prestamos=res.data
+           this.listadoprestamo();
+        this.cajaprestamo()
         this.dialog_dev=false;
         this.dev={};
         this.$q.loading.hide();

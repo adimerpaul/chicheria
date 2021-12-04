@@ -33,6 +33,7 @@
   <q-table            title="LISTA DE PRESTAMOS LOCAL"
             :rows="listadop"
             :columns="colprestamo"
+            :pagination="pagination"
             :filter="filter"
 
             row-key="name">
@@ -160,6 +161,7 @@ export default {
       dev:{},
       reportepres:[],
       filter:'',
+      pagination: { rowsPerPage: 20 },
       colum:[
   { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha', sortable: true },
   { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
@@ -342,11 +344,10 @@ export default {
           myWindow.close();
         // this.prestamos=res.data
         this.dialog_dev=false;
+        this.listadoprestamo();
+        this.cajaprestamo()
         this.dev={};
         this.$q.loading.hide();
-        this.filtrarlista();
-        //this.listclientes();
-        // this.cliente=this.prestamos[0]
       })
     },
     imprimir(){
