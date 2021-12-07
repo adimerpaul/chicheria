@@ -41,6 +41,9 @@
             </template>
                 <template v-slot:body="props">
                   <q-tr :props="props">
+                  <q-td key="id" :props="props">
+                      {{ props.row.id }}
+                    </q-td>
                     <q-td key="fecha" :props="props">
                       {{ props.row.fecha }}
                     </q-td>
@@ -202,6 +205,7 @@ export default {
         {name:'Observacion',label:'Observacion',field:'observacion'},
       ],
       columns2:[
+        {name:'id',label:'Id',field:'id'},
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'local',label:'Local',field:'local'},
         {name:'titular',label:'Titular',field:'titular'},

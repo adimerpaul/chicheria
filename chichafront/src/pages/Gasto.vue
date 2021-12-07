@@ -359,6 +359,7 @@ export default {
       let tsaldo=0
       let tacuenta=0
       let total=0
+      let caja=0
       this.ventas.forEach(r=>{
         if(r.tipo=='DETALLE'){
         tsaldo=tsaldo+r.saldo;
@@ -379,10 +380,11 @@ export default {
           y=0
         }}
       })
+      caja=total-tsaldo;
       doc.text(2, y+4, 'Ventas totales: ')
       doc.text(5, y+4, total+'Bs')
-      doc.text(7, y+4, 'Por cobrar totales: ')
-      doc.text(11, y+4, tacuenta+'Bs')
+      doc.text(7, y+4, 'En Caja totales: ')
+      doc.text(11, y+4, caja+'Bs')
       doc.text(14, y+4, 'Saldo totales: ')
       doc.text(17, y+4, tsaldo+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
@@ -418,6 +420,7 @@ export default {
       let y=0
       let tsaldo=0
       let tacuenta=0
+      let caja=0
       let total=0
       this.ventas.forEach(r=>{
         if(r.tipo=='LOCAL'){
@@ -439,10 +442,11 @@ export default {
           y=0
         }}
       })
+      caja=total-tsaldo
       doc.text(2, y+4, 'Ventas totales: ')
       doc.text(5, y+4, total+'Bs')
-      doc.text(7, y+4, 'Por cobrar totales: ')
-      doc.text(11, y+4, tacuenta+'Bs')
+      doc.text(7, y+4, 'En Caja totales: ')
+      doc.text(11, y+4, caja+'Bs')
       doc.text(14, y+4, 'Saldo totales: ')
       doc.text(17, y+4, tsaldo+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
@@ -529,9 +533,9 @@ export default {
         })
         this.$q.loading.hide()
 
-        this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha2,fecha2:this.fecha2}).then(res=>{
+        this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
           // this.ventas=res.data
-          // console.log(res.data)
+           console.log(res.data)
           this.$q.loading.hide()
           this.ventas=[]
           res.data.forEach(r=>{

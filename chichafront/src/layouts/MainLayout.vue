@@ -32,14 +32,14 @@
         >
           Opciones del menu
         </q-item-label>
+
         <q-item
           clickable
+          active-class="my-menu-link"
           to="/"
-          exact
-        >
+          exact>
           <q-item-section
-            avatar
-          >
+            avatar>
             <q-icon name="home" />
           </q-item-section>
 
@@ -50,8 +50,10 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+
         <q-item
           v-if="!$store.getters['login/isLoggedIn']"
+          active-class="my-menu-link"
           clickable
           exact
           to="/login"
@@ -72,6 +74,7 @@
 
         <q-item
           v-if="$store.state.login.usuarios"
+          active-class="my-menu-link"
           clickable
           exact
           to="user"
@@ -92,6 +95,7 @@
 
         <q-item
           v-if="$store.state.login.clientes"
+          active-class="my-menu-link"
           clickable
           exact
           to="cliente"
@@ -112,6 +116,7 @@
 
                 <q-item
           v-if="$store.state.login.clientes"
+          active-class="my-menu-link"
           clickable
           exact
           to="clientelocal"
@@ -132,6 +137,7 @@
 
         <q-item
           v-if="$store.state.login.productos"
+          active-class="my-menu-link"
           clickable
           exact
           to="producto"
@@ -153,6 +159,7 @@
 
         <q-item
           v-if="$store.state.login.inventario"
+          active-class="my-menu-link"
           clickable
           exact
           to="inventario"
@@ -173,6 +180,7 @@
 
         <q-item
           v-if="$store.state.login.ventadetalle"
+          active-class="my-menu-link"
           clickable
           exact
           to="venta"
@@ -212,6 +220,7 @@
 <!--        </q-item>-->
         <q-item
           v-if="$store.state.login.ventalocal"
+          active-class="my-menu-link"
           clickable
           exact
           to="ventalocal"
@@ -232,6 +241,7 @@
 
         <q-item
           v-if="$store.state.login.historialprestamo"
+          active-class="my-menu-link"
           clickable
           exact
           to="prestamos"
@@ -252,6 +262,7 @@
 
         <q-item
           v-if="$store.state.login.historialprestamo"
+          active-class="my-menu-link"
           clickable
           exact
           to="prestamoslocal"
@@ -272,6 +283,7 @@
 
         <q-item
           v-if="$store.state.login.historialventa"
+          active-class="my-menu-link"
           clickable
           exact
           to="historial"
@@ -292,6 +304,7 @@
 
         <q-item
           v-if="$store.state.login.historialventa"
+          active-class="my-menu-link"
           clickable
           exact
           to="historialruta"
@@ -312,6 +325,7 @@
 
         <q-item
           v-if="$store.state.login.empleados"
+          active-class="my-menu-link"
           clickable
           exact
           to="empleado"
@@ -334,6 +348,7 @@
 
         <q-item
           v-if="$store.getters['login/isLoggedIn']"
+          active-class="my-menu-link"
           clickable
           exact
           to="gasto"
@@ -354,6 +369,7 @@
 
         <q-item
           v-if="$store.state.login.reportes"
+          active-class="my-menu-link"
           clickable
           exact
           to="reporteuser"
@@ -507,3 +523,8 @@ export default defineComponent({
   }
 })
 </script>
+<style lang="sass">
+.my-menu-link
+  color: white
+  background: #4a148c
+</style>

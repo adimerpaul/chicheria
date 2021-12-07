@@ -4,7 +4,7 @@
   <q-form @submit.prevent="agregar">
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" option-label="titular"/>
+      <q-select use-input @filter="filterFn" v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" required/>
       <q-select v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
@@ -160,6 +160,7 @@ export default {
       listadop:[],
       dev:{},
       reportepres:[],
+      options:[],
       filter:'',
       pagination: { rowsPerPage: 20 },
       colum:[
@@ -199,6 +200,21 @@ export default {
     this.reporte();
   },
   methods: {
+            filterFn (val, update) {
+      if (val === '') {
+        update(() => {
+          this.prestamos = this.options
+          // with Quasar v1.7.4+
+          // here you have access to "ref" which
+          // is the Vue reference of the QSelect
+        })
+        return
+      }
+      update(() => {
+        const needle = val.toLowerCase()
+        this.prestamos = this.prestamos.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+      })
+    },
     reporte(){
       this.$axios.post(process.env.API+'/reportecliente').then(res=>{
         console.log(res.data);
@@ -266,18 +282,20 @@ export default {
         res.data.forEach(r => {
             if(this.tab=='local' && r.tipocliente=='1'){
               r.titular=r.local
+              r.label=r.titular
               this.prestamos.push(r);
             }
             if(this.tab=='cliente' && r.tipocliente=='2'){
+              r.label=r.titular
               this.prestamos.push(r);
             }
         });
+        this.options=this.prestamos
         this.$q.loading.hide();
         if(this.prestamos.length>0)
           this.cliente=this.prestamos[0];
       })
-    }
-    ,
+    },
     misprestamos(){
       this.$q.loading.show()
       this.$axios.get(process.env.API+'/cliente').then(res=>{
@@ -294,6 +312,14 @@ export default {
           message: 'No ay sufuciente en Inventario',
           color: 'red',
           icon:'warning'
+        })
+        return false;
+      }
+            if (this.cliente==null ){
+        this.$q.notify({
+          message:'Tienes que seleccionar cliente',
+          color:'red',
+          icon:'error'
         })
         return false;
       }
