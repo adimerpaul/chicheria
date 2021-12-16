@@ -4,7 +4,7 @@
   <q-form @submit.prevent="agregar">
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select use-input @filter="filterFn" v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" required/>
+      <q-select use-input @filter="filterFn" v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" />
       <q-select v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
