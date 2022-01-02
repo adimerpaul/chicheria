@@ -56,7 +56,7 @@
                         outlined
                         v-model="inventario.detalle"
                         type="text"
-                        label="Detalle"
+                        label="OBSERVACIONES"
                               style="text-transform: uppercase"
                       />
                       <!--                  <q-select v-model="inventario.producto_id" :options="productos" label="Producto" />-->
@@ -136,7 +136,7 @@
                     type="text"
                     v-model="dato.detalle"
                               style="text-transform: uppercase"
-                    label="Detalle"
+                    label="Observaciones"
                   />
 <!--                  <q-select v-model="dato.producto_id" :options="productos" label="Producto" />-->
 
@@ -323,7 +323,7 @@ export default {
     sortable: true
   },
   { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
-  { name: 'detalle', align: 'center', label: 'DETALLE', field: 'detalle', sortable: true },
+  { name: 'detalle', align: 'center', label: 'OBSERVACIONES', field: 'detalle', sortable: true },
   { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
   { name: 'opcion', label: 'OPCIONES', field: 'action' }
 ],

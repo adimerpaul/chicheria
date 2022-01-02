@@ -2,7 +2,7 @@
   <q-page class="q-pa-xs">
   <div class="row">
     <div class="col-12">
-      <div class="text-subtitle1 bg-red text-center text-white">Control de gastos</div>
+      <div class="text-subtitle1 bg-red text-center text-white">CONTROL DE GASTOS</div>
     </div>
     <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha1" outlined required/></div>
     <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
@@ -242,7 +242,7 @@ export default {
         img.src = 'logo.png'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
-        doc.text(5, 1, 'Historial de ventas y gastos')
+        doc.text(5, 1, 'HISTORIAL DE INGRESOS Y GASTOS')
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         // doc.text(1, 3, 'Total')
         doc.text(1, 3, 'Ruta/tip')
