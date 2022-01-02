@@ -109,11 +109,24 @@
                 </q-td>
             </template>
             <template v-slot:top-right>
-              <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
+            <div class="row">
+              <div class="col-2">
+        <q-btn
+          color="primary"
+          icon-right="archive"
+          label="Export to csv"
+          no-caps
+          @click="exportTable"
+        />
+              </div>
+              <div class="col-2">
+               <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
                 <template v-slot:append>
                   <q-icon name="search" />
                 </template>
-              </q-input>
+              </q-input> 
+              </div>
+            </div>
             </template>
           </q-table>
         </div>
@@ -214,6 +227,25 @@
 </template>
 <script>
 
+function wrapCsvValue (val, formatFn) {
+  let formatted = formatFn !== void 0
+    ? formatFn(val)
+    : val
+
+  formatted = formatted === void 0 || formatted === null
+    ? ''
+    : String(formatted)
+
+  formatted = formatted.split('"').join('""')
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+
+  return `"${formatted}"`
+}
 import { date } from 'quasar'
 export default {
   data(){
