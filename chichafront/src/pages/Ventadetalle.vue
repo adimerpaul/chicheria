@@ -661,7 +661,7 @@ export default {
         fechaentrega:this.venta.fechaentrega,
       }).then(res=>{
         console.log(res.data)
-        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.print();
@@ -686,7 +686,7 @@ export default {
         cliente_id:this.model.id,
       }).then((res)=>{
 
-        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.print();
@@ -719,7 +719,7 @@ export default {
           // let myWindow = window.open("", "Imprimir", "width=200,height=100");
           // myWindow.document.write(res.data);
           // myWindow.document.close();
-        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.focus();
@@ -991,7 +991,7 @@ export default {
         // myWindow.document.write(res.data);
         // myWindow.document.close();
 
-        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.focus();

@@ -343,7 +343,7 @@ export default {
           color:'green',
           icon:'info'
         })
-                  let myWindow = window.open("", "Imprimir", "width=200,height=100");
+                  let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
                   myWindow.document.write(res.data);
                   myWindow.document.close();
         this.misventas()

@@ -333,7 +333,7 @@ export default {
         inventario_id:this.inventario.id,
       }).then(res=>{
         // console.log(res.data)
-        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.print();
@@ -361,7 +361,7 @@ export default {
       }).then(res=>{
         console.log(res.data);
         
-        let myWindow = window.open("", "Imprimir", "width=200,height=100");
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.focus();

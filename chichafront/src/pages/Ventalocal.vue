@@ -199,6 +199,7 @@
                     </q-td>
                       <q-td key="opcion" :props="props">
                         <q-btn dense icon="cancel" color="red" v-if="props.row.estado!='ANULADO' && $store.state.login.anularventa" @click="anular(props.row)" />
+                        <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" />
                       </q-td>
                   </q-tr>
                 </template>
@@ -460,7 +461,7 @@ export default {
     impruta(venta){
       this.$axios.post(process.env.API+'/ruta/'+venta.id)
         .then(res=>{
-                            let myWindow = window.open("", "Imprimir", "width=200,height=100");
+                            let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
                   myWindow.document.write(res.data);
                   myWindow.document.close();
           })
@@ -657,6 +658,16 @@ export default {
       //   subtotal:this.subtotal,
       // })
     },
+    impboleta(detalle)
+    {
+      console.log(datalle);
+      this.$axios.post(process.env.API+'/impresiondetalle/'+detalle.id).then(res=>{
+                          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+                  myWindow.document.write(res.data);
+                  myWindow.document.close();
+      })
+
+    },
     guardar(){
       if (this.model==0){
         this.$q.notify({
@@ -711,7 +722,7 @@ export default {
           color:'green',
           icon:'info'
         })
-                  let myWindow = window.open("", "Imprimir", "width=200,height=100");
+                  let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
                   myWindow.document.write(res.data);
                   myWindow.document.close();
         this.misventas()
