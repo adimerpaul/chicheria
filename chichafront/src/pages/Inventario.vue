@@ -2,7 +2,7 @@
     <div class="row">
       <div class="col-12">
             <div class="text-h6">
-              <h5 style="text-align:center">REGISTRO DE INVENTARIO DE MATERIALES</h5>
+              <div style="text-align:center">REGISTRO DE INVENTARIO DE MATERIALES</div>
 <!--              <q-btn label="Registrar" icon="add" color="positive" @click="crear = true" />-->
             </div>
             <!--            <div class="text-subtitle2">by John Doe</div>-->
@@ -18,42 +18,50 @@
                   class="q-gutter-md"
                 >
                   <div class="row">
-                    <div class="col-12 col-sm-2 q-pa-md ">
+                    <div class="col-12 col-sm-2 q-pa-xs">
                       <q-input
                         outlined
+                        dense
                         type="text"
                         v-model="inventario.codigo"
                         label="Codigo"
-                              style="text-transform: uppercase"
+                        style="text-transform: uppercase"
                         lazy-rules
-                        :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
-
+                        :rules="[
+                          val => !!val || '* Required',
+                          val => val.length > 0 || 'Por favor ingrese dato'
+                          ]"
                       />
                     </div>
-                    <div class="col-12 col-sm-2 q-pa-md ">
+                    <div class="col-12 col-sm-2 q-pa-xs">
                       <q-input
                         outlined
+                        dense
                         type="text"
                         v-model="inventario.nombre"
                               style="text-transform: uppercase"
                         label="Nombre"
                         lazy-rules
-                        :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
+                        :rules="[
+                          val => !!val || '* Required',
+                          val => val.length > 0 || 'Por favor ingrese dato']"
                       />
                     </div>
-                    <div class="col-12 col-sm-2 q-pa-md ">
+                    <div class="col-12 col-sm-2 q-pa-xs">
                       <q-input
                         outlined
+                        dense
                         type="number"
                         v-model="inventario.cantidad"
                         label="CANTIDAD"
                       />
 
                     </div>
-                    <div class="col-12 col-sm-2 q-pa-md ">
+                    <div class="col-12 col-sm-2 q-pa-xs">
 
                       <q-input
                         outlined
+                        dense
                         v-model="inventario.detalle"
                         type="text"
                         label="OBSERVACIONES"
@@ -63,7 +71,7 @@
 
 
                     </div>
-                    <div class="col-12 col-sm-2 flex flex-center flex-inline">
+                    <div class="col-12 col-sm-2 q-pa-xs ">
                         <q-btn label="Registrar" type="submit" color="primary" icon="send" />
                     </div>
 <!--                    <div class="col-sm-2">-->
@@ -85,10 +93,17 @@
           <q-table
             title="INVENTARIO DE MATERIALES"
             :rows="rows"
+            :filter="filter"
             :columns="columns"
             row-key="name">
+            <template v-slot:top-right>
+              <q-input outlined dense debounce="300" v-model="filter" placeholder="Buscar">
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </template>
             <template v-slot:body-cell-estado="props" >
-              <q-tr :props="props" >
                 <q-td key="estado" :props="props" @click="activar(props)">
                   <q-badge color="green" v-if="props.row.estado=='ACTIVO'">
                     {{ props.row.estado }}
@@ -97,7 +112,6 @@
                     {{ props.row.estado }}
                   </q-badge>
                 </q-td>
-              </q-tr>
             </template>
             <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
@@ -266,13 +280,13 @@
 
         <q-card-section class="q-pt-none">
                    <q-table
+                     dense
             title="REGISTRO DE MATERIALES"
             :columns="logcol"
             :rows="logdata"
             row-key="name"
             >
                         <template v-slot:body-cell-agregar="props" >
-              <q-tr :props="props" >
                 <q-td key="estado" :props="props" @click="activar(props)">
                   <q-badge color="green" v-if="props.row.agregar==1">
                     Agregar
@@ -281,10 +295,9 @@
                     Disminuir
                   </q-badge>
                 </q-td>
-              </q-tr>
             </template>
                    </q-table>
-      
+
         </q-card-section>
         <q-card-actions align="right" class="text-primary">
           <q-btn flat label="Cancel" v-close-popup />
@@ -302,6 +315,7 @@
 export default {
   data(){
     return{
+      filter:'',
       crear:false,
       dialog_mod:false,
       dialog_del:false,
@@ -315,18 +329,16 @@ export default {
       color:'',
       dato:{},
       columns : [
-  {
-    name: 'nombre',
-    label: 'ITEM',
-    align: 'center',
-    field: 'nombre',
-    sortable: true
-  },
-  { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
-  { name: 'detalle', align: 'center', label: 'OBSERVACIONES', field: 'detalle', sortable: true },
-  { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
-  { name: 'opcion', label: 'OPCIONES', field: 'action' }
-],
+        {name: 'codigo', label: 'Codigo', align: 'center', field: 'codigo', sortable: true},
+        {name: 'nombre', label: 'ITEM', align: 'center', field: 'nombre', sortable: true},
+        { name: 'global', align: 'center', label: 'CANTIDAD GLOBAL', field: 'global', sortable: true },
+        { name: 'prestamo', align: 'center', label: 'PRESTAMO', field: 'prestamo', sortable: true },
+        { name: 'ventas', align: 'center', label: 'VENTAS', field: 'ventas', sortable: true },
+        { name: 'cantidad', align: 'center', label: 'SALDO', field: 'cantidad', sortable: true },
+        { name: 'detalle', align: 'center', label: 'OBSERVACIONES', field: 'detalle', sortable: true },
+        { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
+        { name: 'opcion', label: 'OPCIONES', field: 'action' }
+      ],
   rows:[],
   logdata:[],
   logcol : [
@@ -353,7 +365,35 @@ export default {
       this.$q.loading.show();
       this.$axios.get(process.env.API+'/inventario').then(res=>{
         // console.log(res.data)
-        this.rows=res.data;
+        this.rows=[]
+        res.data.forEach(r=>{
+          let d=r
+          let enprestamo=0
+          let enventa=0
+          // console.log(r.prestamos.length)
+          if (r.prestamos.length!=0){
+            // let enprestamos=
+
+            r.prestamos.forEach(p=>{
+              // console.log(p.estado!=)
+
+              if (p.estado=='EN PRESTAMO'){
+                enprestamo=enprestamo+p.cantidad
+                // console.log(p.cantidad)
+              }
+              if (p.estado=='VENTA'){
+                console.log(p)
+                enventa=enventa+p.cantidad
+                // console.log(p.cantidad)
+              }
+            })
+          }
+          d.global=d.cantidad+enprestamo+enventa
+          d.prestamo=enprestamo
+          d.ventas=enventa
+          this.rows.push(d)
+        })
+        // this.rows=res.data;
         this.$q.loading.hide();
       })
     },
@@ -457,7 +497,7 @@ export default {
         })
         this.$q.loading.hide();
     },
-    
+
         onAdd(){
         this.$q.loading.show();
         this.modprod={id:this.dato.id,cantidad:this.agregar,motivo:this.dato.motivo}

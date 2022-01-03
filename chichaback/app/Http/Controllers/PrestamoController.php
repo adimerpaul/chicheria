@@ -48,9 +48,18 @@ class PrestamoController extends Controller
          if( $inv->cantidad>=$request->cantidad){
         $prestamo=new Prestamo();
         $prestamo->fecha=date('Y-m-d');
-//        $prestamo->estado='DEVUELTO';
-        $prestamo->cantidad=$request->cantidad;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-        $prestamo->prestado=$request->cantidad;
+        $prestamo->estado=$request->tipo;
+        if ($request->tipo=='VENTA'){
+            $prestamo->cantidad=$request->cantidad;
+            $prestamo->prestado=0;
+            $inv->cantidad=$inv->cantidad-$request->cantidad;
+            $inv->save();
+        }else{
+            $prestamo->cantidad=$request->cantidad;
+            $prestamo->prestado=$request->cantidad;
+        }
+//        $prestamo->cantidad=$request->cantidad;
+//        $prestamo->prestado=$request->cantidad;
         $prestamo->efectivo=$request->efectivo;
         $prestamo->fisico=$request->fisico;
         $prestamo->observacion=$request->observacion;
@@ -115,7 +124,7 @@ class PrestamoController extends Controller
                 $inv->cantidad=$inv->cantidad + $prestamo->cantidad;
                 $inv->save();
                 $prestamo->cliente_id=$request->cliente_id;
-                $prestamo->cantidad=$request->cantidad;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                $prestamo->cantidad=$request->cantidad;
                 $prestamo->prestado=$request->cantidad;
                 $prestamo->inventario_id=$request->inventario_id;
                 $inv2=Inventario::find($request->inventario_id);
@@ -146,7 +155,7 @@ class PrestamoController extends Controller
                 $inv->cantidad=$inv->cantidad + $prestamo->cantidad;
                 $inv->save();
                 $prestamo->cliente_id=$request->cliente_id;
-                $prestamo->cantidad=$request->cantidad;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                $prestamo->cantidad=$request->cantidad;
                 $prestamo->prestado=$request->cantidad;
                 $prestamo->inventario_id=$request->inventario_id;
                 $inv2=Inventario::find($request->inventario_id);
@@ -162,7 +171,7 @@ class PrestamoController extends Controller
         return true;}
         else
            return response()->json(['error' => 'No se cuenta con la cantidad'], 404);
-    
+
     }
     /**
      * Remove the specified resource from storage.
@@ -178,7 +187,7 @@ class PrestamoController extends Controller
 
     public function misanulados(Request $request){
         return Prestamo::with('cliente')
-        
+
             ->where('estado','ANULADO')
             ->where('efectivo','>',0)
             ->whereDate('updated_at','>=',$request->fecha1)

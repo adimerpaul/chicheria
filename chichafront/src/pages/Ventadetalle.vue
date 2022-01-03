@@ -411,11 +411,15 @@
               <div class="col-12 col-md-6 q-pa-xs">
                 <q-input required type="number"  outlined label="cantidad" v-model="newgarantia.cantidad"/>
               </div>
-              <div class="col-12 col-md-6 q-pa-xs">
+              <div class="col-12 col-md-4 q-pa-xs">
                 <q-input  outlined type="number" label="efectivo" v-model="newgarantia.efectivo"/>
               </div>
-              <div class="col-12 col-md-6 q-pa-xs">
+              <div class="col-12 col-md-4 q-pa-xs">
                 <q-input  outlined label="fisico" v-model="newgarantia.fisico"/>
+              </div>
+              <div class="col-12 col-md-4 q-pa-xs flex flex-center">
+                <input type="radio" value="EN PRESTAMO" v-model="newgarantia.tipo"/><b> EN PRESTAMO </b>
+                <input type="radio" value="VENTA" v-model="newgarantia.tipo"/><b> VENTA </b>
               </div>
               <div class="col-12  q-pa-xs flex flex-center">
                 <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Registrar"/>
@@ -501,7 +505,7 @@ export default {
       fecha4:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha5:date.formatDate(new Date(),'YYYY-MM-DD'),
       responsable:'',
-      newgarantia:{},
+      newgarantia:{tipo:'EN PRESTAMO'},
       newcliente:{},
       clientes:[],
       clientes2:[],
@@ -685,6 +689,7 @@ export default {
         fisico:this.newgarantia.fisico,
         observacion:'',
         cliente_id:this.model.id,
+        tipo:this.newgarantia.tipo,
       }).then((res)=>{
 
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");

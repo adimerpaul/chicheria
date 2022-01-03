@@ -4,27 +4,27 @@
   <q-form @submit.prevent="agregar">
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select use-input v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos"
-        
-                            @filter="filterFn"
-                   />
-      <q-select use-input @filter="filterFn" v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"    
-/>
+      <q-select dense use-input v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" @filter="filterFn"/>
+      <q-select dense use-input @filter="filterFn" v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
+      <q-select dense outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades"/>
+      <q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input outlined label="Efectivo" v-model="efectivo" type="number"/>
+      <q-input dense outlined label="Efectivo" v-model="efectivo" type="number"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input outlined label="Fisico" v-model="fisico" />
+      <q-input dense outlined label="Fisico" v-model="fisico" />
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input outlined label="Observacion" v-model="observacion" />
+      <q-input dense outlined label="Observacion" v-model="observacion" />
+    </div>
+    <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
+      <input type="radio" value="EN PRESTAMO" v-model="tipo"/><b> EN PRESTAMO </b>
+      <input type="radio" value="VENTA" v-model="tipo"/><b> VENTA </b>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
       <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
@@ -63,7 +63,7 @@
 <!--              </q-tr>-->
             </template>
                         <template v-slot:body-cell-opcion="props" >
-                <q-td key="opcion" :props="props" > 
+                <q-td key="opcion" :props="props" >
                     <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
                     <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
                     <q-btn size="xs" @click="onMod(props.row)"  color="yellow" icon="edit" v-if="props.row.estado=='EN PRESTAMO'"/>
@@ -97,7 +97,7 @@
           @submit="devolver"
           class="q-gutter-md"
         >
-        
+
         <q-card-section class="q-pt-none">
           <q-input dense v-model="dev.cantidad" autofocus type="number" label="Cantidad" required min=1
           :rules="[ val => val<=datoprestamo.prestado || 'Ingrese la cantidad correcta' ]"
@@ -158,6 +158,7 @@ export default {
       fisico:'',
       efectivo:'',
       observacion:'',
+      tipo:'EN PRESTAMO',
       totalefectivo:0,
       dialog_dev:false,
       dialog_list:false,
@@ -270,7 +271,7 @@ export default {
     },
     listadoprestamo(){
       this.$axios.get(process.env.API+'/prestamo').then(res=>{
-        console.log(res.data);
+        // console.log(res.data);
         this.listadop=[];
         res.data.forEach(element => {
             if(this.tab=='local' && element.cliente.tipocliente=='1')
@@ -380,6 +381,7 @@ export default {
         observacion:this.observacion,
         cantidad:this.cantidad,
         cliente_id:this.cliente.id,
+        tipo:this.tipo,
         inventario_id:this.inventario.id,
       }).then(res=>{
         // console.log(res.data)
@@ -410,7 +412,7 @@ export default {
         id:this.datoprestamo.id,
       }).then(res=>{
         console.log(res.data);
-        
+
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();

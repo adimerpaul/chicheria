@@ -181,7 +181,7 @@
                     <q-td key="titular" :props="props">
                       {{ props.row.titular }}
                     </q-td>
-  
+
                     <q-td key="total" :props="props">
                       {{ props.row.total }}
                     </q-td>
@@ -754,7 +754,7 @@ export default {
           this.estado=''
           this.model=''
           this.producto=''
-          THIS.observacion='NINGUNA'
+          this.observacion='NINGUNA'
           this.cantidad=1
           this.subtotal=0
         this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
