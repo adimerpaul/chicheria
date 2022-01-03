@@ -403,6 +403,7 @@ export default {
         // let xx=x
         // let yy=y
         let y=0
+        let suma=0
         this.reportepres.forEach(r=>{
           // xx+=0.5
           y+=0.5
@@ -410,13 +411,20 @@ export default {
           doc.text(5, y+3, ''+r.titular)
           doc.text(11, y+3, ''+r.nombre)
           doc.text(16.5, y+3, ''+r.total,{align:'right'})
-          doc.text(17.5, y+3, ''+r.monto,{align:'right'})
+          if(r.monto!=null){
+          doc.text(18, y+3,''+r.monto,{align:'right'})
+          suma+=r.monto;
+          }
+          else
+          doc.text(18, y+3, 'sin garantía')
           if (y+3>25){
             doc.addPage();
             header()
             y=0
           }
         })
+                  doc.text(16.5, y+3.5, 'TOTAL')
+          doc.text(18, y+3.5,''+suma);
         window.open(doc.output('bloburl'), '_blank');
     },
 
