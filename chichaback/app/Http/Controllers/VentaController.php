@@ -218,6 +218,40 @@ class VentaController extends Controller
 
     }
 
+    public function listventdetalle(Request $request){
+             return Venta::with('user')
+                 ->with('cliente')
+                 ->with('pagos')
+                 ->whereDate('fecha','>=',$request->ini)
+                 ->whereDate('fecha','<=',$request->fin)
+                 ->where('tipo','DETALLE')
+                 ->whereNull('fechaentrega')
+                 ->get();
+     }
+
+    public function listventlocal(Request $request){
+        return Venta::with('user')
+            ->with('cliente')
+            ->with('pagos')
+            ->whereDate('fecha','>=',$request->ini)
+            ->whereDate('fecha','<=',$request->fin)
+            ->where('tipo','LOCAL')
+            ->whereNull('fechaentrega')
+            ->get();
+    }
+
+    public function listventruta(Request $request){
+        return Venta::with('user')
+            ->with('cliente')
+            ->with('pagos')
+            ->whereDate('fecha','>=',$request->ini)
+            ->whereDate('fecha','<=',$request->fin)
+            ->whereNotNull('fechaentrega')
+            ->get();
+    }
+
+
+
     public function listadoventaruta(Request $request){
              return Venta::with('user')
                  ->with('cliente')

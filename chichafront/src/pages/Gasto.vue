@@ -312,6 +312,15 @@ export default {
         doc.text(13.5, y+3, '')
         doc.text(18.5, y+3, '')
       }
+      y+=0.5
+        doc.setFont(undefined,'bold')
+
+        doc.text(1, y+3, '-------------------------------------------------------')
+      y+=0.5
+
+        doc.text(1, y+3, 'INGRESOS DE PENDIENTES DE PAGO')
+        doc.setFont(undefined,'normal')
+
 
       if(this.totalpagos>0){
       this.rpagos.forEach(r=>{

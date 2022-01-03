@@ -281,6 +281,8 @@
           </q-item-section>
         </q-item>
 
+
+
         <q-item
           v-if="$store.state.login.historialventa"
           active-class="my-menu-link"
@@ -297,10 +299,74 @@
           <q-item-section>
             <q-item-label>Historial de Venta </q-item-label>
             <q-item-label caption>
-              Historial de venta 
+              Historial de venta
             </q-item-label>
           </q-item-section>
         </q-item>
+
+        <q-item
+          v-if="$store.state.login.historialventa"
+          active-class="my-menu-link"
+          clickable
+          exact
+          to="cxcdetalle"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="task" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Historial de Venta DETALLE</q-item-label>
+            <q-item-label caption>
+              Historial de ventas
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          v-if="$store.state.login.historialventa"
+          active-class="my-menu-link"
+          clickable
+          exact
+          to="cxclocal"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="task" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Historial de Venta LOCAL</q-item-label>
+            <q-item-label caption>
+              Historial de venta
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          v-if="$store.state.login.historialventa"
+          active-class="my-menu-link"
+          clickable
+          exact
+          to="cxcruta"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="task" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Historial de Venta RUTA</q-item-label>
+            <q-item-label caption>
+              Historial de venta
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
 
         <q-item
           v-if="$store.state.login.historialventa"

@@ -15,6 +15,9 @@ import Ventadetalle from "pages/Ventadetalle";
 import Prestamos from "pages/Prestamos";
 import Prestamoslocal from "pages/Prestamoslocal";
 import Historial from "pages/Historial";
+import Cxcdetalle from "pages/Cxcdetalle";
+import Cxclocal from "pages/Cxclocal";
+import Cxcruta from "pages/Cxcruta";
 import Historialruta from "pages/Historialruta";
 // <<<<<<< HEAD
 // import User from "pages/User";
@@ -45,6 +48,9 @@ const routes = [
       { path: 'prestamos', component: Prestamos,meta: {requiresAuth: true} },
       { path: 'prestamoslocal', component: Prestamoslocal,meta: {requiresAuth: true} },
       { path: 'historial', component: Historial,meta: {requiresAuth: true} },
+      { path: 'cxcdetalle', component: Cxcdetalle,meta: {requiresAuth: true} },
+      { path: 'cxclocal', component: Cxclocal,meta: {requiresAuth: true} },
+      { path: 'cxcruta', component: Cxcruta,meta: {requiresAuth: true} },
       { path: 'historialruta', component: Historialruta,meta: {requiresAuth: true} },
 
 // <<<<<<< HEAD

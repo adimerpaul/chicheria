@@ -2,7 +2,7 @@
 <q-page class="q-pa-xs">
   <div class="row">
     <div class="col-12">
-      <div class="text-subtitle1 bg-blue-9 text-center text-white">Ventas</div>
+      <div class="text-subtitle1 bg-blue-9 text-center text-white">Ventas RUTA</div>
     </div>
 
     <div class="col-12">
@@ -10,7 +10,7 @@
         <div class="col-12 col-sm-12">
           <div class="row">
             <div class="col-12">
-              <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas</div>
+              <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas Ruta</div>
             </div>
             <q-form @submit.prevent="misventas">
             <div class="row">
@@ -265,7 +265,7 @@ export default {
     misventas(){
       this.$q.loading.show()
       this.ventas=[];
-      this.$axios.post(process.env.API+'/listadoventa',{ini:this.fecha2,fin:this.fecha3}).then(res=>{
+      this.$axios.post(process.env.API+'/listventruta',{ini:this.fecha2,fin:this.fecha3}).then(res=>{
         // this.ventas=res.data
         // console.log(res.data)
         this.$q.loading.hide()
