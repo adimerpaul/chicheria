@@ -88,6 +88,15 @@ class PrestamoController extends Controller
         return $prestamo->save();
     }
 
+public function reporteventa(Request $request){
+        return Prestamo::with('cliente')->with('inventario')->
+        whereDate('fecha','>=',$request->fecha1)
+        ->whereDate('fecha','<=',$request->fecha2)
+        ->where('estado','VENTA')
+        ->get()
+        ;
+    }
+
     public function show(Prestamo $prestamo)
     {
         //

@@ -83,4 +83,5 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/anularprestamo/{id}',[\App\Http\Controllers\PrestamoController::class,'anularprestamo']);
     Route::post('/misanulados',[\App\Http\Controllers\PrestamoController::class,'misanulados']);
     Route::post('/modprestamo',[\App\Http\Controllers\PrestamoController::class,'modprestamo']);
+    Route::post('/reporteventa',[\App\Http\Controllers\PrestamoController::class,'reporteventa']);
 });

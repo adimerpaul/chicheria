@@ -183,6 +183,7 @@ export default {
       gastos:[],
       anulados:[],
       rpagos:[],
+      reporteventa:[],
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -312,17 +313,42 @@ export default {
         doc.text(13.5, y+3, '')
         doc.text(18.5, y+3, '')
       }
+      if(this.totalpresventa>0){
+      doc.setFont(undefined,'bold')
       y+=0.5
-        doc.setFont(undefined,'bold')
-
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
+        doc.text(1, y+3, 'INGRESOS DE VENTA MATERIAL')
+        doc.setFont(undefined,'normal')
+      this.prestamoventa.forEach(r=>{
+        y+=0.5
+        // console.log(r)
+       doc.setFontSize(6);
+        doc.text(1, y+3, '')
+       doc.setFontSize(9);
+        doc.text(3, y+3, r.efectivo+' Bs.')
+        ventas+=parseFloat(r.efectivo)
+        doc.text(5, y+3, 'Material')
+        doc.text(7, y+3, r.cantidad+'')
+        doc.text(9.5, y+3, r.inventario.nombre)
+        doc.text(13.5, y+3, r.cliente.titular)
+        doc.text(18.5, y+3, r.cliente.local)
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })}
+      if(this.totalpagos>0){
+        y+=0.5
+      doc.setFont(undefined,'bold')
+        doc.text(1, y+3, '-------------------------------------------------------')
+        y+=0.5
 
         doc.text(1, y+3, 'INGRESOS DE PENDIENTES DE PAGO')
         doc.setFont(undefined,'normal')
 
 
-      if(this.totalpagos>0){
       this.rpagos.forEach(r=>{
         y+=0.5
         doc.setFontSize(6);
@@ -587,7 +613,7 @@ export default {
               })}
           })
 
-          this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha2,fecha2:this.fecha2}).then(res=>{
+          this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
             console.log(res.data)
           this.anulados=[];
           res.data.forEach(r=>{
@@ -595,9 +621,15 @@ export default {
               this.anulados=res.data;
             })
 
-            this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha2,fecha2:this.fecha2}).then(res=>{
+            this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
               this.rpagos=[];
               this.rpagos=res.data;
+            this.$axios.post(process.env.API+'/reporteventa',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+              console.log(res.data)
+            this.prestamoventa=[];
+            this.prestamoventa=res.data;
+            })
+
             })
           })
 
@@ -802,6 +834,13 @@ export default {
       let total=0;
       this.rpagos.forEach(r=>{
         total+=parseFloat(r.monto)
+      })
+      return total;
+    },
+            totalpresventa(){
+      let total=0;
+      this.prestamoventa.forEach(r=>{
+        total+=parseFloat(r.efectivo)
       })
       return total;
     }
