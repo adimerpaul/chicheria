@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pago;
 use App\Models\Venta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PagoController extends Controller
 {
@@ -57,7 +58,7 @@ class PagoController extends Controller
      * @param  \App\Models\Pagos  $pagos
      * @return \Illuminate\Http\Response
      */
-    public function show(Pagos $pagos)
+    public function show(Pago $pagos)
     {
         //
     }
@@ -68,7 +69,7 @@ class PagoController extends Controller
      * @param  \App\Models\Pagos  $pagos
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pagos $pagos)
+    public function edit(Pago $pagos)
     {
         //
     }
@@ -80,7 +81,7 @@ class PagoController extends Controller
      * @param  \App\Models\Pagos  $pagos
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pagos $pagos)
+    public function update(Request $request, Pago $pagos)
     {
         //
     }
@@ -91,8 +92,17 @@ class PagoController extends Controller
      * @param  \App\Models\Pagos  $pagos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pagos $pagos)
+    public function destroy(Pago $pagos)
     {
         //
     }
+
+    public function reportepago(Request $request){
+        return DB::SELECT("SELECT p.fecha,v.fechaentrega,p.monto,v.tipo,d.cantidad,d.nombreproducto, c.local,c.titular
+        FROM pagos p inner join ventas v on p.venta_id=v.id inner join detalles d ON v.id=d.venta_id
+        inner join clientes c on v.cliente_id=c.id
+        where date(p.fecha)>='$request->fecha1' and date(p.fecha)<='$request->fecha2'");
+    }
+
+
 }

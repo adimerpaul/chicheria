@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Detalle;
 use App\Models\Venta;
-use App\Models\Prestamo;
-use App\Models\Inventario;
+use App\Models\Producto;
+use App\Models\Garantia;
 use App\Models\Pago;
 use App\Models\Detalleprestamo;
 use Illuminate\Http\Request;
@@ -226,7 +226,7 @@ class VentaController extends Controller
                  ->where('direccion','<>','')
                  ->Where('fecha','<>','')
                  ->get();
- 
+
      }
 
     public function listadodeudores(){

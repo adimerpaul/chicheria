@@ -182,6 +182,7 @@ export default {
       boolcrear:true,
       gastos:[],
       anulados:[],
+      rpagos:[],
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -269,7 +270,7 @@ export default {
         y+=0.5
         // console.log(r)
        doc.setFontSize(6);
-        doc.text(1, y+3, r.fechaentrega!=''?'Ruta '+r.tipo:''+r.tipo)
+        doc.text(1, y+3, r.fechaentrega!=null?'Ruta '+r.tipo:''+r.tipo)
       doc.setFontSize(9);
         doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventas+=parseFloat(r.acuenta)
@@ -310,6 +311,27 @@ export default {
         doc.text(9.5, y+3, 'ANULADOS')
         doc.text(13.5, y+3, '')
         doc.text(18.5, y+3, '')
+      }
+
+      if(this.totalpagos>0){
+      this.rpagos.forEach(r=>{
+        y+=0.5
+        doc.setFontSize(6);
+        doc.text(1, y+3, r.fechaentrega!=null?'Ruta '+r.tipo:''+r.tipo)
+        doc.setFontSize(9);
+        doc.text(3, y+3, r.monto!=null?r.monto.toString():''+' Bs.')
+        ventas+=r.monto;
+        doc.text(5, y+3, 'Pagos')
+        doc.text(7, y+3, r.cantidad!=null?r.cantidad.toString():'')
+        doc.text(9.5, y+3, r.nombreproducto!=null?r.nombreproducto.toString():'')
+        doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
+        doc.text(18.5, y+3, r.local!=null?r.local.toString():'')
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })
       }
       doc.setFontSize(11);
         doc.setFont(undefined,'normal')
@@ -563,7 +585,13 @@ export default {
             // if (r.tipo=='LOCAL')
               this.anulados=res.data;
             })
+
+            this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha2,fecha2:this.fecha2}).then(res=>{
+              this.rpagos=[];
+              this.rpagos=res.data;
+            })
           })
+
         })
 
 
@@ -757,6 +785,14 @@ export default {
       let total=0;
       this.anulados.forEach(r=>{
         total+=parseFloat(r.efectivo)
+      })
+      return total;
+    },
+
+        totalpagos(){
+      let total=0;
+      this.rpagos.forEach(r=>{
+        total+=parseFloat(r.monto)
       })
       return total;
     }
