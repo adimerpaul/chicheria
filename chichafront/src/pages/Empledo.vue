@@ -111,7 +111,9 @@
       <template v-slot:body-cell-opcion="props">
         <q-td :props="props">
           <div>
-            <q-btn icon="print" color="yellow" @click="imprimirboleta(props.row)"/>
+            <template v-if="$store.state.login.reimpresion" >
+              <q-btn icon="print" color="yellow" @click="imprimirboleta(props.row)"/>
+            </template>
           </div>
         </q-td>
       </template>
@@ -277,7 +279,7 @@ export default {
           let extra=r.extra==null?0:r.extra;
           let adelanto=r.adelanto==null?0:r.adelanto;
           let descuento=r.descuento==null?0:r.descuento;
-          let total= r.salario - adelanto - descuento; 
+          let total= r.salario - adelanto - descuento;
           y+=0.5
           doc.text(1, y+3, ''+r.nombre)
           doc.text(5, y+3, ''+r.salario)

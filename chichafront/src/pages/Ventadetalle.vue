@@ -220,7 +220,9 @@
                         <q-btn-group v-if="props.row.estado!='ANULADO'" >
                           <q-btn icon="cancel" color="red" @click="anular(props.row)" size="xs" v-if="$store.state.login.anularventa"/>
                           <q-btn icon="local_shipping" color="info"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta"/>
-                          <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" />
+                          <template v-if="$store.state.login.reimpresion" >
+                            <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" />
+                          </template>
                         </q-btn-group>
 
                       </q-td>

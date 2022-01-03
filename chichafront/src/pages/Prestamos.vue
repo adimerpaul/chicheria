@@ -471,7 +471,7 @@ export default {
           suma+=r.monto;
           }
           else
-          doc.text(18, y+3, 'sin garantía')
+          doc.text(17, y+3, 'sin garantía')
           if (y+3>25){
             doc.addPage();
             header()

@@ -267,7 +267,7 @@ export default {
       this.ventas=[];
       this.$axios.post(process.env.API+'/listventdetalle',{ini:this.fecha2,fin:this.fecha3}).then(res=>{
         // this.ventas=res.data
-        // console.log(res.data)
+        console.log(res.data)
         this.$q.loading.hide()
         this.ventas=[]
         res.data.forEach(r=>{
