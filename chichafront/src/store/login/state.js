@@ -19,5 +19,6 @@ export default function () {
     anularventa:false,
     ruta:false,
     anularprestamo:false,
+    reimpresion:false,
   }
 }

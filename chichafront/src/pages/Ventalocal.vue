@@ -199,7 +199,10 @@
                     </q-td>
                       <q-td key="opcion" :props="props">
                         <q-btn dense icon="cancel" color="red" v-if="props.row.estado!='ANULADO' && $store.state.login.anularventa" @click="anular(props.row)" />
-                        <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" />
+                        <template v-if="props.row.estado!='ANULADO'" >
+                          <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" />
+                        </template>
+                        {{$store.state.login.reimpresion}}
                       </q-td>
                   </q-tr>
                 </template>
@@ -416,8 +419,9 @@ export default {
       // console.log(res.data)
       res.data.forEach(r=>{
         if (r.tipocliente==1)
+          // console.log(r)
         this.clientes.push({
-          label:r.local,
+          label:r.local+' '+r.titular,
           id:r.id,
           // detalles:r.detalles,
           // nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
