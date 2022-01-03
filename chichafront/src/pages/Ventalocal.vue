@@ -461,9 +461,16 @@ export default {
     impruta(venta){
       this.$axios.post(process.env.API+'/ruta/'+venta.id)
         .then(res=>{
-                            let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
-                  myWindow.document.write(res.data);
-                  myWindow.document.close();
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.focus();
+        setTimeout(function(){
+          myWindow.print();
+          myWindow.close();
+          // this.comanda(sale_id);
+          //    impAniv(response);
+        },500);
           })
     },
     anular(venta){
@@ -660,11 +667,18 @@ export default {
     },
     impboleta(detalle)
     {
-      console.log(datalle);
+      console.log(detalle);
       this.$axios.post(process.env.API+'/impresiondetalle/'+detalle.id).then(res=>{
-                          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
-                  myWindow.document.write(res.data);
-                  myWindow.document.close();
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.focus();
+        setTimeout(function(){
+          myWindow.print();
+          myWindow.close();
+          // this.comanda(sale_id);
+          //    impAniv(response);
+        },500);
       })
 
     },
@@ -722,9 +736,16 @@ export default {
           color:'green',
           icon:'info'
         })
-                  let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
-                  myWindow.document.write(res.data);
-                  myWindow.document.close();
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.focus();
+        setTimeout(function(){
+          myWindow.print();
+          myWindow.close();
+          // this.comanda(sale_id);
+          //    impAniv(response);
+        },500);
         this.misventas()
 
           this.subtotal=''

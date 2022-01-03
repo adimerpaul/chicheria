@@ -220,6 +220,7 @@
                         <q-btn-group v-if="props.row.estado!='ANULADO'" >
                           <q-btn icon="cancel" color="red" @click="anular(props.row)" size="xs" v-if="$store.state.login.anularventa"/>
                           <q-btn icon="local_shipping" color="info"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta"/>
+                          <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" />
                         </q-btn-group>
 
                       </q-td>
@@ -713,6 +714,23 @@ export default {
           icon:'error'
         })
       })
+    },
+        impboleta(detalle)
+    {
+      console.log(detalle);
+      this.$axios.post(process.env.API+'/impresiondetalle/'+detalle.id).then(res=>{
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.focus();
+        setTimeout(function(){
+          myWindow.print();
+          myWindow.close();
+          // this.comanda(sale_id);
+          //    impAniv(response);
+        },500);
+      })
+
     },
     impruta(venta){
       this.$axios.post(process.env.API+'/ruta/'+venta.id).then(res=>{
