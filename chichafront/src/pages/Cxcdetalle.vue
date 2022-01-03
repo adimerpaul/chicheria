@@ -100,7 +100,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="v in ventas" :key="v.i">
+                  <tr v-for="v in ventas" :key="v.id">
                     <!--                      <td>{{v.id}}</td>-->
                     <td>{{v.fecha}}</td>
                     <td>{{v.local}}</td>
