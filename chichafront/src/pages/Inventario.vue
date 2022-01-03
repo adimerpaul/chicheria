@@ -95,7 +95,8 @@
             :rows="rows"
             :filter="filter"
             :columns="columns"
-            row-key="name">
+            row-key="name"
+          :rows-per-page-options="[50,100,200,0]">
             <template v-slot:top-right>
               <q-input outlined dense debounce="300" v-model="filter" placeholder="Buscar">
                 <template v-slot:append>
@@ -388,7 +389,7 @@ export default {
               }
             })
           }
-          d.global=d.cantidad+enprestamo+enventa
+          d.global=d.cantidad+enprestamo
           d.prestamo=enprestamo
           d.ventas=enventa
           this.rows.push(d)

@@ -691,7 +691,8 @@ export default {
         cliente_id:this.model.id,
         tipo:this.newgarantia.tipo,
       }).then((res)=>{
-
+        // console.log(res.data)
+        // return false
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();

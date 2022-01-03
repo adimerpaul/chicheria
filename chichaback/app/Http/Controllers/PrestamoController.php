@@ -52,8 +52,8 @@ class PrestamoController extends Controller
         if ($request->tipo=='VENTA'){
             $prestamo->cantidad=$request->cantidad;
             $prestamo->prestado=0;
-            $inv->cantidad=$inv->cantidad-$request->cantidad;
-            $inv->save();
+//            $inv->cantidad=$inv->cantidad-$request->cantidad;
+//            $inv->save();
         }else{
             $prestamo->cantidad=$request->cantidad;
             $prestamo->prestado=$request->cantidad;
