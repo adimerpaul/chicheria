@@ -27,7 +27,13 @@ class GastoController extends Controller
         //
     }
     public function misgastos(Request  $request){
-        return Gasto::with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+        if($request->user()->id==1)
+        {
+            if($request->id==0) return Gasto::with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+            else return Gasto::with('user')->where('user_id',$request->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+        }
+        else
+        return Gasto::with('user')->where('user_id',$request->user()->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
     }
 
     /**
