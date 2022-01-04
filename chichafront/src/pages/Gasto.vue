@@ -185,8 +185,6 @@ export default {
       anulados:[],
       rpagos:[],
       reporteventa:[],
-      users:[],
-      user:{},
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -242,14 +240,6 @@ export default {
   },
   methods:{
     misuser(){
-      this.$axios.post(process.env.API+'/listuser').then(res=>{
-        this.users=[{label:'TODOS',user:{id:0}}]
-        res.data.forEach(element => {
-          this.users.push({label:element.name,user:element});
-          
-        });
-        this.user=this.users[0];
-      })
       
     },
     imprimirmisventasygastos(){
@@ -590,7 +580,7 @@ export default {
     misgastos(){
       this.$q.loading.show()
       this.gastos=[]
-      this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
+      this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
         // console.log(res.data)
         // this.gastos=res.data
         res.data.forEach(r=>{
@@ -605,7 +595,7 @@ export default {
         })
         this.$q.loading.hide()
 
-        this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
+        this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
           // this.ventas=res.data
            console.log(res.data)
           this.$q.loading.hide()
@@ -628,7 +618,7 @@ export default {
               })}
           })
 
-          this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
+          this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
             console.log(res.data)
           this.anulados=[];
           res.data.forEach(r=>{
@@ -636,10 +626,10 @@ export default {
               this.anulados=res.data;
             })
 
-            this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
+            this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
               this.rpagos=[];
               this.rpagos=res.data;
-            this.$axios.post(process.env.API+'/reporteventa',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
+            this.$axios.post(process.env.API+'/reporteventa',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
               console.log(res.data)
             this.prestamoventa=[];
             this.prestamoventa=res.data;
