@@ -23,65 +23,107 @@
             </div>
             </q-form>
             <div class="col-12">
-              <q-table
-                :columns="columns2"
-                :rows="ventas"
-                title="Historial de ventas"
-                :filter="filter"
-              >
-                <!--        <template v-slot:top-right>-->
-                <!--          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">-->
-                <!--            <template v-slot:append>-->
-                <!--              <q-icon name="search" />-->
-                <!--            </template>-->
-                <!--          </q-input>-->
-                <!--        </template>-->
-            <template v-slot:top-right>
-              <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
-            </template>
-                <template v-slot:body="props">
-                  <q-tr :props="props">
-                    <q-td key="fecha" :props="props">
-                      {{ props.row.fecha }}
-                    </q-td>
+<!--              <q-table-->
+<!--                :columns="columns2"-->
+<!--                :rows="ventas"-->
+<!--                title="Historial de ventas"-->
+<!--                :filter="filter"-->
+<!--              >-->
+<!--                &lt;!&ndash;        <template v-slot:top-right>&ndash;&gt;-->
+<!--                &lt;!&ndash;          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">&ndash;&gt;-->
+<!--                &lt;!&ndash;            <template v-slot:append>&ndash;&gt;-->
+<!--                &lt;!&ndash;              <q-icon name="search" />&ndash;&gt;-->
+<!--                &lt;!&ndash;            </template>&ndash;&gt;-->
+<!--                &lt;!&ndash;          </q-input>&ndash;&gt;-->
+<!--                &lt;!&ndash;        </template>&ndash;&gt;-->
+<!--            <template v-slot:top-right>-->
+<!--              <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">-->
+<!--                <template v-slot:append>-->
+<!--                  <q-icon name="search" />-->
+<!--                </template>-->
+<!--              </q-input>-->
+<!--            </template>-->
+<!--                <template v-slot:body="props">-->
+<!--                  <q-tr :props="props">-->
+<!--                    <q-td key="fecha" :props="props">-->
+<!--                      {{ props.row.fecha }}-->
+<!--                    </q-td>-->
 
-                    <q-td key="local" :props="props">
-                      {{ props.row.local }}
-                    </q-td>
-                    <q-td key="titular" :props="props">
-                      {{ props.row.titular }}
-                    </q-td>
+<!--                    <q-td key="local" :props="props">-->
+<!--                      {{ props.row.local }}-->
+<!--                    </q-td>-->
+<!--                    <q-td key="titular" :props="props">-->
+<!--                      {{ props.row.titular }}-->
+<!--                    </q-td>-->
 
-                    <q-td key="total" :props="props">
-                      {{ props.row.total }}
-                    </q-td>
-                    <q-td key="acuenta" :props="props">
-                      {{ props.row.acuenta }}
-                    </q-td>
-                    <q-td key="saldo" :props="props">
-                      {{ props.row.saldo }}
-                    </q-td>
-                    <q-td key="tipocliente" :props="props">
-                      <q-badge color="accent" v-if="props.row.tipocliente==1">LOCAL</q-badge>
+<!--                    <q-td key="total" :props="props">-->
+<!--                      {{ props.row.total }}-->
+<!--                    </q-td>-->
+<!--                    <q-td key="acuenta" :props="props">-->
+<!--                      {{ props.row.acuenta }}-->
+<!--                    </q-td>-->
+<!--                    <q-td key="saldo" :props="props">-->
+<!--                      {{ props.row.saldo }}-->
+<!--                    </q-td>-->
+<!--                    <q-td key="tipocliente" :props="props">-->
+<!--                      <q-badge color="accent" v-if="props.row.tipocliente==1">LOCAL</q-badge>-->
+<!--                      <q-badge color="teal" v-else>CLIENTE</q-badge>-->
+<!--                    </q-td>-->
+<!--                    <q-td key="estado" :props="props">-->
+<!--                      <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>-->
+<!--                    </q-td>-->
+<!--                  <q-td key="user" :props="props">-->
+<!--                      {{ props.row.user }}-->
+<!--                    </q-td>-->
+<!--                      <q-td key="opcion" :props="props">-->
+<!--                        <q-btn icon="segment" color="green"  @click="listpago(props.row)" />-->
+<!--                        <q-btn icon="monetization_on" color="amber" v-if="props.row.estado=='POR COBRAR'" @click="pago(props.row)"/>-->
+<!--                      </q-td>-->
+<!--                  </q-tr>-->
+<!--                </template>-->
+<!--              </q-table>-->
+              <div class=" responsive">
+                <table id="example" style="width:100%">
+                  <thead>
+                  <tr>
+                    <!--                      <th>Nro</th>-->
+                    <th>Fecha</th>
+                    <th>Local</th>
+                    <th>Titular</th>
+                    <th>Total</th>
+                    <th>A cuenta</th>
+                    <th>Saldo</th>
+                    <th>Tipo cliente</th>
+                    <th>Estado</th>
+                    <th>Usuario</th>
+                    <th>Opcion</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="v in ventas" :key="v.i">
+                    <!--                      <td>{{v.id}}</td>-->
+                    <td>{{v.fecha}}</td>
+                    <td>{{v.local}}</td>
+                    <td>{{v.titular}}</td>
+                    <td>{{v.total}}</td>
+                    <td>{{v.acuenta}}</td>
+                    <td>{{v.saldo}}</td>
+                    <td>
+                      <q-badge color="accent" v-if="v.tipocliente==1">LOCAL</q-badge>
                       <q-badge color="teal" v-else>CLIENTE</q-badge>
-                    </q-td>
-                    <q-td key="estado" :props="props">
-                      <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
-                    </q-td>
-                  <q-td key="user" :props="props">
-                      {{ props.row.user }}
-                    </q-td>
-                      <q-td key="opcion" :props="props">
-                        <q-btn icon="segment" color="green"  @click="listpago(props.row)" />
-                        <q-btn icon="monetization_on" color="amber" v-if="props.row.estado=='POR COBRAR'" @click="pago(props.row)"/>
-                      </q-td>
-                  </q-tr>
-                </template>
-              </q-table>
+                    </td>
+                    <td>
+                      <q-badge :color="v.estado=='CANCELADO'?'positive':'negative'">{{ v.estado }}</q-badge>
+                    </td>
+                    <td>{{v.user}}</td>
+                    <td>
+                      <q-btn icon="segment" color="green"  @click="listpago(v)" />
+                      <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)"/>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
                 <q-dialog v-model="alert">
@@ -160,6 +202,18 @@
 </template>
 
 <script>
+var $  = require( 'jquery' );
+require( 'datatables.net-buttons/js/buttons.html5.js' )();
+require( 'datatables.net-buttons/js/buttons.print.js' )();
+require('datatables.net-buttons/js/dataTables.buttons');
+require('datatables.net-dt/css/jquery.dataTables.min.css');
+import print from 'datatables.net-buttons/js/buttons.print';
+import jszip from 'jszip/dist/jszip';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs=pdfFonts.pdfMake.vfs;
+window.JSZip=jszip;
+
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
 
@@ -227,6 +281,12 @@ export default {
     }
   },
   mounted() {
+    $('#example').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ]
+    } );
 
     //this.misventas()
     // console.log(this.$store.state.login)
@@ -270,6 +330,8 @@ export default {
         // console.log(res.data)
         this.$q.loading.hide()
         this.ventas=[]
+        $('#example').DataTable().destroy();
+
         res.data.forEach(r=>{
           this.ventas.push({
             id:r.id,
@@ -285,7 +347,15 @@ export default {
             pagos:r.pagos
           })
         })
-        console.log(this.ventas)
+        // console.log(this.ventas)
+        this.$nextTick(()=>{
+          $('#example').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+          } );
+        })
       })
     },
 
