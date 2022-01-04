@@ -6,6 +6,7 @@
     </div>
     <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha1" outlined required/></div>
     <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
+    <div class="col-6 col-sm-4 q-pa-xs" v-if="$store.state.login.user.id==1"><q-select v-model="user" :options="users" label="Usuarios" outlined /></div>
     <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
       <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misgastos" />
     </div>
@@ -215,6 +216,7 @@ export default {
   },
   mounted() {
     this.misgastos()
+    this.misuser()
     // this.misempleados()
     // console.log(this.$store.state.login)
     // this.$axios.get(process.env.API+'/cliente').then(res=>{
@@ -237,6 +239,9 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+    misuser(){
+      
+    },
     imprimirmisventasygastos(){
       let mc=this
       function header(){
