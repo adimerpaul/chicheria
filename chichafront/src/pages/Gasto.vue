@@ -624,7 +624,7 @@ export default {
     misgastos(){
       this.$q.loading.show()
       this.gastos=[]
-      this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.user.id}).then(res=>{
+      this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
         // console.log(res.data)
         // this.gastos=res.data
         res.data.forEach(r=>{
@@ -664,7 +664,7 @@ export default {
                 tipo:r.tipo
               })}
               else{
-              if(this.user.user.id==r.user_id){this.ventas.push({
+              if(this.user.id==r.user_id){this.ventas.push({
                 total:r.total,
                 tipo:r.tipo,
                 acuenta:r.acuenta,
@@ -700,7 +700,7 @@ export default {
               }
           })
 
-          this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.user.id}).then(res=>{
+          this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
             console.log(res.data)
           this.anulados=[];
           res.data.forEach(r=>{
@@ -708,10 +708,10 @@ export default {
               this.anulados=res.data;
             })
 
-            this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.user.id}).then(res=>{
+            this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
               this.rpagos=[];
               this.rpagos=res.data;
-            this.$axios.post(process.env.API+'/reporteventa',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.user.id}).then(res=>{
+            this.$axios.post(process.env.API+'/reporteventa',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
               console.log(res.data)
             this.prestamoventa=[];
             this.prestamoventa=res.data;
