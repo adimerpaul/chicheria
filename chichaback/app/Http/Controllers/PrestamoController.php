@@ -256,12 +256,15 @@ public function reporteventa(Request $request){
         <style>
         .textc{text-align:center}
         </style>
-        <div>N '.$garantia->id.'</div>
-        <div>Nombre: '.$garantia->cliente->titular.'</div>
-        <div>Telefono: '.$garantia->cliente->telefono.'</div>
-        <div>Efectivo '.$garantia->efectivo.'</div>
-        <div>Detalle '.$garantia->fisico.'</div>
-        <div>Fecha '.$garantia->fecha.'</div>
+        <table style="width: 100%;">
+        <tr><td>N </td><td>'.$garantia->id.'</td></tr>
+        <tr><td>Nombre:</td><td> '.$garantia->cliente->titular.'</td></tr>
+        <tr><td>Telefono:</td><td> '.$garantia->cliente->telefono.'</td></tr>
+        <tr><td>Efectivo: </td><td>'.$garantia->efectivo.'</td></tr>
+        <tr><td>Detalle: </td><td>'.$garantia->fisico.'</td></tr>
+        <tr><td>Fecha: </td><td>'.$garantia->fecha.'</td></tr>
+
+        </table>
         <br>
         <div class="textc">Firma</div>
         <br>
