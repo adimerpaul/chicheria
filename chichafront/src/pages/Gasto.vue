@@ -197,6 +197,7 @@ export default {
       anulados:[],
       rpagos:[],
       reporteventa:[],
+      prestamoventa:[],
       users:[],
       user:{},
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
