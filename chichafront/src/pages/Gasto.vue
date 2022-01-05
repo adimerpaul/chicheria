@@ -399,11 +399,11 @@ export default {
       doc.setFontSize(11);
         doc.setFont(undefined,'normal')
 
-      doc.text(2, y+4, 'Monto cobrado: ')
+      doc.text(2, y+4, 'Total Ingreso: ')
         doc.setFont(undefined,'bold')
       doc.text(5.5, y+4, ventas+'Bs')
         doc.setFont(undefined,'normal')
-      doc.text(7, y+4, 'Monto gasto: ')
+      doc.text(7, y+4, 'Total gasto: ')
         doc.setFont(undefined,'bold')
       doc.text(11, y+4, gastos+'Bs')
         doc.setFont(undefined,'normal')
