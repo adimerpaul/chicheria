@@ -227,6 +227,7 @@ class VentaController extends Controller
                  ->whereDate('fecha','<=',$request->fin)
                  ->where('tipo','DETALLE')
                  ->whereRaw("(fechaentrega is null OR fechaentrega='')")
+                 ->where('saldo','>',0)
                  ->get();
      }
 
@@ -238,7 +239,8 @@ class VentaController extends Controller
             ->whereDate('fecha','<=',$request->fin)
             ->where('tipo','LOCAL')
             ->whereRaw("(fechaentrega is null OR fechaentrega='')")
-            ->get();
+                 ->where('saldo','>',0)
+                 ->get();
     }
 
     public function listventruta(Request $request){
@@ -247,8 +249,9 @@ class VentaController extends Controller
             ->with('pagos')
             ->whereDate('fecha','>=',$request->ini)
             ->whereDate('fecha','<=',$request->fin)
-            ->whereNotNull('fechaentrega')
-            ->get();
+            ->whereRaw("(fechaentrega is not null and fechaentrega!='')")
+            ->where('saldo','>',0)
+                 ->get();
     }
 
 

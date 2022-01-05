@@ -486,15 +486,17 @@ export default {
           suma+=r.monto;
           }
           else
-          doc.text(18, y+3, 'sin garantía')
+          doc.text(17, y+3, 'sin garantía')
           if (y+3>25){
             doc.addPage();
             header()
             y=0
           }
         })
+          doc.setFont(undefined,'bold')
                   doc.text(16.5, y+3.5, 'TOTAL')
           doc.text(18, y+3.5,''+suma);
+          doc.setFont(undefined,'normal')
         window.open(doc.output('bloburl'), '_blank');
     },
 

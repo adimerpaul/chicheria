@@ -89,12 +89,31 @@ class PrestamoController extends Controller
     }
 
 public function reporteventa(Request $request){
+    if($request->user()->id==1)
+    {
+        if($request->id==0)
         return Prestamo::with('cliente')->with('inventario')->
         whereDate('fecha','>=',$request->fecha1)
         ->whereDate('fecha','<=',$request->fecha2)
         ->where('estado','VENTA')
-        ->get()
-        ;
+        ->get();
+        else
+        return Prestamo::with('cliente')->with('inventario')->
+        whereDate('fecha','>=',$request->fecha1)
+        ->whereDate('fecha','<=',$request->fecha2)
+        ->where('estado','VENTA')
+        ->where('user_id',$request->id)
+        ->get();
+    }
+    else
+
+
+        return Prestamo::with('cliente')->with('inventario')->
+        whereDate('fecha','>=',$request->fecha1)
+        ->whereDate('fecha','<=',$request->fecha2)
+        ->where('estado','VENTA')
+        ->where('user_id',$request->user()->id)
+        ->get();
     }
 
     public function show(Prestamo $prestamo)
@@ -195,13 +214,40 @@ public function reporteventa(Request $request){
     }
 
     public function misanulados(Request $request){
-        return Prestamo::with('cliente')
-
+        if($request->user()->id==1)
+        {
+            if($request->id==0)
+            return Prestamo::with('cliente')
             ->where('estado','ANULADO')
             ->where('efectivo','>',0)
             ->whereDate('updated_at','>=',$request->fecha1)
             ->whereDate('updated_at','<=',$request->fecha2)
             ->get();
+            else
+            return Prestamo::with('cliente')
+            ->where('estado','ANULADO')
+            ->where('efectivo','>',0)
+            ->where('user_id',$request->id)
+            ->whereDate('updated_at','>=',$request->fecha1)
+            ->whereDate('updated_at','<=',$request->fecha2)
+            ->get();
+        }
+        else
+        return Prestamo::with('cliente')
+        ->where('estado','ANULADO')
+        ->where('efectivo','>',0)
+        ->where('user_id',$request->user()->id)
+        ->whereDate('updated_at','>=',$request->fecha1)
+        ->whereDate('updated_at','<=',$request->fecha2)
+        ->get();
+
+        /*return Prestamo::with('cliente')
+
+            ->where('estado','ANULADO')
+            ->where('efectivo','>',0)
+            ->whereDate('updated_at','>=',$request->fecha1)
+            ->whereDate('updated_at','<=',$request->fecha2)
+            ->get();*/
     }
 
     public function impresion($id){
