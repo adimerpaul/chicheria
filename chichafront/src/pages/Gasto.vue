@@ -257,9 +257,9 @@ export default {
   methods:{
     misuser(){
       this.$axios.post(process.env.API+'/listuser').then(res=>{
-        this.users=[{label:'TODOS',user:{id:0}}]
+        this.users=[{label:'TODOS',id:0}]
         res.data.forEach(element => {
-          this.users.push({label:element.name,user:element});
+          this.users.push({label:element.name,id:element.id});
 
         });
         this.user=this.users[0];
@@ -643,13 +643,13 @@ export default {
         this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
           // this.ventas=res.data
            console.log(res.data)
-           console.log(this.user.user.id)
+           console.log(this.user.id)
           this.$q.loading.hide()
           this.ventas=[]
           res.data.forEach(r=>{
              if (r.estado!='ANULADO'){
               if(this.$store.state.login.user.id==1){
-              if(this.user.user.id==0){this.ventas.push({
+              if(this.user.id==0){this.ventas.push({
                 total:r.total,
                 tipo:r.tipo,
                 acuenta:r.acuenta,
