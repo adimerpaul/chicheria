@@ -42,6 +42,7 @@
               @click="updateval(props.row)"
             />
             <q-btn
+            v-if="$store.state.login.eliminargasto"
               color="negative"
               icon-right="delete"
               no-caps
@@ -240,7 +241,7 @@ export default {
   },
   methods:{
     misuser(){
-      
+
     },
     imprimirmisventasygastos(){
       let mc=this
@@ -543,7 +544,9 @@ export default {
       // let yy=y
       let y=0
       let cont=1
+      let sumgasto=0
       this.gastos.forEach(r=>{
+        sumgasto+=parseFloat(r.precio)
         console.log(r)
         // xx+=0.5
         y+=0.5
@@ -568,6 +571,9 @@ export default {
           y=0
         }
       })
+      y+=0.5
+              doc.text(1, y+3, 'TOTAL:')
+        doc.text(3, y+3, sumgasto+'')
       // doc.text(2, y+4, 'Ventas totales: ')
       // doc.text(5, y+4, this.ventat+'Bs')
       // doc.text(7, y+4, 'Por cobrar totales: ')

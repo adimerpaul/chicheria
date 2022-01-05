@@ -4,7 +4,7 @@
   <q-form @submit.prevent="agregar">
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select use-input @filter="filterFn" v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" />
+      <q-select use-input @filter="filterFn" v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" option-label="local" />
       <q-select v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
@@ -58,7 +58,7 @@
 <!--              </q-tr>-->
             </template>
                         <template v-slot:body-cell-opcion="props" >
-                <q-td key="opcion" :props="props" > 
+                <q-td key="opcion" :props="props" >
                     <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
                     <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
                     <q-btn size="xs" @click="onMod(props.row)"  color="yellow" icon="edit"/>
@@ -92,7 +92,7 @@
           @submit="devolver"
           class="q-gutter-md"
         >
-        
+
         <q-card-section class="q-pt-none">
           <q-input dense v-model="dev.cantidad" autofocus type="number" label="Cantidad" required min=1
           :rules="[ val => val<=datoprestamo.prestado || 'Ingrese la cantidad correcta' ]"
@@ -350,6 +350,18 @@ export default {
       this.filtrarlista();
       this.cajaprestamo();
     },
+        onMod(prop){
+      console.log(prop)
+        this.boolmod=true
+        this.prestamo_id=prop.id
+        this.efectivo=prop.efectivo;
+        this.fisico=prop.fisico;
+        this.observacion=prop.observacion;
+        this.cantidad=prop.cantidad;
+        this.cliente=prop.cliente;
+        this.inventario=prop.inventario;
+    },
+
     devolver(){
       this.$q.loading.show()
       this.$axios.post(process.env.API+'/logprestamo',{
@@ -360,7 +372,7 @@ export default {
         id:this.datoprestamo.id,
       }).then(res=>{
         console.log(res.data);
-        
+
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();

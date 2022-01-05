@@ -20,5 +20,6 @@ export default function () {
     ruta:false,
     anularprestamo:false,
     reimpresion:false,
+    eliminargasto:false,
   }
 }
