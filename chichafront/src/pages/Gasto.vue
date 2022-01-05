@@ -299,7 +299,7 @@ export default {
         y+=0.5
         // console.log(r)
        doc.setFontSize(6);
-        doc.text(1, y+3, r.fechaentrega!=null||r.fechaentrega==''?'Ruta '+r.tipo:''+r.tipo)
+        doc.text(1, y+3, r.fechaentrega!=null&&r.fechaentrega!=''?'Ruta '+r.tipo:''+r.tipo)
       doc.setFontSize(9);
         doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventas+=parseFloat(r.acuenta)
