@@ -211,6 +211,7 @@ class VentaController extends Controller
             return Venta::with('user')
                 ->with('cliente')
                 ->with('pagos')
+                ->with('detalle')
                 ->whereDate('fecha','>=',$request->ini)
                 ->whereDate('fecha','<=',$request->fin)
                 ->get();

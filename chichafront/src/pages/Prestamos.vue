@@ -251,6 +251,8 @@ export default {
         this.cantidad=1;
         this.cliente=this.cliente[0];
         this.inventario=this.inventario[0];
+        this.efectivo=0
+        this.observacion=''
       })
       this.filtrarlista();
       this.cajaprestamo();

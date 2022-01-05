@@ -41,6 +41,7 @@ class GastoController extends Controller
         $gasto=new Gasto();
         $gasto->precio=$request->precio;
         $gasto->observacion=$request->observacion;
+        $gasto->glosa=$request->glosa;
         $gasto->fecha=$request->fecha;
         $gasto->hora=date('H:i:s');
         $gasto->user_id=$request->user()->id;

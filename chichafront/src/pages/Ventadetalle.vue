@@ -1048,7 +1048,6 @@ export default {
           this.observacion='NINGUNA'
           this.cantidad=1
           this.subtotal=0
-          this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
         })
       }).catch(err=>{
         this.$q.loading.hide()

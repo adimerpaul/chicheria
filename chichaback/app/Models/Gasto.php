@@ -12,6 +12,7 @@ class Gasto extends Model
     protected $fillable=[
         'precio',
         'observacion',
+        'glosa',
         'fecha',
         'hora',
         'user_id'

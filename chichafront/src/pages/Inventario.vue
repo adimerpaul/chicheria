@@ -201,7 +201,7 @@
               type="number"
               min=1
               lazy-rules
-              :rules="[ val => val>0 && val < 500 || 'Por favor Valor']"
+              :rules="[ val => val>0 && val < 1000 || 'Por favor Valor']"
             />
 
              <div>
@@ -247,7 +247,7 @@
               type="number"
               min=1
               lazy-rules
-              :rules="[ val => val>0 && val < 500 || 'Por favor Valor']"
+              :rules="[ val => val>0 && val < 1000 || 'Por favor Valor']"
             />
 
              <div>

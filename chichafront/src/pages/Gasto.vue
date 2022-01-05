@@ -15,6 +15,7 @@
         <div class="row">
           <div class="col-12 q-pa-xs col-sm-3"><q-input outlined type="number" label="Precio" v-model="empleado.precio" required/></div>
           <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Glosa" v-model="empleado.glosa" style="text-transform: uppercase" required/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha " type="date" v-model="empleado.fecha" required/></div>
 <!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>-->
 <!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>-->
@@ -193,6 +194,7 @@ export default {
         {name:'id',label:'Id',field:'id'},
         {name:'precio',label:'Precio',field:'precio'},
         {name:'observacion',label:'Observacion',field:'observacion'},
+        {name:'glosa',label:'Glosa',field:'glosa'},
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'hora',label:'Hora',field:'hora'},
         {name:'user',label:'Usuario',field:'user'},
@@ -448,7 +450,7 @@ export default {
       doc.text(5, y+4, total+'Bs')
       doc.text(7, y+4, 'En Caja totales: ')
       doc.text(11, y+4, caja+'Bs')
-      doc.text(14, y+4, 'Saldo totales: ')
+      doc.text(14, y+4, 'Por Corar: ')
       doc.text(17, y+4, tsaldo+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
@@ -510,7 +512,7 @@ export default {
       doc.text(5, y+4, total+'Bs')
       doc.text(7, y+4, 'En Caja totales: ')
       doc.text(11, y+4, caja+'Bs')
-      doc.text(14, y+4, 'Saldo totales: ')
+      doc.text(14, y+4, 'Por Cobrar: ')
       doc.text(17, y+4, tsaldo+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
@@ -528,9 +530,10 @@ export default {
         doc.text(1, 3, 'Num')
         doc.text(3, 3, 'Precio')
         doc.text(5, 3, 'Observacion')
-        doc.text(9, 3, 'Fecha')
-        doc.text(11.5, 3, 'Hora')
-        doc.text(13.5, 3, 'Usuario')
+        doc.text(9, 3, 'Glosa')
+        doc.text(12, 3, 'Fecha')
+        doc.text(14.5, 3, 'Hora')
+        doc.text(16.5, 3, 'Usuario')
         // doc.text(18.5, 3, 'Usuario')
         doc.setFont(undefined,'normal')
       }
@@ -560,9 +563,10 @@ export default {
         doc.text(1, y+3, ''+cont)
         doc.text(3, y+3, r.precio)
         doc.text(5, y+3, r.observacion)
-        doc.text(9, y+3, r.fecha)
-        doc.text(11.5, y+3, r.hora)
-        doc.text(13.5, y+3, r.user)
+        doc.text(9, y+3, r.glosa)
+        doc.text(12, y+3, r.fecha)
+        doc.text(14.5, y+3, r.hora)
+        doc.text(16.5, y+3, r.user)
 
         cont++
         if (y+3>25){
@@ -593,6 +597,7 @@ export default {
           this.gastos.push({
             id:r.id,
             observacion:r.observacion,
+            glosa:r.glosa,
             precio:r.precio,
             fecha:r.fecha,
             hora:r.hora,
@@ -689,6 +694,7 @@ export default {
     agregar(){
       this.$q.loading.show()
       this.empleado.observacion=this.empleado.observacion.toUpperCase()
+      this.empleado.glosa=this.empleado.glosa.toUpperCase()
       if (this.boolcrear){
         this.$axios.post(process.env.API+'/gasto',this.empleado).then(res=>{
           // this.ventas=res.data
@@ -696,7 +702,9 @@ export default {
           this.$q.loading.hide()
           // this.empleados=res.data
           this.misgastos()
-          this.empleado={}
+          this.empleado.precio=0
+          this.empleado.observacion=''
+          this.empleado.glosa=''
           this.$q.notify({
             message:'Creado correctamente',
             icon:'info',
@@ -712,7 +720,7 @@ export default {
           this.misgastos()
           this.boolcrear=true
           // this.empleado={fechanac: '2000-01-01'}
-          this.empleado={}
+          this.empleado={fecha:date.formatDate( Date.now(),'YYYY-MM-DD')}
           this.$q.notify({
             message:'Creado correctamente',
             icon:'info',

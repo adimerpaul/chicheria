@@ -90,6 +90,8 @@
                       <th>Fecha</th>
                       <th>Local</th>
                       <th>Titular</th>
+                      <th>Cantidad</th>
+                      <th>Producto</th>
                       <th>Total</th>
                       <th>A cuenta</th>
                       <th>Saldo</th>
@@ -105,6 +107,8 @@
                       <td>{{v.fecha}}</td>
                       <td>{{v.local}}</td>
                       <td>{{v.titular}}</td>
+                      <td>{{v.cantidad}}</td>
+                      <td>{{v.producto}}</td>
                       <td>{{v.total}}</td>
                       <td>{{v.acuenta}}</td>
                       <td>{{v.saldo}}</td>
@@ -256,6 +260,8 @@ export default {
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'local',label:'Local',field:'local'},
         {name:'titular',label:'Titular',field:'titular'},
+        {name:'cantidad',label:'Cantidad',field:'cantidad'},
+        {name:'producto',label:'Producto',field:'producto'},
         {name:'total',label:'Total',field:'total'},
         {name:'acuenta',label:'A cuenta',field:'acuenta'},
         {name:'saldo',label:'Saldo',field:'saldo'},
@@ -333,7 +339,7 @@ export default {
         this.ventas=[]
           $('#example').DataTable().destroy();
         res.data.forEach(r=>{
-          // console.log(r)
+           console.log(r)
           this.ventas.push({
             id:r.id,
             fecha:r.fecha,
@@ -345,7 +351,9 @@ export default {
             local:r.cliente.local,
             titular:r.cliente.titular,
             user:r.user.name,
-            pagos:r.pagos
+            pagos:r.pagos,
+            producto:r.detalle.nombreproducto,
+            cantidad:r.detalle.cantidad
           })
           // console.log({
           //   id:r.id,
