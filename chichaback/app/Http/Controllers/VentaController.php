@@ -226,7 +226,7 @@ class VentaController extends Controller
                  ->whereDate('fecha','>=',$request->ini)
                  ->whereDate('fecha','<=',$request->fin)
                  ->where('tipo','DETALLE')
-                 ->whereNull('fechaentrega')
+                 ->whereRaw("(fechaentrega is null OR fechaentrega='')")
                  ->get();
      }
 
@@ -237,7 +237,7 @@ class VentaController extends Controller
             ->whereDate('fecha','>=',$request->ini)
             ->whereDate('fecha','<=',$request->fin)
             ->where('tipo','LOCAL')
-            ->whereNull('fechaentrega')
+            ->whereRaw("(fechaentrega is null OR fechaentrega='')")
             ->get();
     }
 

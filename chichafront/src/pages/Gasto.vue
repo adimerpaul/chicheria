@@ -4,19 +4,19 @@
     <div class="col-12">
       <div class="text-subtitle1 bg-red text-center text-white">CONTROL DE GASTOS</div>
     </div>
-    <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha1" outlined required/></div>
-    <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
-    <div class="col-6 col-sm-4 q-pa-xs" v-if="$store.state.login.user.id==1"><q-select v-model="user" :options="users" label="Usuarios" outlined /></div>
+    <div class="col-6 col-sm-4 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha1" outlined required/></div>
+    <div class="col-6 col-sm-4 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha2" outlined required/></div>
+    <div class="col-6 col-sm-4 q-pa-xs" v-if="$store.state.login.user.id==1"><q-select dense v-model="user" :options="users" label="Usuarios" outlined /></div>
     <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
       <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misgastos" />
     </div>
     <div class="col-12">
       <q-form @submit.prevent="agregar">
         <div class="row">
-          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined type="number" label="Precio" v-model="empleado.precio" required/></div>
-          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
-          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Glosa" v-model="empleado.glosa" style="text-transform: uppercase" required/></div>
-          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha " type="date" v-model="empleado.fecha" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input dense outlined type="number" label="Precio" v-model="empleado.precio" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-input dense outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-input dense outlined label="Glosa" v-model="empleado.glosa" style="text-transform: uppercase" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input dense outlined label="Fecha " type="date" v-model="empleado.fecha" required/></div>
 <!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>-->
 <!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>-->
           <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
@@ -30,7 +30,16 @@
       :columns="columns"
       :rows="gastos"
       :rows-per-page-options="[50,100,0]"
+      :filter="filter"
       >
+        <template v-slot:top-right>
+          <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
             <q-btn
@@ -178,6 +187,7 @@ export default {
   name: "Venta",
   data(){
     return{
+      filter:'',
       pagos:false,
       pago:{},
       empleados:[],

@@ -1,6 +1,5 @@
 <template>
 <q-page class="q-pa-xs">
-
   <q-form @submit.prevent="agregar">
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
@@ -70,7 +69,7 @@
   </q-table>
 
   <hr>
-  <table v-if="tab=='local'">
+  <table id="example" style="width:100%" v-if="tab=='local'">
     <thead><tr><th>Local</th><th>Titular</th><th>Material</th><th>Total</th> <th>Monto</th></tr></thead>
     <tbody>
       <tr v-for="r of reportepres" :key="r">
@@ -79,7 +78,6 @@
         <td>{{r.nombre}}</td>
         <td>{{r.total}}</td>
         <td>{{r.monto}}</td>
-
       </tr>
     </tbody>
   </table>
@@ -139,6 +137,7 @@
 <script>
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
+import $ from "jquery";
 export default {
   name: "Venta",
   data(){
@@ -162,6 +161,7 @@ export default {
       dev:{},
       reportepres:[],
       options:[],
+      boolmod:false,
       filter:'',
       pagination: { rowsPerPage: 20 },
       colum:[
@@ -184,6 +184,17 @@ export default {
   { name: 'opcion', label: 'OPCION', field: 'opcion' },
 ],
     }
+  },
+  mounted() {
+    $('#example').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ]
+    } );
+
+
+
   },
   created(){
     for (let i=1;i<=100;i++){
@@ -218,15 +229,26 @@ export default {
     },
     reporte(){
       this.$axios.post(process.env.API+'/reportecliente').then(res=>{
-        console.log(res.data);
+        // console.log(res.data);
         this.reportepres=[];
-        res.data.forEach(element => {
+        $('#example').DataTable().destroy();
 
+        res.data.forEach(element => {
             if(this.tab=='local' && element.tipocliente=='1')
               this.reportepres.push(element);
             if(this.tab=='cliente' && element.tipocliente=='2')
               this.reportepres.push(element);
         });
+        this.$nextTick(()=>{
+          $('#example').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+          } );
+        })
+
+
       })
 
     },
@@ -481,8 +503,8 @@ export default {
 </script>
 
 <style scoped>
-.table , th , td  {
-  border: 0.2px solid black;
-  border-collapse: collapse;
-}
+/*.table , th , td  {*/
+/*  border: 0.2px solid black;*/
+/*  border-collapse: collapse;*/
+/*}*/
 </style>
