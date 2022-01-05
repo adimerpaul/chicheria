@@ -159,10 +159,12 @@ export default {
       listado:[],
       listadop:[],
       dev:{},
+      tipo:'EN PRESTAMO',
       reportepres:[],
       options:[],
       boolmod:false,
       filter:'',
+
       pagination: { rowsPerPage: 20 },
       colum:[
   { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha', sortable: true },
@@ -388,6 +390,7 @@ export default {
         observacion:this.observacion,
         cantidad:this.cantidad,
         cliente_id:this.cliente.id,
+        tipo:this.tipo,
         inventario_id:this.inventario.id,
       }).then(res=>{
         // console.log(res.data)
