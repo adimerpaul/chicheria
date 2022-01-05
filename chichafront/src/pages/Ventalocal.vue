@@ -62,7 +62,7 @@
             <q-badge class="full-width full-height" color="positive">Subtotal <br> {{subtotal}}</q-badge>
           </div>
           <div class="col-6 col-sm-1 q-pa-xs">
-            <q-input type="text" label="A cuenta" v-model="acuenta" outlined/>
+            <q-input type="text" label="A cuenta" v-model="acuenta" outlined required/>
           </div>
           <div class="col-6 col-sm-1 q-pa-xs">
 <!--            <q-input type="text" label="Saldo" v-model="saldo" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" disable outlined/>-->
@@ -610,11 +610,17 @@ export default {
           y=0
         }
       })
+        doc.setFont(undefined,'bold')
       doc.text(2, y+4, 'Ventas totales: ')
+        doc.setFont(undefined,'normal')
       doc.text(5, y+4, this.ventat+'Bs')
+        doc.setFont(undefined,'bold')
       doc.text(7, y+4, 'Por cobrar totales: ')
+        doc.setFont(undefined,'normal')
       doc.text(11, y+4, this.porc+'Bs')
+        doc.setFont(undefined,'bold')
       doc.text(14, y+4, 'Saldo totales: ')
+        doc.setFont(undefined,'normal')
       doc.text(17, y+4, this.saldoc+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');

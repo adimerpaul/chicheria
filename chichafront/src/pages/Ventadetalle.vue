@@ -895,11 +895,17 @@ export default {
           y=0
         }
       })
+        doc.setFont(undefined,'bold')
       doc.text(2, y+4, 'Ventas totales: ')
+        doc.setFont(undefined,'normal')
       doc.text(5, y+4, this.ventat+'Bs')
+        doc.setFont(undefined,'bold')
       doc.text(7, y+4, 'Por cobrar totales: ')
+        doc.setFont(undefined,'normal')
       doc.text(11, y+4, this.porc+'Bs')
+        doc.setFont(undefined,'bold')
       doc.text(14, y+4, 'Saldo totales: ')
+        doc.setFont(undefined,'normal')
       doc.text(17, y+4, this.saldoc+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');

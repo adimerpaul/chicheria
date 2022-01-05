@@ -482,7 +482,7 @@ export default {
         })
           doc.setFont(undefined,'bold')
           doc.text(16.5, y+3.5, 'TOTAL')
-          doc.text(18, y+3.5,''+suma);
+          doc.text(18, y+3.5,''+suma+' Bs');
           doc.setFont(undefined,'normal')
         window.open(doc.output('bloburl'), '_blank');
     },

@@ -4,10 +4,10 @@
     <div class="col-12">
       <div class="text-subtitle1 bg-red text-center text-white">CONTROL DE GASTOS</div>
     </div>
-    <div class="col-6 col-sm-4 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha1" outlined required/></div>
-    <div class="col-6 col-sm-4 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha2" outlined required/></div>
-    <div class="col-6 col-sm-4 q-pa-xs" v-if="$store.state.login.user.id==1"><q-select dense v-model="user" :options="users" label="Usuarios" outlined /></div>
-    <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
+    <div class="col-6 col-sm-3 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha1" outlined required/></div>
+    <div class="col-6 col-sm-3 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha2" outlined required/></div>
+    <div class="col-6 col-sm-3 q-pa-xs" v-if="$store.state.login.user.id==1"><q-select dense v-model="user" :options="users" label="Usuarios" outlined /></div>
+    <div class="col-6 col-sm-3 q-pa-xs flex flex-center">
       <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misgastos" />
     </div>
     <div class="col-12">
@@ -408,7 +408,7 @@ export default {
         doc.setFont(undefined,'normal')
       doc.text(14, y+4, 'Total saldo: ')
         doc.setFont(undefined,'bold')
-      doc.text(17, y+4, (ventas-gastos)+'Bs')
+      doc.text(17, y+4, (ventas-gastos)+' Bs')
         doc.setFont(undefined,'normal')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
@@ -465,12 +465,18 @@ export default {
         }}
       })
       caja=total-tsaldo;
+        doc.setFont(undefined,'bold')
       doc.text(2, y+4, 'Ventas totales: ')
+        doc.setFont(undefined,'normal')
       doc.text(5, y+4, total+'Bs')
+        doc.setFont(undefined,'bold')
       doc.text(7, y+4, 'En Caja totales: ')
+        doc.setFont(undefined,'normal')
       doc.text(11, y+4, caja+'Bs')
-      doc.text(14, y+4, 'Por Corar: ')
-      doc.text(17, y+4, tsaldo+'Bs')
+        doc.setFont(undefined,'bold')
+      doc.text(14, y+4, 'Por Cobrar: ')
+        doc.setFont(undefined,'normal')
+      doc.text(17, y+4, tsaldo+' Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
@@ -527,12 +533,18 @@ export default {
         }}
       })
       caja=total-tsaldo
+        doc.setFont(undefined,'bold')
       doc.text(2, y+4, 'Ventas totales: ')
+        doc.setFont(undefined,'normal')
       doc.text(5, y+4, total+'Bs')
+        doc.setFont(undefined,'bold')
       doc.text(7, y+4, 'En Caja totales: ')
+        doc.setFont(undefined,'normal')
       doc.text(11, y+4, caja+'Bs')
+        doc.setFont(undefined,'bold')
       doc.text(14, y+4, 'Por Cobrar: ')
-      doc.text(17, y+4, tsaldo+'Bs')
+        doc.setFont(undefined,'normal')
+      doc.text(17, y+4, tsaldo+' Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
@@ -595,8 +607,10 @@ export default {
         }
       })
       y+=0.5
+        doc.setFont(undefined,'bold')
               doc.text(1, y+3, 'TOTAL:')
-        doc.text(3, y+3, sumgasto+'')
+        doc.setFont(undefined,'normal')
+        doc.text(3, y+3, sumgasto+' Bs')
       // doc.text(2, y+4, 'Ventas totales: ')
       // doc.text(5, y+4, this.ventat+'Bs')
       // doc.text(7, y+4, 'Por cobrar totales: ')
@@ -615,7 +629,7 @@ export default {
         res.data.forEach(r=>{
           this.gastos.push({
             id:r.id,
-            observacion:r.observacion,
+            observacion:r.observacion.substring(0, 30) ,
             glosa:r.glosa,
             precio:r.precio,
             fecha:r.fecha,
