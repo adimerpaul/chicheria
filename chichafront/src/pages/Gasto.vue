@@ -300,7 +300,7 @@ export default {
         // console.log(r)
        doc.setFontSize(6);
         doc.text(1, y+3, r.fechaentrega!=null&&r.fechaentrega!=''?'Ruta '+r.tipo:''+r.tipo)
-      doc.setFontSize(9);
+        doc.setFontSize(9);
         doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventas+=parseFloat(r.acuenta!=null?r.acuenta:0)
         doc.text(5, y+3, 'Cobro')
@@ -314,7 +314,14 @@ export default {
           y=0
         }
       })
+      y+=0.5
+        doc.text(1, y+3, 'T VENTA:')
+        doc.text(3, y+3, ventas+' Bs.')
       let gastos=0
+            y+=0.5
+        doc.text(1, y+3, '-------------------------------------------------------')
+      y+=0.5
+        doc.text(1, y+3, 'DETALLE DE GASTO')
       this.gastos.forEach(r=>{
         y+=0.5
         // console.log(r)
@@ -331,15 +338,28 @@ export default {
           y=0
         }
       })
+      y+=0.5
+        doc.text(1, y+3, 'T GASTO:')
+        doc.text(3, y+3, gastos+'Bs.')
+      y+=0.5
+        doc.text(1, y+3, '-------------------------------------------------------')
+      y+=0.5
+        doc.text(1, y+3, 'INGRESOS DE ANULADOS PRESTAMOS')
       if(this.totalanulado>0){
         ventas=ventas+this.totalanulado;
+              this.anulados.forEach(element => {
               y+=0.5
-        doc.text(3, y+3, this.totalanulado.toString())
+        doc.text(3, y+3, element.efectivo+'')
         doc.text(5, y+3, 'Prestamo')
-        doc.text(7, y+3, '')
-        doc.text(9.5, y+3, 'ANULADOS')
-        doc.text(13.5, y+3, '')
-        doc.text(18.5, y+3, '')
+        doc.text(7, y+3, element.cantidad+'')
+        doc.text(9.5, y+3, element.inventario.nombre)
+        doc.text(13.5, y+3, element.cliente.titular)
+        doc.text(18.5, y+3, element.cliente.local)
+              });
+      y+=0.5
+        doc.text(1, y+3, 'T. Anulado')
+        doc.text(3, y+3, this.totalanulado+' Bs')
+
       }
       if(this.totalpresventa>0){
       doc.setFont(undefined,'bold')
@@ -366,7 +386,11 @@ export default {
           header()
           y=0
         }
-      })}
+      })
+             y+=0.5
+        doc.text(1, y+3, 'T MATERIAL')
+        doc.text(3, y+3, this.totalpresventa+' Bs.')}
+
       if(this.totalpagos>0){
         y+=0.5
       doc.setFont(undefined,'bold')
@@ -395,7 +419,13 @@ export default {
           y=0
         }
       })
+
+      y+=0.5
+              doc.text(1, y+3, 'T.V. Pago:')
+        doc.text(3, y+3, this.totalpagos+' Bs.')
       }
+
+
       doc.setFontSize(11);
         doc.setFont(undefined,'normal')
 
@@ -702,17 +732,12 @@ export default {
 
           this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
             console.log(res.data)
-          this.anulados=[];
-          res.data.forEach(r=>{
-            // if (r.tipo=='LOCAL')
-              this.anulados=res.data;
-            })
+          this.anulados=res.data;
 
             this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
               this.rpagos=[];
               this.rpagos=res.data;
             this.$axios.post(process.env.API+'/reporteventa',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
-              console.log(res.data)
             this.prestamoventa=[];
             this.prestamoventa=res.data;
             })
