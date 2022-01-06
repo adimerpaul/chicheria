@@ -40,7 +40,7 @@
           exact>
           <q-item-section
             avatar>
-            <q-icon name="home" />
+            <q-icon name="home" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -61,7 +61,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="login" />
+            <q-icon name="login"  size="lg"/>
           </q-item-section>
 
           <q-item-section>
@@ -82,7 +82,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="people" />
+            <q-icon name="engineering" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -103,7 +103,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="people" />
+            <q-icon name="people" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -124,7 +124,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="people" />
+            <q-icon name="contact_phone" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -145,7 +145,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="list" />
+            <q-icon name="sports_bar" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -167,7 +167,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="list" />
+            <q-icon name="list" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -188,7 +188,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="shop" />
+            <q-icon name="shopping_cart" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -228,7 +228,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="shop" />
+            <q-icon name="local_shipping" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -249,7 +249,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="task" />
+            <q-icon name="task" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -270,7 +270,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="task" />
+            <q-icon name="task" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -293,7 +293,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="task" />
+            <q-icon name="task" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -314,7 +314,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="task" />
+            <q-icon name="task" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -335,7 +335,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="task" />
+            <q-icon name="task" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -356,7 +356,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="task" />
+            <q-icon name="task" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -378,7 +378,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="task" />
+            <q-icon name="task" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -399,7 +399,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="people" />
+            <q-icon name="people" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -422,7 +422,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="code" />
+            <q-icon name="paid" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -443,7 +443,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="shop" />
+            <q-icon name="shop" size="lg" />
           </q-item-section>
 
           <q-item-section>
@@ -481,7 +481,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="logout" />
+            <q-icon name="logout" size="lg" />
           </q-item-section>
 
           <q-item-section>
