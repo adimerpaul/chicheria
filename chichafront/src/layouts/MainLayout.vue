@@ -305,7 +305,7 @@
         </q-item>
 
         <q-item
-          v-if="$store.state.login.historialventa"
+          v-if="$store.state.login.cobrardetalle"
           active-class="my-menu-link"
           clickable
           exact
@@ -326,7 +326,7 @@
         </q-item>
 
         <q-item
-          v-if="$store.state.login.historialventa"
+          v-if="$store.state.login.cobrarlocal"
           active-class="my-menu-link"
           clickable
           exact
@@ -347,7 +347,7 @@
         </q-item>
 
         <q-item
-          v-if="$store.state.login.historialventa"
+          v-if="$store.state.login.cobrarruta"
           active-class="my-menu-link"
           clickable
           exact

@@ -27,6 +27,9 @@ export function auth_success(state, data){
   state.anularprestamo=data.user.permisos.find(p=>p.id===16)!=undefined
   state.reimpresion=data.user.permisos.find(p=>p.id===17)!=undefined
   state.eliminargasto=data.user.permisos.find(p=>p.id===18)!=undefined
+  state.cobrardetalle=data.user.permisos.find(p=>p.id===19)!=undefined
+  state.cobrarlocal=data.user.permisos.find(p=>p.id===20)!=undefined
+  state.cobrarruta=data.user.permisos.find(p=>p.id===21)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -52,4 +55,7 @@ export function salir(state){
   state.anularprestamo=false
   state.reimpresion=false
   state.eliminargasto=false
+  state.cobrardetalle=false
+  state.cobrarlocal=false
+  state.cobrarruta=false
 }

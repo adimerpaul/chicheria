@@ -21,5 +21,8 @@ export default function () {
     anularprestamo:false,
     reimpresion:false,
     eliminargasto:false,
+    cobrardetalle:false,
+    cobrarlocal:false,
+    cobrarruta:false,
   }
 }
