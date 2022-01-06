@@ -406,18 +406,21 @@
               <div class="col-12 col-md-4 q-pa-xs">
                 <q-input required type="text"  outlined label="direccion" v-model="model.direccion" disable/>
               </div>
-              <div class="col-12 col-md-6 q-pa-xs">
+              <div class="col-12 col-md-4 q-pa-xs">
                 <!--                <q-input required outlined label="ci" v-model="newgarantia.ci"/>-->
                 <q-select required outlined label="inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
               </div>
-              <div class="col-12 col-md-6 q-pa-xs">
+              <div class="col-12 col-md-4 q-pa-xs">
                 <q-input required type="number"  outlined label="cantidad" v-model="newgarantia.cantidad"/>
               </div>
               <div class="col-12 col-md-4 q-pa-xs">
                 <q-input  outlined type="number" label="efectivo" v-model="newgarantia.efectivo"/>
               </div>
               <div class="col-12 col-md-4 q-pa-xs">
-                <q-input  outlined label="fisico" v-model="newgarantia.fisico"/>
+                <q-input  outlined label="fisico" v-model="newgarantia.fisico" style="text-transform: uppercase"/>
+              </div>
+              <div class="col-12 col-md-4 q-pa-xs">
+                <q-input  outlined label="observacion" v-model="newgarantia.observacion" style="text-transform: uppercase"/>
               </div>
               <div class="col-12 col-md-4 q-pa-xs flex flex-center">
                 <input type="radio" value="EN PRESTAMO" v-model="newgarantia.tipo"/><b> EN PRESTAMO </b>
@@ -689,7 +692,7 @@ export default {
         cantidad:this.newgarantia.cantidad,
         efectivo:this.newgarantia.efectivo,
         fisico:this.newgarantia.fisico,
-        observacion:'',
+        observacion:this.newgarantia.observacion,
         cliente_id:this.model.id,
         tipo:this.newgarantia.tipo,
       }).then((res)=>{

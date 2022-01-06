@@ -61,8 +61,8 @@ class PrestamoController extends Controller
 //        $prestamo->cantidad=$request->cantidad;
 //        $prestamo->prestado=$request->cantidad;
         $prestamo->efectivo=$request->efectivo;
-        $prestamo->fisico=$request->fisico;
-        $prestamo->observacion=$request->observacion;
+        $prestamo->fisico=strtoupper($request->fisico);
+        $prestamo->observacion=strtoupper($request->observacion);
         $prestamo->user_id=$request->user()->id;
         $prestamo->cliente_id=$request->cliente_id;
         $prestamo->inventario_id=$request->inventario_id;
