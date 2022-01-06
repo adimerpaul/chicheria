@@ -293,6 +293,7 @@ class VentaController extends Controller
         <div class="textcnt"> CONTROL DESPACHO</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
         <hr>
+        <div>Local: '.$venta->cliente->local.'</div>
         <div>Nombre: '.$venta->cliente->titular.'</div>
         <div>Fecha: '.$venta->fecha.'</div>
         <hr>

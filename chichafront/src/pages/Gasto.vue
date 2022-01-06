@@ -306,7 +306,7 @@ export default {
         doc.text(5, y+3, 'Cobro')
         doc.text(7, y+3, r.cantidad!=null?r.cantidad.toString():'')
         doc.text(9.5, y+3, r.detalle!=null?r.detalle.toString():'')
-        doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
+        doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
         doc.text(18.5, y+3, r.local!=null?r.local.toString():'')
         if (y+3>25){
           doc.addPage();
@@ -387,7 +387,7 @@ export default {
         doc.text(5, y+3, 'Pagos')
         doc.text(7, y+3, r.cantidad!=null?r.cantidad.toString():'')
         doc.text(9.5, y+3, r.nombreproducto!=null?r.nombreproducto.toString():'')
-        doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
+        doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
         doc.text(18.5, y+3, r.local!=null?r.local.toString():'')
         if (y+3>25){
           doc.addPage();
@@ -457,7 +457,7 @@ export default {
         doc.text(5, y+3, r.saldo!=null?r.saldo.toString():'')
         doc.text(7, y+3, r.estado!=null?r.estado.toString():'')
         doc.text(9.5, y+3, r.local!=null?r.local.toString():'')
-        doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
+        doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
         doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
         if (y+3>25){
           doc.addPage();
@@ -491,13 +491,13 @@ export default {
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de ventas LOCAL')
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
-        doc.text(1, 3, 'Total')
-        doc.text(3, 3, 'A cuenta')
-        doc.text(5, 3, 'Saldo')
-        doc.text(7, 3, 'Estado')
-        doc.text(9.5, 3, 'Local')
-        doc.text(13.5, 3, 'Titular')
-        doc.text(18.5, 3, 'Usuario')
+        doc.text(1, 3, 'Usuario')
+        doc.text(3.5, 3, 'Total')
+        doc.text(5.5, 3, 'A cuenta')
+        doc.text(7.5, 3, 'Saldo')
+        doc.text(9.5, 3, 'Estado')
+        doc.text(12, 3, 'Local')
+        doc.text(15, 3, 'Titular')
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
@@ -520,13 +520,13 @@ export default {
         total=total+r.total;
         // xx+=0.5
         y+=0.5
-        doc.text(1, y+3, r.total!=null?r.total.toString():'')
-        doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():'')
-        doc.text(5, y+3, r.saldo!=null?r.saldo.toString():'')
-        doc.text(7, y+3, r.estado!=null?r.estado.toString():'')
-        doc.text(9.5, y+3, r.local!=null?r.local.toString():'')
-        doc.text(13.5, y+3, r.titular!=null?r.titular.toString():'')
-        doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
+        doc.text(1, y+3, r.user!=null?r.user.toString():'')
+        doc.text(3.5, y+3, r.total!=null?r.total.toString():'')
+        doc.text(5.5, y+3, r.acuenta!=null?r.acuenta.toString():'')
+        doc.text(7.5, y+3, r.saldo!=null?r.saldo.toString():'')
+        doc.text(9.5, y+3, r.estado!=null?r.estado.toString():'')
+        doc.text(12, y+3, r.local!=null?r.local.toString():'')
+        doc.text(15, y+3, r.titular!=null?r.titular.substring(0,25):'')
         if (y+3>25){
           doc.addPage();
           header()
