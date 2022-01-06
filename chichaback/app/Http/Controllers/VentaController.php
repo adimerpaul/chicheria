@@ -24,6 +24,7 @@ class VentaController extends Controller
             ->with('detalle')
             ->whereDate('fecha','>=',$request->fecha1)
             ->whereDate('fecha','<=',$request->fecha2)
+            ->orderBy('id','desc')
             ->get();
     }
 

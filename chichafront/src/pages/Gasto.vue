@@ -302,7 +302,7 @@ export default {
         doc.text(1, y+3, r.fechaentrega!=null&&r.fechaentrega!=''?'Ruta '+r.tipo:''+r.tipo)
       doc.setFontSize(9);
         doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
-        ventas+=parseFloat(r.acuenta)
+        ventas+=parseFloat(r.acuenta!=null?r.acuenta:0)
         doc.text(5, y+3, 'Cobro')
         doc.text(7, y+3, r.cantidad!=null?r.cantidad.toString():'')
         doc.text(9.5, y+3, r.detalle!=null?r.detalle.toString():'')
@@ -319,7 +319,7 @@ export default {
         y+=0.5
         // console.log(r)
         doc.text(3, y+3, r.precio!=null?r.precio.toString():''+'Bs.')
-        gastos+=parseFloat(r.precio)
+        gastos+=parseFloat(r.precio!=null?r.precio:0)
         doc.text(5, y+3, 'Gasto')
         doc.text(9.5, y+3, r.observacion!=null?r.observacion.toString():'')
         // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')

@@ -253,7 +253,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Historial de prestamos Detalle</q-item-label>
+            <q-item-label>Prestamos Detalle</q-item-label>
             <q-item-label caption>
               Historial de prestamos
             </q-item-label>
@@ -274,7 +274,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Historial de prestamos Local</q-item-label>
+            <q-item-label>Prestamos Local</q-item-label>
             <q-item-label caption>
               Historial de prestamos
             </q-item-label>
@@ -318,7 +318,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Historial de Venta DETALLE</q-item-label>
+            <q-item-label>CxC DETALLE</q-item-label>
             <q-item-label caption>
               Historial de ventas
             </q-item-label>
@@ -339,7 +339,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Historial de Venta LOCAL</q-item-label>
+            <q-item-label>CxC LOCAL</q-item-label>
             <q-item-label caption>
               Historial de venta
             </q-item-label>
@@ -360,7 +360,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Historial de Venta RUTA</q-item-label>
+            <q-item-label>CxC RUTA</q-item-label>
             <q-item-label caption>
               Historial de venta
             </q-item-label>
