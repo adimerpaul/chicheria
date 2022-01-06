@@ -44,28 +44,34 @@
             row-key="name">
 
           <template v-slot:top-right>
-              <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
+              <q-input outlined dense debounce="300" v-model="filter" placeholder="Buscar">
                 <template v-slot:append>
                   <q-icon name="search" />
                 </template>
               </q-input>
             </template>
 
-              <template v-slot:body-cell-estado="props" >
-                <q-td key="estado" :props="props">
-                  <q-badge color="negative" v-if="props.row.estado=='ANULADO'">
-                    {{ props.row.estado }}
-                  </q-badge>
-                  <q-badge color="amber" v-if="props.row.estado=='DEVUELTO'">
-                    {{ props.row.estado }}
-                  </q-badge>
-                  <q-badge color="positive" v-if="props.row.estado=='EN PRESTAMO'">
-                    {{ props.row.estado }}
-                  </q-badge>
-                </q-td>
-<!--              </q-tr>-->
+            <template v-slot:body-cell-estado="props" >
+              <q-td key="estado" :props="props">
+                <q-badge color="negative" v-if="props.row.estado=='ANULADO'">
+                  {{ props.row.estado }}
+                </q-badge>
+                <q-badge color="amber" v-if="props.row.estado=='DEVUELTO'">
+                  {{ props.row.estado }}
+                </q-badge>
+                <q-badge color="positive" v-if="props.row.estado=='EN PRESTAMO'">
+                  {{ props.row.estado }}
+                </q-badge>
+              </q-td>
             </template>
-                        <template v-slot:body-cell-opcion="props" >
+            <template v-slot:body-cell-logprestamos="props" >
+              <q-td key="logprestamos" :props="props">
+                <ul v-for="l in props.row.logprestamos" :key="l.id" style="margin: 0px;padding:0px;border: 0px;list-style: none">
+                  <li style="margin: 0px;padding:0px;border: 0px;"> <b>Cant:</b> {{l.cantidad}} <b>Fecha:</b>{{l.fecha}} </li>
+                </ul>
+              </q-td>
+            </template>
+            <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
                     <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
                     <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
@@ -142,8 +148,8 @@
 
 </q-page>
 </template>
--
 <script>
+
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
 export default {
@@ -181,7 +187,7 @@ export default {
 ],
       colprestamo:[
   { name: 'titular', label: 'TITULAR', field: row=>row.cliente.titular, sortable: true },
-  { name: 'telefono', label: 'TELEFONO', field: row=>row.cliente.telefono, sortable: true },
+  // { name: 'telefono', label: 'TELEFONO', field: row=>row.cliente.telefono, sortable: true },
   { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true },
   { name: 'fecha', label: 'FECHA', field: 'fecha', sortable: true },
   { name: 'estado', label: 'ESTADO', field: 'estado', sortable: true },
@@ -190,6 +196,7 @@ export default {
   { name: 'efectivo', label: 'EFECTIVO', field: 'efectivo', sortable: true },
   { name: 'fisico', label: 'FISICO', field: 'fisico', sortable: true },
   { name: 'observacion', label: 'OBSERVACION', field: 'observacion' },
+  { name: 'logprestamos', label: 'HISTORIAL', field: 'logprestamos' },
   { name: 'opcion', label: 'OPCION', field: 'opcion' },
 ],
     }
@@ -262,23 +269,23 @@ export default {
     },
     reporte(){
       this.$axios.post(process.env.API+'/reportecliente').then(res=>{
-        console.log(res.data);
+        // console.log(res.data);
         this.reportepres=[];
         res.data.forEach(element => {
-
             if(this.tab=='local' && element.tipocliente=='1')
               this.reportepres.push(element);
             if(this.tab=='cliente' && element.tipocliente=='2')
               this.reportepres.push(element);
-        });
+        })
       })
 
     },
     listadoprestamo(){
       this.$axios.get(process.env.API+'/prestamo').then(res=>{
-        // console.log(res.data);
-        this.listadop=[];
+        console.log(res.data);
+        // this.listadop=[];
         res.data.forEach(element => {
+          console.log(element)
             if(this.tab=='local' && element.cliente.tipocliente=='1')
               this.listadop.push(element);
             if(this.tab=='cliente' && element.cliente.tipocliente=='2')
@@ -495,8 +502,8 @@ export default {
 </script>
 
 <style scoped>
-.table , th , td  {
-  border: 0.2px solid black;
-  border-collapse: collapse;
-}
+/*.table , th , td  {*/
+/*  border: 0.2px solid black;*/
+/*  border-collapse: collapse;*/
+/*}*/
 </style>

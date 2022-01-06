@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class PrestamoController extends Controller
 {
-    /**
+    /**.
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
