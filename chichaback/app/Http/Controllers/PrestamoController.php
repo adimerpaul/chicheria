@@ -18,7 +18,7 @@ class PrestamoController extends Controller
     public function index()
     {
         //
-        return Prestamo::with('cliente')->with('inventario')->with('logprestamos')->get();
+        return Prestamo::with('cliente')->with('inventario')->with('logprestamos')->orderBy('id','desc')->get();
     }
 
     public function reportecliente(){
@@ -217,14 +217,14 @@ public function reporteventa(Request $request){
         if($request->user()->id==1)
         {
             if($request->id==0)
-            return Prestamo::with('cliente')
+            return Prestamo::with('cliente')->with('inventario')
             ->where('estado','ANULADO')
             ->where('efectivo','>',0)
             ->whereDate('updated_at','>=',$request->fecha1)
             ->whereDate('updated_at','<=',$request->fecha2)
             ->get();
             else
-            return Prestamo::with('cliente')
+            return Prestamo::with('cliente')->with('inventario')
             ->where('estado','ANULADO')
             ->where('efectivo','>',0)
             ->where('user_id',$request->id)
@@ -233,7 +233,7 @@ public function reporteventa(Request $request){
             ->get();
         }
         else
-        return Prestamo::with('cliente')
+        return Prestamo::with('cliente')->with('inventario')
         ->where('estado','ANULADO')
         ->where('efectivo','>',0)
         ->where('user_id',$request->user()->id)
