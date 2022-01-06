@@ -53,10 +53,13 @@
 
               <template v-slot:body-cell-estado="props" >
                 <q-td key="estado" :props="props">
-                  <q-badge color="negative" v-if="props.row.estado=='EN PRESTAMO'">
+                  <q-badge color="negative" v-if="props.row.estado=='ANULADO'">
                     {{ props.row.estado }}
                   </q-badge>
-                  <q-badge color="accent" v-else>
+                  <q-badge color="amber" v-if="props.row.estado=='DEVUELTO'">
+                    {{ props.row.estado }}
+                  </q-badge>
+                  <q-badge color="positive" v-if="props.row.estado=='EN PRESTAMO'">
                     {{ props.row.estado }}
                   </q-badge>
                 </q-td>
