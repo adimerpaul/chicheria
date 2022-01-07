@@ -366,7 +366,7 @@
           <q-form @submit.prevent="agregarcliente">
             <div class="row">
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required outlined label="ci" v-model="newcliente.ci"/>
+                <q-input outlined label="ci" v-model="newcliente.ci"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
                 <q-input required outlined label="titular" style="text-transform: uppercase" v-model="newcliente.titular"/>
@@ -570,7 +570,7 @@ export default {
   },
   mounted() {
 
-    for (let i=1;i<=100;i++){
+    for (let i=1;i<=200;i++){
       this.cantidades.push(i)
     }
     this.misventas()

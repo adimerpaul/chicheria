@@ -406,7 +406,7 @@ export default {
   },
   mounted() {
 
-    for (let i=1;i<=100;i++){
+    for (let i=1;i<=200;i++){
       this.cantidades.push(i)
     }
     this.misventas()
