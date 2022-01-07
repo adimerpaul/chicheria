@@ -570,7 +570,7 @@ export default {
   },
   mounted() {
 
-    for (let i=1;i<=200;i++){
+    for (let i=1;i<=500;i++){
       this.cantidades.push(i)
     }
     this.misventas()
