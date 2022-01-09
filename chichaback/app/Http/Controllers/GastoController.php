@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gasto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GastoController extends Controller
 {
@@ -98,5 +99,9 @@ class GastoController extends Controller
     public function destroy(Gasto $gasto)
     {
         $gasto->delete();
+    }
+
+    public function listglosa(){
+        return DB::SELECT('SELECT glosa from gastos group by glosa');
     }
 }

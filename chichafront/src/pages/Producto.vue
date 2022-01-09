@@ -28,6 +28,7 @@
                   <q-input
                     outlined
                     type="number"
+                    step="0.1"
                     v-model="producto.precio"
                     label="PRECIO"
                   />

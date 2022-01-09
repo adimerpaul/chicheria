@@ -16,10 +16,10 @@
       <q-input outlined label="Efectivo" v-model="efectivo" type="number"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input outlined label="Fisico" v-model="fisico" />
+      <q-input outlined label="Fisico" v-model="fisico"  style="text-transform: uppercase"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input outlined label="Observacion" v-model="observacion" />
+      <q-input outlined label="Observacion" v-model="observacion"  style="text-transform: uppercase"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
       <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>

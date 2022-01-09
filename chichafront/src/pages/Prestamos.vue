@@ -17,10 +17,10 @@
       <q-input dense outlined label="Efectivo" v-model="efectivo" type="number"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input dense outlined label="Fisico" v-model="fisico" />
+      <q-input dense outlined label="Fisico" v-model="fisico"  style="text-transform: uppercase"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input dense outlined label="Observacion" v-model="observacion" />
+      <q-input dense outlined label="Observacion" v-model="observacion"  style="text-transform: uppercase"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
       <input type="radio" value="EN PRESTAMO" v-model="tipo" style="margin-right: 0.5em"  /><b :style="tipo=='EN PRESTAMO'?'color:red':''"> EN PRESTAMO </b>

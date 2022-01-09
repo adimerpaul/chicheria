@@ -27,6 +27,7 @@
           <div class="col-6 col-sm-1 q-pa-xs">
             <q-input
             type="number"
+            step="0.1"
             label="precio"
             v-model="producto.precio"
             outlined
@@ -62,7 +63,7 @@
             <q-badge class="full-width full-height" color="positive">Subtotal <br> {{subtotal}}</q-badge>
           </div>
           <div class="col-6 col-sm-1 q-pa-xs">
-            <q-input type="text" label="A cuenta" v-model="acuenta" outlined required/>
+            <q-input type="text" label="A cuenta" v-model="acuenta" step="0.1" outlined required/>
           </div>
           <div class="col-6 col-sm-1 q-pa-xs">
 <!--            <q-input type="text" label="Saldo" v-model="saldo" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" disable outlined/>-->

@@ -13,9 +13,15 @@
     <div class="col-12">
       <q-form @submit.prevent="agregar">
         <div class="row">
-          <div class="col-12 q-pa-xs col-sm-2"><q-input dense outlined type="number" label="Precio" v-model="empleado.precio" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2">
+          <q-input dense outlined type="number" label="Precio" v-model="empleado.precio" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3">
+            <q-input dense outlined type="text" label="Glosa"  v-model="empleado.glosa" style="text-transform: uppercase" required list="glosas"/>
+                <datalist id="glosas">
+                    <option v-for="(gl,index) in listglosas" :key="index">{{gl}}</option>
+                </datalist>
+          </div>
           <div class="col-12 q-pa-xs col-sm-3"><q-input dense outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
-          <div class="col-12 q-pa-xs col-sm-3"><q-input dense outlined label="Glosa" v-model="empleado.glosa" style="text-transform: uppercase" required/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input dense outlined label="Fecha " type="date" v-model="empleado.fecha" required/></div>
 <!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>-->
 <!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>-->
@@ -200,6 +206,7 @@ export default {
       prestamoventa:[],
       users:[],
       user:{},
+      gl:[],
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -253,8 +260,15 @@ export default {
     //   this.responsable=res.data.name
     // })
     // this.responsable=this.$store.getters["login/user"].name
+    this.listadog();
   },
   methods:{
+    listadog(){
+      this.$axios.post(process.env.API+'/listglosa').then(res=>{
+        this.gl=res.data
+      })
+
+    },
     misuser(){
       this.$axios.post(process.env.API+'/listuser').then(res=>{
         this.users=[{label:'TODOS',id:0}]
@@ -453,13 +467,13 @@ export default {
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de ventas DETALLE')
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
-        doc.text(1, 3, 'Total')
-        doc.text(3, 3, 'A cuenta')
-        doc.text(5, 3, 'Saldo')
-        doc.text(7, 3, 'Estado')
-        doc.text(9.5, 3, 'Local')
-        doc.text(13.5, 3, 'Titular')
-        doc.text(18.5, 3, 'Usuario')
+        doc.text(1, 3, 'Usuario')
+        doc.text(5, 3, 'Total')
+        doc.text(7, 3, 'A cuenta')
+        doc.text(9, 3, 'Saldo')
+        doc.text(11, 3, 'Estado')
+        doc.text(13, 3, 'Local')
+        doc.text(18, 3, 'Titular')
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
@@ -482,13 +496,13 @@ export default {
         total=total+r.total;
         // xx+=0.5
         y+=0.5
-        doc.text(1, y+3, r.total!=null?r.total.toString():'')
-        doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():'')
-        doc.text(5, y+3, r.saldo!=null?r.saldo.toString():'')
-        doc.text(7, y+3, r.estado!=null?r.estado.toString():'')
-        doc.text(9.5, y+3, r.local!=null?r.local.toString():'')
-        doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
-        doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
+        doc.text(1, y+3, r.user!=null?r.user.toString():'')
+        doc.text(5, y+3, r.total!=null?r.total.toString():'')
+        doc.text(7, y+3, r.acuenta!=null?r.acuenta.toString():'')
+        doc.text(9, y+3, r.saldo!=null?r.saldo.toString():'')
+        doc.text(11, y+3, r.estado!=null?r.estado.toString():'')
+        doc.text(13, y+3, r.local!=null?r.local.toString():'')
+        doc.text(18, y+3, r.titular!=null?r.titular.substring(0,25):'')
         if (y+3>25){
           doc.addPage();
           header()

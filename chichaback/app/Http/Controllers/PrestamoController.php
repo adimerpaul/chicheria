@@ -160,8 +160,8 @@ public function reporteventa(Request $request){
                 $inv2->save();
         }
        $prestamo->efectivo=$request->efectivo;
-       $prestamo->fisico=$request->fisico;
-       $prestamo->observacion=$request->observacion;
+       $prestamo->fisico=strtoupper($request->fisico);
+       $prestamo->observacion=strtoupper($request->observacion);
         $prestamo->save();
 
 
