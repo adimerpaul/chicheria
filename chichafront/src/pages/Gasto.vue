@@ -812,6 +812,7 @@ export default {
           this.$q.loading.hide()
           // this.empleados=res.data
           this.misgastos()
+          this.listadog()
           this.empleado.precio=0
           this.empleado.observacion=''
           this.empleado.glosa=''
@@ -828,6 +829,7 @@ export default {
           this.$q.loading.hide()
           // this.empleados=res.data
           this.misgastos()
+          this.listadog()
           this.boolcrear=true
           // this.empleado={fechanac: '2000-01-01'}
           this.empleado={fecha:date.formatDate( Date.now(),'YYYY-MM-DD')}
