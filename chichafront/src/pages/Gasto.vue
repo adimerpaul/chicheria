@@ -213,8 +213,8 @@ export default {
       columns:[
         {name:'id',label:'Id',field:'id'},
         {name:'precio',label:'Precio',field:'precio'},
-        {name:'observacion',label:'Observacion',field:'observacion'},
         {name:'glosa',label:'Glosa',field:'glosa'},
+        {name:'observacion',label:'Observacion',field:'observacion'},
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'hora',label:'Hora',field:'hora'},
         {name:'user',label:'Usuario',field:'user'},
