@@ -18,7 +18,7 @@
           <div class="col-12 q-pa-xs col-sm-3">
             <q-input dense outlined type="text" label="Glosa"  v-model="empleado.glosa" style="text-transform: uppercase" required list="glosas"/>
                 <datalist id="glosas">
-                    <option v-for="(gl,index) in listglosas" :key="index">{{gl}}</option>
+                    <option v-for="(gl,index) in listglosas" :key="index">{{listglosas}}</option>
                 </datalist>
           </div>
           <div class="col-12 q-pa-xs col-sm-3"><q-input dense outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>

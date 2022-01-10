@@ -161,9 +161,9 @@ class ClienteController extends Controller
     }
 
     public function listado(){
-        return Cliente::where('tipocliente',$tipocliente)->get();
+        //return Cliente::where('tipocliente',$tipocliente)->get();
     }
-    
+
 
     public function buscarci($request){
         return Cliente::where('tipocliente',$request->tipocliente)->where('ci',$request->ci)->get();
