@@ -122,6 +122,12 @@
                     </td>
                   </tr>
                   </tbody>
+                  <tfoot>
+                  <tr>
+                    <th colspan="9" style="text-align:right">Total:</th>
+                    <th></th>
+                  </tr>
+                  </tfoot>
                 </table>
               </div>
             </div>
@@ -277,7 +283,9 @@ export default {
       prestamos:[],
       filter:'',
       options:[],
-      model:''
+      model:'',
+      tot:'',
+      pageTotal:''
     }
   },
   mounted() {
@@ -285,7 +293,40 @@ export default {
       dom: 'Bfrtip',
       buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print'
-      ]
+      ],
+
+      "footerCallback": function ( row, data, start, end, display ) {
+        var api = this.api(), data;
+
+        // Remove the formatting to get integer data for summation
+        var intVal = function ( i ) {
+          return typeof i === 'string' ?
+            i.replace(/[\$,]/g, '')*1 :
+            typeof i === 'number' ?
+              i : 0;
+        };
+
+        // Total over all pages
+        this.tot = api
+          .column( 4 )
+          .data()
+          .reduce( function (a, b) {
+            return intVal(a) + intVal(b);
+          }, 0 );
+        // console.log(this.tot)
+        // Total over this page
+        this.pageTotal = api
+          .column( 4, { page: 'current'} )
+          .data()
+          .reduce( function (a, b) {
+            return intVal(a) + intVal(b);
+          }, 0 );
+
+        // Update footer
+        $( api.column( 4 ).footer() ).html(
+          '$'+this.pageTotal +' ( $'+ this.tot +' total)'
+        );
+      }
     } );
 
     //this.misventas()
@@ -350,10 +391,43 @@ export default {
         // console.log(this.ventas)
         this.$nextTick(()=>{
           $('#example').DataTable( {
-            dom: 'Bfrtip',
-            buttons: [
-              'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+            dom: 'Blfrtip',
+            // buttons: [
+            //   'copy', 'csv', 'excel', 'pdf', 'print'
+            // ],
+
+            "footerCallback": function ( row, data, start, end, display ) {
+              var api = this.api(), data;
+
+              // Remove the formatting to get integer data for summation
+              var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                  i.replace(/[\$,]/g, '')*1 :
+                  typeof i === 'number' ?
+                    i : 0;
+              };
+
+              // Total over all pages
+              this.tot = api
+                .column( 4 )
+                .data()
+                .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                }, 0 );
+              // console.log(this.tot)
+              // Total over this page
+              this.pageTotal = api
+                .column( 4, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                }, 0 );
+
+              // Update footer
+              $( api.column( 4 ).footer() ).html(
+                '$'+this.pageTotal +' ( $'+ this.tot +' total)'
+              );
+            }
           } );
         })
       })
@@ -562,5 +636,5 @@ export default {
 </script>
 
 <style scoped>
-
+th { white-space: nowrap; }
 </style>
