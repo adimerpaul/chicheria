@@ -423,7 +423,7 @@ export default {
         inventario_id:this.datoprestamo.inventario_id,
         id:this.datoprestamo.id,
       }).then(res=>{
-        console.log(res.data);
+        // console.log(res.data);
 
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
