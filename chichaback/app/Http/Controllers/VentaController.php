@@ -209,13 +209,26 @@ class VentaController extends Controller
 //                ->where('user_id',$request->id)
         //        ->get();
        // }else{
+        if ($request->id==0){
             return Venta::with('user')
                 ->with('cliente')
                 ->with('pagos')
                 ->with('detalle')
                 ->whereDate('fecha','>=',$request->ini)
                 ->whereDate('fecha','<=',$request->fin)
+//                ->where('user_id',$request->id)
                 ->get();
+        }else{
+            return Venta::with('user')
+                ->with('cliente')
+                ->with('pagos')
+                ->with('detalle')
+                ->whereDate('fecha','>=',$request->ini)
+                ->whereDate('fecha','<=',$request->fin)
+                ->where('user_id',$request->id)
+                ->get();
+        }
+
        // }
 
     }
