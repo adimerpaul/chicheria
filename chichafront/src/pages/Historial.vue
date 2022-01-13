@@ -332,6 +332,8 @@ export default {
     misventas(){
       this.$q.loading.show()
       this.ventas=[];
+        $('#example').DataTable().destroy();
+
       this.$axios.post(process.env.API+'/listadoventa',{ini:this.fecha2,fin:this.fecha3}).then(res=>{
         // this.ventas=res.data
         // console.log(res.data)
