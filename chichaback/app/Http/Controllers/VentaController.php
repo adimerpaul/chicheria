@@ -302,6 +302,7 @@ class VentaController extends Controller
         <tr><td>Cantidad: </td><td><b>'.$venta->detalle->cantidad.'</b></td></tr>
         <tr><td>Producto: </td><td><b>'.$venta->detalle->nombreproducto.'</b></td></tr>
         <tr><td>Codigo: </td><td><b>'.$venta->total.'</b></td></tr>
+        <tr><td>Usuario: </td><td><b>'.$venta->user->name.'</b></td></tr>
         <tr><td>Observacion: </td><td><b>'.$venta->observacion.'</b></td></tr>
         </table>
         <div style="color:white">-----------------</div>
