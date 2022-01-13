@@ -250,7 +250,7 @@ class VentaController extends Controller
             ->with('pagos')
             ->whereDate('fecha','>=',$request->ini)
             ->whereDate('fecha','<=',$request->fin)
-            ->whereRaw("(fechaentrega is not null OR fechaentrega!='')")
+            ->whereRaw("(fechaentrega is not null and fechaentrega!='')")
             ->where('saldo','>',0)
                  ->get();
     }
