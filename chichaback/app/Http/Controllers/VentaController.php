@@ -347,6 +347,7 @@ class VentaController extends Controller
         <tr><td>A cuenta: </td><td>'.$venta->acuenta.'</td></tr>
         <tr><td>Saldo: </td><td><b>'.$venta->saldo.'</b></td></tr>
         <tr><td>Observacion: </td><td>'.$venta->observacion.'</td></tr>
+        <tr><td>Usuario: </td><td>'.$venta->user->name.'</td></tr>
         </table>
               ';
               return $cadena;

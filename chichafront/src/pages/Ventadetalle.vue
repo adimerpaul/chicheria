@@ -671,7 +671,7 @@ export default {
         observacion:this.venta.observacion,
         fechaentrega:this.venta.fechaentrega,
       }).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
