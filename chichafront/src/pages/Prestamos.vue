@@ -478,7 +478,7 @@ export default {
           doc.text(5, y+3, ''+r.titular)
           doc.text(11, y+3, ''+r.nombre)
           doc.text(16.5, y+3, ''+r.total,{align:'right'})
-          if(r.monto!=null){
+          if(r.monto!=null && r.estado!='ANULADO'){
           doc.text(18, y+3,''+r.monto,{align:'right'})
           suma+=r.monto;
           }
