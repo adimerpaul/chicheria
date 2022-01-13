@@ -139,14 +139,14 @@
       </div>
       <div class="row">
         <div class="col-6">
-          <q-btn label="Imprimir mis ventas Detalle" icon="print" color="teal" style="width:100%"  @click="imprimirmisventasdetalle"/>
+          <q-btn label="Imprimir mis ventas Detalle" icon="print" color="teal" style="width:100%"  @click="imprimirmisventasdetalle(user)"/>
         </div>
         <div class="col-6">
-          <q-btn label="Imprimir mis ventas Local" icon="print" color="warning" style="width:100%"  @click="imprimirmisventaslocal"/>
+          <q-btn label="Imprimir mis ventas Local" icon="print" color="warning" style="width:100%"  @click="imprimirmisventaslocal(user)"/>
         </div>
       </div>
       <div class="col-12">
-        <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="imprimirmisventasygastos"/>
+        <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="imprimirmisventasygastos(user)"/>
       </div>
 
       <q-dialog v-model="pagos" full-width>
@@ -279,14 +279,14 @@ export default {
         this.user=this.users[0];
       })
     },
-    imprimirmisventasygastos(){
+    imprimirmisventasygastos(us){
       let mc=this
       function header(){
         var img = new Image()
         img.src = 'logo.png'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
-        doc.text(5, 1, 'HISTORIAL DE INGRESOS Y GASTOS')
+        doc.text(5, 1, 'HISTORIAL DE INGRESOS Y GASTOS '+us.label)
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         // doc.text(1, 3, 'Total')
         doc.text(1, 3, 'Ruta/tip')
@@ -458,21 +458,21 @@ export default {
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
-    imprimirmisventasdetalle(){
+    imprimirmisventasdetalle(us){
       let mc=this
       function header(){
         var img = new Image()
         img.src = 'logo.png'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
-        doc.text(5, 1, 'Historial de ventas DETALLE')
+        doc.text(5, 1, 'Historial de ventas DETALLE ' +us.label)
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         doc.text(1, 3, 'Usuario')
         doc.text(5, 3, 'Total')
         doc.text(7, 3, 'A cuenta')
         doc.text(9, 3, 'Saldo')
         doc.text(11, 3, 'Estado')
-        doc.text(13, 3, 'Local')
+        doc.text(13, 3, 'Hora')
         doc.text(18, 3, 'Titular')
         doc.setFont(undefined,'normal')
       }
@@ -501,7 +501,7 @@ export default {
         doc.text(7, y+3, r.acuenta!=null?r.acuenta.toString():'')
         doc.text(9, y+3, r.saldo!=null?r.saldo.toString():'')
         doc.text(11, y+3, r.estado!=null?r.estado.toString():'')
-        doc.text(13, y+3, r.local!=null?r.local.toString():'')
+        doc.text(13, y+3, (r.created.toString()).substring(11,19))
         doc.text(18, y+3, r.titular!=null?r.titular.substring(0,25):'')
         if (y+3>25){
           doc.addPage();
@@ -526,14 +526,14 @@ export default {
       window.open(doc.output('bloburl'), '_blank');
     },
 
-    imprimirmisventaslocal(){
+    imprimirmisventaslocal(us){
       let mc=this
       function header(){
         var img = new Image()
         img.src = 'logo.png'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
-        doc.text(5, 1, 'Historial de ventas LOCAL')
+        doc.text(5, 1, 'Historial de ventas LOCAL '+ us.label)
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         doc.text(1, 3, 'Usuario')
         doc.text(3.5, 3, 'Total')
@@ -705,7 +705,8 @@ export default {
                 detalle:r.detalle.nombreproducto,
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
-                tipo:r.tipo
+                tipo:r.tipo,
+                created:r.created_at
               })}
               else{
               if(this.user.id==r.user_id){this.ventas.push({
@@ -720,7 +721,8 @@ export default {
                 detalle:r.detalle.nombreproducto,
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
-                tipo:r.tipo
+                tipo:r.tipo,
+                created:created_at
               })}
               }
               }
@@ -738,7 +740,8 @@ export default {
                 detalle:r.detalle.nombreproducto,
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
-                tipo:r.tipo
+                tipo:r.tipo,
+                created:r.created_at
               })
               }
               }
