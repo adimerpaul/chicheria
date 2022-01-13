@@ -116,7 +116,7 @@
               </q-form>
             </div>
 
-         <div class="q-pa-md">
+         <div class="q-pa-md" hidden>
           <q-table
             title="Reporte Deudores"
             :rows="deudas"
