@@ -323,8 +323,8 @@ export default {
       dialog_add:false,
       dialog_sub:false,
       dialog_log:false,
-      agregar:0,
-      disminuir:0,
+      agregar:'',
+      disminuir:'',
       inventario:{},
       productos:[],
       color:'',
@@ -511,7 +511,7 @@ export default {
             message: 'Agregado correctamente'
           })
         this.dialog_add=false;
-        this.agregar=0;
+        this.agregar='';
         this.dato.motivo='';
         this.listado();
         }).catch(err=>{
@@ -538,7 +538,7 @@ export default {
           message: 'modificado correctamente'
         });
         this.dialog_sub=false;
-        this.disminuir=0;
+        this.disminuir='';
         this.dato.motivo='';
         this.listado();})
     },

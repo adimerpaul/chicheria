@@ -368,7 +368,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        
+
 
         <q-item
           v-if="$store.state.login.historialventa"
