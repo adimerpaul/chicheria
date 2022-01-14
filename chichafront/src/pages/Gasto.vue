@@ -638,7 +638,7 @@ export default {
         // doc.text(18.5, y+3, r.user.toString())
         doc.text(1, y+3, ''+cont)
         doc.text(3, y+3, r.precio)
-        doc.text(5, y+3, r.observacion)
+        doc.text(5, y+3, r.observacion,substring(0,15))
         doc.text(9, y+3, r.glosa)
         doc.text(12, y+3, r.fecha)
         doc.text(14.5, y+3, r.hora)
