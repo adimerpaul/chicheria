@@ -35,7 +35,7 @@
           </div>
                     <div class="col-6 col-sm-1 q-pa-xs">
 <!--            <q-input type="number" label="Cantidad" v-model="cantidad" outlined/>-->
-            <q-select label="Cantidad" :options="cantidades" v-model="cantidad" outlined/>
+            <q-input label="Cantidad" type="number" step="0.1" v-model="cantidad" outlined/>
           </div>
         <div class="col-6 col-sm-2 q-pa-xs">
             <q-input
