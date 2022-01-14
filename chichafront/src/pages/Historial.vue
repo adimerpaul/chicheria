@@ -122,7 +122,7 @@
                       <td>{{v.user}}</td>
                       <td>
                         <q-btn icon="segment" color="green"  @click="listpago(v)" />
-                        <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)"/>
+<!--                        <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)"/>-->
                       </td>
                     </tr>
                     </tbody>
