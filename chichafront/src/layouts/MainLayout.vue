@@ -283,26 +283,7 @@
 
 
 
-        <q-item
-          v-if="$store.state.login.historialventa"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="historial"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="task" size="lg" />
-          </q-item-section>
 
-          <q-item-section>
-            <q-item-label>Historial de Venta </q-item-label>
-            <q-item-label caption>
-              Historial de venta
-            </q-item-label>
-          </q-item-section>
-        </q-item>
 
         <q-item
           v-if="$store.state.login.cobrardetalle"
@@ -367,6 +348,27 @@
           </q-item-section>
         </q-item>
 
+        <q-item
+          v-if="$store.state.login.historialventa"
+          active-class="my-menu-link"
+          clickable
+          exact
+          to="historial"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="task" size="lg" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Historial de Venta </q-item-label>
+            <q-item-label caption>
+              Historial de venta
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        
 
         <q-item
           v-if="$store.state.login.historialventa"
