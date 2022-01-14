@@ -135,7 +135,7 @@
 <!--        </div>-->
 <!--      </div>-->
       <div class="col-12">
-        <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir"/>
+        <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir(user)"/>
       </div>
       <div class="row">
         <div class="col-6">
@@ -594,14 +594,14 @@ export default {
       window.open(doc.output('bloburl'), '_blank');
     },
 
-    imprimir(){
+    imprimir(us){
       let mc=this
       function header(){
         var img = new Image()
         img.src = 'logo.png'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
-        doc.text(5, 1, 'Historial de gastos')
+        doc.text(5, 1, 'Historial de gastos '+ us.label)
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         doc.text(1, 3, 'Num')
         doc.text(3, 3, 'Precio')
