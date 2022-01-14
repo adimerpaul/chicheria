@@ -32,56 +32,111 @@
       </q-form>
     </div>
     <div class="col-12">
-      <q-table
-      :columns="columns"
-      :rows="gastos"
-      :rows-per-page-options="[50,100,0]"
-      :filter="filter"
-      >
-        <template v-slot:top-right>
-          <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </template>
+<!--      <q-table-->
+<!--      :columns="columns"-->
+<!--      :rows="gastos"-->
+<!--      :rows-per-page-options="[50,100,0]"-->
+<!--      :filter="filter"-->
+<!--      >-->
+<!--        <template v-slot:top-right>-->
+<!--          <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">-->
+<!--            <template v-slot:append>-->
+<!--              <q-icon name="search" />-->
+<!--            </template>-->
+<!--          </q-input>-->
+<!--        </template>-->
 
-        <template v-slot:body-cell-action="props">
-          <q-td :props="props">
-            <q-btn
-              color="warning"
-              icon-right="edit"
-              no-caps
-              label="Modificar"
-              flat
-              dense
-              @click="updateval(props.row)"
-            />
-            <q-btn
-            v-if="$store.state.login.eliminargasto"
-              color="negative"
-              icon-right="delete"
-              no-caps
-              label="Eliminar"
-              flat
-              dense
-              @click="deleteval(props.row)"
-            />
+<!--        <template v-slot:body-cell-action="props">-->
+<!--          <q-td :props="props">-->
 <!--            <q-btn-->
-<!--              color="info"-->
-<!--              icon-right="list"-->
+<!--              color="warning"-->
+<!--              icon-right="edit"-->
 <!--              no-caps-->
-<!--              label="Sueldos"-->
+<!--              label="Modificar"-->
 <!--              flat-->
 <!--              dense-->
-<!--              @click="pagosval(props.row)"-->
+<!--              @click="updateval(props.row)"-->
 <!--            />-->
+<!--            <q-btn-->
+<!--            v-if="$store.state.login.eliminargasto"-->
+<!--              color="negative"-->
+<!--              icon-right="delete"-->
+<!--              no-caps-->
+<!--              label="Eliminar"-->
+<!--              flat-->
+<!--              dense-->
+<!--              @click="deleteval(props.row)"-->
+<!--            />-->
+<!--&lt;!&ndash;            <q-btn&ndash;&gt;-->
+<!--&lt;!&ndash;              color="info"&ndash;&gt;-->
+<!--&lt;!&ndash;              icon-right="list"&ndash;&gt;-->
+<!--&lt;!&ndash;              no-caps&ndash;&gt;-->
+<!--&lt;!&ndash;              label="Sueldos"&ndash;&gt;-->
+<!--&lt;!&ndash;              flat&ndash;&gt;-->
+<!--&lt;!&ndash;              dense&ndash;&gt;-->
+<!--&lt;!&ndash;              @click="pagosval(props.row)"&ndash;&gt;-->
+<!--&lt;!&ndash;            />&ndash;&gt;-->
 
-            <!--              @click="deleteval(detalles.indexOf(props.row))"-->
-          </q-td>
-        </template>
-      </q-table>
-
+<!--            &lt;!&ndash;              @click="deleteval(detalles.indexOf(props.row))"&ndash;&gt;-->
+<!--          </q-td>-->
+<!--        </template>-->
+<!--      </q-table>-->
+      <table id="example" style="width:100%">
+        <thead>
+        <tr>
+          <th>id</th>
+          <th>precio</th>
+          <th>glosa</th>
+          <th>observacion</th>
+          <th>fecha</th>
+          <th>hora</th>
+          <th>user</th>
+          <th>action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="g in gastos" :key="g.i">
+          <td>{{g.id}}</td>
+          <td>{{g.precio}}</td>
+          <td>{{g.glosa}}</td>
+          <td>{{g.observacion}}</td>
+          <td>{{g.fecha}}</td>
+          <td>{{g.hora}}</td>
+          <td>{{g.user}}</td>
+          <td>
+              <q-td >
+                <q-btn
+                  color="warning"
+                  icon-right="edit"
+                  no-caps
+                  label="Modificar"
+                  flat
+                  size="xs"
+                  dense
+                  @click="updateval(g)"
+                />
+                <q-btn
+                v-if="$store.state.login.eliminargasto"
+                  color="negative"
+                  icon-right="delete"
+                  no-caps
+                  label="Eliminar"
+                  flat
+                  size="xs"
+                  dense
+                  @click="deleteval(g)"
+                />
+              </q-td>
+          </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <th colspan="7" style="text-align:right">Total:</th>
+          <th></th>
+        </tr>
+        </tfoot>
+      </table>
 <!--      <div class="row">-->
 <!--        <div class="col-12">-->
 <!--&lt;!&ndash;          <div class="text-subtitle1 bg-accent text-center text-white">Historial de pagos</div>&ndash;&gt;-->
@@ -189,6 +244,7 @@
 <script>
 import {date} from 'quasar'
 import {jsPDF} from "jspdf";
+import $ from "jquery";
 export default {
   name: "Venta",
   data(){
@@ -207,6 +263,8 @@ export default {
       users:[],
       user:{},
       gl:[],
+      pageTotal:'',
+      tot:'',
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -238,6 +296,7 @@ export default {
     }
   },
   mounted() {
+    $('#example').DataTable();
     this.misgastos()
     this.misuser()
     // this.misempleados()
@@ -668,9 +727,12 @@ export default {
     misgastos(){
       this.$q.loading.show()
       this.gastos=[]
+      $('#example').DataTable().destroy()
       this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
         // console.log(res.data)
         // this.gastos=res.data
+        // $('#example').DataTable().destroy()
+
         res.data.forEach(r=>{
           this.gastos.push({
             id:r.id,
@@ -682,6 +744,68 @@ export default {
             user:r.user.name,
           })
         })
+        this.$nextTick(()=>{
+          $('#example').DataTable( {
+            dom: 'Blfrtip',
+            // pageLength: 5,
+            // lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
+            // buttons: [
+            //   'copy', 'csv', 'excel', 'pdf', 'print'
+            // ],
+            "footerCallback": function ( row, data, start, end, display ) {
+              var api = this.api(), data;
+
+              // Remove the formatting to get integer data for summation
+              var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                  i.replace(/[\$,]/g, '')*1 :
+                  typeof i === 'number' ?
+                    i : 0;
+              };
+
+              // Total over all pages
+              this.tot = api
+                .column( 1 )
+                .data()
+                .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                }, 0 );
+              // console.log(this.tot)
+              // Total over this page
+              this.pageTotal = api
+                .column( 1, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                }, 0 );
+              // this.ttotal= api
+              //   .column( 3, { page: 'current'} )
+              //   .data()
+              //   .reduce( function (a, b) {
+              //     return intVal(a) + intVal(b);
+              //   }, 0 );
+              // this.tcuenta= api
+              //   .column(4 , { page: 'current'} )
+              //   .data()
+              //   .reduce( function (a, b) {
+              //     return intVal(a) + intVal(b);
+              //   }, 0 );
+              // this.tsaldo= api
+              //   .column(5 , { page: 'current'} )
+              //   .data()
+              //   .reduce( function (a, b) {
+              //     return intVal(a) + intVal(b);
+              //   }, 0 );
+
+              // Update footer
+              $( api.column( 4 ).footer() ).html(
+                '$'+this.pageTotal +' ( $'+ this.tot +' total)'
+                // 'total:'+this.ttotal +' a cuenta:'+this.tcuenta +' saldo:'+this.tsaldo +' '
+              );
+            }
+          } );
+        })
+
         this.$q.loading.hide()
 
         this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
