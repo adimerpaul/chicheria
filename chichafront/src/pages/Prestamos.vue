@@ -23,8 +23,8 @@
       <q-input dense outlined label="Observacion" v-model="observacion"  style="text-transform: uppercase"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
-      <input type="radio" value="EN PRESTAMO" v-model="tipo" style="margin-right: 0.5em"  /><b :style="tipo=='EN PRESTAMO'?'color:red':''"> EN PRESTAMO </b>
-      <input type="radio" value="VENTA" v-model="tipo" style="margin-left: 1em;margin-right: 0.5em"/><b :style="tipo=='VENTA'?'color:red':''"> VENTA </b>
+      <input type="radio" value="EN PRESTAMO" v-model="tipo" style="margin-right: 0.5em;font;height:35px; width:35px; "  /><b :style="tipo=='EN PRESTAMO'?'color:red':''"> EN PRESTAMO </b>
+      <input type="radio" value="VENTA" v-model="tipo" style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "/><b :style="tipo=='VENTA'?'color:red':''"> VENTA </b>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
       <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
