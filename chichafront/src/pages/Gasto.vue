@@ -514,14 +514,18 @@ export default {
       doc.text(2, y+4, 'Ventas totales: ')
         doc.setFont(undefined,'normal')
       doc.text(5, y+4, total+'Bs')
+
         doc.setFont(undefined,'bold')
-      doc.text(7, y+4, 'En Caja totales: ')
+      doc.text(7, y+4, 'Por Cobrar: ')
         doc.setFont(undefined,'normal')
-      doc.text(11, y+4, caja+'Bs')
+      doc.text(10, y+4, tsaldo+' Bs')
+
         doc.setFont(undefined,'bold')
-      doc.text(14, y+4, 'Por Cobrar: ')
+      doc.text(14, y+4, 'En Caja totales: ')
         doc.setFont(undefined,'normal')
-      doc.text(17, y+4, tsaldo+' Bs')
+      doc.text(18, y+4, caja+'Bs')
+
+
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
@@ -582,14 +586,18 @@ export default {
       doc.text(2, y+4, 'Ventas totales: ')
         doc.setFont(undefined,'normal')
       doc.text(5, y+4, total+'Bs')
+
         doc.setFont(undefined,'bold')
-      doc.text(7, y+4, 'En Caja totales: ')
+      doc.text(7, y+4, 'Por Cobrar: ')
         doc.setFont(undefined,'normal')
-      doc.text(11, y+4, caja+'Bs')
+      doc.text(10, y+4, tsaldo+' Bs')
+
         doc.setFont(undefined,'bold')
-      doc.text(14, y+4, 'Por Cobrar: ')
+      doc.text(14, y+4, 'En Caja totales: ')
         doc.setFont(undefined,'normal')
-      doc.text(17, y+4, tsaldo+' Bs')
+      doc.text(18, y+4, caja+'Bs')
+
+
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
@@ -638,7 +646,7 @@ export default {
         // doc.text(18.5, y+3, r.user.toString())
         doc.text(1, y+3, ''+cont)
         doc.text(3, y+3, r.precio)
-        doc.text(5, y+3, r.observacion,substring(0,15))
+        doc.text(5, y+3, r.observacion)
         doc.text(9, y+3, r.glosa)
         doc.text(12, y+3, r.fecha)
         doc.text(14.5, y+3, r.hora)
@@ -674,7 +682,7 @@ export default {
         res.data.forEach(r=>{
           this.gastos.push({
             id:r.id,
-            observacion:r.observacion.substring(0, 30) ,
+            observacion:r.observacion.substring(0, 20) ,
             glosa:r.glosa,
             precio:r.precio,
             fecha:r.fecha,
