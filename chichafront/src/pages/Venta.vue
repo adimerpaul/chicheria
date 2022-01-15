@@ -21,7 +21,7 @@
             outlined
             required />
           </div>
-          <div class="col-6 col-sm-2 q-pa-xs"><q-input type="number" label="Cantidad" v-model="cantidad" outlined/></div>
+          <div class="col-6 col-sm-2 q-pa-xs"><q-input type="number" label="Cantidad" step="0.1" v-model="cantidad" outlined/></div>
           <div class="col-6 col-sm-2 q-pa-xs"><q-input type="text" disable label="Subtotal" v-model="subtotal" outlined/></div>
           <div class="col-6 col-sm-2 q-pa-xs flex flex-center">
             <q-btn color="primary"  label="Agregar" icon="send" type="submit" />

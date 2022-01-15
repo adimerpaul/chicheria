@@ -122,7 +122,7 @@
                       <td>{{v.user}}</td>
                       <td>
                         <q-btn icon="segment" color="green"  @click="listpago(v)" />
-                        <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)"/>
+<!--                        <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)"/>-->
                       </td>
                     </tr>
                     </tbody>
@@ -332,6 +332,8 @@ export default {
     misventas(){
       this.$q.loading.show()
       this.ventas=[];
+        $('#example').DataTable().destroy();
+
       this.$axios.post(process.env.API+'/listadoventa',{ini:this.fecha2,fin:this.fecha3}).then(res=>{
         // this.ventas=res.data
         // console.log(res.data)

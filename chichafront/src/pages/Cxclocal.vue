@@ -285,16 +285,21 @@ export default {
       options:[],
       model:'',
       tot:'',
-      pageTotal:''
+      pageTotal:'',
+      ttotal:'',
+      tacuenta:'',
+      tsaldo:'',
     }
   },
   mounted() {
-    $('#example').DataTable( {
-      dom: 'Bfrtip',
-      buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
-      ],
 
+    $('#example').DataTable( {
+      dom: 'Blfrtip',
+      pageLength: 5,
+      lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
+      // buttons: [
+      //   'copy', 'csv', 'excel', 'pdf', 'print'
+      // ],
       "footerCallback": function ( row, data, start, end, display ) {
         var api = this.api(), data;
 
@@ -321,10 +326,29 @@ export default {
           .reduce( function (a, b) {
             return intVal(a) + intVal(b);
           }, 0 );
+        this.ttotal= api
+          .column( 3, { page: 'current'} )
+          .data()
+          .reduce( function (a, b) {
+            return intVal(a) + intVal(b);
+          }, 0 );
+        this.tcuenta= api
+          .column(4 , { page: 'current'} )
+          .data()
+          .reduce( function (a, b) {
+            return intVal(a) + intVal(b);
+          }, 0 );
+        this.tsaldo= api
+          .column(5 , { page: 'current'} )
+          .data()
+          .reduce( function (a, b) {
+            return intVal(a) + intVal(b);
+          }, 0 );
 
         // Update footer
         $( api.column( 4 ).footer() ).html(
-          '$'+this.pageTotal +' ( $'+ this.tot +' total)'
+          // '$'+this.pageTotal +' ( $'+ this.tot +' total)'
+        't:'+this.pageTotal +' a:'+this.pageTotal +' s:'+this.pageTotal +' '
         );
       }
     } );
@@ -366,6 +390,7 @@ export default {
     misventas(){
       this.$q.loading.show()
       this.ventas=[];
+        $('#example').DataTable().destroy();
       this.$axios.post(process.env.API+'/listventlocal',{ini:this.fecha2,fin:this.fecha3}).then(res=>{
         // this.ventas=res.data
         // console.log(res.data)
@@ -390,12 +415,75 @@ export default {
         })
         // console.log(this.ventas)
         this.$nextTick(()=>{
+          // $('#example').DataTable( {
+          //   dom: 'Blfrtip',
+          //   // buttons: [
+          //   //   'copy', 'csv', 'excel', 'pdf', 'print'
+          //   // ],
+          //
+          //   "footerCallback": function ( row, data, start, end, display ) {
+          //     var api = this.api(), data;
+          //
+          //     // Remove the formatting to get integer data for summation
+          //     var intVal = function ( i ) {
+          //       return typeof i === 'string' ?
+          //         i.replace(/[\$,]/g, '')*1 :
+          //         typeof i === 'number' ?
+          //           i : 0;
+          //     };
+          //
+          //     // Total over all pages
+          //     this.tot = api
+          //       .column( 4 )
+          //       .data()
+          //       .reduce( function (a, b) {
+          //         return intVal(a) + intVal(b);
+          //       }, 0 );
+          //     // console.log(this.tot)
+          //     // Total over this page
+          //     this.pageTotal = api
+          //       .column( 4, { page: 'current'} )
+          //       .data()
+          //       .reduce( function (a, b) {
+          //         return intVal(a) + intVal(b);
+          //       }, 0 );
+          //
+          //
+          //     this.pageTotal = api
+          //       .column( 4, { page: 'current'} )
+          //       .data()
+          //       .reduce( function (a, b) {
+          //         return intVal(a) + intVal(b);
+          //       }, 0 );
+          //
+          //     this.pageTotal = api
+          //       .column( 4, { page: 'current'} )
+          //       .data()
+          //       .reduce( function (a, b) {
+          //         return intVal(a) + intVal(b);
+          //       }, 0 );
+          //
+          //     this.pageTotal = api
+          //       .column( 4, { page: 'current'} )
+          //       .data()
+          //       .reduce( function (a, b) {
+          //         return intVal(a) + intVal(b);
+          //       }, 0 );
+          //
+          //     // Update footer
+          //     $( api.column( 4 ).footer() ).html(
+          //       '$'+this.pageTotal +' ( $'+ this.tot +' total)'
+          //     );
+          //   }
+          // } );
+
           $('#example').DataTable( {
             dom: 'Blfrtip',
+            // pageLength: 5,
+            lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
             // buttons: [
             //   'copy', 'csv', 'excel', 'pdf', 'print'
             // ],
-
             "footerCallback": function ( row, data, start, end, display ) {
               var api = this.api(), data;
 
@@ -422,10 +510,29 @@ export default {
                 .reduce( function (a, b) {
                   return intVal(a) + intVal(b);
                 }, 0 );
+              this.ttotal= api
+                .column( 3, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                }, 0 );
+              this.tcuenta= api
+                .column(4 , { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                }, 0 );
+              this.tsaldo= api
+                .column(5 , { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                }, 0 );
 
               // Update footer
               $( api.column( 4 ).footer() ).html(
-                '$'+this.pageTotal +' ( $'+ this.tot +' total)'
+                // '$'+this.pageTotal +' ( $'+ this.tot +' total)'
+                'total:'+this.ttotal +' a cuenta:'+this.tcuenta +' saldo:'+this.tsaldo +' '
               );
             }
           } );

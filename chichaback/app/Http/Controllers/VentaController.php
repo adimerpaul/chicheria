@@ -209,13 +209,26 @@ class VentaController extends Controller
 //                ->where('user_id',$request->id)
         //        ->get();
        // }else{
+        if ($request->id==0){
             return Venta::with('user')
                 ->with('cliente')
                 ->with('pagos')
                 ->with('detalle')
                 ->whereDate('fecha','>=',$request->ini)
                 ->whereDate('fecha','<=',$request->fin)
+//                ->where('user_id',$request->id)
                 ->get();
+        }else{
+            return Venta::with('user')
+                ->with('cliente')
+                ->with('pagos')
+                ->with('detalle')
+                ->whereDate('fecha','>=',$request->ini)
+                ->whereDate('fecha','<=',$request->fin)
+                ->where('user_id',$request->id)
+                ->get();
+        }
+
        // }
 
     }
@@ -250,7 +263,7 @@ class VentaController extends Controller
             ->with('pagos')
             ->whereDate('fecha','>=',$request->ini)
             ->whereDate('fecha','<=',$request->fin)
-            ->whereRaw("(fechaentrega is not null OR fechaentrega!='')")
+            ->whereRaw("(fechaentrega is not null and fechaentrega!='')")
             ->where('saldo','>',0)
                  ->get();
     }
@@ -302,6 +315,7 @@ class VentaController extends Controller
         <tr><td>Cantidad: </td><td><b>'.$venta->detalle->cantidad.'</b></td></tr>
         <tr><td>Producto: </td><td><b>'.$venta->detalle->nombreproducto.'</b></td></tr>
         <tr><td>Codigo: </td><td><b>'.$venta->total.'</b></td></tr>
+        <tr><td>Usuario: </td><td><b>'.$venta->user->name.'</b></td></tr>
         <tr><td>Observacion: </td><td><b>'.$venta->observacion.'</b></td></tr>
         </table>
         <div style="color:white">-----------------</div>
@@ -346,6 +360,7 @@ class VentaController extends Controller
         <tr><td>A cuenta: </td><td>'.$venta->acuenta.'</td></tr>
         <tr><td>Saldo: </td><td><b>'.$venta->saldo.'</b></td></tr>
         <tr><td>Observacion: </td><td>'.$venta->observacion.'</td></tr>
+        <tr><td>Usuario: </td><td>'.$venta->user->name.'</td></tr>
         </table>
               ';
               return $cadena;

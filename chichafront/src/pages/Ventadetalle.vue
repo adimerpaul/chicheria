@@ -48,7 +48,7 @@
             </div>
             <div class="col-4 col-sm-1 q-pa-xs">
               <!--            <q-input type="number" label="Cantidad" v-model="cantidad" outlined/>-->
-              <q-select dense label="Cantidad" :options="cantidades" v-model="cantidad" outlined/>
+              <q-input dense label="Cantidad" type="number" step="0.1" v-model="cantidad" outlined/>
             </div>
             <div class="col-4 col-sm-2 q-pa-xs">
               <!--            <q-input type="number" label="Cantidad" v-model="cantidad" outlined/>-->
@@ -671,7 +671,7 @@ export default {
         observacion:this.venta.observacion,
         fechaentrega:this.venta.fechaentrega,
       }).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
@@ -1147,7 +1147,7 @@ export default {
   computed:{
     subtotal(){
       if (this.producto.precio!=undefined && this.producto.precio!=NaN){
-        return parseFloat(this.producto.precio)* parseFloat(this.cantidad)
+        return parseFloat(this.producto.precio) * parseFloat(this.cantidad)
       }
       else{
         return 0

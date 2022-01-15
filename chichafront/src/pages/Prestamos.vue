@@ -23,8 +23,8 @@
       <q-input dense outlined label="Observacion" v-model="observacion"  style="text-transform: uppercase"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
-      <input type="radio" value="EN PRESTAMO" v-model="tipo" style="margin-right: 0.5em"  /><b :style="tipo=='EN PRESTAMO'?'color:red':''"> EN PRESTAMO </b>
-      <input type="radio" value="VENTA" v-model="tipo" style="margin-left: 1em;margin-right: 0.5em"/><b :style="tipo=='VENTA'?'color:red':''"> VENTA </b>
+      <input type="radio" value="EN PRESTAMO" v-model="tipo" style="margin-right: 0.5em;font;height:35px; width:35px; "  /><b :style="tipo=='EN PRESTAMO'?'color:red':''"> EN PRESTAMO </b>
+      <input type="radio" value="VENTA" v-model="tipo" style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "/><b :style="tipo=='VENTA'?'color:red':''"> VENTA </b>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
       <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
@@ -423,7 +423,7 @@ export default {
         inventario_id:this.datoprestamo.inventario_id,
         id:this.datoprestamo.id,
       }).then(res=>{
-        console.log(res.data);
+        // console.log(res.data);
 
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
@@ -478,7 +478,7 @@ export default {
           doc.text(5, y+3, ''+r.titular)
           doc.text(11, y+3, ''+r.nombre)
           doc.text(16.5, y+3, ''+r.total,{align:'right'})
-          if(r.monto!=null){
+          if(r.monto!=null && r.estado!='ANULADO'){
           doc.text(18, y+3,''+r.monto,{align:'right'})
           suma+=r.monto;
           }

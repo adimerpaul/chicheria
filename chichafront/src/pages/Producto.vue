@@ -129,6 +129,7 @@
                   <q-input
                     outlined
                     type="number"
+                    step="0.1"
                     v-model="dato.precio"
                     label="Precio"
                   />

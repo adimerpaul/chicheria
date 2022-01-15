@@ -116,7 +116,7 @@
               </q-form>
             </div>
 
-         <div class="q-pa-md">
+         <div class="q-pa-md" hidden>
           <q-table
             title="Reporte Deudores"
             :rows="deudas"
@@ -263,23 +263,24 @@ export default {
     generar(){
             this.ventas=[];
             this.$q.loading.show()
-        this.$axios.post(process.env.API+'/listadoventa',{ini:this.fecha,fin:this.fecha2,id:this.usuario.id}).then(res=>{
-            console.log(res.data);
-          this.$q.loading.hide()
-            res.data.forEach(el => {
-                this.ventas.push({
-                    local:el.cliente.local,
-                    tipo:el.tipo,
-                    titular:el.cliente.titular,
-                    cuenta:el.acuenta,
-                    saldo:el.saldo,
-                    total:el.total,
-                    estado:el.estado,
-                    name:el.user.name
-                })
-            });
+            // console.log(this.usuario)
+            this.$axios.post(process.env.API+'/listadoventa',{ini:this.fecha,fin:this.fecha2,id:this.usuario.id}).then(res=>{
+                console.log(res.data);
+              this.$q.loading.hide()
+                res.data.forEach(el => {
+                    this.ventas.push({
+                        local:el.cliente.local,
+                        tipo:el.tipo,
+                        titular:el.cliente.titular,
+                        cuenta:el.acuenta,
+                        saldo:el.saldo,
+                        total:el.total,
+                        estado:el.estado,
+                        name:el.user.name
+                    })
+                });
 
-        })
+            })
     },
           pago(props){
           this.regpago.venta_id=props.id;

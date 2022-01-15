@@ -32,56 +32,111 @@
       </q-form>
     </div>
     <div class="col-12">
-      <q-table
-      :columns="columns"
-      :rows="gastos"
-      :rows-per-page-options="[50,100,0]"
-      :filter="filter"
-      >
-        <template v-slot:top-right>
-          <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </template>
+<!--      <q-table-->
+<!--      :columns="columns"-->
+<!--      :rows="gastos"-->
+<!--      :rows-per-page-options="[50,100,0]"-->
+<!--      :filter="filter"-->
+<!--      >-->
+<!--        <template v-slot:top-right>-->
+<!--          <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">-->
+<!--            <template v-slot:append>-->
+<!--              <q-icon name="search" />-->
+<!--            </template>-->
+<!--          </q-input>-->
+<!--        </template>-->
 
-        <template v-slot:body-cell-action="props">
-          <q-td :props="props">
-            <q-btn
-              color="warning"
-              icon-right="edit"
-              no-caps
-              label="Modificar"
-              flat
-              dense
-              @click="updateval(props.row)"
-            />
-            <q-btn
-            v-if="$store.state.login.eliminargasto"
-              color="negative"
-              icon-right="delete"
-              no-caps
-              label="Eliminar"
-              flat
-              dense
-              @click="deleteval(props.row)"
-            />
+<!--        <template v-slot:body-cell-action="props">-->
+<!--          <q-td :props="props">-->
 <!--            <q-btn-->
-<!--              color="info"-->
-<!--              icon-right="list"-->
+<!--              color="warning"-->
+<!--              icon-right="edit"-->
 <!--              no-caps-->
-<!--              label="Sueldos"-->
+<!--              label="Modificar"-->
 <!--              flat-->
 <!--              dense-->
-<!--              @click="pagosval(props.row)"-->
+<!--              @click="updateval(props.row)"-->
 <!--            />-->
+<!--            <q-btn-->
+<!--            v-if="$store.state.login.eliminargasto"-->
+<!--              color="negative"-->
+<!--              icon-right="delete"-->
+<!--              no-caps-->
+<!--              label="Eliminar"-->
+<!--              flat-->
+<!--              dense-->
+<!--              @click="deleteval(props.row)"-->
+<!--            />-->
+<!--&lt;!&ndash;            <q-btn&ndash;&gt;-->
+<!--&lt;!&ndash;              color="info"&ndash;&gt;-->
+<!--&lt;!&ndash;              icon-right="list"&ndash;&gt;-->
+<!--&lt;!&ndash;              no-caps&ndash;&gt;-->
+<!--&lt;!&ndash;              label="Sueldos"&ndash;&gt;-->
+<!--&lt;!&ndash;              flat&ndash;&gt;-->
+<!--&lt;!&ndash;              dense&ndash;&gt;-->
+<!--&lt;!&ndash;              @click="pagosval(props.row)"&ndash;&gt;-->
+<!--&lt;!&ndash;            />&ndash;&gt;-->
 
-            <!--              @click="deleteval(detalles.indexOf(props.row))"-->
-          </q-td>
-        </template>
-      </q-table>
-
+<!--            &lt;!&ndash;              @click="deleteval(detalles.indexOf(props.row))"&ndash;&gt;-->
+<!--          </q-td>-->
+<!--        </template>-->
+<!--      </q-table>-->
+      <table id="example" style="width:100%">
+        <thead>
+        <tr>
+          <th>id</th>
+          <th>precio</th>
+          <th>glosa</th>
+          <th>observacion</th>
+          <th>fecha</th>
+          <th>hora</th>
+          <th>user</th>
+          <th>action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="g in gastos" :key="g.i">
+          <td>{{g.id}}</td>
+          <td>{{g.precio}}</td>
+          <td>{{g.glosa}}</td>
+          <td>{{g.observacion}}</td>
+          <td>{{g.fecha}}</td>
+          <td>{{g.hora}}</td>
+          <td>{{g.user}}</td>
+          <td>
+              <q-td >
+                <q-btn
+                  color="warning"
+                  icon-right="edit"
+                  no-caps
+                  label="Modificar"
+                  flat
+                  size="xs"
+                  dense
+                  @click="updateval(g)"
+                />
+                <q-btn
+                v-if="$store.state.login.eliminargasto"
+                  color="negative"
+                  icon-right="delete"
+                  no-caps
+                  label="Eliminar"
+                  flat
+                  size="xs"
+                  dense
+                  @click="deleteval(g)"
+                />
+              </q-td>
+          </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <th colspan="7" style="text-align:right">Total:</th>
+          <th></th>
+        </tr>
+        </tfoot>
+      </table>
 <!--      <div class="row">-->
 <!--        <div class="col-12">-->
 <!--&lt;!&ndash;          <div class="text-subtitle1 bg-accent text-center text-white">Historial de pagos</div>&ndash;&gt;-->
@@ -135,18 +190,18 @@
 <!--        </div>-->
 <!--      </div>-->
       <div class="col-12">
-        <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir"/>
+        <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir(user)"/>
       </div>
       <div class="row">
         <div class="col-6">
-          <q-btn label="Imprimir mis ventas Detalle" icon="print" color="teal" style="width:100%"  @click="imprimirmisventasdetalle"/>
+          <q-btn label="Imprimir mis ventas Detalle" icon="print" color="teal" style="width:100%"  @click="imprimirmisventasdetalle(user)"/>
         </div>
         <div class="col-6">
-          <q-btn label="Imprimir mis ventas Local" icon="print" color="warning" style="width:100%"  @click="imprimirmisventaslocal"/>
+          <q-btn label="Imprimir mis ventas Local" icon="print" color="warning" style="width:100%"  @click="imprimirmisventaslocal(user)"/>
         </div>
       </div>
       <div class="col-12">
-        <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="imprimirmisventasygastos"/>
+        <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="imprimirmisventasygastos(user)"/>
       </div>
 
       <q-dialog v-model="pagos" full-width>
@@ -189,6 +244,7 @@
 <script>
 import {date} from 'quasar'
 import {jsPDF} from "jspdf";
+import $ from "jquery";
 export default {
   name: "Venta",
   data(){
@@ -207,6 +263,8 @@ export default {
       users:[],
       user:{},
       gl:[],
+      pageTotal:'',
+      tot:'',
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -238,6 +296,7 @@ export default {
     }
   },
   mounted() {
+    $('#example').DataTable();
     this.misgastos()
     this.misuser()
     // this.misempleados()
@@ -279,14 +338,14 @@ export default {
         this.user=this.users[0];
       })
     },
-    imprimirmisventasygastos(){
+    imprimirmisventasygastos(us){
       let mc=this
       function header(){
         var img = new Image()
         img.src = 'logo.png'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
-        doc.text(5, 1, 'HISTORIAL DE INGRESOS Y GASTOS')
+        doc.text(5, 1, 'HISTORIAL DE INGRESOS Y GASTOS '+us.label)
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         // doc.text(1, 3, 'Total')
         doc.text(1, 3, 'Ruta/tip')
@@ -458,21 +517,21 @@ export default {
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
-    imprimirmisventasdetalle(){
+    imprimirmisventasdetalle(us){
       let mc=this
       function header(){
         var img = new Image()
         img.src = 'logo.png'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
-        doc.text(5, 1, 'Historial de ventas DETALLE')
+        doc.text(5, 1, 'Historial de ventas DETALLE ' +us.label)
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         doc.text(1, 3, 'Usuario')
         doc.text(5, 3, 'Total')
         doc.text(7, 3, 'A cuenta')
         doc.text(9, 3, 'Saldo')
         doc.text(11, 3, 'Estado')
-        doc.text(13, 3, 'Local')
+        doc.text(13, 3, 'Hora')
         doc.text(18, 3, 'Titular')
         doc.setFont(undefined,'normal')
       }
@@ -501,7 +560,7 @@ export default {
         doc.text(7, y+3, r.acuenta!=null?r.acuenta.toString():'')
         doc.text(9, y+3, r.saldo!=null?r.saldo.toString():'')
         doc.text(11, y+3, r.estado!=null?r.estado.toString():'')
-        doc.text(13, y+3, r.local!=null?r.local.toString():'')
+        doc.text(13, y+3, (r.created.toString()).substring(11,19))
         doc.text(18, y+3, r.titular!=null?r.titular.substring(0,25):'')
         if (y+3>25){
           doc.addPage();
@@ -514,26 +573,30 @@ export default {
       doc.text(2, y+4, 'Ventas totales: ')
         doc.setFont(undefined,'normal')
       doc.text(5, y+4, total+'Bs')
+
         doc.setFont(undefined,'bold')
-      doc.text(7, y+4, 'En Caja totales: ')
+      doc.text(7, y+4, 'Por Cobrar: ')
         doc.setFont(undefined,'normal')
-      doc.text(11, y+4, caja+'Bs')
+      doc.text(10, y+4, tsaldo+' Bs')
+
         doc.setFont(undefined,'bold')
-      doc.text(14, y+4, 'Por Cobrar: ')
+      doc.text(14, y+4, 'En Caja totales: ')
         doc.setFont(undefined,'normal')
-      doc.text(17, y+4, tsaldo+' Bs')
+      doc.text(18, y+4, caja+'Bs')
+
+
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
 
-    imprimirmisventaslocal(){
+    imprimirmisventaslocal(us){
       let mc=this
       function header(){
         var img = new Image()
         img.src = 'logo.png'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
-        doc.text(5, 1, 'Historial de ventas LOCAL')
+        doc.text(5, 1, 'Historial de ventas LOCAL '+ us.label)
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         doc.text(1, 3, 'Usuario')
         doc.text(3.5, 3, 'Total')
@@ -582,26 +645,30 @@ export default {
       doc.text(2, y+4, 'Ventas totales: ')
         doc.setFont(undefined,'normal')
       doc.text(5, y+4, total+'Bs')
+
         doc.setFont(undefined,'bold')
-      doc.text(7, y+4, 'En Caja totales: ')
+      doc.text(7, y+4, 'Por Cobrar: ')
         doc.setFont(undefined,'normal')
-      doc.text(11, y+4, caja+'Bs')
+      doc.text(10, y+4, tsaldo+' Bs')
+
         doc.setFont(undefined,'bold')
-      doc.text(14, y+4, 'Por Cobrar: ')
+      doc.text(14, y+4, 'En Caja totales: ')
         doc.setFont(undefined,'normal')
-      doc.text(17, y+4, tsaldo+' Bs')
+      doc.text(18, y+4, caja+'Bs')
+
+
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
 
-    imprimir(){
+    imprimir(us){
       let mc=this
       function header(){
         var img = new Image()
         img.src = 'logo.png'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
-        doc.text(5, 1, 'Historial de gastos')
+        doc.text(5, 1, 'Historial de gastos '+ us.label)
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         doc.text(1, 3, 'Num')
         doc.text(3, 3, 'Precio')
@@ -668,13 +735,16 @@ export default {
     misgastos(){
       this.$q.loading.show()
       this.gastos=[]
+      $('#example').DataTable().destroy()
       this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
         // console.log(res.data)
         // this.gastos=res.data
+        // $('#example').DataTable().destroy()
+
         res.data.forEach(r=>{
           this.gastos.push({
             id:r.id,
-            observacion:r.observacion.substring(0, 30) ,
+            observacion:r.observacion.substring(0, 20) ,
             glosa:r.glosa,
             precio:r.precio,
             fecha:r.fecha,
@@ -682,6 +752,68 @@ export default {
             user:r.user.name,
           })
         })
+        this.$nextTick(()=>{
+          $('#example').DataTable( {
+            dom: 'Blfrtip',
+            // pageLength: 5,
+            // lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
+            // buttons: [
+            //   'copy', 'csv', 'excel', 'pdf', 'print'
+            // ],
+            "footerCallback": function ( row, data, start, end, display ) {
+              var api = this.api(), data;
+
+              // Remove the formatting to get integer data for summation
+              var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                  i.replace(/[\$,]/g, '')*1 :
+                  typeof i === 'number' ?
+                    i : 0;
+              };
+
+              // Total over all pages
+              this.tot = api
+                .column( 1 )
+                .data()
+                .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                }, 0 );
+              // console.log(this.tot)
+              // Total over this page
+              this.pageTotal = api
+                .column( 1, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                  return intVal(a) + intVal(b);
+                }, 0 );
+              // this.ttotal= api
+              //   .column( 3, { page: 'current'} )
+              //   .data()
+              //   .reduce( function (a, b) {
+              //     return intVal(a) + intVal(b);
+              //   }, 0 );
+              // this.tcuenta= api
+              //   .column(4 , { page: 'current'} )
+              //   .data()
+              //   .reduce( function (a, b) {
+              //     return intVal(a) + intVal(b);
+              //   }, 0 );
+              // this.tsaldo= api
+              //   .column(5 , { page: 'current'} )
+              //   .data()
+              //   .reduce( function (a, b) {
+              //     return intVal(a) + intVal(b);
+              //   }, 0 );
+
+              // Update footer
+              $( api.column( 4 ).footer() ).html(
+                '$'+this.pageTotal +' ( $'+ this.tot +' total)'
+                // 'total:'+this.ttotal +' a cuenta:'+this.tcuenta +' saldo:'+this.tsaldo +' '
+              );
+            }
+          } );
+        })
+
         this.$q.loading.hide()
 
         this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
@@ -705,7 +837,8 @@ export default {
                 detalle:r.detalle.nombreproducto,
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
-                tipo:r.tipo
+                tipo:r.tipo,
+                created:r.created_at
               })}
               else{
               if(this.user.id==r.user_id){this.ventas.push({
@@ -720,7 +853,8 @@ export default {
                 detalle:r.detalle.nombreproducto,
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
-                tipo:r.tipo
+                tipo:r.tipo,
+                created:created_at
               })}
               }
               }
@@ -738,7 +872,8 @@ export default {
                 detalle:r.detalle.nombreproducto,
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
-                tipo:r.tipo
+                tipo:r.tipo,
+                created:r.created_at
               })
               }
               }
