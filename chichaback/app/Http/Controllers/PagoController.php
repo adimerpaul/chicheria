@@ -118,7 +118,7 @@ class PagoController extends Controller
         return DB::SELECT("SELECT p.fecha,v.fechaentrega,p.monto,v.tipo,d.cantidad,d.nombreproducto, c.local,c.titular
         FROM pagos p inner join ventas v on p.venta_id=v.id inner join detalles d ON v.id=d.venta_id
         inner join clientes c on v.cliente_id=c.id
-        where p.user_id=".$request->user()->id."
+        where p.user_id=".$request->user()->id." and
         date(p.fecha)>='$request->fecha1' and date(p.fecha)<='$request->fecha2'");
 
 
