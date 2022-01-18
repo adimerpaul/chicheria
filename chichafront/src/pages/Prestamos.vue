@@ -13,9 +13,13 @@
     <div class="col-12 col-sm-3 q-pa-xs">
       <q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades"/>
     </div>
+        <div class="col-12 col-sm-3 q-pa-xs">
+      <q-input dense outlined label="Fecha" v-model="fecha" type="date"/>
+    </div>
     <div class="col-12 col-sm-3 q-pa-xs">
       <q-input dense outlined label="Efectivo" v-model="efectivo" type="number"/>
     </div>
+
     <div class="col-12 col-sm-3 q-pa-xs">
       <q-input dense outlined label="Fisico" v-model="fisico"  style="text-transform: uppercase"/>
     </div>
@@ -180,6 +184,7 @@ export default {
       options:[],
       boolmod:false,
       filter:'',
+      fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       colum:[
   { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha', sortable: true },
   { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
@@ -246,6 +251,7 @@ export default {
       this.$axios.post(process.env.API+'/modprestamo',{
         id:this.prestamo_id,
         efectivo:this.efectivo,
+        fecha:this.fecha,
         fisico:this.fisico,
         observacion:this.observacion,
         cantidad:this.cantidad,
@@ -320,6 +326,7 @@ export default {
         this.boolmod=true
         this.prestamo_id=prop.id
         this.efectivo=prop.efectivo;
+        this.fecha=prop.fecha;
         this.fisico=prop.fisico;
         this.observacion=prop.observacion;
         this.cantidad=prop.cantidad;
@@ -389,6 +396,7 @@ export default {
       this.$q.loading.show();
       this.$axios.post(process.env.API+'/prestamo',{
         efectivo:this.efectivo,
+        fecha:this.fecha,
         fisico:this.fisico,
         observacion:this.observacion,
         cantidad:this.cantidad,

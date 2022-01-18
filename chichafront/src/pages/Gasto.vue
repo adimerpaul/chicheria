@@ -527,12 +527,13 @@ export default {
         doc.text(5, 1, 'Historial de ventas DETALLE ' +us.label)
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         doc.text(1, 3, 'Usuario')
-        doc.text(5, 3, 'Total')
+        doc.text(3, 3, 'Fecha')
+        doc.text(5.5, 3, 'Total')
         doc.text(7, 3, 'A cuenta')
         doc.text(9, 3, 'Saldo')
         doc.text(11, 3, 'Estado')
         doc.text(13, 3, 'Hora')
-        doc.text(18, 3, 'Titular')
+        doc.text(15.5 , 3, 'Titular')
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
@@ -556,12 +557,13 @@ export default {
         // xx+=0.5
         y+=0.5
         doc.text(1, y+3, r.user!=null?r.user.toString():'')
-        doc.text(5, y+3, r.total!=null?r.total.toString():'')
+        doc.text(3, y+3, r.fecha+'')
+        doc.text(5.5, y+3, r.total!=null?r.total.toString():'')
         doc.text(7, y+3, r.acuenta!=null?r.acuenta.toString():'')
         doc.text(9, y+3, r.saldo!=null?r.saldo.toString():'')
         doc.text(11, y+3, r.estado!=null?r.estado.toString():'')
         doc.text(13, y+3, (r.created.toString()).substring(11,19))
-        doc.text(18, y+3, r.titular!=null?r.titular.substring(0,25):'')
+        doc.text(15.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
         if (y+3>25){
           doc.addPage();
           header()
@@ -826,6 +828,7 @@ export default {
              if (r.estado!='ANULADO'){
               if(this.$store.state.login.user.id==1){
               if(this.user.id==0){this.ventas.push({
+                fecha:r.fecha,
                 total:r.total,
                 tipo:r.tipo,
                 acuenta:r.acuenta,

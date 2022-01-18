@@ -47,7 +47,7 @@ class PrestamoController extends Controller
          $inv=Inventario::find($request->inventario_id);
          if( $inv->cantidad>=$request->cantidad){
         $prestamo=new Prestamo();
-        $prestamo->fecha=date('Y-m-d');
+        $prestamo->fecha=$request->fecha;
         $prestamo->estado=$request->tipo;
         if ($request->tipo=='VENTA'){
             $prestamo->cantidad=$request->cantidad;
@@ -152,6 +152,7 @@ public function reporteventa(Request $request){
                 $inv->cantidad=$inv->cantidad + $prestamo->cantidad;
                 $inv->save();
                 $prestamo->cliente_id=$request->cliente_id;
+                $prestamo->fecha=$request->fecha;
                 $prestamo->cantidad=$request->cantidad;
                 $prestamo->prestado=$request->cantidad;
                 $prestamo->inventario_id=$request->inventario_id;
