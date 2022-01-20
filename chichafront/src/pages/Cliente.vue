@@ -68,6 +68,45 @@
       <div class="col-12">
 
         <div class="q-pa-md">
+                              <div class=" responsive">
+                <table id="example" style="width:100%">
+                  <thead>
+                  <tr>
+                    <!--                      <th>Nro</th>-->
+                    <th>CI</th>
+                    <th>Titular</th>
+                    <th>Telefono</th>
+                    <th>Direccion</th>
+                    <th>Observacion</th>
+                    <th>Tipo Cliente</th>
+                    <th>Estado</th>
+                    <th>Opcion</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="v in rows" :key="v.id">
+                    <!--                      <td>{{v.id}}</td>-->
+                    <td>{{v.ci}}</td>
+                    <td>{{v.titular}}</td>
+                    <td>{{v.telefono}}</td>
+                    <td>{{v.direccion}}</td>
+                    <td>{{v.observacion}}</td>
+                    <td>
+                      <q-badge color="accent" v-if="v.tipocliente==1">LOCAL</q-badge>
+                      <q-badge color="teal" v-else>CLIENTE</q-badge>
+                    </td>
+                    <td>
+                      <q-badge :color="v.estado=='ACTIVO'?'positive':'negative'"  @click="activar(v)">{{ v.estado }}</q-badge>
+                    </td>
+                    <td>
+                      <q-btn dense round flat color="yellow" @click="editRow(v)" icon="edit"></q-btn>
+                      <q-btn dense round flat color="red" @click="delRow(v)" icon="delete"></q-btn>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                      </div>
+<!--
           <q-table
             title="CLIENTES"
             :rows="rows"
@@ -90,7 +129,6 @@
             </template>
 
             <template v-slot:body-cell-tipocliente="props" >
-<!--              <q-tr :props="props" >-->
                 <q-td key="tipocliente" :props="props" >
                   <q-badge color="accent" v-if="props.row.tipocliente=='1'">
                     LOCAL
@@ -99,7 +137,6 @@
                     CLIENTE
                   </q-badge>
                 </q-td>
-<!--              </q-tr>-->
             </template>
 
             <template v-slot:body-cell-opcion="props" >
@@ -115,7 +152,7 @@
                 </template>
               </q-input>
             </template>
-          </q-table>
+          </q-table>-->
         </div>
 
     <q-dialog v-model="dialog_mod">
@@ -213,6 +250,17 @@
     </div>
 </template>
 <script>
+var $  = require( 'jquery' );
+require( 'datatables.net-buttons/js/buttons.html5.js' )();
+require( 'datatables.net-buttons/js/buttons.print.js' )();
+require('datatables.net-buttons/js/dataTables.buttons');
+require('datatables.net-dt/css/jquery.dataTables.min.css');
+import print from 'datatables.net-buttons/js/buttons.print';
+import jszip from 'jszip/dist/jszip';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs=pdfFonts.pdfMake.vfs;
+window.JSZip=jszip;
 
 import { date } from 'quasar'
 export default {
@@ -247,13 +295,24 @@ export default {
     }
   },
   created() {
+     //this.filtrarlista();
+  },
+    mounted() {
       this.filtrarlista();
+      console.log(this.days)
+        $('#example').DataTable( {
+      dom: 'Bfrtip',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ]
+    } );
   },
   methods: {
     listado(valor){
       this.$q.loading.show();
       this.rows=[];
       this.days=[];
+      $('#example').DataTable().destroy();
       this.$axios.get(process.env.API+'/cumple').then(res=>{
          console.log(res.data)
         res.data.forEach(el => {
@@ -310,6 +369,15 @@ export default {
         });
         this.$q.loading.hide();
       })
+                    $('#example').DataTable().destroy();
+        this.$nextTick(()=>{
+          $('#example').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+          } );
+        })
       });
 
     },
@@ -344,19 +412,19 @@ export default {
 
 
       activar(props){
-        this.dato=props.row;
+        this.dato=props;
         this.$axios.post(process.env.API+'/activar', this.dato).then(res=>{
           this.filtrarlista();
         });
 
       },
   editRow(props){
-    this.dato=props.row;
+    this.dato=props;
     console.log(this.dato);
     this.dialog_mod=true;
   },
   delRow(props){
-    this.dato=props.row;
+    this.dato=props;
     this.dialog_del=true;
   },
      onMod(){
