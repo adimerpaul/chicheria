@@ -340,6 +340,8 @@ export default {
     },
     imprimirmisventasygastos(us){
       let mc=this
+      if(this.$store.state.login.user.id!=1)
+      us.label=this.$store.state.login.user.name;
       function header(){
         var img = new Image()
         img.src = 'logo.png'
@@ -521,6 +523,9 @@ export default {
     },
     imprimirmisventasdetalle(us){
       let mc=this
+      if(this.$store.state.login.user.id!=1)
+      us.label=this.$store.state.login.user.name;
+
       function header(){
         var img = new Image()
         img.src = 'logo.png'
@@ -595,6 +600,9 @@ export default {
 
     imprimirmisventaslocal(us){
       let mc=this
+      if(this.$store.state.login.user.id!=1)
+      us.label=this.$store.state.login.user.name;
+
       function header(){
         var img = new Image()
         img.src = 'logo.png'
@@ -667,6 +675,9 @@ export default {
 
     imprimir(us){
       let mc=this
+      if(this.$store.state.login.user.id!=1)
+      us.label=this.$store.state.login.user.name;
+      
       function header(){
         var img = new Image()
         img.src = 'logo.png'
