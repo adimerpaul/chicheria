@@ -12,6 +12,10 @@
     <div class="col-12 col-sm-3 q-pa-xs">
       <q-select outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades"/>
     </div>
+            <div class="col-12 col-sm-3 q-pa-xs">
+      <q-input dense outlined label="Fecha" v-model="fecha" type="date"/>
+    </div>
+
     <div class="col-12 col-sm-3 q-pa-xs">
       <q-input outlined label="Efectivo" v-model="efectivo" type="number"/>
     </div>
@@ -171,6 +175,8 @@ export default {
       tipo:'EN PRESTAMO',
       reportepres:[],
       options:[],
+      fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
+
       boolmod:false,
       filter:'',
 
@@ -324,6 +330,7 @@ export default {
         id:this.prestamo_id,
         efectivo:this.efectivo,
         fisico:this.fisico,
+        fecha:this.fecha,
         observacion:this.observacion,
         cantidad:this.cantidad,
         cliente_id:this.cliente.id,
@@ -401,6 +408,7 @@ export default {
         cantidad:this.cantidad,
         cliente_id:this.cliente.id,
         tipo:this.tipo,
+        fecha:this.fecha,
         inventario_id:this.inventario.id,
       }).then(res=>{
         // console.log(res.data)
@@ -415,6 +423,8 @@ export default {
         this.listclientes();
         // this.cliente=this.prestamos[0]
         this.cantidad=1;
+      this.fecha=date.formatDate(new Date(),'YYYY-MM-DD')
+
         this.cliente=this.cliente[0];
         this.inventario=this.inventario[0];
       })
@@ -431,6 +441,7 @@ export default {
         this.cantidad=prop.cantidad;
         this.cliente=prop.cliente;
         this.inventario=prop.inventario;
+        this.fecha=prop.fecha;
     },
 
     devolver(){
