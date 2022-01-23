@@ -30,6 +30,10 @@
           </div>
         </div>
       </q-form>
+                <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
+            <q-btn icon="send" label="Adelanto" type="button" color="teal" @click="pagos=true"/>
+          </div>
+          
     </div>
     <div class="col-12">
 <!--      <q-table-->
@@ -213,6 +217,9 @@
             <q-form @submit.prevent="agregarpago">
               <div class="row">
                 <div class="col-4">
+                  <q-select outlined label="Empleado" v-model="pago.empleado" :options="empleados"/>
+                </div>
+                <div class="col-4">
                   <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
                 </div>
                 <div class="col-4">
@@ -320,6 +327,7 @@ export default {
     // })
     // this.responsable=this.$store.getters["login/user"].name
     this.listadog();
+    this.misempleados();
   },
   methods:{
     listadog(){
@@ -924,8 +932,9 @@ export default {
     },
     agregarpago(){
       // console.log('a');
-      this.pago.empleado_id=this.empleadohistorial.id
-      // console.log(this.pago)
+      this.pago.empleado_id=this.pago.empleado.element.id
+      
+       //console.log(this.pago)
       // return false
 
       this.$axios.post(process.env.API+'/sueldo',this.pago).then(res=>{
@@ -939,7 +948,11 @@ export default {
         // this.ventas=res.data
         // console.log(res.data)
         this.$q.loading.hide()
-        this.empleados=res.data
+        this.empleados=[]
+        res.data.forEach(element => {
+          this.empleados.push({element,label:element.nombre})
+        });
+        console.log (this.empleados)
         // res.data.forEach(r=>{
         //   this.ventas.push({
         //     total:r.total,

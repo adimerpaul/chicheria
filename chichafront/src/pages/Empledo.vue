@@ -14,7 +14,7 @@
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>
           <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
-            <q-btn icon="send" :label="boolcrear?'CREAR':'MODIFICAR'" type="submit" :color="boolcrear?'positive':'warning'"/>
+            <q-btn icon="send" label="CREAR" type="submit" color="positive"/>
           </div>
         </div>
       </q-form>
@@ -124,6 +124,26 @@
         </div>
       </div>
 
+    <q-dialog v-model="modempleado" >
+      <q-card style="min-width: 350px">
+    <div class="col-12">
+      <div class="text-subtitle1 bg-primary text-center text-white">Modificar empleados</div>
+    </div>
+    <div class="col-12">
+      <q-form @submit.prevent="modificar">
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="CI" v-model="empleado2.ci" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Nombre" v-model="empleado2.nombre" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" type="date" v-model="empleado2.fechanac" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado2.celular"/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado2.salario" type="number"/></div>
+          <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
+            <q-btn icon="edit" label="MODIFICAR" type="submit" color="warning"/>
+          </div>
+      </q-form>
+    </div>
+      </q-card>
+    </q-dialog>
+
       <q-dialog v-model="pagos" full-width>
         <q-card>
           <q-card-section>
@@ -174,9 +194,11 @@ export default {
       pagos:false,
       pago:{},
       empleados:[],
+      empleados2:[],
       empleadohistorial:{},
       boolcrear:true,
       salarios:[],
+      modempleado:false,
       empleado:{fechanac:'2000-01-01'},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -349,9 +371,21 @@ export default {
         // })
       })
     },
+    modificar(){
+              this.$axios.put(process.env.API+'/empleado/'+this.empleado2.id,this.empleado2).then(res=>{
+          this.misempleados()
+          this.boolcrear=true
+          this.empleado2=[]
+          this.modempleado=false;
+          this.$q.notify({
+            message:'Modificado correctamente',
+            icon:'info',
+            color:'positive'
+          })
+        })
+    },
     agregar(){
       this.$q.loading.show()
-      if (this.boolcrear){
         this.$axios.post(process.env.API+'/empleado',this.empleado).then(res=>{
           // this.ventas=res.data
           // console.log(res.data)
@@ -365,22 +399,6 @@ export default {
             color:'positive'
           })
         })
-      }else{
-        this.$axios.put(process.env.API+'/empleado/'+this.empleado.id,this.empleado).then(res=>{
-          // this.ventas=res.data
-          // console.log(res.data)
-          this.$q.loading.hide()
-          // this.empleados=res.data
-          this.misempleados()
-          this.boolcrear=true
-          this.empleado={fechanac: '2000-01-01'}
-          this.$q.notify({
-            message:'Creado correctamente',
-            icon:'info',
-            color:'positive'
-          })
-        })
-      }
 
 
     },
@@ -443,8 +461,8 @@ export default {
 
     },
     updateval(index){
-      this.empleado=index
-      this.boolcrear=false
+      this.empleado2=index
+      this.modempleado=true
       // this.detalles.splice(index, 1);
       // console.log(index)
       // this.$q.loading.show()
