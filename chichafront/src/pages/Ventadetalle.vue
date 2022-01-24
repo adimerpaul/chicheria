@@ -696,6 +696,7 @@ export default {
         observacion:this.newgarantia.observacion,
         cliente_id:this.model.id,
         tipo:this.newgarantia.tipo,
+        fecha:date.formatDate(new Date(),'YYYY-MM-DD')
       }).then((res)=>{
         // console.log(res.data)
         // return false
@@ -1097,6 +1098,7 @@ export default {
         // console.log('a')
         this.prestamo.cliente_id=this.model.id;
         this.prestamo.inventario_id=this.inventario.id;
+        this.prestamo.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
         this.$axios.post(process.env.API+'/garantia',this.prestamo).then(res=>{
           console.log(res.data)
 
