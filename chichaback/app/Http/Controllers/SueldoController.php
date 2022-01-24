@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Empleado;
 use App\Models\Sueldo;
+use App\Models\Gasto;
 use Illuminate\Http\Request;
 
 class SueldoController extends Controller
@@ -45,6 +46,17 @@ class SueldoController extends Controller
         $sueldo->empleado_id=$request->empleado_id;
         $sueldo->user_id=$request->user()->id;
         $sueldo->save();
+        if($request->tipo=='ADELANTO')
+        {
+            $gasto=new Gasto;
+            $gasto->precio=$request->monto;
+            $gasto->observacion='Adelanto a '.$request->empleado_nombre;
+            $gasto->glosa='ADELANTO';
+            $gasto->fecha=date('Y-m-d');
+            $gasto->hora=date('H:i:s');
+            $gasto->user_id=$request->user()->id;
+            $gasto->save();
+        }
 //        return $sueldo;
         return Empleado::with('sueldos')
             ->where('id',$request->empleado_id)

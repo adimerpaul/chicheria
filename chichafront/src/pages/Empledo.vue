@@ -344,6 +344,7 @@ export default {
     agregarpago(){
       // console.log('a');
       this.pago.empleado_id=this.empleadohistorial.id
+      this.pago.empleado_nombre=this.empleadohistorial.nombre
       // console.log(this.pago)
       // return false
 

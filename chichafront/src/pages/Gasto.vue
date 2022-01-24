@@ -33,7 +33,7 @@
                 <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
             <q-btn icon="send" label="Adelanto" type="button" color="teal" @click="pagos=true"/>
           </div>
-          
+
     </div>
     <div class="col-12">
 <!--      <q-table-->
@@ -685,7 +685,7 @@ export default {
       let mc=this
       if(this.$store.state.login.user.id!=1)
       us.label=this.$store.state.login.user.name;
-      
+
       function header(){
         var img = new Image()
         img.src = 'logo.png'
@@ -933,7 +933,7 @@ export default {
     agregarpago(){
       // console.log('a');
       this.pago.empleado_id=this.pago.empleado.element.id
-      
+      this.pago.empleado_nombre=this.pago.empleado.label;
        //console.log(this.pago)
       // return false
 
