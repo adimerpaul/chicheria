@@ -264,6 +264,7 @@ public function reporteventa(Request $request){
         <tr><td>Efectivo: </td><td>'.$garantia->efectivo.'</td></tr>
         <tr><td>Fisico: </td><td>'.$garantia->fisico.'</td></tr>
         <tr><td>Detalle: </td><td>'.$garantia->inventario->nombre.'</td></tr>
+        <tr><td>Cantidad: </td><td>'.$garantia->cantidad.'</td></tr>
         <tr><td>Fecha: </td><td>'.$garantia->fecha.'</td></tr>
 
         </table>
