@@ -336,6 +336,7 @@ class VentaController extends Controller
         .textcnt{
             text-align:center;
         }
+        
         table{width:100%}
         </style>
         <div class="textcnt"> HOJA DE RUTA</div>

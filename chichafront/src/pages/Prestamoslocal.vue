@@ -369,8 +369,8 @@ export default {
         });
         this.options=this.prestamos
         this.$q.loading.hide();
-        if(this.prestamos.length>0)
-          this.cliente=this.prestamos[0];
+        //if(this.prestamos.length>0)
+         // this.cliente=this.prestamos[0];
       })
     },
     misprestamos(){
