@@ -252,7 +252,7 @@ public function reporteventa(Request $request){
     }
 
     public function impresion($id){
-        $garantia=Prestamo::with('cliente')->where('id',$id)->get()[0];
+        $garantia=Prestamo::with('cliente')->with('inventario')->where('id',$id)->get()[0];
         $cadena='
         <style>
         .textc{text-align:center}
@@ -262,7 +262,8 @@ public function reporteventa(Request $request){
         <tr><td>Nombre:</td><td> '.$garantia->cliente->titular.'</td></tr>
         <tr><td>Telefono:</td><td> '.$garantia->cliente->telefono.'</td></tr>
         <tr><td>Efectivo: </td><td>'.$garantia->efectivo.'</td></tr>
-        <tr><td>Detalle: </td><td>'.$garantia->fisico.'</td></tr>
+        <tr><td>Fisico: </td><td>'.$garantia->fisico.'</td></tr>
+        <tr><td>Detalle: </td><td>'.$garantia->inventario->nombre.'</td></tr>
         <tr><td>Fecha: </td><td>'.$garantia->fecha.'</td></tr>
 
         </table>
