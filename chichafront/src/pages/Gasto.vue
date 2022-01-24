@@ -693,24 +693,18 @@ export default {
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de gastos '+ us.label)
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
-        doc.text(1, 3, 'Num')
-        doc.text(3, 3, 'Precio')
-        doc.text(5, 3, 'Observacion')
-        doc.text(9, 3, 'Glosa')
-        doc.text(12, 3, 'Fecha')
-        doc.text(14.5, 3, 'Hora')
-        doc.text(16.5, 3, 'Usuario')
-        // doc.text(18.5, 3, 'Usuario')
+        doc.text(1.5, 3, 'Usuario')
+        doc.text(4, 3, 'Precio')
+        doc.text(6.5, 3, 'Observacion')
+        doc.text(11, 3, 'Glosa')
+        doc.text(13.5, 3, 'Fecha')
+        doc.text(16, 3, 'Hora')
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
-      // console.log(dat);
       doc.setFont("courier");
       doc.setFontSize(9);
-      // var x=0,y=
       header()
-      // let xx=x
-      // let yy=y
       let y=0
       let cont=1
       let sumgasto=0
@@ -719,20 +713,12 @@ export default {
         console.log(r)
         // xx+=0.5
         y+=0.5
-        // doc.text(1, y+3, r.total.toString())
-        // doc.text(3, y+3, r.acuenta.toString())
-        // doc.text(5, y+3, r.saldo.toString())
-        // doc.text(7, y+3, r.estado.toString())
-        // doc.text(9.5, y+3, r.local.toString())
-        // doc.text(13.5, y+3, r.titular.toString())
-        // doc.text(18.5, y+3, r.user.toString())
-        doc.text(1, y+3, ''+cont)
-        doc.text(3, y+3, r.precio)
-        doc.text(5, y+3, r.observacion)
-        doc.text(9, y+3, r.glosa)
-        doc.text(12, y+3, r.fecha)
-        doc.text(14.5, y+3, r.hora)
-        doc.text(16.5, y+3, r.user)
+        doc.text(1.5, y+3, r.user)
+        doc.text(4, y+3, r.precio)
+        doc.text(6.5, y+3, r.observacion)
+        doc.text(11, y+3, r.glosa)
+        doc.text(13.5, y+3, r.fecha)
+        doc.text(16, y+3, r.hora)
 
         cont++
         if (y+3>25){
