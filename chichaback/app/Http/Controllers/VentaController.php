@@ -177,6 +177,7 @@ class VentaController extends Controller
 //        $venta->update($request->all());
 //        return $request;
         $venta=Venta::find($idventa);
+        $venta->direccion=strtoupper($request->direccion);
         $venta->fechaentrega=$request->fechaentrega;
         $venta->turno=strtoupper($request->turno);
         $venta->hora=strtoupper($request->hora);
@@ -303,6 +304,7 @@ class VentaController extends Controller
             text-align:center;
         }
         table{width:100%;}
+        td{vertical-align:top;}
         </style>
         <div class="textcnt"> CONTROL DESPACHO</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
@@ -338,6 +340,7 @@ class VentaController extends Controller
         }
         
         table{width:100%}
+        td{vertical-align:top;}
         </style>
         <div class="textcnt"> HOJA DE RUTA</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
@@ -352,7 +355,7 @@ class VentaController extends Controller
         <tr><td>Turno: </td><td>'.$venta->turno.' Hora: '.$venta->hora.'</td></tr>
         <tr><td>Nombre: </td><td>'.$venta->cliente->titular.'</td></tr>
         <tr><td>Tel1: </td><td>'.$venta->telefono1. ' Tel2:'.$venta->telefono2.'</td></tr>
-        <tr><td>Direccion: </td><td>'.$venta->cliente->direccion.'</td></tr>
+        <tr><td>Direccion: </td><td>'.$venta->direccion.'</td></tr>
         <tr><td>Envase: </td><td><b>'.$venta->envase.'</b></td></tr>
         </table>
         <hr>

@@ -284,7 +284,7 @@ export default {
   },
   mounted() {
     $('#example').DataTable( {
-      dom: 'Bfrtip',
+      dom: 'Blfrtip',
       buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print'
       ]

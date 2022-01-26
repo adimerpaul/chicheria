@@ -495,6 +495,7 @@ export default {
         ventas+=r.monto;
         doc.text(5, y+3, 'Pagos')
         doc.text(7, y+3, r.cantidad!=null?r.cantidad.toString():'')
+        doc.text(8, y+3, 'N-'+r.id)
         doc.text(9.5, y+3, r.nombreproducto!=null?r.nombreproducto.toString():'')
         doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
         doc.text(18.5, y+3, r.local!=null?r.local.toString():'')
@@ -619,12 +620,13 @@ export default {
         doc.text(5, 1, 'Historial de ventas LOCAL '+ us.label)
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         doc.text(1, 3, 'Usuario')
-        doc.text(3.5, 3, 'Total')
-        doc.text(5.5, 3, 'A cuenta')
-        doc.text(7.5, 3, 'Saldo')
-        doc.text(9.5, 3, 'Estado')
-        doc.text(12, 3, 'Local')
-        doc.text(15, 3, 'Titular')
+        doc.text(2.5, 3, 'Fecha hora')
+        doc.text(6, 3, 'Total')
+        doc.text(7, 3, 'A cuenta')
+        doc.text(9, 3, 'Saldo')
+        doc.text(10.5, 3, 'Estado')
+        doc.text(13, 3, 'Local')
+        doc.text(16, 3, 'Titular')
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
@@ -648,12 +650,14 @@ export default {
         // xx+=0.5
         y+=0.5
         doc.text(1, y+3, r.user!=null?r.user.toString():'')
-        doc.text(3.5, y+3, r.total!=null?r.total.toString():'')
-        doc.text(5.5, y+3, r.acuenta!=null?r.acuenta.toString():'')
-        doc.text(7.5, y+3, r.saldo!=null?r.saldo.toString():'')
-        doc.text(9.5, y+3, r.estado!=null?r.estado.toString():'')
-        doc.text(12, y+3, r.local!=null?r.local.toString():'')
-        doc.text(15, y+3, r.titular!=null?r.titular.substring(0,25):'')
+        doc.text(2.5, y+3, r.fecha+' '+(r.created.toString()).substring(11,16))
+        doc.text(6, y+3, r.total!=null?r.total.toString():'')
+        doc.text(7, y+3, r.acuenta!=null?r.acuenta.toString():'')
+        doc.text(9, y+3, r.saldo!=null?r.saldo.toString():'')
+        doc.text(10.5, y+3, r.estado!=null?r.estado.toString():'')
+        doc.text(13, y+3, r.local!=null?r.local.toString():'')
+        doc.text(16, y+3, r.titular!=null?r.titular.substring(0,25):'')
+
         if (y+3>25){
           doc.addPage();
           header()

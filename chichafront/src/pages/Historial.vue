@@ -289,7 +289,7 @@ export default {
   },
   mounted() {
     $('#example').DataTable( {
-      dom: 'Bfrtip',
+      dom: 'Blfrtip',
       buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print'
       ]
@@ -375,7 +375,7 @@ export default {
 
           this.$nextTick(()=>{
             $('#example').DataTable( {
-              dom: 'Bfrtip',
+              dom: 'Blfrtip',
               buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
               ]

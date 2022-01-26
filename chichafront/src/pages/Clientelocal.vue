@@ -118,7 +118,7 @@
 
         <div class="q-pa-md">
                       <div class=" responsive">
-                <table id="example" style="width:100%">
+                <table id="example" class="display" style="width:100%">
                   <thead>
                   <tr>
                     <!--                      <th>Nro</th>-->
@@ -340,19 +340,9 @@
     </div>
 </template>
 <script>
-var $  = require( 'jquery' );
-require( 'datatables.net-buttons/js/buttons.html5.js' )();
-require( 'datatables.net-buttons/js/buttons.print.js' )();
-require('datatables.net-buttons/js/dataTables.buttons');
-require('datatables.net-dt/css/jquery.dataTables.min.css');
-import print from 'datatables.net-buttons/js/buttons.print';
-import jszip from 'jszip/dist/jszip';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs=pdfFonts.pdfMake.vfs;
-window.JSZip=jszip;
-
 import { date } from 'quasar'
+import $ from "jquery";
+
 export default {
   data(){
     return{
@@ -400,14 +390,9 @@ export default {
      /// this.filtrarlista();
   },
   mounted() {
+        $('#example').DataTable(  );
       this.filtrarlista();
       console.log(this.days)
-        $('#example').DataTable( {
-      dom: 'Bfrtip',
-      buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
-      ]
-    } );
   },
   methods: {
     listado(valor){
@@ -470,16 +455,18 @@ export default {
         this.rows.push(this.clientes);}
         });
         this.$q.loading.hide();
-      })
-              $('#example').DataTable().destroy();
+                      $('#example').DataTable().destroy();
         this.$nextTick(()=>{
           $('#example').DataTable( {
-            dom: 'Bfrtip',
+            dom: 'Blfrtip',
             buttons: [
               'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+            ],
+             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]] 
           } );
         })
+      })
+
       });
 
     },
