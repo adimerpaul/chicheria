@@ -41,14 +41,46 @@
 
 
         <div class="q-pa-md">
-          <q-table
+         <!-- <q-table
             title="Reporte Ventas"
             :rows="ventas"
             :columns="columns"
             row-key="local">
 
-
           </q-table>
+-->
+          <div class=" responsive">
+                <table id="example" style="width:100%">
+                  <thead>
+                  <tr>
+                    <th>Local</th>
+                    <th>Titular</th>
+                    <th>Total</th>
+                    <th>A cuenta</th>
+                    <th>Saldo</th>
+                    <th>Tipo cliente</th>
+                    <th>Estado</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr v-for="v in ventas" :key="v.id">
+                    <td>{{v.local}}</td>
+                    <td>{{v.titular}}</td>
+                    <td>{{v.total}}</td>
+                    <td>{{v.acuenta}}</td>
+                    <td>{{v.saldo}}</td>
+                    <td>
+                      <q-badge color="accent" v-if="v.tipocliente==1">LOCAL</q-badge>
+                      <q-badge color="teal" v-else>CLIENTE</q-badge>
+                    </td>
+                    <td>
+                      <q-badge :color="v.estado=='CANCELADO'?'positive':'negative'">{{ v.estado }}</q-badge>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+    
 
                 <q-dialog v-model="alert">
                 <q-card>
@@ -147,6 +179,8 @@
 <script>
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
+import $ from "jquery";
+
 export default {
   data(){
     return{
@@ -203,6 +237,14 @@ export default {
 ],
 
     }
+  },
+  mounted() {
+        $('#example').DataTable( {
+      dom: 'Blfrtip',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ]
+    } );
   },
   created() {
       this.listado();
@@ -264,6 +306,8 @@ export default {
             this.ventas=[];
             this.$q.loading.show()
             // console.log(this.usuario)
+            $('#example').DataTable().destroy();
+
             this.$axios.post(process.env.API+'/listadoventa',{ini:this.fecha,fin:this.fecha2,id:this.usuario.id}).then(res=>{
                 console.log(res.data);
               this.$q.loading.hide()
@@ -279,6 +323,15 @@ export default {
                         name:el.user.name
                     })
                 });
+          $('#example').DataTable().destroy();
+          this.$nextTick(()=>{
+          $('#example').DataTable( {
+            dom: 'Blfrtip',
+            buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+          } );
+        })
 
             })
     },

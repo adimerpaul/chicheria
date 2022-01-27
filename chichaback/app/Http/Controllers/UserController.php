@@ -33,7 +33,7 @@ class UserController extends Controller
             ->with('permisos')
             ->firstOrFail();
         $token=$user->createToken('auth_token')->plainTextToken;
-        return response()->json(['token'=>$token,'user'=>$user],200);;
+        return response()->json(['token'=>$token,'user'=>$user],200);
     }
     public function store(Request $request){
 //        return ;

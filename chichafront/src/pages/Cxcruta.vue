@@ -202,20 +202,10 @@
 </template>
 
 <script>
-var $  = require( 'jquery' );
-require( 'datatables.net-buttons/js/buttons.html5.js' )();
-require( 'datatables.net-buttons/js/buttons.print.js' )();
-require('datatables.net-buttons/js/dataTables.buttons');
-require('datatables.net-dt/css/jquery.dataTables.min.css');
-import print from 'datatables.net-buttons/js/buttons.print';
-import jszip from 'jszip/dist/jszip';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs=pdfFonts.pdfMake.vfs;
-window.JSZip=jszip;
 
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
+import $ from "jquery";
 
 export default {
   name: "Venta",
@@ -350,7 +340,7 @@ export default {
         // console.log(this.ventas)
         this.$nextTick(()=>{
           $('#example').DataTable( {
-            dom: 'Bfrtip',
+            dom: 'Blfrtip',
             buttons: [
               'copy', 'csv', 'excel', 'pdf', 'print'
             ]

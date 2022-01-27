@@ -334,8 +334,9 @@
 <!--        <div class="q-pb-sm">-->
 <!--          Model: {{ days }}-->
 <!--        </div>-->
-
-        <q-date v-model="days" multiple />
+        <ul>
+          <li v-for="(d,index) in days" :key="index">{{d.cumple}} {{d.local}} {{d.titular}}</li>
+        </ul>
       </div>
     </div>
 </template>
@@ -407,7 +408,7 @@ export default {
           console.log(el.tipocliente);
           if(valor == el.tipocliente){
           const fecha = date.extractDate(el.fechanac, 'YYYY-MM-DD')
-        this.days.push(date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'))
+        this.days.push({cumple:date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'),titular:el.titular,local:el.local})
         this.clientes={};
         this.clientes.id=el.id;
         this.clientes.local=el.local;
@@ -435,7 +436,7 @@ export default {
             if(valor==el.tipocliente){
             const fecha = date.extractDate(el.fechanac, 'YYYY-MM-DD')
 
-          this.days.push(date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'))
+          this.days.push({cumple:date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'),titular:el.titular,local:el.local})
           this.clientes={};
           this.clientes.id=el.id;
         this.clientes.local=el.local;
