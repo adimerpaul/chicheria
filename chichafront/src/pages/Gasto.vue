@@ -897,7 +897,7 @@ export default {
               }
               }
           })
-
+console.log(this.ventas)
           this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
             console.log(res.data)
           this.anulados=res.data;
