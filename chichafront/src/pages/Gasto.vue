@@ -861,10 +861,12 @@ export default {
               })}
               else{
               if(this.user.id==r.user_id){this.ventas.push({
+                fecha:r.fecha,
                 total:r.total,
                 tipo:r.tipo,
                 acuenta:r.acuenta,
                 saldo:r.saldo,
+                producto:r.detalle.nombreproducto,
                 estado:r.estado,
                 local:r.cliente.local,
                 titular:r.cliente.titular,
@@ -873,17 +875,19 @@ export default {
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
                 tipo:r.tipo,
-                created:created_at
+                created:r.created_at
               })}
               }
               }
               else{
                 if(this.$store.state.login.user.id==r.user_id)
               this.ventas.push({
+                fecha:r.fecha,
                 total:r.total,
                 tipo:r.tipo,
                 acuenta:r.acuenta,
                 saldo:r.saldo,
+                producto:r.detalle.nombreproducto,
                 estado:r.estado,
                 local:r.cliente.local,
                 titular:r.cliente.titular,
