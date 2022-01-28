@@ -653,7 +653,7 @@ export default {
         // xx+=0.5
         y+=0.5
         doc.text(1, y+3, r.user!=null?r.user.toString():'')
-        doc.text(2.5, y+3, r.fecha+' '+(r.created.toString()).substring(11,16))
+        doc.text(2.5, y+3, r.fecha+' '+(r.created.toString()).substring(11,19))
         doc.text(6, y+3, r.producto)
         doc.text(8.5, y+3, r.total!=null?r.total.toString():'')
         doc.text(10, y+3, r.acuenta!=null?r.acuenta.toString():'')
