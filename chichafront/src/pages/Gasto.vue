@@ -567,6 +567,7 @@ export default {
       let total=0
       let caja=0
       this.ventas.forEach(r=>{
+        console.log(r)
         if(r.tipo=='DETALLE'){
         tsaldo=tsaldo+r.saldo;
         tacuenta=tacuenta+r.acuenta;
@@ -831,9 +832,10 @@ export default {
           } );
         })
 
-        this.$q.loading.hide()
 
         this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+          this.$q.loading.hide()
+
           // this.ventas=res.data
            console.log(res.data)
            console.log(this.user.id)
@@ -845,7 +847,7 @@ export default {
               if(this.user.id==0){this.ventas.push({
                 fecha:r.fecha,
                 total:r.total,
-                tipo:r.tipo,
+                // tipo:r.tipo,
                 acuenta:r.acuenta,
                 saldo:r.saldo,
                 producto:r.detalle.nombreproducto,
@@ -874,7 +876,7 @@ export default {
                 detalle:r.detalle.nombreproducto,
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
-                tipo:r.tipo,
+                // tipo:r.tipo,
                 created:r.created_at
               })}
               }
@@ -895,7 +897,7 @@ export default {
                 detalle:r.detalle.nombreproducto,
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
-                tipo:r.tipo,
+                // tipo:r.tipo,
                 created:r.created_at
               })
               }
