@@ -146,7 +146,12 @@
                       :options="['LOCAL','DETALLE']"
                       label="TIPO"
                     />
-
+            <q-input
+              outlined
+              type="number"
+              v-model="dato.orden"
+              label="N° Orden"
+            />
             <div>
               <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
                 <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
@@ -307,6 +312,7 @@ export default {
   { name: 'observacion', align: 'center', label: 'OBSERVACIÓN', field: 'observacion', sortable: true },
   { name: 'tipo', align: 'center', label: 'TIPO', field: 'tipo', sortable: true },
   { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
+  { name: 'orden', align: 'center', label: 'ORDEN', field: 'orden' },
   { name: 'opcion', label: 'OPCIONES', field: 'action' }
 ],
   rows:[],

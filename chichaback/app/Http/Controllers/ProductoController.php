@@ -16,13 +16,13 @@ class ProductoController extends Controller
     public function index()
     {
         //
-        return Producto::orderBy('nombre', 'ASC')->get();
+        return Producto::orderBy('orden','ASC')->orderBy('nombre', 'ASC')->get();
     }
 
     public function listaproducto()
     {
         //
-        return Producto::where('estado','ACTIVO')->get();
+        return Producto::where('estado','ACTIVO')->orderBy('orden','ASC')->get();
     }
 
     /**
@@ -82,6 +82,12 @@ class ProductoController extends Controller
         //
         $producto->update($request->all());
         return $producto;
+    }
+
+    public function uporden(Request $request){
+        $producto = Producto::find($request->id);
+        $producto->orden=$request->orden;
+        $producto->save();
     }
 
     public function activarprod(Request $request)
