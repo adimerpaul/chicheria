@@ -1,4 +1,4 @@
-import Login from '../pages/Login';
+import Login from 'pages/Login';
 import Cliente from "pages/Cliente";
 import Clientelocal from "pages/Clientelocal";
 import Producto from "pages/Producto";
