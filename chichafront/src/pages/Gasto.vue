@@ -359,11 +359,10 @@ export default {
         doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         // doc.text(1, 3, 'Total')
         doc.text(1, 3, 'Ruta/tip')
-        doc.text(3, 3, 'Monto')
-        // doc.text(5, 3, 'Saldo')
-        doc.text(5, 3, 'Tipo')
-        doc.text(6.5, 3, 'Cant')
-        doc.text(7.5, 3, 'Estado')
+        doc.text(3, 3, 'Tipo')
+        doc.text(4.5, 3, 'Estado')
+        doc.text(6.5, 3, 'Monto')
+        doc.text(8, 3, 'Cant')
         doc.text(10, 3, 'Producto')
         doc.text(13.5, 3, 'Titular')
         doc.text(18.5, 3, 'Local')
@@ -385,11 +384,11 @@ export default {
        doc.setFontSize(6);
         doc.text(1, y+3, r.fechaentrega!=null&&r.fechaentrega!=''?'Ruta '+r.tipo:''+r.tipo)
         doc.setFontSize(9);
-        doc.text(3, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
+        doc.text(3, y+3, 'Cobro')
+        doc.text(4.5, y+3, r.estado+'')
+        doc.text(6.5, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventas+=parseFloat(r.acuenta!=null?r.acuenta:0)
-        doc.text(5, y+3, 'Cobro')
-        doc.text(6.5, y+3, r.cantidad!=null?r.cantidad.toString():'')
-        doc.text(7.5, y+3, r.estado+'')
+        doc.text(8, y+3, r.cantidad!=null?r.cantidad.toString():'')
         doc.text(10, y+3, r.detalle!=null?r.detalle.toString():'')
         doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
         doc.text(18.5, y+3, r.local!=null?r.local.toString():'')
@@ -410,10 +409,10 @@ export default {
       this.gastos.forEach(r=>{
         y+=0.5
         // console.log(r)
-        doc.text(3, y+3, r.precio!=null?r.precio.toString():''+'Bs.')
+        doc.text(3, y+3, 'Gasto')
+        doc.text(6.5, y+3, r.precio!=null?r.precio.toString():''+'Bs.')
         gastos+=parseFloat(r.precio!=null?r.precio:0)
-        doc.text(5, y+3, 'Gasto')
-        doc.text(9.5, y+3, r.glosa+': '+r.observacion)
+        doc.text(8, y+3, r.glosa+': '+r.observacion)
         // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
         // doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
         //doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
@@ -434,10 +433,10 @@ export default {
         ventas=ventas+this.totalanulado;
               this.anulados.forEach(element => {
               y+=0.5
-        doc.text(3, y+3, element.efectivo+'')
-        doc.text(5, y+3, 'Prestamo')
-        doc.text(7, y+3, element.cantidad+'')
-        doc.text(9.5, y+3, element.inventario.nombre)
+        doc.text(3, y+3, 'Prestamo')
+        doc.text(6.5, y+3, element.efectivo+'')
+        doc.text(8, y+3, element.cantidad+'')
+        doc.text(10, y+3, element.inventario.nombre)
         doc.text(13.5, y+3, element.cliente.titular)
         doc.text(18.5, y+3, element.cliente.local)
               });
@@ -459,11 +458,11 @@ export default {
        doc.setFontSize(6);
         doc.text(1, y+3, '')
        doc.setFontSize(9);
-        doc.text(3, y+3, r.efectivo+' Bs.')
+        doc.text(6.5, y+3, r.efectivo+' Bs.')
         ventas+=parseFloat(r.efectivo)
-        doc.text(5, y+3, 'Material')
-        doc.text(7, y+3, r.cantidad+'')
-        doc.text(9.5, y+3, r.inventario.nombre)
+        doc.text(3, y+3, 'Material')
+        doc.text(8, y+3, r.cantidad+'')
+        doc.text(10, y+3, r.inventario.nombre)
         doc.text(13.5, y+3, r.cliente.titular)
         doc.text(18.5, y+3, r.cliente.local)
         if (y+3>25){
@@ -491,12 +490,11 @@ export default {
         doc.setFontSize(6);
         doc.text(1, y+3, r.fechaentrega!=null?'Ruta '+r.tipo:''+r.tipo)
         doc.setFontSize(9);
-        doc.text(3, y+3, r.monto!=null?r.monto.toString():''+' Bs.')
+        doc.text(3, y+3, 'Pagos')
+        doc.text(6.5, y+3, r.monto!=null?r.monto.toString():''+' Bs.')
         ventas+=r.monto;
-        doc.text(5, y+3, 'Pagos')
-        doc.text(7, y+3, r.cantidad!=null?r.cantidad.toString():'')
         doc.text(8, y+3, 'N-'+r.id)
-        doc.text(9.5, y+3, r.nombreproducto!=null?r.nombreproducto.toString():'')
+        doc.text(10, y+3, r.nombreproducto!=null?r.nombreproducto.toString():'')
         doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
         doc.text(18.5, y+3, r.local!=null?r.local.toString():'')
         if (y+3>25){
@@ -574,14 +572,14 @@ export default {
         total=total+r.total;
         // xx+=0.5
         y+=0.5
-        doc.text(1, y+3, r.user!=null?r.user.toString():'')
+        doc.text(1, y+3, r.user!=null?r.user.substring(0,8 ):'')
         doc.text(3, y+3, r.fecha+'')
         doc.text(5.5, y+3, r.total!=null?r.total.toString():'')
         doc.text(6.7, y+3, r.acuenta!=null?r.acuenta.toString():'')
         doc.text(8.2, y+3, r.saldo!=null?r.saldo.toString():'')
-        doc.text(9.5, y+3, r.producto+'')
+        doc.text(9.5, y+3, r.producto.substring(0,12)+'')
         doc.text(12, y+3, r.estado!=null?r.estado.toString():'')
-        doc.text(14, y+3, (r.created.toString()).substring(11,19))
+        doc.text(14, y+3, r.hora)
         doc.text(16.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
         if (y+3>25){
           doc.addPage();
@@ -653,9 +651,9 @@ export default {
         total=total+r.total;
         // xx+=0.5
         y+=0.5
-        doc.text(1, y+3, r.user!=null?r.user.toString():'')
-        doc.text(2.5, y+3, r.fecha+' '+(r.created.toString()).substring(11,19))
-        doc.text(6, y+3, r.producto)
+        doc.text(1, y+3, r.user!=null?r.user.substring(0,8):'')
+        doc.text(2.5, y+3, r.fecha+' '+r.hora)
+        doc.text(6, y+3, r.producto.substring(0,12 ))
         doc.text(8.5, y+3, r.total!=null?r.total.toString():'')
         doc.text(10, y+3, r.acuenta!=null?r.acuenta.toString():'')
         doc.text(11.5, y+3, r.saldo!=null?r.saldo.toString():'')
@@ -762,7 +760,7 @@ export default {
         res.data.forEach(r=>{
           this.gastos.push({
             id:r.id,
-            observacion:r.observacion.substring(0, 20) ,
+            observacion:r.observacion,
             glosa:r.glosa,
             precio:r.precio,
             fecha:r.fecha,
@@ -859,7 +857,7 @@ export default {
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
                 tipo:r.tipo,
-                created:r.created_at
+                hora:r.hora
               })}
               else{
               if(this.user.id==r.user_id){this.ventas.push({
@@ -877,7 +875,7 @@ export default {
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
                 // tipo:r.tipo,
-                created:r.created_at
+                hora:r.hora
               })}
               }
               }
@@ -898,7 +896,7 @@ export default {
                 cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
                 // tipo:r.tipo,
-                created:r.created_at
+                hora:r.hora
               })
               }
               }

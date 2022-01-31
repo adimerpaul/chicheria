@@ -74,6 +74,7 @@ class VentaController extends Controller
 //        return $request->user();
         $venta= new Venta();
         $venta->fecha=$request->fecha;
+        $venta->hora=date("H:i:s");
         $venta->total=$request->total;
         $venta->tipo=$request->tipo;
         $venta->acuenta=$request->acuenta;
@@ -106,6 +107,7 @@ class VentaController extends Controller
     {
         $venta= new Venta();
         $venta->fecha=$request->fecha;
+        $venta->hora=date("H:i:s");
         $venta->total=$request->total;
         $venta->acuenta=$request->acuenta;
         $venta->saldo=$request->saldo;
@@ -338,7 +340,7 @@ class VentaController extends Controller
         .textcnt{
             text-align:center;
         }
-        
+
         table{width:100%}
         td{vertical-align:top;}
         </style>
