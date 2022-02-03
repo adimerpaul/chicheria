@@ -288,17 +288,20 @@ export default {
   methods:{
     imprimirboleta(boleta){
       let total=0;
-      total = boleta.salario - boleta.adelanto - boleta.descuento;
+      if(boleta.adelanto==null) boleta.adelanto=0;
+      if(boleta.descuento==null) boleta.descuento=0;
+      if(boleta.extra==null) boleta.extra=0;
+      total = boleta.salario - boleta.adelanto - boleta.descuento + boleta.extra;
       let cadena="<div><img class='fondo' src='logo.png' style='height:20px'> Chicheria Doña Naty <span>"+date.formatDate( Date.now(),'YYYY-MM-DD')+"</span></div><br>";
       cadena+="<div style='text-align:center'>BOLETA DE PAGO "+date.formatDate( this.fecha1,'YYYY-MM')+"</div><hr>";
-      cadena+="<div>Nombre: "+boleta.nombre+"</div><div>Salario Basico: "+boleta.salario+"</div>"
-      cadena+="<div>CI: "+boleta.ci+"</div><div>Celular: "+boleta.celular+"</div><hr>"
+      cadena+="<div>Nombre: "+boleta.nombre+"</div><div>Salario Basico: "+boleta.salario+"</div>";
+      cadena+="<div>CI: "+boleta.ci+"</div><div>Celular: "+boleta.celular+"</div><hr>";
 
-      cadena+="<div style='text-aling:center'><table style='width:100%'><tr><th>INGRESOS</th><th>DESCUENTOS</th></tr>";
-      cadena+="<tr><td>Salario Basico:"+boleta.salario+"</td><td>Descuentos: "+boleta.descuento+"</td></tr>";
+      cadena+="<table style='width:100%'><thead><tr><th>INGRESOS</th><th>DESCUENTOS</th></tr></thead>";
+      cadena+="<tbody><tr><td>Salario Basico:"+boleta.salario+"</td><td>Descuentos: "+boleta.descuento+"</td></tr>";
       cadena+="<tr><td>Extra:"+boleta.extra+"</td><td>Adelanto: "+boleta.adelanto+"</td></tr>";
-      cadena+"</table></div><hr>"
-      cadena+="<div style='text-align:right'>Total: "+total+"</div>";
+      cadena+="</tbody></table><hr>";
+      cadena+="<div style='text-align:right'>Liquido Pagable: "+total+"</div>";
 
       cadena+="<br><br><div style='text-align:center; with:100%'>FIRMA</div>";
             let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
@@ -341,19 +344,21 @@ export default {
         // let xx=x
         // let yy=y
         let y=0
+        let sumatoria=0
         this.salarios.forEach(r=>{
           // xx+=0.5
           let extra=r.extra==null?0:r.extra;
           let adelanto=r.adelanto==null?0:r.adelanto;
           let descuento=r.descuento==null?0:r.descuento;
-          let total= r.salario - adelanto - descuento;
+          let total= r.salario - adelanto - descuento + extra;
           y+=0.5
           doc.text(1, y+3, ''+r.nombre)
           doc.text(5, y+3, ''+r.salario)
-          doc.text(7, y+3, r.extra==null?'':''+r.extra)
-          doc.text(9, y+3, r.adelanto==null?'':''+r.adelanto)
-          doc.text(11, y+3, r.descuento==null?'':''+r.descuento)
+          doc.text(7, y+3, ''+extra)
+          doc.text(9, y+3, ''+adelanto)
+          doc.text(11, y+3, ''+descuento)
           doc.text(14, y+3, ''+total)
+          sumatoria+=total;
           // doc.text(13.5, y+3, r.estado.toString())
           // doc.text(18.5, y+3, r.name.toString())
           if (y+3>25){
@@ -362,6 +367,10 @@ export default {
             y=0
           }
         })
+        y+=0.5
+          doc.text(11, y+3, 'TOTAL')
+          doc.text(14, y+3, ''+sumatoria)
+
         // doc.text(2, y+4, 'Ventas totales: ')
         // doc.text(5, y+4, this.ventat+'Bs')
         // doc.text(7, y+4, 'Por cobrar totales: ')
@@ -386,7 +395,7 @@ export default {
           } );
         })
         this.$q.loading.hide()
-        
+
       }).catch(err=>{
         this.$q.loading.hide()
         this.$q.notify({
@@ -560,6 +569,7 @@ export default {
       totaldescuento(){
         let total=0;
       this.empleadohistorial.sueldos.forEach(element => {
+        if(date.formatDate( element.fecha,'YYYY-MM') == date.formatDate( Date.now(),'YYYY-MM'))
         if(element.tipo=='ADELANTO' || element.tipo=='DESCUENTO')
           total+=parseFloat(element.monto)
       });
