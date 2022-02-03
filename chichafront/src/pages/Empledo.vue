@@ -255,7 +255,18 @@ export default {
     imprimirboleta(boleta){
       let total=0;
       total = boleta.salario - boleta.adelanto - boleta.descuento;
-      let cadena='<div>nombre: '+boleta.nombre+'</div><div>Salario: '+boleta.salario+'</div><div>adelanto: '+boleta.adelanto+'</div><div>descuento: '+boleta.descuento+'</div> <div>Total: '+total+'</div><br><br><div style="text-align:center">FIRMA</div>';
+      let cadena="<div><img class='fondo' src='logo.png' style='height:20px'> Chicheria Doña Naty <span>"+date.formatDate( Date.now(),'YYYY-MM-DD')+"</span></div><br>";
+      cadena+="<div style='text-align:center'>BOLETA DE PAGO "+date.formatDate( this.fecha1,'YYYY-MM')+"</div><hr>";
+      cadena+="<div>Nombre: "+boleta.nombre+"</div><div>Salario Basico: "+boleta.salario+"</div>"
+      cadena+="<div>CI: "+boleta.ci+"</div><div>Celular: "+boleta.celular+"</div><hr>"
+
+      cadena+="<div><table style='width:100%'><tr><th>INGRESOS</th><th>DESCUENTOS</th></tr>";
+      cadena+="<tr><td>Salario Basico:"+boleta.salario+"</td><td>Descuentos: "+boleta.descuento+"</td></tr>";
+      cadena+="<tr><td>Extra:"+boleta.extra+"</td><td>Adelanto: "+boleta.adelanto+"</td></tr>";
+      cadena+"</table></div><hr>"
+      cadena+="<div style='text-align:right'>Total: "+total+"</div>";
+
+      cadena+="<br><br><div style='text-align:center'>FIRMA</div>";
             let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
             myWindow.document.write(cadena);
             myWindow.document.close();
