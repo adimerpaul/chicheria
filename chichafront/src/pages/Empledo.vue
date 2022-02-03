@@ -294,13 +294,13 @@ export default {
       cadena+="<div>Nombre: "+boleta.nombre+"</div><div>Salario Basico: "+boleta.salario+"</div>"
       cadena+="<div>CI: "+boleta.ci+"</div><div>Celular: "+boleta.celular+"</div><hr>"
 
-      cadena+="<div><table style='width:100%'><tr><th>INGRESOS</th><th>DESCUENTOS</th></tr>";
+      cadena+="<div style='text-aling:center'><table style='width:100%'><tr><th>INGRESOS</th><th>DESCUENTOS</th></tr>";
       cadena+="<tr><td>Salario Basico:"+boleta.salario+"</td><td>Descuentos: "+boleta.descuento+"</td></tr>";
       cadena+="<tr><td>Extra:"+boleta.extra+"</td><td>Adelanto: "+boleta.adelanto+"</td></tr>";
       cadena+"</table></div><hr>"
       cadena+="<div style='text-align:right'>Total: "+total+"</div>";
 
-      cadena+="<br><br><div style='text-align:center'>FIRMA</div>";
+      cadena+="<br><br><div style='text-align:center; with:100%'>FIRMA</div>";
             let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
             myWindow.document.write(cadena);
             myWindow.document.close();
