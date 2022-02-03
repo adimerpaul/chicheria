@@ -342,7 +342,17 @@ export default {
       })
     },
     agregarpago(){
-      // console.log('a');
+      console.log(this.empleadohistorial)
+      if((parseFloat(this.empleadohistorial.salario)- this.totaldescuento) < parseFloat( this.pago.monto) && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='DESCUENTO'))
+      {
+          this.$q.notify({
+            message:'El monto excede al salario ',
+            icon:'info',
+            color:'red'
+          })
+        return false;
+      }
+      //console.log(this.empleadohistorial);
       this.pago.empleado_id=this.empleadohistorial.id
       this.pago.empleado_nombre=this.empleadohistorial.nombre
       // console.log(this.pago)
@@ -491,7 +501,15 @@ export default {
       })
     }
   },
-  // computed:{
+  computed:{
+      totaldescuento(){
+        let total=0;
+      this.empleadohistorial.sueldos.forEach(element => {
+        if(element.tipo=='ADELANTO' || element.tipo=='DESCUENTO')
+          total+=parseFloat(element.monto)
+      });
+      return total;
+      }
   //   subtotal(){
   //     if (this.producto.precio!=undefined && this.producto.precio!=NaN){
   //       return parseFloat(this.producto.precio)* parseFloat(this.cantidad)
@@ -516,7 +534,7 @@ export default {
   //   saldo(){
   //     return this.total-this.acuenta
   //   }
-  // }
+   }
 }
 </script>
 
