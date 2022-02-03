@@ -68,12 +68,39 @@
           <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="missalarios" />
         </div>
         <div class="col-12">
-          <q-table
+            <div class=" responsive">
+                <table id="example" style="width:100%">
+                <thead>
+                <tr>
+                <th>EMPLEADO</th>
+                <th>SUELDO</th>
+                <th>ADELANTO</th>
+                <th>DESCUENTO</th>
+                <th>EXTRA</th>
+                <th>OPCION</th>
+                </tr>
+                </thead>
+                  <tbody>
+                  <tr v-for="v in salarios" :key="v.id">
+                  <td>{{v.nombre}}</td>
+                  <td>{{v.salario}}</td>
+                  <td>{{v.adelanto}}</td>
+                  <td>{{v.descuento}}</td>
+                  <td>{{v.extra}}</td>
+                  <td>
+                              <template v-if="$store.state.login.reimpresion" >
+              <q-btn icon="print" color="yellow" @click="imprimirboleta(v)"/>
+            </template></td>
+                  </tr>
+                  </tbody>
+                </table>
+            </div>
+  <!--         <q-table
             :columns="columns3"
             :rows="salarios"
             title="Historial de pagos"
 
-          >
+          >-->
 <!--            :filter="filter"-->
 
             <!--        <template v-slot:top-right>-->
@@ -108,7 +135,7 @@
 <!--                </q-td>-->
 <!--              </q-tr>-->
 <!--            </template>-->
-      <template v-slot:body-cell-opcion="props">
+   <!--   <template v-slot:body-cell-opcion="props">
         <q-td :props="props">
           <div>
             <template v-if="$store.state.login.reimpresion" >
@@ -117,7 +144,7 @@
           </div>
         </q-td>
       </template>
-          </q-table>
+          </q-table>-->
         </div>
         <div class="col-12">
           <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
@@ -185,6 +212,7 @@
 </template>
 
 <script>
+import $ from "jquery";
 import {date} from 'quasar'
 import {jsPDF} from "jspdf";
 export default {
@@ -229,6 +257,12 @@ export default {
     }
   },
   mounted() {
+        $('#example').DataTable( {
+      dom: 'Blfrtip',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ]
+    } );
     this.missalarios()
     this.misempleados()
     // console.log(this.$store.state.login)
@@ -342,7 +376,17 @@ export default {
       this.$axios.post(process.env.API+'/missueldos',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
         console.log(res.data)
         this.salarios=res.data
+        $('#example').DataTable().destroy();
+        this.$nextTick(()=>{
+          $('#example').DataTable( {
+            dom: 'Bfrtip',
+            buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+          } );
+        })
         this.$q.loading.hide()
+        
       }).catch(err=>{
         this.$q.loading.hide()
         this.$q.notify({
