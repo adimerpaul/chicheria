@@ -15,7 +15,7 @@ class EmpleadoController extends Controller
      */
     public function index()
     {
-        return Empleado::all();
+        return Empleado::with('sueldos')->get();
     }
 
     /**

@@ -211,7 +211,7 @@
       <q-dialog v-model="pagos" full-width>
         <q-card>
           <q-card-section>
-            <div class="text-h6">Historial de {{empleadohistorial.nombre}}</div>
+            <div class="text-h6">Historial de {{pago.empleado.element.nombre}}</div>
           </q-card-section>
           <q-card-section class="q-pt-none">
             <q-form @submit.prevent="agregarpago">
@@ -219,13 +219,16 @@
                 <div class="col-4">
                   <q-select outlined label="Empleado" v-model="pago.empleado" :options="empleados"/>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                   <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                   <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','PAGO']"/>
                 </div>
-                <div class="col-4 flex flex-center">
+                <div class="col-3">
+                  <q-input outlined label="Observacion" type="text" v-model="pago.observacion" />
+                </div>
+                <div class="col-3 flex flex-center">
                   <q-btn label="Agregar" type="submit" icon="send" color="info"/>
                 </div>
               </div>
@@ -234,7 +237,7 @@
             title="Hitorial de pagos"
             :rows-per-page-options="[50,100,0]"
             :columns="columns2"
-            :rows="empleadohistorial.sueldos"
+            :rows="pago.empleado.element.sueldos"
             ></q-table>
           </q-card-section>
           <q-card-actions align="right" class="bg-white text-teal">
@@ -930,6 +933,15 @@ console.log(this.ventas)
       })
     },
     agregarpago(){
+            if((parseFloat(this.pago.empleado.element.salario)- this.totaldescuento) < parseFloat( this.pago.monto) && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='DESCUENTO'))
+      {
+          this.$q.notify({
+            message:'El monto excede al salario ',
+            icon:'info',
+            color:'red'
+          })
+        return false;
+      }
       // console.log('a');
       this.pago.empleado_id=this.pago.empleado.element.id
       this.pago.empleado_nombre=this.pago.empleado.label;
@@ -938,7 +950,11 @@ console.log(this.ventas)
 
       this.$axios.post(process.env.API+'/sueldo',this.pago).then(res=>{
         this.empleadohistorial=res.data
-        this.pago={}
+        this.misempleados
+        this.pagos=false
+        this.pago.monto=0
+        this.pago.tipo=''
+        this.pago.observacion=''
       })
     },
     misempleados(){
@@ -952,6 +968,7 @@ console.log(this.ventas)
           this.empleados.push({element,label:element.nombre})
         });
         console.log (this.empleados)
+        this.pago.empleado=this.empleados[0]
         // res.data.forEach(r=>{
         //   this.ventas.push({
         //     total:r.total,
@@ -1095,6 +1112,16 @@ console.log(this.ventas)
     }
   },
   computed:{
+          totaldescuento(){
+        let total=0;
+      this.pago.empleado.element.sueldos.forEach(element => {
+        if(date.formatDate( element.fecha,'YYYY-MM') == date.formatDate( Date.now(),'YYYY-MM'))
+        if(element.tipo=='ADELANTO' || element.tipo=='DESCUENTO')
+          total+=parseFloat(element.monto)
+      });
+      return total;
+      },
+
     ventat(){
       let total=0;
       this.ventas.forEach(r=>{
