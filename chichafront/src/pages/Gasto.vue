@@ -508,7 +508,7 @@ export default {
       })
 
       y+=0.5
-        if (y+3>25){
+        if (y+4>25){
           doc.addPage();
           header()
           y=0
