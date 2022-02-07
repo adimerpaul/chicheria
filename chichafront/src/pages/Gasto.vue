@@ -508,7 +508,12 @@ export default {
       })
 
       y+=0.5
-              doc.text(1, y+3, 'T.V. Pago:')
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+             doc.text(1, y+3, 'T.V. Pago:')
         doc.text(3, y+3, this.totalpagos+' Bs.')
       }
 
