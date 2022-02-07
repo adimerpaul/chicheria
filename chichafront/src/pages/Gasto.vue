@@ -516,7 +516,11 @@ export default {
              doc.text(1, y+3, 'T.V. Pago:')
         doc.text(3, y+3, this.totalpagos+' Bs.')
       }
-
+        if (y+4>25){
+          doc.addPage();
+          header()
+          y=0
+        }
 
       doc.setFontSize(11);
         doc.setFont(undefined,'normal')
