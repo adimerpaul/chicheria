@@ -233,9 +233,6 @@ export default {
       columns:[
         {name:'ci',label:'CI',field:'ci'},
         {name:'nombre',label:'Nombre',field:'nombre'},
-        {name:'fechanac',label:'Fechanac',field:'fechanac'},
-        {name:'celular',label:'Celular',field:'celular'},
-        {name:'salario',label:'Salario',field:'salario'},
         {name:'action',label:'Action',field:'action'},
       ],
       columns2:[
