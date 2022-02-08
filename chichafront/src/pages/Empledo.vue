@@ -73,7 +73,6 @@
                 <thead>
                 <tr>
                 <th>EMPLEADO</th>
-                <th>SUELDO</th>
                 <th>ADELANTO</th>
                 <th>DESCUENTO</th>
                 <th>EXTRA</th>
@@ -83,7 +82,6 @@
                   <tbody>
                   <tr v-for="v in salarios" :key="v.id">
                   <td>{{v.nombre}}</td>
-                  <td>{{v.salario}}</td>
                   <td>{{v.adelanto}}</td>
                   <td>{{v.descuento}}</td>
                   <td>{{v.extra}}</td>
