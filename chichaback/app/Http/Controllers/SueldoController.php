@@ -39,7 +39,7 @@ class SueldoController extends Controller
     {
 //        return Sueldo::create($request->all());
         $sueldo=new Sueldo();
-        $sueldo->fecha=date('Y-m-d');
+        $sueldo->fecha=$request->fecha;
         $sueldo->hora=date('H:i:s');
         $sueldo->monto=$request->monto;
         $sueldo->tipo=$request->tipo;
