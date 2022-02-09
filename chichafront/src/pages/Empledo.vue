@@ -180,8 +180,11 @@
                 <div class="col-4">
                   <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
                 </div>
-                <div class="col-4">
+                <div class="col-2">
                   <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA']"/>
+                </div>
+                <div class="col-2">
+                  <q-input outlined label="Fecha" v-model="pago.fecha" type="date"/>
                 </div>
                 <div class="col-4">
                   <q-input outlined type="text" label="observacion" v-model="pago.observacion" />
@@ -218,7 +221,7 @@ export default {
   data(){
     return{
       pagos:false,
-      pago:{},
+      pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       empleados:[],
       empleados2:[],
       empleadohistorial:{},
@@ -419,7 +422,7 @@ export default {
 
       this.$axios.post(process.env.API+'/sueldo',this.pago).then(res=>{
         this.empleadohistorial=res.data
-        this.pago={}
+        this.pago={fecha:date.formatDate( Date.now(),'YYYY-MM-DD')}
       })
     },
     misempleados(){
@@ -564,7 +567,7 @@ export default {
       totaldescuento(){
         let total=0;
       this.empleadohistorial.sueldos.forEach(element => {
-        if(date.formatDate( element.fecha,'YYYY-MM') == date.formatDate( Date.now(),'YYYY-MM'))
+        if(date.formatDate( element.fecha,'YYYY-MM') == date.formatDate(this.pago.fecha,'YYYY-MM'))
         if(element.tipo=='ADELANTO' || element.tipo=='DESCUENTO')
           total+=parseFloat(element.monto)
       });
