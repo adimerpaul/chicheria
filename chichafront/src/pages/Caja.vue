@@ -1,0 +1,183 @@
+<template>
+  <div class="q-pa-md">
+    <q-btn
+      label="Agregar o Retirar"
+      color="positive"
+      @click="alert = true"
+      icon="add_circle"
+      class="q-mb-xs"
+    />
+                <q-form @submit.prevent="misdatos">
+            <div class="row">
+            <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha1" outlined required/></div>
+            <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
+            <div class="col-4 col-sm-4 q-pa-xs flex flex-center">
+              <q-btn color="info"  label="Consultar" icon="search" type="submit" />
+
+            </div>
+            </div>
+            </q-form>
+     <q-badge class="full-width text-h5 flex flex-center" color="red" >TOTAL EN CAJA CHICA: {{cajachica.monto}} Bs.</q-badge>
+    <q-dialog v-model="alert">
+      <q-card style="max-width: 80%; width: 50%">
+        <q-card-section class="bg-green-14 text-white">
+          <div class="text-h6"><q-icon name="add_circle" /> Caja Chica</div>
+        </q-card-section>
+        <q-card-section class="q-pt-xs">
+          <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+            <div class="row">
+              <div class="col-12">
+                <q-input
+                  filled
+                  v-model="dato.monto"
+                  type="number"
+                  step="0.1"
+                  label="Monto Bs "
+                  lazy-rules
+                  :rules="[(val) => (val && val > 0) || 'Por favor ingresa datos']"
+                />
+
+                <q-input
+                  filled
+                  v-model="dato.motivo"
+                  type="text"
+                  label="Motivo"
+                />
+
+                <q-select
+                  filled
+                  v-model="dato.tipo"
+                  label="TIPO"
+                  :options="['AGREGA','RETIRA']"
+                  lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
+                />
+              </div>
+            </div>
+
+            <div>
+              <q-btn label="Crear" type="submit" color="positive" icon="add_circle" />
+              <q-btn label="Cancelar" icon="delete" color="negative" v-close-popup />
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-table :filter="filter" title="Caja Chica" 
+      :rows="data" 
+      :columns="columns" 
+      row-key="name" 
+      :rows-per-page-options="[50,100]">
+      <template v-slot:top-right>
+        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
+
+    </q-table>
+
+
+
+  </div>
+</template>
+
+<script>
+import { date } from 'quasar'
+
+export default {
+  data() {
+    return {
+      alert: false,
+      filter:'',
+        fecha1:date.formatDate(Date.now(),'YYYY-MM-DD'),
+        fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
+      model:'',
+      dato:{},
+      options: [],
+      props: [],
+      cajachica:0,
+      columns: [
+        {name: "fecha", align: "left", label: "FECHA ", field: "fecha", sortable: true,},
+        {name: "monto", align: "left", label: "MONTO", field: "monto", sortable: true,},
+        {name: "motivo", align: "left", label: "MOTIVO", field: "motivo", sortable: true,},
+        {name: "tipo", align: "left", label: "TIPO", field: "tipo", sortable: true,},
+
+      ],
+      data: [],
+    };
+  },
+  created() {
+
+    this.misdatos();
+    this.totalcaja();
+  
+  },
+  methods: {
+      totalcaja(){
+      this.$axios.post(process.env.API + "/totalcaja").then((res) => {
+          this.cajachica=res.data;
+      })
+      },
+
+    misdatos() {
+      this.$q.loading.show();
+      this.$axios.post(process.env.API + "/listcaja",{fecha1:this.fecha1,fecha2:this.fecha2}).then((res) => {
+         console.log(res.data)
+        this.data = res.data;
+        this.totalcaja();
+
+        this.$q.loading.hide();
+      });
+    },
+
+
+    onSubmit() {
+        if(this.dato.tipo=='RETIRA' && parseFloat(this.dato.monto) > parseFloat(this.cajachica.monto))
+        {
+                    this.$q.notify({
+          message:'No debe ser Mayor a lo q esta en caja',
+          icon:'close',
+          color:'red'
+        })
+            return false
+        }
+      this.$q.loading.show();
+      // this.dato.unid_id=this.dato.unid_id.id;
+      this.$axios.post(process.env.API + "/logcaja", {
+        monto:this.dato.monto,
+        motivo:this.dato.motivo,
+        tipo:this.dato.tipo,
+      }).then((res) => {
+          this.onReset()
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Creado correctamente",
+        });
+        this.alert = false;
+        this.misdatos();
+      }).catch(err=>{
+        console.log(err.response.data);
+        this.$q.notify({
+          message:err.response.data.message,
+          icon:'close',
+          color:'red'
+        })
+        this.$q.loading.hide()
+      })
+    },
+
+
+    onReset() {
+      this.dato.monto = 0.0;
+      this.dato.motivo = '';
+      this.dato.tipo = 'AGREGA';
+    },
+
+  },
+};
+</script>

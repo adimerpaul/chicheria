@@ -19,6 +19,7 @@ import Cxcdetalle from "pages/Cxcdetalle";
 import Cxclocal from "pages/Cxclocal";
 import Cxcruta from "pages/Cxcruta";
 import Historialruta from "pages/Historialruta";
+import Caja from "pages/Caja";
 // <<<<<<< HEAD
 // import User from "pages/User";
 // =======
@@ -52,6 +53,7 @@ const routes = [
       { path: 'cxclocal', component: Cxclocal,meta: {requiresAuth: true} },
       { path: 'cxcruta', component: Cxcruta,meta: {requiresAuth: true} },
       { path: 'historialruta', component: Historialruta,meta: {requiresAuth: true} },
+      { path: 'caja', component: Caja,meta: {requiresAuth: true} },
 
 // <<<<<<< HEAD
 //       { path: 'user', component: User,meta: {requiresAuth: true} },

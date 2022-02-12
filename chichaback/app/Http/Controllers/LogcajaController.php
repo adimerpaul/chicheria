@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Logcaja;
+use App\Models\Caja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LogcajaController extends Controller
 {

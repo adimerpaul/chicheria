@@ -32,8 +32,8 @@
       </q-form>
                 <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
             <q-btn icon="send" label="Adelanto" type="button" color="teal" @click="pagos=true"/>
+            <q-btn icon="price_change" label="Caja Chica" type="button" color="accent" @click="cajachica=true"/>
           </div>
-
     </div>
     <div class="col-12">
 <!--      <q-table-->
@@ -245,6 +245,37 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+
+            <q-dialog v-model="cajachica">
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Registro Gasto de Caja Chica {{montocajachica}} Bs</div>
+          </q-card-section>
+          <q-card-section class="q-pt-none">
+            <q-form @submit.prevent="agregarcjchica">
+              <div class="row">
+                <div class="col-12">
+                  <q-input outlined label="Monto" type="number" step="0.1" v-model="cchica.precio"     
+                    :rules="[
+                    val => val>0 && val<= montocajachica  || 'No debe exceder el monto',
+                    ]"
+                lazy-rules/>
+                </div>
+                 <div class="col-12">
+                  <q-input outlined label="Observacion" type="text" v-model="cchica.observacion" />
+                </div>
+                <div class="col-3 flex flex-center">
+                  <q-btn label="Registrar" type="submit" icon="send" color="info"/>
+                </div>
+              </div>
+            </q-form>
+          </q-card-section>
+          <q-card-actions align="right" class="bg-white text-teal">
+            <q-btn flat label="Cerrar" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
     </div>
 
   </div>
@@ -260,7 +291,9 @@ export default {
   data(){
     return{
       filter:'',
+      cchica:{},
       pagos:false,
+      cajachica:false,
       pago:{},
       empleados:[],
       empleadohistorial:{},
@@ -278,6 +311,7 @@ export default {
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
+      montocajachica:0,
       columns:[
         {name:'id',label:'Id',field:'id'},
         {name:'precio',label:'Precio',field:'precio'},
@@ -331,8 +365,29 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
     this.listadog();
     this.misempleados();
+    this.totalcaja();
   },
   methods:{
+    agregarcjchica(){
+      this.$axios.post(process.env.API + "/gastocaja",this.cchica).then((res) => {
+        this.cchica.precio=0;
+        this.cchica.observacion='';
+        this.cajachica=false;
+        this.misgastos()
+                this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Registrado correctamente'
+        });
+      })
+
+    },
+          totalcaja(){
+      this.$axios.post(process.env.API + "/totalcaja").then((res) => {
+          this.montocajachica=res.data.monto;
+      })
+      },
     listadog(){
       this.$axios.post(process.env.API+'/listglosa').then(res=>{
         this.gl=res.data
@@ -405,6 +460,7 @@ export default {
         doc.text(1, y+3, 'T VENTA:')
         doc.text(3, y+3, ventas+' Bs.')
       let gastos=0
+      let caja=0
             y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
@@ -414,6 +470,9 @@ export default {
         // console.log(r)
         doc.text(3, y+3, 'Gasto')
         doc.text(6.5, y+3, r.precio!=null?r.precio.toString():''+'Bs.')
+        if(r.glosa=='CAJA CHICA')
+        caja+=parseFloat(r.precio!=null?r.precio:0)
+        else
         gastos+=parseFloat(r.precio!=null?r.precio:0)
         doc.text(8, y+3, r.glosa+': '+r.observacion)
         // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
@@ -428,6 +487,8 @@ export default {
       y+=0.5
         doc.text(1, y+3, 'T GASTO:')
         doc.text(3, y+3, gastos+'Bs.')
+        doc.text(8, y+3, 'Gasto Caja Chica:')
+        doc.text(12, y+3, caja+'Bs.')
       y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
@@ -727,7 +788,11 @@ export default {
       let y=0
       let cont=1
       let sumgasto=0
+      let caja=0
       this.gastos.forEach(r=>{
+        if(r.glosa=='CAJA CHICA')
+        caja+=parseFloat(r.precio)
+        else
         sumgasto+=parseFloat(r.precio)
         console.log(r)
         // xx+=0.5
@@ -751,6 +816,11 @@ export default {
               doc.text(1, y+3, 'TOTAL:')
         doc.setFont(undefined,'normal')
         doc.text(3, y+3, sumgasto+' Bs')
+      y+=0.5
+          doc.setFont(undefined,'bold')
+          doc.text(1, y+3, 'caja chica:')
+        doc.setFont(undefined,'normal')
+        doc.text(3.5, y+3, caja+' Bs')
       // doc.text(2, y+4, 'Ventas totales: ')
       // doc.text(5, y+4, this.ventat+'Bs')
       // doc.text(7, y+4, 'Por cobrar totales: ')

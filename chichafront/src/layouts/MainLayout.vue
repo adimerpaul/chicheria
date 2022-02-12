@@ -412,7 +412,26 @@
           </q-item-section>
         </q-item>
 
+        <q-item
+          v-if="$store.state.login.empleados"
+          active-class="my-menu-link"
+          clickable
+          exact
+          to="caja"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="point_of_sale" size="lg" />
+          </q-item-section>
 
+          <q-item-section>
+            <q-item-label>Caja Chica</q-item-label>
+            <q-item-label caption>
+              Efectivo de Caja
+            </q-item-label>
+          </q-item-section>
+        </q-item>
 
         <q-item
           v-if="$store.getters['login/isLoggedIn']"
