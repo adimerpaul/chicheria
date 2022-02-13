@@ -1029,8 +1029,9 @@ console.log(this.ventas)
       // return false
 
       this.$axios.post(process.env.API+'/sueldo',this.pago).then(res=>{
-        this.empleadohistorial=res.data
-        this.misempleados
+        //this.empleadohistorial=res.data
+        this.misempleados()
+        this.misgastos()
         this.pagos=false
         this.pago.monto=0
         this.pago.tipo=''

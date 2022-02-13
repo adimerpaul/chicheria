@@ -57,6 +57,17 @@ class SueldoController extends Controller
             $gasto->user_id=$request->user()->id;
             $gasto->save();
         }
+        if($request->tipo=='EXTRA')
+        {
+            $gasto=new Gasto;
+            $gasto->precio=$request->monto;
+            $gasto->observacion='EXTRA a '.$request->empleado_nombre;
+            $gasto->glosa='EXTRA';
+            $gasto->fecha=date('Y-m-d');
+            $gasto->hora=date('H:i:s');
+            $gasto->user_id=$request->user()->id;
+            $gasto->save();
+        }
 //        return $sueldo;
         return Empleado::with('sueldos')
             ->where('id',$request->empleado_id)
