@@ -44,13 +44,14 @@ class SueldoController extends Controller
         $sueldo->monto=$request->monto;
         $sueldo->tipo=$request->tipo;
         $sueldo->empleado_id=$request->empleado_id;
+        $sueldo->observacion=$request->observacion;
         $sueldo->user_id=$request->user()->id;
         $sueldo->save();
         if($request->tipo=='ADELANTO')
         {
             $gasto=new Gasto;
             $gasto->precio=$request->monto;
-            $gasto->observacion='Adelanto a '.$request->empleado_nombre;
+            $gasto->observacion=$request->observacion;
             $gasto->glosa='ADELANTO';
             $gasto->fecha=date('Y-m-d');
             $gasto->hora=date('H:i:s');
@@ -61,7 +62,7 @@ class SueldoController extends Controller
         {
             $gasto=new Gasto;
             $gasto->precio=$request->monto;
-            $gasto->observacion='EXTRA a '.$request->empleado_nombre;
+            $gasto->observacion=$request->observacion;
             $gasto->glosa='EXTRA';
             $gasto->fecha=date('Y-m-d');
             $gasto->hora=date('H:i:s');
