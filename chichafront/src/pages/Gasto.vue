@@ -1022,6 +1022,7 @@ console.log(this.ventas)
         return false;
       }
       // console.log('a');
+      this.pago.fecha=date.formatDate( Date.now(),'YYYY-MM-DD');
       this.pago.empleado_id=this.pago.empleado.element.id
       this.pago.empleado_nombre=this.pago.empleado.label;
        //console.log(this.pago)
