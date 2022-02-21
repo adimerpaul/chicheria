@@ -161,8 +161,9 @@ class ClienteController extends Controller
     }
 
     public function aniver(){
-        $cliente=DB::SELECT('SELECT *,MONTH(fechanac) as mes,DAY(fechanac) as dia from clientes
-         where MONTH(fechanac)=MONTH(CURDATE()) and DAY(fechanac)>=DAY(CURDATE()) order by dia asc');
+        $fec= date("Y-m-d",strtotime(date('Y-m-d')."+ 1 days"));
+        $cliente=DB::SELECT("SELECT *,MONTH(fechanac) as mes,DAY(fechanac) as dia from clientes
+         where MONTH(fechanac)>=MONTH(CURDATE()) and MONTH(fechanac)<=MONTH('$fec') and DAY(fechanac)>=DAY(CURDATE()) and DAY(fechanac)<=DAY('$fec')order by dia asc");
          return $cliente;
     }
 
