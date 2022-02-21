@@ -71,6 +71,15 @@ class GastoController extends Controller
         $caja=Caja::find(1);
         $caja->monto= floatval($caja->monto) - floatval($request->precio);
         $caja->save();
+
+        $log=new Logcaja ;
+        $log->monto=$request->precio;
+        $log->motivo=$request->observacion;
+        $log->tipo='GASTO';
+        $log->fecha=date('Y-m-d');
+        $log->hora=date('H:i:s');
+        $log->user_id=$request->user()->id;
+        $log->save();
     }
 
     /**

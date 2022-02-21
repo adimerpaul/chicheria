@@ -374,6 +374,7 @@ export default {
         this.cchica.observacion='';
         this.cajachica=false;
         this.misgastos()
+        this.totalcaja()
                 this.$q.notify({
           color: 'green-4',
           textColor: 'white',

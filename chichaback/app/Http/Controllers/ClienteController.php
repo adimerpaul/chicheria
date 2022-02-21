@@ -160,6 +160,12 @@ class ClienteController extends Controller
          return $cliente2;
     }
 
+    public function aniver(){
+        $cliente=DB::SELECT('SELECT *,MONTH(fechanac) as mes,DAY(fechanac) as dia from clientes
+         where MONTH(fechanac)=MONTH(CURDATE()) and DAY(fechanac)>=DAY(CURDATE()) order by dia asc');
+         return $cliente;
+    }
+
     public function listado(){
         //return Cliente::where('tipocliente',$tipocliente)->get();
     }
