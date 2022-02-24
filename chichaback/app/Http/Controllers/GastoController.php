@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gasto;
 use App\Models\Caja;
+use App\Models\Logcaja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
