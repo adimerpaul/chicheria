@@ -51,7 +51,7 @@ class SueldoController extends Controller
         {
             $gasto=new Gasto;
             $gasto->precio=$request->monto;
-            $gasto->observacion=$request->observacion;
+            $gasto->observacion=$request->observacion.' '.$request->empleado_nombre;
             $gasto->glosa='ADELANTO';
             $gasto->fecha=date('Y-m-d');
             $gasto->hora=date('H:i:s');
@@ -62,7 +62,7 @@ class SueldoController extends Controller
         {
             $gasto=new Gasto;
             $gasto->precio=$request->monto;
-            $gasto->observacion=$request->observacion;
+            $gasto->observacion=$request->observacion.' '.$request->empleado_nombre;
             $gasto->glosa='EXTRA';
             $gasto->fecha=date('Y-m-d');
             $gasto->hora=date('H:i:s');
