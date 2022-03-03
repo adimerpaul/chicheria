@@ -413,7 +413,7 @@
         </q-item>
 
         <q-item
-          v-if="$store.state.login.empleados"
+          v-if="$store.state.login.cajachica"
           active-class="my-menu-link"
           clickable
           exact
@@ -425,7 +425,7 @@
             <q-icon name="point_of_sale" size="lg" />
           </q-item-section>
 
-          <q-item-section>
+           <q-item-section>
             <q-item-label>Caja Chica</q-item-label>
             <q-item-label caption>
               Efectivo de Caja
@@ -434,7 +434,7 @@
         </q-item>
 
         <q-item
-          v-if="$store.getters['login/isLoggedIn']"
+          v-if="$store.state.login.gastos"
           active-class="my-menu-link"
           clickable
           exact

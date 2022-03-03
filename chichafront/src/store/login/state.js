@@ -24,5 +24,6 @@ export default function () {
     cobrardetalle:false,
     cobrarlocal:false,
     cobrarruta:false,
+    cajachica:false,
   }
 }

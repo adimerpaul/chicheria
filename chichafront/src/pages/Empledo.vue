@@ -289,7 +289,7 @@ export default {
       if(boleta.adelanto==null) boleta.adelanto=0;
       if(boleta.descuento==null) boleta.descuento=0;
       if(boleta.extra==null) boleta.extra=0;
-      total = boleta.salario - boleta.adelanto - boleta.descuento + boleta.extra;
+      total = boleta.salario - boleta.adelanto - boleta.descuento;
       let cadena="<div><img class='fondo' src='logo.png' style='height:20px'> Chicheria Doña Naty <span>"+date.formatDate( Date.now(),'YYYY-MM-DD')+"</span></div><br>";
       cadena+="<div style='text-align:center'>BOLETA DE PAGO "+date.formatDate( this.fecha1,'YYYY-MM')+"</div><hr>";
       cadena+="<div>Nombre: "+boleta.nombre+"</div><div>Salario Basico: "+boleta.salario+"</div>";
@@ -348,7 +348,7 @@ export default {
           let extra=r.extra==null?0:r.extra;
           let adelanto=r.adelanto==null?0:r.adelanto;
           let descuento=r.descuento==null?0:r.descuento;
-          let total= r.salario - adelanto - descuento + extra;
+          let total= r.salario - adelanto - descuento;
           y+=0.5
           doc.text(1, y+3, ''+r.nombre)
           doc.text(5, y+3, ''+r.salario)

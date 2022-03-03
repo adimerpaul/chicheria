@@ -30,6 +30,7 @@ export function auth_success(state, data){
   state.cobrardetalle=data.user.permisos.find(p=>p.id===19)!=undefined
   state.cobrarlocal=data.user.permisos.find(p=>p.id===20)!=undefined
   state.cobrarruta=data.user.permisos.find(p=>p.id===21)!=undefined
+  state.cajachica=data.user.permisos.find(p=>p.id===22)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -58,4 +59,5 @@ export function salir(state){
   state.cobrardetalle=false
   state.cobrarlocal=false
   state.cobrarruta=false
+  state.cajachica=false
 }
