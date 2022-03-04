@@ -181,7 +181,7 @@
                   <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
                 </div>
                 <div class="col-2">
-                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA']"/>
+                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA','PAGO']"/>
                 </div>
                 <div class="col-2">
                   <q-input outlined label="Fecha" v-model="pago.fecha" type="date"/>

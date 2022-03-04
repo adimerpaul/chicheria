@@ -223,7 +223,7 @@
                   <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
                 </div>
                 <div class="col-3">
-                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA','PAGO']"/>
+                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA']"/>
                 </div>
                 <div class="col-3">
                   <q-input outlined label="Observacion" type="text" v-model="pago.observacion" />
