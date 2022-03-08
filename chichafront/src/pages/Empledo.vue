@@ -201,7 +201,20 @@
             :rows-per-page-options="[50,100,0]"
             :columns="columns2"
             :rows="empleadohistorial.sueldos"
-            ></q-table>
+            >
+                    <template v-slot:body-cell-opcion="props">
+          <q-td :props="props">
+            <q-btn
+              color="negative"
+              icon-right="delete"
+              no-caps
+              flat
+              dense
+              @click="delsueldo(props.row)"
+            />
+          </q-td>
+        </template>
+            </q-table>
           </q-card-section>
           <q-card-actions align="right" class="bg-white text-teal">
             <q-btn flat label="OK" v-close-popup />
@@ -239,11 +252,12 @@ export default {
         {name:'action',label:'Action',field:'action'},
       ],
       columns2:[
-        {name:'fecha',label:'Fecha',field:'fecha'},
-        {name:'hora',label:'Hora',field:'hora'},
-        {name:'tipo',label:'Tipo',field:'tipo'},
+        {name:'fecha',label:'FECHA',field:'fecha',sortable: true},
+        {name:'hora',label:'HORA',field:'hora'},
+        {name:'tipo',label:'TIPO',field:'tipo',sortable: true},
         // {name:'detalle',label:'detalle',field:'detalle'},
-        {name:'monto',label:'Monto',field:'monto'},
+        {name:'monto',label:'MONTO',field:'monto', sortable: true},
+        {name:'opcion',label:'OPCION',field:'opcion'},
       ],
       columns3:[
         {name:'nombre',label:'Empleado',field:'nombre'},
@@ -287,6 +301,18 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+    delsueldo(sueldo){
+      this.$axios.delete(process.env.API+'/sueldo/'+sueldo.id).then(res=>{
+          this.$q.notify({
+            message:'Eliminado',
+            icon:'info',
+            color:'green'
+          })
+          this.pagos=false
+          this.misempleados()
+      })
+
+    },
     imprimirboleta(boleta){
       let total=0;
       if(boleta.adelanto==null) boleta.adelanto=0;
