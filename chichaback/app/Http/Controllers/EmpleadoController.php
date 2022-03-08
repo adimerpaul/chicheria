@@ -33,7 +33,9 @@ class EmpleadoController extends Controller
         SELECT e.nombre,e.salario,e.ci,e.celular,
         (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='ADELANTO' AND  month(fecha) = month('".$request->fecha1."') AND year(fecha)= year('".$request->fecha1."')) as adelanto,
         (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='DESCUENTO' AND  month(fecha) = month('".$request->fecha1."') AND year(fecha)= year('".$request->fecha1."')) as descuento,
-        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='EXTRA' AND  month(fecha) = month('".$request->fecha1."') AND year(fecha)= year('".$request->fecha1."')) as extra
+        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='EXTRA' AND  month(fecha) = month('".$request->fecha1."') AND year(fecha)= year('".$request->fecha1."')) as extra,
+        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='PAGO' AND  month(fecha) = month('".$request->fecha1."') AND year(fecha)= year('".$request->fecha1."')) as pago,
+        (SELECT GROUP_CONCAT(observacion SEPARATOR ' - ') FROM sueldos WHERE empleado_id=e.id AND tipo='PAGO' AND month('".$request->fecha1."') AND year(fecha)= year('".$request->fecha1."')) as obs
         FROM empleados e
         ");
     }

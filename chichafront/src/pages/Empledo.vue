@@ -76,6 +76,7 @@
                 <th>ADELANTO</th>
                 <th>DESCUENTO</th>
                 <th>EXTRA</th>
+                <th>PAGO</th>
                 <th>OPCION</th>
                 </tr>
                 </thead>
@@ -85,6 +86,7 @@
                   <td>{{v.adelanto}}</td>
                   <td>{{v.descuento}}</td>
                   <td>{{v.extra}}</td>
+                  <td>{{v.pago}}</td>
                   <td>
                               <template v-if="$store.state.login.reimpresion" >
               <q-btn icon="print" color="yellow" @click="imprimirboleta(v)"/>
@@ -250,6 +252,7 @@ export default {
         // {name:'detalle',label:'detalle',field:'detalle'},
         {name:'descuento',label:'Descuento',field:'descuento'},
         {name:'extra',label:'Extra',field:'extra'},
+        {name:'pago',label:'Pago',field:'pago'},
         {name:'opcion',label:'opcion',field:'opcion'},
       ],
     }
@@ -289,7 +292,9 @@ export default {
       if(boleta.adelanto==null) boleta.adelanto=0;
       if(boleta.descuento==null) boleta.descuento=0;
       if(boleta.extra==null) boleta.extra=0;
-      total = boleta.salario - boleta.adelanto - boleta.descuento;
+      if(boleta.pago==null) boleta.pago=0;
+      if(boleta.obs==null) boleta.obs='';
+      total = boleta.salario - boleta.adelanto - boleta.descuento + boleta.pago;
       let cadena="<div><img class='fondo' src='logo.png' style='height:20px'> Chicheria Doña Naty <span>"+date.formatDate( Date.now(),'YYYY-MM-DD')+"</span></div><br>";
       cadena+="<div style='text-align:center'>BOLETA DE PAGO "+date.formatDate( this.fecha1,'YYYY-MM')+"</div><hr>";
       cadena+="<div>Nombre: "+boleta.nombre+"</div><div>Salario Basico: "+boleta.salario+"</div>";
@@ -298,8 +303,10 @@ export default {
       cadena+="<table style='width:100%'><thead><tr><th>INGRESOS</th><th>DESCUENTOS</th></tr></thead>";
       cadena+="<tbody><tr><td>Salario Basico:"+boleta.salario+"</td><td>Descuentos: "+boleta.descuento+"</td></tr>";
       cadena+="<tr><td>Extra:"+boleta.extra+"</td><td>Adelanto: "+boleta.adelanto+"</td></tr>";
+      cadena+="<tr><td>Pago:"+boleta.pago+"</td><td> </td></tr>";
       cadena+="</tbody></table><hr>";
       cadena+="<div style='text-align:right'>Liquido Pagable: "+total+"</div>";
+      cadena+="<div> "+boleta.obs+"</div>";
 
       cadena+="<br><br><div style='text-align:center; with:100%'>FIRMA</div>";
             let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
@@ -324,11 +331,12 @@ export default {
           doc.text(5, 1, 'Historial de prestmos Sueldos pagos Adelantos')
           doc.text(5, 1.5,  'DE '+mc.fecha1)
           doc.text(1, 3, 'Empleado')
-          doc.text(5, 3, 'Sueldo')
-          doc.text(7, 3, 'Extra')
-          doc.text(9, 3, 'Adelanto')
-          doc.text(11, 3, 'Descuento')
-          doc.text(14, 3, 'Pago')
+          doc.text(7, 3, 'Sueldo')
+          doc.text(9, 3, 'Extra')
+          doc.text(11, 3, 'Adelanto')
+          doc.text(13, 3, 'Descuento')
+          doc.text(16, 3, 'Pago')
+          doc.text(19, 3, 'Cancelar')
           // doc.text(13.5, 3, 'Estado')
           // doc.text(18.5, 3, 'Usuario')
           doc.setFont(undefined,'normal')
@@ -348,14 +356,16 @@ export default {
           let extra=r.extra==null?0:r.extra;
           let adelanto=r.adelanto==null?0:r.adelanto;
           let descuento=r.descuento==null?0:r.descuento;
-          let total= r.salario - adelanto - descuento;
+          let pago=r.pago==null?0:r.pago;
+          let total= r.salario - adelanto - descuento + pago;
           y+=0.5
           doc.text(1, y+3, ''+r.nombre)
-          doc.text(5, y+3, ''+r.salario)
-          doc.text(7, y+3, ''+extra)
-          doc.text(9, y+3, ''+adelanto)
-          doc.text(11, y+3, ''+descuento)
-          doc.text(14, y+3, ''+total)
+          doc.text(7, y+3, ''+r.salario)
+          doc.text(9, y+3, ''+extra)
+          doc.text(11, y+3, ''+adelanto)
+          doc.text(13, y+3, ''+descuento)
+          doc.text(16, y+3, ''+pago)
+          doc.text(19, y+3, ''+total)
           sumatoria+=total;
           // doc.text(13.5, y+3, r.estado.toString())
           // doc.text(18.5, y+3, r.name.toString())
