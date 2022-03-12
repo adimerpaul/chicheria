@@ -494,6 +494,12 @@ export default {
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
         doc.text(1, y+3, 'INGRESOS DE ANULADOS PRESTAMOS')
+                if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      
       if(this.totalanulado>0){
         ventas=ventas+this.totalanulado;
               this.anulados.forEach(element => {
@@ -504,6 +510,12 @@ export default {
         doc.text(10, y+3, element.inventario.nombre)
         doc.text(13.5, y+3, element.cliente.titular)
         doc.text(18.5, y+3, element.cliente.local)
+                if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      
               });
       y+=0.5
         doc.text(1, y+3, 'T. Anulado')
@@ -517,6 +529,12 @@ export default {
       y+=0.5
         doc.text(1, y+3, 'INGRESOS DE VENTA MATERIAL')
         doc.setFont(undefined,'normal')
+                if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      
       this.prestamoventa.forEach(r=>{
         y+=0.5
         // console.log(r)
@@ -548,7 +566,12 @@ export default {
 
         doc.text(1, y+3, 'INGRESOS DE PENDIENTES DE PAGO')
         doc.setFont(undefined,'normal')
-
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      
 
       this.rpagos.forEach(r=>{
         y+=0.5
