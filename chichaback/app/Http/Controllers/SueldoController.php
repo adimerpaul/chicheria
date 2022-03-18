@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Empleado;
 use App\Models\Sueldo;
 use App\Models\Gasto;
+use App\Models\Caja;
+use App\Models\Logcaja;
 use Illuminate\Http\Request;
 
 class SueldoController extends Controller
@@ -47,6 +49,8 @@ class SueldoController extends Controller
         $sueldo->observacion=$request->observacion;
         $sueldo->user_id=$request->user()->id;
         $sueldo->save();
+
+        if($request->origen=='VENTA'){
         if($request->tipo=='ADELANTO')
         {
             $gasto=new Gasto;
@@ -68,6 +72,29 @@ class SueldoController extends Controller
             $gasto->hora=date('H:i:s');
             $gasto->user_id=$request->user()->id;
             $gasto->save();
+        }}
+        else {
+            $gasto=new Gasto();
+            $gasto->precio=$request->monto;
+            $gasto->observacion=$request->observacion.' '.$request->empleado_nombre;
+            $gasto->glosa='CAJA CHICA';
+            $gasto->fecha=date('Y-m-d');
+            $gasto->hora=date('H:i:s');
+            $gasto->user_id=$request->user()->id;
+            $gasto->save();
+    
+            $caja=Caja::find(1);
+            $caja->monto= floatval($caja->monto) - floatval($request->monto);
+            $caja->save();
+    
+            $log=new Logcaja ;
+            $log->monto=$request->monto;
+            $log->motivo=$request->observacion.' '.$request->empleado_nombre;;
+            $log->tipo='GASTO';
+            $log->fecha=date('Y-m-d');
+            $log->hora=date('H:i:s');
+            $log->user_id=$request->user()->id;
+            $log->save();
         }
 //        return $sueldo;
         return Empleado::with('sueldos')

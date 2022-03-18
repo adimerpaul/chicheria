@@ -96,7 +96,7 @@
                       <q-badge color="teal" v-else>CLIENTE</q-badge>
                     </td>
                     <td>
-                      <q-badge :color="v.estado=='ACTIVO'?'positive':'negative'"  @click="activar(v)">{{ v.estado }}</q-badge>
+                      <q-badge  :color="v.estado=='ACTIVO'?'positive':'negative'"  @click="activar(v)">{{ v.estado=='ACTIVO'?'HABILITADO':'INACTIVO' }}</q-badge>
                     </td>
                     <td>
                       <q-btn dense round flat color="yellow" @click="editRow(v)" icon="edit"></q-btn>
