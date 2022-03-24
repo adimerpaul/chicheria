@@ -228,11 +228,7 @@
                 <div class="col-3">
                   <q-input outlined label="Observacion" type="text" v-model="pago.observacion" />
                 </div>
-                <div class="col-3">
-                  <q-radio v-model="origen" val="VENTA" label="VENTA" />
-                  <q-radio v-model="origen" val="CAJA" label="CAJA" />
-                  
-                </div>
+
                 <div class="col-3 flex flex-center">
                   <q-btn label="Agregar" type="submit" icon="send" color="info"/>
                 </div>
@@ -313,7 +309,6 @@ export default {
       gl:[],
       pageTotal:'',
       tot:'',
-      origen:'VENTA',
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -1051,19 +1046,11 @@ console.log(this.ventas)
           })
         return false;
       }
-      if(this.origen=='CAJA' && this.pago.monto>this.montocajachica){
-          this.$q.notify({
-            message:'NO EXISTE SUFICIENTE EN CAJA CHICA ',
-            icon:'info',
-            color:'red'
-          })
-        return false;
-      }
+
       // console.log('a');
       this.pago.fecha=date.formatDate( Date.now(),'YYYY-MM-DD');
       this.pago.empleado_id=this.pago.empleado.element.id
       this.pago.empleado_nombre=this.pago.empleado.label;
-      this.pago.origen=this.origen;
        //console.log(this.pago)
       // return false
 
@@ -1077,7 +1064,6 @@ console.log(this.ventas)
         this.pago.monto=0
         this.pago.tipo=''
         this.pago.observacion=''
-        this.origen='VENTA'
       })
     },
     misempleados(){

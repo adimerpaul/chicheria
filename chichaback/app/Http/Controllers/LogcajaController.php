@@ -108,5 +108,20 @@ class LogcajaController extends Controller
     public function destroy(Logcaja $logcaja)
     {
         //
+
+        if($logcaja->tipo=='GASTO' || $logcaja->tipo=='RETIRO'){
+            $caja=Caja::find(1);
+            $caja->monto=floatval($caja->monto) + floatval($logcaja->monto);
+            $caja->save();
+        
+        }
+        if($logcaja->tipo=='AGREGA'){
+            $caja=Caja::find(1);
+            $caja->monto=floatval($caja->monto) - floatval($logcaja->monto);
+            $caja->save();
+        
+        }
+        $logcaja->delete();
+
     }
 }

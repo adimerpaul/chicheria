@@ -76,7 +76,19 @@
           </template>
         </q-input>
       </template>
+      <template v-slot:body-cell-opcion="props">
+          <q-td key="opcion" :props="props">
+            <q-btn
+              dense
+              round
+              flat
+              color="red"
+              @click="deleteRow(props.row)"
+              icon="delete"
+            ></q-btn>
+          </q-td>
 
+      </template>
     </q-table>
 
 
@@ -104,6 +116,7 @@ export default {
         {name: "monto", align: "left", label: "MONTO", field: "monto", sortable: true,},
         {name: "motivo", align: "left", label: "MOTIVO", field: "motivo", sortable: true,},
         {name: "tipo", align: "left", label: "TIPO", field: "tipo", sortable: true,},
+        {name: "opcion", align: "left", label: "OPCION", field: "opcion" }
 
       ],
       data: [],
@@ -116,6 +129,26 @@ export default {
   
   },
   methods: {
+      deleteRow(logcaja){
+      this.$q.dialog({
+        title: 'Confirmar',
+        message: 'Esta seguro de eliminar',
+        cancel: true,
+        persistent: false
+      }).onOk(() => {
+               this.$axios.delete(process.env.API + "/logcaja/"+logcaja.id).then((res) => {
+                 console.log(res.data)
+                                  this.misdatos()
+        })
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+
+      },
       totalcaja(){
       this.$axios.post(process.env.API + "/totalcaja").then((res) => {
           this.cajachica=res.data;
