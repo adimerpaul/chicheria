@@ -379,7 +379,7 @@ export default {
               // console.log(p.estado!=)
 
               if (p.estado=='EN PRESTAMO'){
-                enprestamo=enprestamo+p.cantidad
+                enprestamo=enprestamo+p.prestado
                 // console.log(p.cantidad)
               }
               if (p.estado=='VENTA'){
