@@ -324,9 +324,9 @@ export default {
         {name:'action',label:'Action',field:'action'},
       ],
       columns2:[
-        {name:'fecha',label:'Fecha',field:'fecha'},
+        {name:'fecha',label:'Fecha',field:'fecha',sortable: true },
         {name:'hora',label:'Hora',field:'hora'},
-        {name:'tipo',label:'Tipo',field:'tipo'},
+        {name:'tipo',label:'Tipo',field:'tipo',sortable: true },
         // {name:'detalle',label:'detalle',field:'detalle'},
         {name:'monto',label:'Monto',field:'monto'},
       ],
