@@ -18,4 +18,8 @@ class Sueldo extends Model
         'user_id',
 
     ];
+
+    public function empleado(){
+        return $this->belongsTo(Empleado::class);
+    }
 }

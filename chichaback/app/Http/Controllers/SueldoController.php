@@ -90,6 +90,18 @@ class SueldoController extends Controller
         //
     }
 
+    public function impade($id){
+        $info=Sueldo::with('empleado')->find($id);
+        $cadena="<center>$info->tipo</center>
+        <div>Empleado: ".$info->empleado['nombre']."</div>
+        <div>Fecha: $info->fecha</div>
+        <div>Monto: $info->monto Bs.</div>
+        <div>Obs: $info->observacion </div><br><br>
+        <center>FIRMA</center>
+        ";
+        return $cadena;
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

@@ -228,7 +228,9 @@
                 <div class="col-3">
                   <q-input outlined label="Observacion" type="text" v-model="pago.observacion" />
                 </div>
-
+                <div class="col-3">
+                  <q-input outlined label="Fecha" type="date" v-model="pago.fecha" />
+                </div>
                 <div class="col-3 flex flex-center">
                   <q-btn label="Agregar" type="submit" icon="send" color="info"/>
                 </div>
@@ -239,7 +241,13 @@
             :rows-per-page-options="[50,100,0]"
             :columns="columns2"
             :rows="pago.empleado.element.sueldos"
-            ></q-table>
+            >
+        <template v-slot:body-cell-opcion="props" >
+                <q-td key="opcion" :props="props" >
+                <q-btn dense round flat color="teal" @click="printRow(props)" icon="print"></q-btn>
+                </q-td>
+            </template>
+            </q-table>
           </q-card-section>
           <q-card-actions align="right" class="bg-white text-teal">
             <q-btn flat label="OK" v-close-popup />
@@ -295,7 +303,7 @@ export default {
       cchica:{},
       pagos:false,
       cajachica:false,
-      pago:{},
+      pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       empleados:[],
       empleadohistorial:{},
       boolcrear:true,
@@ -329,6 +337,7 @@ export default {
         {name:'tipo',label:'Tipo',field:'tipo',sortable: true },
         // {name:'detalle',label:'detalle',field:'detalle'},
         {name:'monto',label:'Monto',field:'monto'},
+        {name:'opcion',label:'Opcion',field:'opcion'},
       ],
       columns3:[
         {name:'nombre',label:'Empleado',field:'nombre'},
@@ -369,6 +378,16 @@ export default {
     this.totalcaja();
   },
   methods:{
+    printRow(props){
+      this.$axios.get(process.env.API + "/impade/"+props.row.id).then((res) => {
+                let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+      })
+
+    },
     agregarcjchica(){
       this.$axios.post(process.env.API + "/gastocaja",this.cchica).then((res) => {
         this.cchica.precio=0;
@@ -1048,7 +1067,7 @@ console.log(this.ventas)
       }
 
       // console.log('a');
-      this.pago.fecha=date.formatDate( Date.now(),'YYYY-MM-DD');
+      //this.pago.fecha=date.formatDate( Date.now(),'YYYY-MM-DD');
       this.pago.empleado_id=this.pago.empleado.element.id
       this.pago.empleado_nombre=this.pago.empleado.label;
        //console.log(this.pago)
@@ -1064,7 +1083,8 @@ console.log(this.ventas)
         this.pago.monto=0
         this.pago.tipo=''
         this.pago.observacion=''
-      })
+        this.pago.fecha=date.formatDate( Date.now(),'YYYY-MM-DD');
+      }) 
     },
     misempleados(){
       this.$q.loading.show()
@@ -1225,7 +1245,7 @@ console.log(this.ventas)
           totaldescuento(){
         let total=0;
       this.pago.empleado.element.sueldos.forEach(element => {
-        if(date.formatDate( element.fecha,'YYYY-MM') == date.formatDate( Date.now(),'YYYY-MM'))
+        if(date.formatDate( element.fecha,'YYYY-MM') == date.formatDate( this.pago.fecha,'YYYY-MM'))
         if(element.tipo=='ADELANTO' || element.tipo=='DESCUENTO')
           total+=parseFloat(element.monto)
       });

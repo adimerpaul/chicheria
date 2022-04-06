@@ -212,6 +212,8 @@
               dense
               @click="delsueldo(props.row)"
             />
+                <q-btn dense round flat color="teal" @click="printRow(props)" icon="print"></q-btn>
+
           </q-td>
         </template>
             </q-table>
@@ -301,6 +303,16 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+        printRow(props){
+      this.$axios.get(process.env.API + "/impade/"+props.row.id).then((res) => {
+                let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+      })
+
+    },
     delsueldo(sueldo){
       this.$axios.delete(process.env.API+'/sueldo/'+sueldo.id).then(res=>{
           this.$q.notify({
