@@ -50,6 +50,7 @@ class SueldoController extends Controller
         $sueldo->user_id=$request->user()->id;
         $sueldo->save();
 
+        if($request->tipo!='DESCUENTO'){
 
             $gasto=new Gasto();
             $gasto->precio=$request->monto;
@@ -71,7 +72,7 @@ class SueldoController extends Controller
             $log->fecha=date('Y-m-d');
             $log->hora=date('H:i:s');
             $log->user_id=$request->user()->id;
-            $log->save();
+            $log->save();}
         
 //        return $sueldo;
         return Empleado::with('sueldos')
