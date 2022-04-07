@@ -82,8 +82,9 @@ class PrestamoController extends Controller
      * @param  \App\Models\Prestamo  $prestamo
      * @return \Illuminate\Http\Response
      */
-    public function anularprestamo($id){
-        $prestamo=Prestamo::find($id);
+    public function anularprestamo(Request $request){
+        $prestamo=Prestamo::find($request->id);
+        $prestamo->user_id=$request->user()->id;
         $prestamo->estado='ANULADO';
         return $prestamo->save();
     }
@@ -272,6 +273,8 @@ public function reporteventa(Request $request){
         <div class="textc">Firma</div>
         <br>
         <br>
+        <div class="textc"><b>La devolucion del Prestamo no debe exceder los 7 dias a partir de la fecha de lo contrario se dara de baja a la garantia<b></div>
+
         ';
         return $cadena;
 

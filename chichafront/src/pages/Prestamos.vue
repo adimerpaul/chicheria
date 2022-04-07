@@ -309,7 +309,7 @@ export default {
     },
     onEliminar(p){
       if (confirm('seguro de eliminar?')){
-        this.$axios.post(process.env.API+'/anularprestamo/'+p.id).then(res=>{
+        this.$axios.post(process.env.API+'/anularprestamo',p).then(res=>{
           // this.totalefectivo=res.data[0].total;
           this.listclientes()
           this.cajaprestamo()
