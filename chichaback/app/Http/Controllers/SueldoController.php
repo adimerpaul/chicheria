@@ -50,7 +50,7 @@ class SueldoController extends Controller
         $sueldo->user_id=$request->user()->id;
         $sueldo->save();
 
-        if($request->tipo!='DESCUENTO'){
+        if($request->tipo=='ADELANTO' || $request->tipo=='EXTRA'){
 
             $gasto=new Gasto();
             $gasto->precio=$request->monto;
@@ -72,14 +72,44 @@ class SueldoController extends Controller
             $log->fecha=date('Y-m-d');
             $log->hora=date('H:i:s');
             $log->user_id=$request->user()->id;
-            $log->save();}
-        
+            $log->save();
+        }
+
 //        return $sueldo;
         return Empleado::with('sueldos')
             ->where('id',$request->empleado_id)
             ->firstOrFail();
     }
 
+    public function cancelacion(Request $request){
+            //return $request;
+
+            $sueldo=new Sueldo();
+            $sueldo->fecha=$request->fecha;
+            $sueldo->hora=date('H:i:s');
+            $sueldo->monto=$request->monto;
+            $sueldo->tipo='CANCELAR';
+            $sueldo->empleado_id=$request->empleado_id;
+            $sueldo->observacion='Cancelado';
+            $sueldo->user_id=$request->user()->id;
+            $sueldo->save();
+    
+              if($request->tipo=='CANCELAR'){
+    
+                $gasto=new Gasto();
+                $gasto->precio=$request->monto;
+                $gasto->observacion='Cancelado'.' '.$request->empleado_nombre;
+                $gasto->glosa='CANCELAR';
+                $gasto->fecha=$request->fecha; 
+                $gasto->hora=date('H:i:s');
+                $gasto->user_id=$request->user()->id;
+                $gasto->save();
+            }
+    //        return $sueldo;
+            return Empleado::with('sueldos')
+                ->where('id',$request->empleado_id)
+                ->firstOrFail();
+    }
     /**
      * Display the specified resource.
      *

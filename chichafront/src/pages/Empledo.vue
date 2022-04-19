@@ -64,6 +64,7 @@
           <div class="text-subtitle1 bg-accent text-center text-white">Historial de pagos</div>
         </div>
         <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha1" outlined required/></div>
+        <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
         <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
           <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="missalarios" />
         </div>
@@ -77,6 +78,7 @@
                 <th>DESCUENTO</th>
                 <th>EXTRA</th>
                 <th>PAGO</th>
+                <th>CANCELAR</th>
                 <th>OPCION</th>
                 </tr>
                 </thead>
@@ -87,9 +89,11 @@
                   <td>{{v.descuento}}</td>
                   <td>{{v.extra}}</td>
                   <td>{{v.pago}}</td>
+                  <td>{{v.cancelar}}</td>
                   <td>
                               <template v-if="$store.state.login.reimpresion" >
-              <q-btn icon="print" color="yellow" @click="imprimirboleta(v)"/>
+              <q-btn icon="print" dense color="yellow" @click="imprimirboleta(v)"/>
+              <q-btn icon="money" dense color="green" @click="cancelar(v)" v-if="v.cancelar==undefined ||v.cancelar==0"/>
             </template></td>
                   </tr>
                   </tbody>
@@ -204,14 +208,7 @@
             >
                     <template v-slot:body-cell-opcion="props">
           <q-td :props="props">
-            <q-btn
-              color="negative"
-              icon-right="delete"
-              no-caps
-              flat
-              dense
-              @click="delsueldo(props.row)"
-            />
+            <q-btn  color="negative" icon-right="delete" no-caps flat dense @click="delsueldo(props.row)"/>
                 <q-btn dense round flat color="teal" @click="printRow(props)" icon="print"></q-btn>
 
           </q-td>
@@ -269,6 +266,7 @@ export default {
         {name:'descuento',label:'Descuento',field:'descuento'},
         {name:'extra',label:'Extra',field:'extra'},
         {name:'pago',label:'Pago',field:'pago'},
+        {name:'cancelar',label:'Cancelar',field:'cancelar'},
         {name:'opcion',label:'opcion',field:'opcion'},
       ],
     }
@@ -322,6 +320,25 @@ export default {
           })
           this.pagos=false
           this.misempleados()
+      })
+
+    },
+    cancelar(boleta){
+           let total=0;
+      if(boleta.adelanto==null) boleta.adelanto=0;
+      if(boleta.descuento==null) boleta.descuento=0;
+      if(boleta.extra==null) boleta.extra=0;
+      if(boleta.pago==null) boleta.pago=0;
+      if(boleta.obs==null) boleta.obs='';
+      total = boleta.salario - boleta.adelanto - boleta.descuento + boleta.pago; 
+      this.$axios.post(process.env.API+'/cancelacion',{monto:total,fecha:this.fecha2,empleado_id:boleta.id,empleado_nombre:boleta.nombre}).then(res=>{
+        this.missalarios();
+        //console.log(res.data);
+                  this.$q.notify({
+            message:'Registro correctamente',
+            icon:'info',
+            color:'positive'
+          })
       })
 
     },

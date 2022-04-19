@@ -103,6 +103,7 @@ class ClienteController extends Controller
     {
         //
         $cliente=Cliente::find($request->id);
+        $cliente->ci=strtoupper($request->ci);
         $cliente->local=strtoupper($request->local);
         $cliente->titular=strtoupper($request->titular);
         $cliente->tipo=$request->tipo;

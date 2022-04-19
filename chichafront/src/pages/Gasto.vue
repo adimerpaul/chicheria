@@ -482,6 +482,7 @@ export default {
         doc.text(3, y+3, ventas+' Bs.')
       let gastos=0
       let caja=0
+      let cancelar=0
             y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
@@ -493,6 +494,11 @@ export default {
         doc.text(6.5, y+3, r.precio!=null?r.precio.toString():''+'Bs.')
         if(r.glosa=='CAJA CHICA')
         caja+=parseFloat(r.precio!=null?r.precio:0)
+        else
+        if(r.glosa=='CANCELAR'){
+          cancelar+=parseFloat(r.precio!=null?r.precio:0)
+
+        }
         else
         gastos+=parseFloat(r.precio!=null?r.precio:0)
         doc.text(8, y+3, r.glosa+': '+r.observacion)
@@ -510,6 +516,8 @@ export default {
         doc.text(3, y+3, gastos+'Bs.')
         doc.text(8, y+3, 'Gasto Caja Chica:')
         doc.text(12, y+3, caja+'Bs.')
+        doc.text(13.5, y+3, 'Cancelado:')
+        doc.text(16, y+3, cancelar+'Bs.')
       y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
@@ -833,9 +841,13 @@ export default {
       let cont=1
       let sumgasto=0
       let caja=0
+      let cancelar=0
       this.gastos.forEach(r=>{
         if(r.glosa=='CAJA CHICA')
         caja+=parseFloat(r.precio)
+        else
+        if(r.glosa=='CANCELAR')
+        cancelar+=parseFloat(r.precio)
         else
         sumgasto+=parseFloat(r.precio)
         console.log(r)
@@ -861,10 +873,26 @@ export default {
         doc.setFont(undefined,'normal')
         doc.text(3, y+3, sumgasto+' Bs')
       y+=0.5
+              if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      y+=0.5
           doc.setFont(undefined,'bold')
           doc.text(1, y+3, 'caja chica:')
         doc.setFont(undefined,'normal')
         doc.text(3.5, y+3, caja+' Bs')
+                      if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      y+=0.5
+                doc.setFont(undefined,'bold')
+          doc.text(1, y+3, 'CANCELAR:')
+        doc.setFont(undefined,'normal')
+        doc.text(3.5, y+3, cancelar+' Bs')
       // doc.text(2, y+4, 'Ventas totales: ')
       // doc.text(5, y+4, this.ventat+'Bs')
       // doc.text(7, y+4, 'Por cobrar totales: ')

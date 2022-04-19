@@ -82,6 +82,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/missueldos',[\App\Http\Controllers\EmpleadoController::class,'missueldos']);
     Route::resource('/sueldo',\App\Http\Controllers\SueldoController::class);
     Route::get('/impade/{id}',[\App\Http\Controllers\SueldoController::class,'impade']);
+    Route::post('/cancelacion',[\App\Http\Controllers\SueldoController::class,'cancelacion']);
     Route::post('/agregarcliente',[\App\Http\Controllers\ClienteController::class,'agregarcliente']);
     Route::post('/reportecliente',[\App\Http\Controllers\PrestamoController::class,'reportecliente']);
     Route::post('/anularprestamo',[\App\Http\Controllers\PrestamoController::class,'anularprestamo']);

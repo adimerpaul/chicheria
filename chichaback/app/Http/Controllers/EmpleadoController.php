@@ -30,12 +30,13 @@ class EmpleadoController extends Controller
     public function missueldos(Request $request){
 //        return $request;
         return DB::select("
-        SELECT e.nombre,e.salario,e.ci,e.celular,
-        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='ADELANTO' AND  month(fecha) = month('".$request->fecha1."') AND year(fecha)= year('".$request->fecha1."')) as adelanto,
-        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='DESCUENTO' AND  month(fecha) = month('".$request->fecha1."') AND year(fecha)= year('".$request->fecha1."')) as descuento,
-        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='EXTRA' AND  month(fecha) = month('".$request->fecha1."') AND year(fecha)= year('".$request->fecha1."')) as extra,
-        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='PAGO' AND  month(fecha) = month('".$request->fecha1."') AND year(fecha)= year('".$request->fecha1."')) as pago,
-        (SELECT GROUP_CONCAT(observacion SEPARATOR ' <br> ') FROM sueldos WHERE empleado_id=e.id AND tipo='PAGO' AND month('".$request->fecha1."') AND year(fecha)= year('".$request->fecha1."')) as obs
+        SELECT e.id,e.nombre,e.salario,e.ci,e.celular,
+        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='ADELANTO' AND  date(fecha) >= '".$request->fecha1."' AND date(fecha)<= '".$request->fecha2."') as adelanto,
+        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='DESCUENTO' AND  date(fecha) >= '".$request->fecha1."' AND date(fecha)<= '".$request->fecha2."') as descuento,
+        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='EXTRA' AND  date(fecha) >= '".$request->fecha1."' AND date(fecha)<= '".$request->fecha2."') as extra,
+        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='PAGO' AND  date(fecha) >= '".$request->fecha1."' AND date(fecha)<= '".$request->fecha2."') as pago,
+        (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='CANCELAR' AND  date(fecha) >= '".$request->fecha1."' AND date(fecha)<= '".$request->fecha2."') as cancelar,
+        (SELECT GROUP_CONCAT(observacion SEPARATOR ' <br> ') FROM sueldos WHERE empleado_id=e.id AND tipo='PAGO' AND date(fecha) >= '".$request->fecha1."' AND date(fecha)<= '".$request->fecha2."') as obs
         FROM empleados e
         ");
     }
