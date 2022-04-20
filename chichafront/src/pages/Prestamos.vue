@@ -290,8 +290,8 @@ export default {
     },
     listadoprestamo(){
       this.$axios.get(process.env.API+'/prestamo').then(res=>{
-        console.log(res.data);
-        // this.listadop=[];
+        //console.log(res.data);
+        this.listadop=[];
         res.data.forEach(element => {
           console.log(element)
             if(this.tab=='local' && element.cliente.tipocliente=='1')
