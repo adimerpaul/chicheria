@@ -88,7 +88,7 @@
 
 <!--            </q-card>-->
 <!--          </q-dialog>-->
-
+<!--
         <div class="q-pa-md">
           <q-table
             title="INVENTARIO DE MATERIALES"
@@ -105,7 +105,7 @@
               </q-input>
             </template>
             <template v-slot:body-cell-estado="props" >
-                <q-td key="estado" :props="props" @click="activar(props)">
+                <q-td key="estado" :props="props" @click="activar(props.row)">
                   <q-badge color="green" v-if="props.row.estado=='ACTIVO'">
                     {{ props.row.estado }}
                   </q-badge>
@@ -125,8 +125,56 @@
                 </q-td>
             </template>
           </q-table>
-        </div>
 
+        </div>
+        -->
+      <div class="col-12">
+
+        <div class="q-pa-md">
+          <div class=" responsive">
+            <table id="example" class="display" style="width:100%">
+              <thead>
+                  <tr>
+                    <th>CODIGO</th>
+                    <th>ITEM</th>
+                    <th>CANTIDAD GLOBAL</th>
+                    <th>PRESTAMO</th>
+                    <th>VENTAS</th>
+                    <th>SALDO</th>
+                    <th>OBSERVACIONES</th>
+                    <th>ESTADO</th>
+                    <th>OPCIONES</th>
+                  </tr>
+              </thead> 
+                  <tbody>
+                  <tr v-for="v in rows" :key="v.id">
+                  <td>{{v.codigo}}</td>
+                  <td>{{v.nombre}}</td>
+                  <td>{{v.global}}</td>
+                  <td>{{v.prestamo}}</td>
+                  <td>{{v.ventas}}</td>
+                  <td>{{v.cantidad}}</td>
+                  <td>{{v.detalle}}</td>
+                  <td >                  
+                  <q-btn @click="activar(v)" dense :color="v.estado=='ACTIVO'?'green':'red'"  >
+                    {{v.estado}}
+                  </q-btn>
+                  </td>
+                  <td>
+                  
+                <q-btn  dense round flat color="green" @click="addRow(v)" icon="add"></q-btn>
+                <q-btn  dense round flat color="red" @click="substractRow(v)" icon="remove"></q-btn>
+
+                <q-btn dense round flat color="accent" @click="logRow(v)" icon="list"></q-btn>
+                <q-btn dense round flat color="yellow" @click="editRow(v)" icon="edit"></q-btn>
+                <q-btn dense round flat color="red" @click="delRow(v)" icon="delete"></q-btn>
+                </td>
+                  </tr>
+                  </tbody>
+            </table>
+          </div>
+        </div>
+      </div>  
     <q-dialog v-model="dialog_mod">
       <q-card>
         <q-card-section class="bg-green-14 text-white">
@@ -312,7 +360,7 @@
 
 </template>
 <script>
-
+import $ from "jquery";
 export default {
   data(){
     return{
@@ -358,12 +406,15 @@ export default {
     }
   },
   created() {
+     $('#example').DataTable(  );
       this.listado();
       this.cargar();
   },
   methods: {
     listado(){
       this.$q.loading.show();
+      $('#example').DataTable().destroy();
+
       this.$axios.get(process.env.API+'/inventario').then(res=>{
         // console.log(res.data)
         this.rows=[]
@@ -396,6 +447,16 @@ export default {
         })
         // this.rows=res.data;
         this.$q.loading.hide();
+                              $('#example').DataTable().destroy();
+        this.$nextTick(()=>{
+          $('#example').DataTable( {
+            dom: 'Blfrtip',
+            buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]] 
+          } );
+        })
       })
     },
     cargar(){
@@ -432,30 +493,30 @@ export default {
 
 
       activar(props){
-        this.dato=props.row;
+        this.dato=props;
         this.$axios.post(process.env.API+'/activarinv', this.dato).then(res=>{
           this.listado();
         });
 
       },
   editRow(props){
-    this.dato=props.row;
+    this.dato=props;
     this.dialog_mod=true;
   },
   delRow(props){
-    this.dato=props.row;
+    this.dato=props;
     this.dialog_del=true;
   },
       addRow(props){
-        this.dato= props.row;
+        this.dato= props;
         this.dialog_add=true;
     },
     substractRow(props){
-        this.dato= props.row;
+        this.dato= props;
         this.dialog_sub=true;
     },
         logRow(props){
-        this.dato=props.row;
+        this.dato=props;
         this.$axios.post(process.env.API+'/listlog/',this.dato).then(res=>{
           console.log(res.data)
           this.logdata=res.data;
