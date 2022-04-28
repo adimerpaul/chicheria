@@ -870,8 +870,7 @@ export default {
         doc.text(3, 3, 'A cuenta')
         doc.text(5, 3, 'Saldo')
         doc.text(7, 3, 'Estado')
-        doc.text(9.5, 3, 'Local')
-        doc.text(13.5, 3, 'Titular')
+        doc.text(11.5, 3, 'Titular')
         doc.text(18.5, 3, 'Usuario')
         doc.setFont(undefined,'normal')
       }
@@ -892,7 +891,7 @@ export default {
         doc.text(5, y+3, r.saldo.toString())
         doc.text(7, y+3, r.estado.toString())
         doc.text(9.5, y+3, r.local.toString())
-        doc.text(13.5, y+3, r.titular.toString())
+        doc.text(11.5, y+3, r.titular.toString())
         doc.text(18.5, y+3, r.user.toString())
         if (y+3>25){
           doc.addPage();

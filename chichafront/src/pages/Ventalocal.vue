@@ -595,6 +595,8 @@ export default {
       // let xx=x
       // let yy=y
       let y=0
+      doc.setFontSize(8);
+
       this.ventas.forEach(r=>{
         // xx+=0.5
         y+=0.5
@@ -611,6 +613,8 @@ export default {
           y=0
         }
       })
+      doc.setFontSize(9);
+
         doc.setFont(undefined,'bold')
       doc.text(2, y+4, 'Ventas totales: ')
         doc.setFont(undefined,'normal')
