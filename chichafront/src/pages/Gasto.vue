@@ -922,11 +922,14 @@ export default {
             user:r.user.name,
           })
         })
+
+
+
         this.$nextTick(()=>{
           $('#example').DataTable( {
             dom: 'Blfrtip',
             // pageLength: 5,
-            // lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
+             lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "All"]],
             // buttons: [
             //   'copy', 'csv', 'excel', 'pdf', 'print'
             // ],
