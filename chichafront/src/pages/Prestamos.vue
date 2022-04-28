@@ -66,6 +66,9 @@
                 <q-badge color="positive" v-if="props.row.estado=='EN PRESTAMO'">
                   {{ props.row.estado }}
                 </q-badge>
+                <q-badge color="blue" v-if="props.row.estado=='VENTA'">
+                  {{ props.row.estado }}
+                </q-badge>
               </q-td>
             </template>
             <template v-slot:body-cell-logprestamos="props" >
