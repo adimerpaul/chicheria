@@ -15,7 +15,10 @@
           {{this.$store.state.login.user.name}}
         </q-toolbar-title>
 
-        <div>Chicha doña nati</div>
+        <div>
+          Chicha doña nati
+          <q-btn @click="logout" label="salir" color="negative" icon="logout"/>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -391,23 +394,25 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          v-if="$store.state.login.empleados"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="empleado"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item v-if="$store.state.login.empleados" active-class="my-menu-link" clickable exact to="empleado">
+          <q-item-section avatar>
             <q-icon name="people" size="lg" />
           </q-item-section>
-
           <q-item-section>
             <q-item-label>Empleado</q-item-label>
             <q-item-label caption>
               Controlde empleados
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item v-if="$store.state.login.empleados" active-class="my-menu-link" clickable exact to="planillas">
+          <q-item-section avatar>
+            <q-icon name="inventory_2" size="lg" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Planilla</q-item-label>
+            <q-item-label caption>
+              Planillas de pago
             </q-item-label>
           </q-item-section>
         </q-item>

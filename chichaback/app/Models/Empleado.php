@@ -13,9 +13,14 @@ class Empleado extends Model
         'nombre',
         'celular',
         'fechanac',
-        'salario'
+        'salario',
+        'dias',
+        'tipo',
     ];
     public function sueldos(){
         return $this->hasMany(Sueldo::class);
+    }
+    public function planillas(){
+        return $this->hasMany(Planilla::class);
     }
 }

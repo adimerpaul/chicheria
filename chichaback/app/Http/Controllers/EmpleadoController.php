@@ -74,7 +74,7 @@ class EmpleadoController extends Controller
      */
     public function edit(Empleado $empleado)
     {
-        //
+        return Empleado::with('planillas')->get();
     }
 
     /**

@@ -21,6 +21,7 @@ class CreateEmpleadosTable extends Migration
             $table->date('fechanac');
             $table->integer('dias')->default(0);
             $table->string('celular')->nullable()->default('');
+            $table->string('tipo')->nullable()->default('CONTRATO');
             $table->timestamps();
         });
     }
