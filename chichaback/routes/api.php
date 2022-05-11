@@ -91,6 +91,9 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/modprestamo',[\App\Http\Controllers\PrestamoController::class,'modprestamo']);
     Route::post('/reporteventa',[\App\Http\Controllers\PrestamoController::class,'reporteventa']);
     Route::resource('/logcaja',\App\Http\Controllers\LogcajaController::class);
+    Route::resource('/provider',\App\Http\Controllers\ProviderController::class);
+    Route::resource('/material',\App\Http\Controllers\MaterialController::class);
+    Route::resource('/recuento',\App\Http\Controllers\RecuentoController::class);
     Route::post('/listcaja',[\App\Http\Controllers\LogcajaController::class,'listcaja']);
     Route::post('/totalcaja',[\App\Http\Controllers\LogcajaController::class,'totalcaja']);
 });
