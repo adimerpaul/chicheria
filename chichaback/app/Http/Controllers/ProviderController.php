@@ -43,6 +43,7 @@ class ProviderController extends Controller
         $provider->direccion=$request->direccion;
         $provider->email=$request->email;
         $provider->telefono=$request->telefono;
+        $provider->estado='ACTIVO';
         $provider->save();
         
     }

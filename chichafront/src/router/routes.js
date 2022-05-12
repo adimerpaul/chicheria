@@ -21,6 +21,7 @@ import Cxcruta from "pages/Cxcruta";
 import Historialruta from "pages/Historialruta";
 import Caja from "pages/Caja";
 import Planillas from "pages/Planillas";
+import Almacen from "pages/Almacen";
 // <<<<<<< HEAD
 // import User from "pages/User";
 // =======
@@ -56,6 +57,7 @@ const routes = [
       { path: 'historialruta', component: Historialruta,meta: {requiresAuth: true} },
       { path: 'caja', component: Caja,meta: {requiresAuth: true} },
       { path: 'planillas', component: Planillas,meta: {requiresAuth: true} },
+      { path: 'almacen', component: Almacen,meta: {requiresAuth: true} },
 
 // <<<<<<< HEAD
 //       { path: 'user', component: User,meta: {requiresAuth: true} },
