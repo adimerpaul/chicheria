@@ -41,7 +41,7 @@ class MaterialController extends Controller
         $material->nombre=strtoupper($request->nombre);
         $material->unid=$request->unid;
         $material->min=$request->min;
-        $material->stock=$request->stock;
+        $material->stock=0;
         $material->provider_id=$request->provider_id;
         $material->save();
     }

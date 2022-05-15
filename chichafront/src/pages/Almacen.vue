@@ -2,7 +2,39 @@
     <div class="row">
       <div class="col-12">
             <div class="text-h5 " style="text-align:center" ><b >INVENTARIO DE  MATERIAL</b></div>
-             <q-btn color="accent" label="Nuevo Proveedor" @click="dialog_prov=true; proveedor={}"/>
+                <q-btn-dropdown color="accent" label="PROVEEDOR">
+                  <q-list>
+                    <q-item clickable v-close-popup @click="dialog_prov=true; proveedor={}">
+                      <q-item-section>
+                        <q-item-label>REGISTRO</q-item-label>
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup @click="modif_prov">
+                      <q-item-section>
+                        <q-item-label>MODIFICAR</q-item-label>
+                      </q-item-section>
+                    </q-item>
+
+                  </q-list>
+                </q-btn-dropdown>
+
+                <q-btn-dropdown color="teal" label="MATERIAL">
+                  <q-list>
+                    <q-item clickable v-close-popup @click="dialog_mat=true; material={}">
+                      <q-item-section>
+                        <q-item-label>REGISTRO</q-item-label>
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup >
+                      <q-item-section>
+                        <q-item-label>MODIFICAR</q-item-label>
+                      </q-item-section>
+                    </q-item>
+
+                  </q-list>
+                </q-btn-dropdown>
         <div class="row">
         <div class="col-6"><q-select square outlined v-model="proveedor" :options="proveedores" label="Provedores" /></div>
         <div class="col-6"> <q-btn color="teal" label="Registrar Material" />
@@ -12,10 +44,9 @@
         <div class="q-pa-md">
           <q-table
             title="LISTA DE MATERIALES "
-            :rows="rows"
+            :rows="proveedor.materiales"
             :columns="columns"
             :filter="filter"
-
             row-key="name">
             <template v-slot:top-right>
               <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
@@ -26,6 +57,8 @@
             </template>
             <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
+                <q-btn dense round flat color="green" @click="editRow(props)" icon="add"></q-btn>
+                <q-btn dense round flat color="accent" @click="editRow(props)" icon="remove"></q-btn>
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
                 <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
                 </q-td>
@@ -73,6 +106,47 @@
                   <q-input outlined type="text" v-model="proveedor.telefono" label="telefono"/>
             <div>
               <q-btn label="REGISTRAR" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+        <q-dialog v-model="dialog_mat">
+      <q-card>
+        <q-card-section class="bg-green-14 text-white">
+          <div class="text-h7">REGISTRO MATERIAL</div>
+          <div class="text-h7">Proveedor: {{proveedor.razon}}</div>
+        </q-card-section>
+        <q-card-section class="q-pt-xs">
+          <q-form @submit="onRegmat" class="q-gutter-md" >
+                  <q-input outlined type="text" v-model="material.nombre" label="NOMBRE"/>
+                  <q-input outlined type="text" v-model="material.unid" label="UNIDADES"/>
+                  <q-input outlined type="text" v-model="material.min" label="MIN STOCK"/>
+            <div>
+              <q-btn label="REGISTRAR" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+        <q-dialog v-model="dialog_modprov">
+      <q-card>
+        <q-card-section class="bg-yellow-14 text-white">
+          <div class="text-h7">MODIFICAR PROVEEDOR</div>
+        </q-card-section>
+        <q-card-section class="q-pt-xs">
+          <q-form @submit="onReg" class="q-gutter-md" >
+                  <q-input outlined type="text" v-model="proveedor2.razon" label="Razon Social"/>
+                  <q-input outlined type="text" v-model="proveedor2.nit" label="NIT / CI"/>
+                  <q-input outlined type="text" v-model="proveedor2.direccion" label="DIRECCION"/>
+                  <q-input outlined type="text" v-model="proveedor2.email" label="Email"/>
+                  <q-input outlined type="text" v-model="proveedor2.telefono" label="telefono"/>
+            <div>
+              <q-btn label="MODIFICAR" type="submit" color="positive" icon="add_circle"/>
                 <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
             </div>
           </q-form>
@@ -206,7 +280,12 @@ export default {
   data(){
     return{
         proveedor:{},
+        proveedor2:{},
         dialog_prov:false,
+        dialog_modprov:false,
+        dialog_mat:false,
+        dialog_modmat:false,
+        material:{},
         proveedores:[],
       crear:false,
       filter:'',
@@ -221,19 +300,12 @@ export default {
       color:'',
       dato:{},
       columns : [
-  {
-    name: 'nombre',
-    label: 'NOMBRE',
-    align: 'center',
-    field: 'nombre',
-    sortable: true
-  },
-  { name: 'precio', align: 'center', label: 'PRECIO', field: 'precio', sortable: true },
-  { name: 'observacion', align: 'center', label: 'OBSERVACIÓN', field: 'observacion', sortable: true },
-  { name: 'tipo', align: 'center', label: 'TIPO', field: 'tipo', sortable: true },
-  { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
-  { name: 'orden', align: 'center', label: 'ORDEN', field: 'orden' },
-  { name: 'opcion', label: 'OPCIONES', field: 'action' }
+
+  { name: 'nombre', align: 'center', label: 'Nombre', field: 'nombre', sortable: true },
+  { name: 'unid', align: 'center', label: 'unidad', field: 'unid', sortable: true },
+  { name: 'min', align: 'center', label: 'Minimo', field: 'min', sortable: true },
+  { name: 'stock', align: 'center', label: 'stock', field: 'stock', sortable: true },
+  { name: 'opcion', label: 'OPCIONES', field: 'opcion' }
 ],
   rows:[],
 
@@ -243,12 +315,25 @@ export default {
       this.misproveedores()
   },
   methods: {
+      modif_prov(){
+        this.proveedor2=this.proveedor
+        this.dialog_modprov=true
+      },
       onReg(){
       this.$axios.post(process.env.API+'/provider',this.proveedor).then(res=>{
           this.misproveedores()
           this.provider={}
       })
 
+      },
+
+      onRegmat(){
+          this.material.provider_id=this.proveedor.id
+          this.$axios.post(process.env.API+'/material',this.material).then(res=>{
+            this.dialog_mat=false
+          this.misproveedores()
+          this.material={}
+      })
       },
       misproveedores(){
           this.proveedores=[]
