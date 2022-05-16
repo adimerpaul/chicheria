@@ -19,25 +19,9 @@
                   </q-list>
                 </q-btn-dropdown>
 
-                <q-btn-dropdown color="teal" label="MATERIAL">
-                  <q-list>
-                    <q-item clickable v-close-popup @click="dialog_mat=true; material={}">
-                      <q-item-section>
-                        <q-item-label>REGISTRO</q-item-label>
-                      </q-item-section>
-                    </q-item>
-
-                    <q-item clickable v-close-popup >
-                      <q-item-section>
-                        <q-item-label>MODIFICAR</q-item-label>
-                      </q-item-section>
-                    </q-item>
-
-                  </q-list>
-                </q-btn-dropdown>
         <div class="row">
         <div class="col-6"><q-select square outlined v-model="proveedor" :options="proveedores" label="Provedores" /></div>
-        <div class="col-6"> <q-btn color="teal" label="Registrar Material" />
+        <div class="col-6"> <q-btn color="teal" label="Registrar Material" @click="dialog_mat=true; material={}"/>
         </div>
         </div>  
         
@@ -57,8 +41,8 @@
             </template>
             <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
-                <q-btn dense round flat color="green" @click="editRow(props)" icon="add"></q-btn>
-                <q-btn dense round flat color="accent" @click="editRow(props)" icon="remove"></q-btn>
+                <q-btn dense round flat color="green" @click="agregarRow(props)" icon="add"></q-btn>
+                <q-btn dense round flat color="accent" @click="retirarRow(props)" icon="remove"></q-btn>
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
                 <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
                 </q-td>
@@ -66,23 +50,39 @@
           </q-table>
         </div>
 
-    <q-dialog v-model="dialog_mod">
+    <q-dialog v-model="dialog_add">
       <q-card>
         <q-card-section class="bg-green-14 text-white">
-          <div class="text-h7">MODIFICAR REGISTRO PRODUCTO</div>
+          <div class="text-h7">INGRESAR MATERIAL </div>
+          <div class="text-h7">Material: {{material2.nombre}}</div>
         </q-card-section>
         <q-card-section class="q-pt-xs">
-          <q-form
-            @submit="onMod"
-            class="q-gutter-md"
-          >
-                  <q-input outlined type="text" v-model="dato.nombre" label="Nombre"/>
+          <q-form             @submit="onRegRecuento"             class="q-gutter-md"          >
+                  <q-input outlined type="text" v-model="recuento.cantidad" label="Cantidad"/>
 
-                  <q-input outlined type="number" step="0.1" v-model="dato.precio" label="Precio" />
+                  <q-input outlined type="number" step="0.01" v-model="recuento.costo" label="Costo" />
+                  <q-input outlined  type="date" v-model="recuento.fechaven"  label="Fecha Vencimiento"  />
 
-                  <q-input outlined  type="text"  v-model="dato.observacion" label="Observacion" />
-                    <q-select outlined v-model="dato.tipo" :options="['LOCAL','DETALLE']" label="TIPO" />
-            <q-input outlined               type="number" v-model="dato.orden"               label="N° Orden"            />
+                  <q-input outlined  type="text"  v-model="recuento.observacion" label="Observacion" />
+            <div>
+              <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+        <q-dialog v-model="dialog_remove">
+      <q-card>
+        <q-card-section class="bg-green-14 text-white">
+          <div class="text-h7">RETIRAR MATERIAL </div>
+          <div class="text-h7">Material: {{material2.nombre}}</div>
+        </q-card-section>
+        <q-card-section class="q-pt-xs">
+          <q-form             @submit="onRegRecuento2"             class="q-gutter-md"          >
+                  <q-input outlined type="text" v-model="recuento.cantidad" label="Cantidad"/>
+                  <q-input outlined  type="text"  v-model="recuento.observacion" label="Observacion" />
             <div>
               <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
                 <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
@@ -168,93 +168,8 @@
       </q-card>
     </q-dialog>
 
-<q-dialog v-model="dialog_add">
-      <q-card>
-        <q-card-section class="bg-amber-14 text-white">
-          <div class="text-h6">Agregar Cantidad Producto</div>
-        </q-card-section>
-        <q-card-section class="q-pt-xs">
-          <q-form
-            @submit="onAdd"
-            class="q-gutter-md"
-          >
-            <q-input
-              filled
-              v-model="dato.nombre"
-              type="text"
-              label="Nombre"
-              readonly
-            />
-            <q-input
-              filled
-              v-model="dato.motivo"
-              type="text"
-              label="Motivo Description"
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Por favor Valor']"
-            />
-
-            <q-input
-              filled
-              v-model="agregar"
-              label="Cantidad a agregar"
-              type="number"
-              min=1
-              lazy-rules
-              :rules="[ val => val>0 && val < 500 || 'Por favor Valor']"
-            />
-
-             <div>
-              <q-btn label="Agregar" type="submit" color="positive" icon="add_circle"/>
-            </div>
-          </q-form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
 
 
-<q-dialog v-model="dialog_sub">
-      <q-card>
-        <q-card-section class="bg-amber-14 text-white">
-          <div class="text-h6">Retirar cantidad Producto </div>
-        </q-card-section>
-        <q-card-section class="q-pt-xs">
-          <q-form
-            @submit="onSub"
-            class="q-gutter-md"
-          >
-            <q-input
-              filled
-              v-model="dato.nombre"
-              type="text"
-              label="Nombre"
-              readonly
-            />
-            <q-input
-              filled
-              v-model="dato.motivo"
-              type="text"
-              label="Motivo Description"
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Por favor Valor']"
-            />
-            <q-input
-              filled
-              v-model="disminuir"
-              label="Cantidad a retirar"
-              type="number"
-              min=1
-              lazy-rules
-              :rules="[ val => val>0 && val < 500 || 'Por favor Valor']"
-            />
-
-             <div>
-              <q-btn label="Retirar" type="submit" color="red" icon="remove_circle"/>
-            </div>
-          </q-form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
 
     <q-dialog v-model="dialog_del" >
       <q-card>
@@ -286,13 +201,15 @@ export default {
         dialog_mat:false,
         dialog_modmat:false,
         material:{},
+        material2:{},
         proveedores:[],
       crear:false,
+      recuento:{},
       filter:'',
       dialog_mod:false,
       dialog_del:false,
       dialog_add:false,
-      dialog_sub:false,
+      dialog_remove:false,
       dialog_log:false,
       agregar:0,
       disminuir:0,
@@ -315,12 +232,45 @@ export default {
       this.misproveedores()
   },
   methods: {
+    onRegRecuento(){
+      //console.log
+      this.recuento.material_id=this.material2.id
+      this.recuento.tipo='AGREGAR'
+      this.recuento.user_id=this.$store.getters["login/user"].id
+      this.$axios.post(process.env.API+'/recuento',this.recuento).then(res=>{
+        this.recuento={}
+        this.dialog_add=false
+        this.misproveedores()
+      })
+    },
+    onRegRecuento2(){
+      //console.log
+      if(this.material2.stock<this.recuento.cantidad)
+        return false
+      this.recuento.material_id=this.material2.id
+      this.recuento.tipo='RETIRAR'
+      this.recuento.user_id=this.$store.getters["login/user"].id
+      this.$axios.post(process.env.API+'/recuento',this.recuento).then(res=>{
+        this.recuento={}
+        this.dialog_remove=false
+        this.misproveedores()
+      })
+    },
+    agregarRow(props){
+      this.material2=props.row
+      this.dialog_add=true
+    },
+        retirarRow(props){
+      this.material2=props.row
+      this.dialog_remove=true
+    },
       modif_prov(){
         this.proveedor2=this.proveedor
         this.dialog_modprov=true
       },
       onReg(){
       this.$axios.post(process.env.API+'/provider',this.proveedor).then(res=>{
+        this.dialog_prov=false
           this.misproveedores()
           this.provider={}
       })

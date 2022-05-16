@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recuento;
+use App\Models\Material;
 use Illuminate\Http\Request;
 
 class RecuentoController extends Controller
@@ -37,9 +38,18 @@ class RecuentoController extends Controller
     public function store(Request $request)
     {
         //
+        $material=Material::find($request->material_id);
+        if($request->tipo=='AGREGAR')
+            $material->stock=$material->stock + $request->cantidad;
+        else {
+            $material->stock=$material->stock - $request->cantidad;            
+        }
+        $material->save();
+        
         $recuento=new Recuento;
         $recuento->fecha=date('Y-m-d');
         $recuento->hora=date('H:i:s');
+        $recuento->fechaven=$request->fechaven;
         $recuento->cantidad=$request->cantidad;
         $recuento->costo=$request->costo;
         $recuento->tipo=$request->tipo;
