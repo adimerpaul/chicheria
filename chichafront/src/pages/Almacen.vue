@@ -31,6 +31,8 @@
         <div class="col-12">
         <div class="q-pa-none">
           <q-table
+            dense
+            :rows-per-page-options="[0]"
             title="LISTA DE MATERIALES "
             :rows="proveedor.materiales"
             :columns="columns"

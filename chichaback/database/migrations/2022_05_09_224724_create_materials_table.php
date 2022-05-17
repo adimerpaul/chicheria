@@ -19,8 +19,8 @@ class CreateMaterialsTable extends Migration
             $table->string('unid');
             $table->integer('min');
             $table->integer('stock')->default(0);
-            $table->unsignedBigInteger('provider_id');
-            $table->foreign('provider_id')->references('id')->on('providers');
+//            $table->unsignedBigInteger('provider_id');
+//            $table->foreign('provider_id')->references('id')->on('providers');
             $table->timestamps();
         });
     }
