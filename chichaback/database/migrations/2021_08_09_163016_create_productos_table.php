@@ -15,6 +15,7 @@ class CreateProductosTable extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
+            $table->integer("orden")->nullable();
             $table->string("nombre")->nullable()->default('');
             $table->double("precio",11,2)->nullable()->default(0);
             $table->string("observacion")->nullable();

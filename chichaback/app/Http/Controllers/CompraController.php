@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compra;
+use App\Models\Material;
 use Illuminate\Http\Request;
 
 class CompraController extends Controller
@@ -35,26 +36,27 @@ class CompraController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        foreach ($compras as $r) {
-            # code...
-        }
+        //        return $request; 
+        foreach ($request->compras as $r) {
+            $material=Material::find($r['material_id']);
+            $material->stock=$material->stock + $r['cantidad'];
+            $material->save();
 
-        $material=Material::find($request->material_id);
-        $material->stock=$material->stock + $request->cantidad;
-        $material->save();
+
         
         $compra=new Compra;
         $compra->fecha=date('Y-m-d');
         $compra->hora=date('H:i:s');
-        $compra->fechaven=$request->fechaven;
-        $compra->cantidad=$request->cantidad;
-        $compra->costo=$request->costo;
-        $compra->observacion=$request->observacion;
-        $compra->material_id=$request->material_id;
+        $compra->cantidad=$r['cantidad'];
+        $compra->costo=$r['costo'];
+        $compra->fechaven=$r['fechaven'];
+        $compra->observacion=$r['observacion'];
+        $compra->material_id=$r['material_id'];
         $compra->provider_id=$request->provider_id;
         $compra->user_id=$request->user_id;
         $compra->save();
+        }
+
     }
 
     /**

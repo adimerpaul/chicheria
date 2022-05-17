@@ -80,6 +80,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::resource('/logprestamo',\App\Http\Controllers\LogprestamoController ::class);
 
     Route::resource('/empleado',\App\Http\Controllers\EmpleadoController::class);
+    Route::resource('/compra',\App\Http\Controllers\CompraController::class);
     Route::post('/missueldos',[\App\Http\Controllers\EmpleadoController::class,'missueldos']);
     Route::resource('/sueldo',\App\Http\Controllers\SueldoController::class);
     Route::get('/impade/{id}',[\App\Http\Controllers\SueldoController::class,'impade']);
