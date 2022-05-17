@@ -47,6 +47,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::resource('/permiso',\App\Http\Controllers\PermisoController::class);
     Route::resource('/pago',\App\Http\Controllers\PagoController::class);
     Route::post('/reportepago',[\App\Http\Controllers\PagoController::class,'reportepago']);
+    Route::post('/repalmacen',[\App\Http\Controllers\MaterialController::class,'repalmacen']);
 
     Route::post('/listlog',[\App\Http\Controllers\LoginventarioController::class,'listlog']);
     Route::post('/misventas',[\App\Http\Controllers\VentaController::class,'misventas']);

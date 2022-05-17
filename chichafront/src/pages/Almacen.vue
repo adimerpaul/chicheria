@@ -207,15 +207,18 @@
         </q-card>
       </q-dialog>
 
-      <q-dialog v-model="dialog_del" >
+      <q-dialog v-model="dialog_reporte" >
         <q-card>
+          <q-card-section class="bg-cyan-14 text-white">
+            <div class="text-h7">GENERAR REPORTE</div>
+          </q-card-section>
           <q-card-section class="row items-center">
-            <q-avatar icon="clear" color="red" text-color="white" />
-            <span class="q-ml-sm">Seguro de eliminar Registro.</span>
+            <q-input dense type="date" outlined v-model="fecha1" label="Fecha Inicio" />
+            <q-input dense type="date" outlined v-model="fecha2" label="Fecha Fin" />
           </q-card-section>
 
           <q-card-actions align="right">
-            <q-btn flat label="Eliminar" color="deep-orange" @click="onDel"/>
+            <q-btn flat label="GENERAR" color="deep-orange" @click="genreporte"/>
             <q-btn flat label="Cancelar" color="primary" v-close-popup />
           </q-card-actions>
         </q-card>
@@ -241,7 +244,9 @@
   </q-page>
 </template>
 <script>
-
+import {date} from 'quasar'
+import {jsPDF} from "jspdf";
+import $ from "jquery";
 export default {
   data(){
     return{
@@ -251,6 +256,7 @@ export default {
         dialog_modprov:false,
         dialog_mat:false,
         dialog_modmat:false,
+        dialog_reporte:false,
         material:{},
         materiales:[],
         material2:{},
@@ -270,6 +276,8 @@ export default {
       producto:{},
       color:'',
       dato:{},
+      fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
+      fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
       columns : [
 
   { name: 'nombre', align: 'center', label: 'Nombre', field: 'nombre', sortable: true },
@@ -287,6 +295,62 @@ export default {
       this.mismateriales()
   },
   methods: {
+    genreporte(){
+
+      this.$axios.post(process.env.API+'/repalmacen',{id:this.material2.id,fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+          console.log(res.data)
+      let mc=this
+
+      function header(){
+        var img = new Image()
+        img.src = 'logo.png'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(5, 1, 'INVENTARIO MATERIAL : ' + mc.material2.nombre)
+        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(1, 3, 'TIPO')
+        doc.text(2.5, 3, 'PROVEEDOR')
+        doc.text(5, 3, 'MATERIAL')
+        doc.text(7, 3, 'FECHA')
+        doc.text(9.5, 3, 'COSTO')
+        doc.text(11, 3, 'CANTIDAD')
+        doc.text(13, 3, 'FECHA VEN')
+        doc.text(15, 3, 'OBSERVACION')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(9);
+      // var x=0,y=
+      header()
+      // let xx=x
+      // let yy=y
+      let y=0
+      res.data.forEach(r=>{
+        y+=0.5
+        doc.text(1, y+3, r.tipo)
+        doc.text(2.5, y+3, r.razon)
+        doc.text(5, y+3, r.nombre)
+        doc.text(7, y+3, r.fecha)
+        doc.text(9.5, y+3, r.costo==null?'':r.costo+'')
+        doc.text(11, y+3, r.cantidad+'')
+        doc.text(13, y+3, r.fechaven==null?'':r.fechaven)
+        doc.text(15, y+3, r.observacion==null?'':r.observacion)
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })
+      window.open(doc.output('bloburl'), '_blank');
+      })
+
+    },
+    reporte(props){
+      this.material2=props.row
+      this.dialog_reporte=true
+    },
     regcompra(){
       if(this.compras.length==0){
                 this.$q.notify({
