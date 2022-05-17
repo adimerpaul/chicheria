@@ -34,11 +34,13 @@
             dense
             :rows-per-page-options="[0]"
             title="LISTA DE MATERIALES "
-            :rows="proveedor.materiales"
+            :rows="materiales"
             :columns="columns"
             :filter="filter"
             row-key="name">
             <template v-slot:top-right>
+               <q-btn color="amber-8"  label="COMPRAS" @click="dialog_add=true; compras=[]"/>
+              
               <q-input dense outlined debounce="300" v-model="filter" placeholder="Buscar">
                 <template v-slot:append>
                   <q-icon name="search" />
@@ -47,7 +49,6 @@
             </template>
             <template v-slot:body-cell-opcion="props" >
               <q-td key="opcion" :props="props" >
-                <q-btn dense round flat color="green" @click="agregarRow(props)" icon="add"></q-btn>
                 <q-btn dense round flat color="accent" @click="retirarRow(props)" icon="remove"></q-btn>
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
                 <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
@@ -58,19 +59,29 @@
 
       </div>
       <q-dialog v-model="dialog_add">
-        <q-card>
+        <q-card style="width: 800px; max-width: 80vw;">
           <q-card-section class="bg-green-14 text-white">
             <div class="text-h7">INGRESAR MATERIAL </div>
-            <div class="text-h7">Material: {{material2.nombre}}</div>
+            <div class="text-h7">Proveedor: {{proveedor.razon}}</div>
           </q-card-section>
           <q-card-section class="q-pt-xs">
-            <q-form             @submit="onRegRecuento"             class="q-gutter-md"          >
-              <q-input outlined type="text" v-model="recuento.cantidad" label="Cantidad"/>
+            <q-form  @submit="onRegRecuento"             class="q-gutter-md"  >
+              <div class="row">
+              <div class="col-3"><q-select dense outlined v-model="material" :options="materiales" label="Material" /></div>
+              <div class="col-2"><q-input dense outlined type="text" v-model="compra.cantidad" label="Cantidad"/></div>
+              <div class="col-2"><q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo" /></div>
+              <div class="col-2"><q-input dense outlined  type="date" v-model="compra.fechaven"  label="Fecha Vencimiento"  /></div>
+              <div class="col-2"><q-input dense outlined  type="text"  v-model="compra.observacion" label="Observacion" /></div>
+              <div class="col-1"> <q-btn  dense color="green" icon="add_circle" />
+              </div>
+              </div>
+              
+              
 
-              <q-input outlined type="number" step="0.01" v-model="recuento.costo" label="Costo" />
-              <q-input outlined  type="date" v-model="recuento.fechaven"  label="Fecha Vencimiento"  />
+              
+              
 
-              <q-input outlined  type="text"  v-model="recuento.observacion" label="Observacion" />
+              
               <div>
                 <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
                 <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
@@ -124,7 +135,6 @@
         <q-card>
           <q-card-section class="bg-green-14 text-white">
             <div class="text-h7">REGISTRO MATERIAL</div>
-            <div class="text-h7">Proveedor: {{proveedor.razon}}</div>
           </q-card-section>
           <q-card-section class="q-pt-xs">
             <q-form @submit="onRegmat" class="q-gutter-md" >
@@ -206,8 +216,11 @@ export default {
         dialog_mat:false,
         dialog_modmat:false,
         material:{},
+        materiales:[],
         material2:{},
         proveedores:[],
+        compras:[],
+        compra:{},
       crear:false,
       recuento:{},
       filter:'',
@@ -235,6 +248,7 @@ export default {
   created() {
       this.listado();
       this.misproveedores()
+      this.mismateriales()
   },
   methods: {
     onRegRecuento(){
@@ -284,11 +298,10 @@ export default {
 
       onRegmat(){
       this.$q.loading.show()
-      this.material.provider_id=this.proveedor.id
       this.$axios.post(process.env.API+'/material',this.material).then(res=>{
           this.$q.loading.hide()
           this.dialog_mat=false
-          this.misproveedores()
+          this.mismateriales()
           this.material={}
         })
       },
@@ -300,6 +313,18 @@ export default {
               this.proveedores.push(r)
           });
           this.proveedor=this.proveedores[0]
+      })
+
+      },
+
+       mismateriales(){
+          this.materiales=[]
+      this.$axios.get(process.env.API+'/material').then(res=>{
+          res.data.forEach( r=> {
+              r.label=r.nombre
+              this.materiales.push(r)
+          });
+          this.material=this.materiales[0]
       })
 
       },

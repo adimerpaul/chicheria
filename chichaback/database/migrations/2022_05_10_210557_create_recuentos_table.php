@@ -18,9 +18,9 @@ class CreateRecuentosTable extends Migration
             $table->date('fecha');
             $table->time('hora');
             $table->integer('cantidad');
-            $table->double('costo')->nullable();
-            $table->string('tipo');
-            $table->date('fechaven')->nullable();
+            //$table->double('costo')->nullable();
+            //$table->string('tipo');
+           // $table->date('fechaven')->nullable();
             $table->string('observacion')->nullable();
             $table->unsignedBigInteger('material_id');
             $table->foreign('material_id')->references('id')->on('materials');

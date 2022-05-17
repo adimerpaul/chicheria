@@ -36,6 +36,25 @@ class CompraController extends Controller
     public function store(Request $request)
     {
         //
+        foreach ($compras as $r) {
+            # code...
+        }
+
+        $material=Material::find($request->material_id);
+        $material->stock=$material->stock + $request->cantidad;
+        $material->save();
+        
+        $compra=new Compra;
+        $compra->fecha=date('Y-m-d');
+        $compra->hora=date('H:i:s');
+        $compra->fechaven=$request->fechaven;
+        $compra->cantidad=$request->cantidad;
+        $compra->costo=$request->costo;
+        $compra->observacion=$request->observacion;
+        $compra->material_id=$request->material_id;
+        $compra->provider_id=$request->provider_id;
+        $compra->user_id=$request->user_id;
+        $compra->save();
     }
 
     /**

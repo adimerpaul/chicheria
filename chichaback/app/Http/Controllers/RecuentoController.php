@@ -16,7 +16,7 @@ class RecuentoController extends Controller
     public function index()
     {
         //
-        return Recuento::all();
+        //return Recuento::all();
     }
 
     /**
@@ -39,20 +39,13 @@ class RecuentoController extends Controller
     {
         //
         $material=Material::find($request->material_id);
-        if($request->tipo=='AGREGAR')
-            $material->stock=$material->stock + $request->cantidad;
-        else {
-            $material->stock=$material->stock - $request->cantidad;            
-        }
+        $material->stock=$material->stock - $request->cantidad;
         $material->save();
         
         $recuento=new Recuento;
         $recuento->fecha=date('Y-m-d');
         $recuento->hora=date('H:i:s');
-        $recuento->fechaven=$request->fechaven;
         $recuento->cantidad=$request->cantidad;
-        $recuento->costo=$request->costo;
-        $recuento->tipo=$request->tipo;
         $recuento->observacion=$request->observacion;
         $recuento->material_id=$request->material_id;
         $recuento->user_id=$request->user_id;

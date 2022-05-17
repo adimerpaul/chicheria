@@ -12,13 +12,15 @@ class Material extends Model
         'nombre',
         'unid',
         'min',
-        'stock',
-        'provider_id'
-
+        'stock'
     ];
     protected $hidden = ["created_at", "updated_at"];
 
     public function Recuentos(){
         return $this->hasMany(Recuento::class);
+    }
+
+    public function Compras(){
+        return $this->hasMany(Compra::class);
     }
 }

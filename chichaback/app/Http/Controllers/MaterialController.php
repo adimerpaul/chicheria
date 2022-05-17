@@ -15,7 +15,8 @@ class MaterialController extends Controller
     public function index()
     {
         //
-        return Material::with('recuentos')->get();
+        return Material::with('compras')->with('recuentos')->get();
+
     }
 
     /**
@@ -42,7 +43,6 @@ class MaterialController extends Controller
         $material->unid=strtoupper($request->unid);
         $material->min=$request->min;
         $material->stock=0;
-        $material->provider_id=$request->provider_id;
         $material->save();
     }
 
@@ -78,6 +78,12 @@ class MaterialController extends Controller
     public function update(Request $request, Material $material)
     {
         //
+        $material=Material::find($request->id);
+        $material->nombre=strtoupper($request->nombre);
+        $material->unid=strtoupper($request->unid);
+        $material->min=$request->min;
+        //$material->stock=0;
+        $material->save();
     }
 
     /**

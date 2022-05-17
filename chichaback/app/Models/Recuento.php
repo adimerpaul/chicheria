@@ -13,7 +13,6 @@ class Recuento extends Model
         'hora',
         'cantidad',
         'costo',
-        'tipo',
         'fechaven',
         'observacion',
         'material_id',

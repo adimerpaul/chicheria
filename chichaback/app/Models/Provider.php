@@ -19,7 +19,5 @@ class Provider extends Model
     ];
     protected $hidden = ["created_at", "updated_at"];
 
-    public function materiales(){
-        return $this->hasMany(Material::class)->with('recuentos');
-    }
+
 }

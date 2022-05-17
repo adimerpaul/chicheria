@@ -15,7 +15,7 @@ class ProviderController extends Controller
     public function index()
     {
         //
-        return Provider::with('materiales')->get();
+        return Provider::all();
     }
 
     /**
