@@ -5,12 +5,12 @@
     <q-td :props="props" auto-width>
       <q-btn-dropdown color="primary" label="Opciones">
         <q-list>
-          <q-item clickable v-close-popup >
+          <q-item clickable v-close-popup @click="clickmod(props.row)" >
             <q-item-section>
               <q-item-label>Modificar Empleado</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable v-close-popup >
+          <q-item clickable v-close-popup @click="deleteval(props.row)">
             <q-item-section>
               <q-item-label>Eliminar Empleado</q-item-label>
             </q-item-section>
@@ -65,6 +65,7 @@
     <q-input dense outlined placeholder="Buscar"/>
   </template>
 </q-table>
+
 <q-dialog v-model="dialogcreateempleado" >
 <q-card>
   <q-card-section class="text-center text-subtitle2">Crear Empleado</q-card-section>
@@ -98,6 +99,41 @@
   </q-card-section>
 </q-card>
 </q-dialog>
+
+<q-dialog v-model="dialogmodempleado" >
+<q-card>
+  <q-card-section class="text-center text-subtitle2">Modificar Empleado</q-card-section>
+  <q-separator/>
+  <q-card-section>
+    <q-form @submit="modempleado">
+      <div class="row">
+        <div class="col-12">
+          <q-input dense outlined label="ci" v-model="empleado2.ci"/>
+        </div>
+        <div class="col-12">
+          <q-input dense outlined label="nombre" v-model="empleado2.nombre"/>
+        </div>
+        <div class="col-12">
+          <q-input dense type="date" outlined label="fechanac" v-model="empleado2.fechanac"/>
+        </div>
+        <div class="col-12">
+          <q-input dense outlined label="celular" v-model="empleado2.celular"/>
+        </div>
+        <div class="col-12">
+          <q-select :options="['CONTRATO','EVENTUAL']" dense outlined label="tipo" v-model="empleado2.tipo"/>
+        </div>
+        <div class="col-12">
+          <q-input dense outlined label="salario" type="number" v-model="empleado2.salario"/>
+        </div>
+        <div class="col-12">
+          <q-btn label="Modificar empleado" class="full-width" type="submit" icon="add_circle" color="positive"  />
+        </div>
+      </div>
+    </q-form>
+  </q-card-section>
+</q-card>
+</q-dialog>
+
   <q-dialog v-model="dialogcreateplanilla" full-width full-height>
     <q-card>
       <q-card-section class="text-center text-subtitle2">Crear Planilla {{empleado.nombre}} {{empleado.tipo}}</q-card-section>
@@ -213,11 +249,13 @@ export default {
     return{
       dialogplanilla:false,
       dialogcreateempleado:false,
+      dialogmodempleado:false,
       dialogcreateplanilla:false,
       fechainicio:date.formatDate(new Date(),'YYYY-MM-DD'),
       fechafin:date.formatDate(new Date(),'YYYY-MM-DD'),
       monto:0,
       empleado:{tipo:'CONTRATO',fechanac:date.formatDate(new Date(),'YYYY-MM-DD')},
+      empleado2:{},
       empleados:[],
       columsempleado:[
         {label:'opcion',name:'opcion',field:'opcion',align:'left'},
@@ -249,6 +287,10 @@ export default {
     this.misempleados()
   },
   methods:{
+    clickmod(empleado){
+      this.empleado2=empleado
+      this.dialogmodempleado=true
+    },
     clickplanilla(empleado){
       this.empleado=empleado
       // console.log(empleado)
@@ -431,7 +473,41 @@ export default {
         this.dialogcreateempleado=false
         this.misempleados()
       })
-    }
+    },
+    modempleado(){
+    //  console.log(this.empleado)
+      this.$q.loading.show()
+      this.$axios.put(process.env.API+'/empleado/'+this.empleado2.id,this.empleado2).then(res=>{
+        this.dialogmodempleado=false
+        this.misempleados()
+      })
+    },
+      deleteval(empleado){
+      this.$q.dialog({
+        title:'Seguro de eliminar?',
+        cancel:true,
+      }).onOk(()=>{
+        this.$q.loading.show()
+        this.$axios.delete(process.env.API+'/empleado/'+empleado.id).then(res=>{
+          this.$q.loading.hide()
+          this.misempleados()
+          this.$q.notify({
+            message:'Borrado correctamente',
+            icon:'info',
+            color:'positive'
+          })
+        }).catch(err=>{
+          // console.log(err.response)
+          this.$q.loading.hide()
+          this.$q.notify({
+            message:err.response.data.message,
+            icon:'error',
+            color:'red'
+          })
+        })
+      })
+
+    },
   }
 
 }
