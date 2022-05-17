@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Empleado;
 use App\Models\Planilla;
 use Illuminate\Http\Request;
 
@@ -44,9 +45,10 @@ class PlanillaController extends Controller
      * @param  \App\Models\Planilla  $planilla
      * @return \Illuminate\Http\Response
      */
-    public function show(Planilla $planilla)
+    public function show($empleado_id)
     {
-        //
+//        return $empleado_id;
+        return Planilla::where('empleado_id',$empleado_id)->orderBy('id','desc')->get();
     }
 
     /**
@@ -69,7 +71,7 @@ class PlanillaController extends Controller
      */
     public function update(Request $request, Planilla $planilla)
     {
-        //
+        $planilla->update($request->all());
     }
 
     /**
@@ -80,6 +82,6 @@ class PlanillaController extends Controller
      */
     public function destroy(Planilla $planilla)
     {
-        //
+        $planilla->delete();
     }
 }

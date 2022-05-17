@@ -1,31 +1,35 @@
 <template>
+  <q-page class="q-pa-xs">
     <div class="row">
       <div class="col-12">
-            <div class="text-h5 " style="text-align:center" ><b >INVENTARIO DE  MATERIAL</b></div>
-                <q-btn-dropdown color="accent" label="PROVEEDOR">
-                  <q-list>
-                    <q-item clickable v-close-popup @click="dialog_prov=true; proveedor={}">
-                      <q-item-section>
-                        <q-item-label>REGISTRO</q-item-label>
-                      </q-item-section>
-                    </q-item>
+        <div class="text-h5 text-center text-bold"  >INVENTARIO DE  MATERIAL</div>
+      </div>
+      <div class="col-3 flex flex-center">
+        <q-btn-dropdown icon="list" class="full-width" color="accent" label="PROVEEDOR">
+          <q-list>
+            <q-item clickable v-close-popup @click="dialog_prov=true; proveedor={}">
+              <q-item-section>
+                <q-item-label>REGISTRO</q-item-label>
+              </q-item-section>
+            </q-item>
 
-                    <q-item clickable v-close-popup @click="modif_prov">
-                      <q-item-section>
-                        <q-item-label>MODIFICAR</q-item-label>
-                      </q-item-section>
-                    </q-item>
+            <q-item clickable v-close-popup @click="modif_prov">
+              <q-item-section>
+                <q-item-label>MODIFICAR</q-item-label>
+              </q-item-section>
+            </q-item>
 
-                  </q-list>
-                </q-btn-dropdown>
-
-        <div class="row">
-        <div class="col-6"><q-select square outlined v-model="proveedor" :options="proveedores" label="Provedores" /></div>
-        <div class="col-6"> <q-btn color="teal" label="Registrar Material" @click="dialog_mat=true; material={}"/>
-        </div>
-        </div>  
-        
-        <div class="q-pa-md">
+          </q-list>
+        </q-btn-dropdown>
+      </div>
+      <div class="col-6">
+        <q-select dense outlined v-model="proveedor" :options="proveedores" label="Provedores" />
+      </div>
+      <div class="col-3 flex flex-center">
+        <q-btn icon="engineering" color="teal" class="full-width" label="Registrar Material" @click="dialog_mat=true; material={}"/>
+      </div>
+        <div class="col-12">
+        <div class="q-pa-none">
           <q-table
             title="LISTA DE MATERIALES "
             :rows="proveedor.materiales"
@@ -33,161 +37,160 @@
             :filter="filter"
             row-key="name">
             <template v-slot:top-right>
-              <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
+              <q-input dense outlined debounce="300" v-model="filter" placeholder="Buscar">
                 <template v-slot:append>
                   <q-icon name="search" />
                 </template>
               </q-input>
             </template>
             <template v-slot:body-cell-opcion="props" >
-                <q-td key="opcion" :props="props" >
+              <q-td key="opcion" :props="props" >
                 <q-btn dense round flat color="green" @click="agregarRow(props)" icon="add"></q-btn>
                 <q-btn dense round flat color="accent" @click="retirarRow(props)" icon="remove"></q-btn>
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
                 <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
-                </q-td>
+              </q-td>
             </template>
           </q-table>
         </div>
 
-    <q-dialog v-model="dialog_add">
-      <q-card>
-        <q-card-section class="bg-green-14 text-white">
-          <div class="text-h7">INGRESAR MATERIAL </div>
-          <div class="text-h7">Material: {{material2.nombre}}</div>
-        </q-card-section>
-        <q-card-section class="q-pt-xs">
-          <q-form             @submit="onRegRecuento"             class="q-gutter-md"          >
-                  <q-input outlined type="text" v-model="recuento.cantidad" label="Cantidad"/>
-
-                  <q-input outlined type="number" step="0.01" v-model="recuento.costo" label="Costo" />
-                  <q-input outlined  type="date" v-model="recuento.fechaven"  label="Fecha Vencimiento"  />
-
-                  <q-input outlined  type="text"  v-model="recuento.observacion" label="Observacion" />
-            <div>
-              <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
-                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
-            </div>
-          </q-form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-        <q-dialog v-model="dialog_remove">
-      <q-card>
-        <q-card-section class="bg-green-14 text-white">
-          <div class="text-h7">RETIRAR MATERIAL </div>
-          <div class="text-h7">Material: {{material2.nombre}}</div>
-        </q-card-section>
-        <q-card-section class="q-pt-xs">
-          <q-form             @submit="onRegRecuento2"             class="q-gutter-md"          >
-                  <q-input outlined type="text" v-model="recuento.cantidad" label="Cantidad"/>
-                  <q-input outlined  type="text"  v-model="recuento.observacion" label="Observacion" />
-            <div>
-              <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
-                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
-            </div>
-          </q-form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-    <q-dialog v-model="dialog_prov">
-      <q-card>
-        <q-card-section class="bg-green-14 text-white">
-          <div class="text-h7">REGISTRO PROVEEDOR</div>
-        </q-card-section>
-        <q-card-section class="q-pt-xs">
-          <q-form @submit="onReg" class="q-gutter-md" >
-                  <q-input outlined type="text" v-model="proveedor.razon" label="Razon Social"/>
-                  <q-input outlined type="text" v-model="proveedor.nit" label="NIT / CI"/>
-                  <q-input outlined type="text" v-model="proveedor.direccion" label="DIRECCION"/>
-                  <q-input outlined type="text" v-model="proveedor.email" label="Email"/>
-                  <q-input outlined type="text" v-model="proveedor.telefono" label="telefono"/>
-            <div>
-              <q-btn label="REGISTRAR" type="submit" color="positive" icon="add_circle"/>
-                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
-            </div>
-          </q-form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-        <q-dialog v-model="dialog_mat">
-      <q-card>
-        <q-card-section class="bg-green-14 text-white">
-          <div class="text-h7">REGISTRO MATERIAL</div>
-          <div class="text-h7">Proveedor: {{proveedor.razon}}</div>
-        </q-card-section>
-        <q-card-section class="q-pt-xs">
-          <q-form @submit="onRegmat" class="q-gutter-md" >
-                  <q-input outlined type="text" v-model="material.nombre" label="NOMBRE"/>
-                  <q-input outlined type="text" v-model="material.unid" label="UNIDADES"/>
-                  <q-input outlined type="text" v-model="material.min" label="MIN STOCK"/>
-            <div>
-              <q-btn label="REGISTRAR" type="submit" color="positive" icon="add_circle"/>
-                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
-            </div>
-          </q-form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-        <q-dialog v-model="dialog_modprov">
-      <q-card>
-        <q-card-section class="bg-yellow-14 text-white">
-          <div class="text-h7">MODIFICAR PROVEEDOR</div>
-        </q-card-section>
-        <q-card-section class="q-pt-xs">
-          <q-form @submit="onReg" class="q-gutter-md" >
-                  <q-input outlined type="text" v-model="proveedor2.razon" label="Razon Social"/>
-                  <q-input outlined type="text" v-model="proveedor2.nit" label="NIT / CI"/>
-                  <q-input outlined type="text" v-model="proveedor2.direccion" label="DIRECCION"/>
-                  <q-input outlined type="text" v-model="proveedor2.email" label="Email"/>
-                  <q-input outlined type="text" v-model="proveedor2.telefono" label="telefono"/>
-            <div>
-              <q-btn label="MODIFICAR" type="submit" color="positive" icon="add_circle"/>
-                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
-            </div>
-          </q-form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-    <q-dialog v-model="dialog_del" >
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="clear" color="red" text-color="white" />
-          <span class="q-ml-sm">Seguro de eliminar Registro.</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Eliminar" color="deep-orange" @click="onDel"/>
-          <q-btn flat label="Cancelar" color="primary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
-
-
-
-    <q-dialog v-model="dialog_del" >
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-avatar icon="clear" color="red" text-color="white" />
-          <span class="q-ml-sm">Seguro de eliminar Registro.</span>
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn flat label="Eliminar" color="deep-orange" @click="onDel"/>
-          <q-btn flat label="Cancelar" color="primary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-
       </div>
-    </div>
+      <q-dialog v-model="dialog_add">
+        <q-card>
+          <q-card-section class="bg-green-14 text-white">
+            <div class="text-h7">INGRESAR MATERIAL </div>
+            <div class="text-h7">Material: {{material2.nombre}}</div>
+          </q-card-section>
+          <q-card-section class="q-pt-xs">
+            <q-form             @submit="onRegRecuento"             class="q-gutter-md"          >
+              <q-input outlined type="text" v-model="recuento.cantidad" label="Cantidad"/>
 
+              <q-input outlined type="number" step="0.01" v-model="recuento.costo" label="Costo" />
+              <q-input outlined  type="date" v-model="recuento.fechaven"  label="Fecha Vencimiento"  />
+
+              <q-input outlined  type="text"  v-model="recuento.observacion" label="Observacion" />
+              <div>
+                <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="dialog_remove">
+        <q-card>
+          <q-card-section class="bg-green-14 text-white">
+            <div class="text-h7">RETIRAR MATERIAL </div>
+            <div class="text-h7">Material: {{material2.nombre}}</div>
+          </q-card-section>
+          <q-card-section class="q-pt-xs">
+            <q-form             @submit="onRegRecuento2"             class="q-gutter-md"          >
+              <q-input outlined type="text" v-model="recuento.cantidad" label="Cantidad"/>
+              <q-input outlined  type="text"  v-model="recuento.observacion" label="Observacion" />
+              <div>
+                <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="dialog_prov">
+        <q-card>
+          <q-card-section class="bg-green-14 text-white">
+            <div class="text-h7">REGISTRO PROVEEDOR</div>
+          </q-card-section>
+          <q-card-section class="q-pt-xs">
+            <q-form @submit="onReg" class="q-gutter-md" >
+              <q-input outlined type="text" v-model="proveedor.razon" label="Razon Social"/>
+              <q-input outlined type="text" v-model="proveedor.nit" label="NIT / CI"/>
+              <q-input outlined type="text" v-model="proveedor.direccion" label="DIRECCION"/>
+              <q-input outlined type="text" v-model="proveedor.email" label="Email"/>
+              <q-input outlined type="text" v-model="proveedor.telefono" label="telefono"/>
+              <div>
+                <q-btn label="REGISTRAR" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="dialog_mat">
+        <q-card>
+          <q-card-section class="bg-green-14 text-white">
+            <div class="text-h7">REGISTRO MATERIAL</div>
+            <div class="text-h7">Proveedor: {{proveedor.razon}}</div>
+          </q-card-section>
+          <q-card-section class="q-pt-xs">
+            <q-form @submit="onRegmat" class="q-gutter-md" >
+              <q-input outlined type="text" v-model="material.nombre" label="NOMBRE"/>
+              <q-input outlined type="text" v-model="material.unid" label="UNIDADES"/>
+              <q-input outlined type="text" v-model="material.min" label="MIN STOCK"/>
+              <div>
+                <q-btn label="REGISTRAR" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="dialog_modprov">
+        <q-card>
+          <q-card-section class="bg-yellow-14 text-white">
+            <div class="text-h7">MODIFICAR PROVEEDOR</div>
+          </q-card-section>
+          <q-card-section class="q-pt-xs">
+            <q-form @submit="onReg" class="q-gutter-md" >
+              <q-input outlined type="text" v-model="proveedor2.razon" label="Razon Social"/>
+              <q-input outlined type="text" v-model="proveedor2.nit" label="NIT / CI"/>
+              <q-input outlined type="text" v-model="proveedor2.direccion" label="DIRECCION"/>
+              <q-input outlined type="text" v-model="proveedor2.email" label="Email"/>
+              <q-input outlined type="text" v-model="proveedor2.telefono" label="telefono"/>
+              <div>
+                <q-btn label="MODIFICAR" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="dialog_del" >
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-avatar icon="clear" color="red" text-color="white" />
+            <span class="q-ml-sm">Seguro de eliminar Registro.</span>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Eliminar" color="deep-orange" @click="onDel"/>
+            <q-btn flat label="Cancelar" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
+
+
+
+      <q-dialog v-model="dialog_del" >
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-avatar icon="clear" color="red" text-color="white" />
+            <span class="q-ml-sm">Seguro de eliminar Registro.</span>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Eliminar" color="deep-orange" @click="onDel"/>
+            <q-btn flat label="Cancelar" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
+  </q-page>
 </template>
 <script>
 
@@ -278,12 +281,14 @@ export default {
       },
 
       onRegmat(){
-          this.material.provider_id=this.proveedor.id
-          this.$axios.post(process.env.API+'/material',this.material).then(res=>{
-            this.dialog_mat=false
+      this.$q.loading.show()
+      this.material.provider_id=this.proveedor.id
+      this.$axios.post(process.env.API+'/material',this.material).then(res=>{
+          this.$q.loading.hide()
+          this.dialog_mat=false
           this.misproveedores()
           this.material={}
-      })
+        })
       },
       misproveedores(){
           this.proveedores=[]

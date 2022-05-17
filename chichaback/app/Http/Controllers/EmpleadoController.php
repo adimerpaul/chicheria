@@ -72,8 +72,9 @@ class EmpleadoController extends Controller
      * @param  \App\Models\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function edit(Empleado $empleado)
+    public function edit($empleado)
     {
+//        return $empleado;
         return Empleado::with('planillas')->get();
     }
 
