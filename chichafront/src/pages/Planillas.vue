@@ -1,5 +1,8 @@
 <template>
 <q-page class="q-pa-xs">
+<!--  <div class="col-12">-->
+<!--          <iframe id="docpdf" src="" frameborder="0" style="width: 100%;height: 100vh"></iframe>-->
+<!--  </div>-->
 <q-table dense flat bordered :rows="empleados" :rows-per-page-options="[0]" :columns="columsempleado">
   <template v-slot:body-cell-opcion="props">
     <q-td :props="props" auto-width>
@@ -191,6 +194,15 @@
                           <q-item-label caption>Imprimir planilla</q-item-label>
                         </q-item-section>
                       </q-item>
+                      <q-item clickable v-close-popup @click="adelantodescuento(props.row)">
+                        <q-item-section avatar>
+                          <q-avatar icon="paid" color="positive" text-color="white" />
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Adelanto y decuento</q-item-label>
+                          <q-item-label caption>Adelanto y decuento</q-item-label>
+                        </q-item-section>
+                      </q-item>
                     </q-list>
                   </q-btn-dropdown>
                 </q-td>
@@ -237,22 +249,122 @@
       </q-card-section>
     </q-card>
   </q-dialog>
+  <q-dialog v-model="dialoglogplanillaupdate">
+    <q-card>
+      <q-card-section class="text-center text-bold">
+        <div >Planilla {{empleado.nombre}} {{empleado.tipo}}</div> <div>Del: {{planilla.fechainicio}} Al {{planilla.fechafin}}</div>
+      </q-card-section>
+      <q-separator/>
+      <q-card-section>
+        <q-form @submit.prevent="updatelogplanilla">
+          <div class="row">
+            <div class="col-12">
+              <q-input label="tipo" dense outlined v-model="logplanillaupdate.tipo" />
+            </div>
+            <div class="col-12">
+              <q-input label="monto" type="number" dense outlined v-model="logplanillaupdate.monto" />
+            </div>
+            <div class="col-12">
+              <q-input label="motivo" dense outlined v-model="logplanillaupdate.motivo" />
+            </div>
+            <div class="col-12 flex flex-center">
+              <q-btn type="submit" class="full-width" color="positive" icon="edith" label="Modificar planilla" />
+            </div>
+          </div>
+        </q-form>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="dialoglogplanilla">
+    <q-card>
+      <q-card-section class="text-center text-bold">
+        <div >Historial de adelantos y descuentos {{empleado.nombre}} {{empleado.tipo}}</div> <div>Del: {{planilla.fechainicio}} Al {{planilla.fechafin}}</div></q-card-section>
+      <q-separator/>
+      <q-card-section>
+        <div class="row">
+          <div class="col-12">
+            <q-form @submit.prevent="createlogplanilla">
+              <div class="row">
+                <div class="col-3">
+                  <q-select :options="['BONO','ADELANTO','DESCUENTO']" label="Tipo"  dense outlined v-model="logplanilla.tipo" />
+                </div>
+                <div class="col-3">
+                  <q-input label="Monto" type="number" dense outlined v-model="logplanilla.monto" />
+                </div>
+                <div class="col-3">
+                  <q-input label="Motivo" type="text" dense outlined v-model="logplanilla.motivo" />
+                </div>
+                <div class="col-3 flex flex-center">
+                  <q-btn type="submit" class="full-width" color="positive" icon="add_circle" label="Crear" />
+                </div>
+              </div>
+            </q-form>
+          </div>
+          <div class="col-12">
+            <q-table :rows="logplanillas" title="Historial de planillas" :columns="columslogplanillas">
+              <template v-slot:body-cell-tipo="props">
+                <q-td :props="props">
+                  <q-badge :color="props.row.tipo=='ADELANTO'?'negative':props.row.tipo=='DESCUENTO'?'negative':props.row.tipo=='BONO'?'positive':''">{{props.row.tipo}}</q-badge>
+                </q-td>
+              </template>
+              <template v-slot:body-cell-opcion="props">
+                <q-td :props="props" auto-width>
+                  <q-btn-dropdown color="primary" label="Opciones">
+                    <q-list>
+                      <q-item clickable v-close-popup @click="clickupdatelogplanilla(props.row)">
+                        <q-item-section avatar>
+                          <q-avatar icon="edit_note" color="accent" text-color="white" />
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Modificar planilla</q-item-label>
+                          <q-item-label caption>Modificar planilla</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item clickable v-close-popup @click="eliminarlogplanilla(props.row)">
+                        <q-item-section avatar>
+                          <q-avatar icon="delete" color="negative" text-color="white" />
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Eliminar planilla</q-item-label>
+                          <q-item-label caption>Eliminar planilla</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-btn-dropdown>
+                </q-td>
+              </template>
+            </q-table>
+          </div>
+        </div>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </q-page>
 </template>
 
 <script>
-import {date} from "quasar";
+import {date} from "quasar"
+import $ from 'jquery'
+import {jsPDF} from "jspdf"
+import moment from 'moment'
+const conversor = require('conversor-numero-a-letras-es-ar');
 
 export default {
   name: `Planillas`,
   data(){
     return{
+      dialoglogplanilla:false,
+      logplanilla: {},
+      dialoglogplanillaupdate:false,
+      logplanillaupdate: {},
+      logplanillas: [],
       dialogplanilla:false,
       dialogcreateempleado:false,
       dialogmodempleado:false,
       dialogcreateplanilla:false,
       fechainicio:date.formatDate(new Date(),'YYYY-MM-DD'),
       fechafin:date.formatDate(new Date(),'YYYY-MM-DD'),
+      fechahoy:date.formatDate(new Date(),'YYYY-MM-DD'),
       monto:0,
       empleado:{tipo:'CONTRATO',fechanac:date.formatDate(new Date(),'YYYY-MM-DD')},
       empleado2:{},
@@ -266,6 +378,17 @@ export default {
         {label:'celular',name:'celular',field:'celular',align:'left'},
         // {label:'planillas',name:'planillas',field:'planillas'},
         {label:'salario',name:'salario',field:'salario',align:'left'},
+      ],
+      columslogplanillas:[
+        {label:'opcion',name:'opcion',field:'opcion',align:'left'},
+        {label:'tipo',name:'tipo',field:'tipo',align:'left'},
+        {label:'monto',name:'monto',field:'monto',align:'left'},
+        {label:'motivo',name:'motivo',field:'motivo',align:'left'},
+        {label:'fecha',name:'fecha',field:'fecha',align:'left'},
+        {label:'hora',name:'hora',field:'hora',align:'left'},
+
+        // {label:'planillas',name:'planillas',field:'planillas'},
+        // {label:'salario',name:'salario',field:'salario',align:'left'},
       ],
       misplanillaempleado:[],
       columsmisplanillaempleado:[
@@ -285,8 +408,39 @@ export default {
   },
   created() {
     this.misempleados()
+
+  },
+  mounted() {
+
   },
   methods:{
+    createlogplanilla(){
+      this.$q.loading.show()
+      this.logplanilla.fecha=date.formatDate(new Date(),'YYYY-MM-DD')
+      this.logplanilla.hora=date.formatDate(new Date(),'HH:mm:ss')
+      this.logplanilla.planilla_id=this.planilla.id
+      // console.log(logp)
+      this.$axios.post(process.env.API+'/logplanilla',this.logplanilla).then(res=>{
+        // console.log(res.data)
+        if (this.logplanilla.tipo=='BONO'){
+          this.$axios.put(process.env.API+'/planilla/'+this.planilla.id, {
+            adelanto:this.planilla.adelanto,
+            descuento:this.planilla.descuento,
+            bono:this.planilla.bono+this.logplanilla.monto,
+            restante:this.planilla.restante,
+            // total:this.planilla.total,
+            estado:'CREADO',
+          }).then(res=>{
+            this.mihistorialplanilla()
+          })
+        }
+        this.milogplanillas()
+
+        this.logplanilla={}
+        // this.$q.loading.hide()
+        // this.misplanillaempleado=res.data
+      })
+    },
     clickmod(empleado){
       this.empleado2=empleado
       this.dialogmodempleado=true
@@ -329,7 +483,7 @@ export default {
         descuento:0,
         bono:0,
         restante:this.monto,
-        total:0,
+        total:this.monto,
         estado:'CREADO',
         empleado_id:this.empleado.id,
       }).then(res=>{
@@ -357,6 +511,26 @@ export default {
         this.dialogplanilla=false
       })
     },
+    updatelogplanilla(){
+      this.$q.loading.show()
+      this.logplanillaupdate.fecha=date.formatDate(new Date(),'YYYY-MM-DD')
+      this.logplanillaupdate.hora=date.formatDate(new Date(),'HH:mm:ss')
+      // this.logplanillaupdate.planilla_id=this.planilla.id
+      // console.log(logp)
+      this.$axios.put(process.env.API+'/logplanilla/'+this.logplanillaupdate.id,this.logplanillaupdate).then(res=>{
+        // console.log(res.data)
+        // this.logplanilla={}
+        this.dialoglogplanillaupdate=false
+        this.milogplanillas()
+        // this.$q.loading.hide()
+        // this.misplanillaempleado=res.data
+      })
+    },
+    clickupdatelogplanilla(logplanilla){
+      this.logplanillaupdate=logplanilla
+      // console.log(planilla)
+      this.dialoglogplanillaupdate=true
+    },
     eliminarplanilla(planilla){
       this.$q.dialog({
         title:"Seguro eliminar planilla?",
@@ -368,96 +542,115 @@ export default {
         })
       })
     },
-    imprimirplanilla(){
-      this.$q.loading.show()
-      this.$axios.post(process.env.URL + '/mercado',{fecha1:this.fechames1,fecha2:this.fechames2}).then(res=>{
-        console.log(res.data)
-        this.miscomprobantestotales=res.data
-        // console.log(this.miscomprobantestotales)
-        let cm=this;
-        function header(fecha){
-          var img = new Image()
-          img.src = 'logo.jpg'
-          doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
-          doc.setFont(undefined,'bold')
-          doc.setFontSize(8);
-          doc.text(15, 0.5, 'fecha de proceso: '+cm.fechahoy)
-          doc.setFontSize(11);
-          doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS DE LA UNIDAD DE ')
-          doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+cm.fechames1+' AL '+cm.fechames2)
-          doc.text(1, 3, '_____________________________________________________________________________________')
-          doc.text(2, 3, 'FECHA DE PAGO')
-          // doc.text(4, 3, 'Nº TRAMITE')
-          doc.text(8, 3, 'N TRAMITES')
-          // doc.text(13.5, 3, 'CI/RUN/RUC')
-          doc.text(15, 3, 'MONTO PAGADO BS.')
-          // doc.text(18, 3, 'OPERADOR')
-          doc.setFont(undefined,'normal')
-        }
-        var doc = new jsPDF('p','cm','letter')
-        doc.setFont("courier");
-        doc.setFontSize(11);
-        header(this.fecha)
-        let y=0
-        let sumtotal=0
-        let sumcomp=0
-        let con=0
-        this.miscomprobantestotales.forEach(r=>{
-          // if (r.nrocomprobante!=''){
-          // console.log(r)
-          y+=0.5
-          con++
-          doc.text(2, y+3, r.fecha)
-          // doc.text(4, y+3, r.nrotramite)
-          doc.text(8, y+3, r.num.toString())
-          // // doc.text(13.5, y+3, r.ci)
-          doc.text(15, y+3, r.total.toString())
-          sumtotal+=parseInt(r.total)
-          sumcomp+=parseInt(r.num)
-          // // console.log(r.total)
-          // // doc.text(18, y+3, r.user.codigo )
-          if (con==55){
-            con=0
-            doc.addPage();
-            header(this.fecha)
-            y=0
-          }
-          // }
+    eliminarlogplanilla(logplanilla){
+      this.$q.dialog({
+        title:"Seguro eliminar planilla?",
+        cancel:true
+      }).onOk(()=>{
+        this.$q.loading.show()
+        this.$axios.delete(process.env.API+'/logplanilla/'+logplanilla.id).then(res=>{
+          this.milogplanillas()
         })
-        doc.setFont(undefined,'bold')
-        doc.text(2, y+3.5, 'TOTALES:                  '+sumcomp+' ')
-        doc.text(12, y+3.5, 'TOTAL RECAUDADCION: ')
-        let ClaseConversor = conversor.conversorNumerosALetras;
-        let miConversor = new ClaseConversor();
-        let a = miConversor.convertToText(sumtotal);
-        doc.text(1.5, y+4.4, 'SON: ')
-        doc.setFont(undefined,'normal')
-        doc.text(2.5, y+4.4, a.toUpperCase())
-        doc.setFont(undefined,'bold')
-        // console.log(a)
-        doc.text(1.8, y+5.9, '___________________      __________________________        ____________________')
-        doc.text(2, y+6.3, 'FIRMA SELLO CAJERO')
-        doc.text(7.5, y+6.3, 'FIRMA SELLO CONTROL INTERNO')
-        doc.text(15.5, y+6.3, 'FIRMA SELLO LIQUIDADOR')
-        // doc.setFont(undefined,'normal')
-        doc.text(18, y+3.5, sumtotal+ ' Bs')
-        // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
-        window.open(doc.output('bloburl'), '_blank');
+      })
+    },
+    adelantodescuento(planilla){
+      this.planilla=planilla
+      this.dialoglogplanilla=true
+      this.milogplanillas()
+    },
+    milogplanillas(){
+      this.$q.loading.show()
+      this.$axios.get(process.env.API+'/logplanilla/'+this.planilla.id).then(res=>{
+        // this.mihistorialplanilla()
         // console.log(res.data)
+        this.logplanillas=res.data
         this.$q.loading.hide()
       })
-      // .catch(err=>{
-      //   this.$q.loading.hide()
-      //   // this.$q.notify({
-      //   //   message:err.response.data.res,
-      //   //   color:'red',
-      //   //   icon:'error'
-      //   // })
-      // })
+    },
+    imprimirplanilla(planilla){
+      let cm=this;
+      function header(){
+        var img = new Image()
+        img.src = 'logo.png'
+        doc.addImage(img, 'png', 5, 2, 37, 17)
+        doc.setFont(undefined,'bold')
+        doc.setFontSize(8);
+        doc.text(170, 5, 'fecha de proceso: '+cm.fechahoy)
+        doc.setFontSize(11);
+        doc.text('CHICHERIA DOÑA NATI',110, 7, 'center')
+        doc.text('BOLETA DE PAGO',110, 12, 'center')
+        doc.text('Correspondiente al a las fechas '+'2000-01-01'+' AL '+'2000-01-01',110, 17,'center' )
+        // doc.text('____________________________________________________________________________________________________',1, 2.5,'center')
+        doc.line(5,20,210,20)
+        // doc.text(2, 3, 'FECHA DE PAGO')
+        // // doc.text(4, 3, 'Nº TRAMITE')
+        // doc.text(8, 3, 'N TRAMITES')
+        // // doc.text(13.5, 3, 'CI/RUN/RUC')
+        // doc.text(15, 3, 'MONTO PAGADO BS.')
+        // doc.text(18, 3, 'OPERADOR')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p',undefined,'letter')
+      doc.setFont("Times");
+      header()
+      doc.setFontSize(10);
+      doc.setFont(undefined,'bold')
+      doc.text(['CI:','Nombre:','Fecha nac:'],10,25)
+      doc.setFont(undefined,'normal')
+      doc.text([this.empleado.ci,this.empleado.nombre,this.empleado.fechanac],65,25,'center')
+      doc.setFont(undefined,'bold')
+      doc.text(['Tipo:','Celular','Edad:'],130,25)
+      doc.setFont(undefined,'normal')
+      var nacimiento=moment(this.empleado.fechanac);
+      var hoy=moment();
+      var anios=hoy.diff(nacimiento,"years");
+      doc.text([this.empleado.tipo,this.empleado.celular.toString(),anios.toString()],170,25,'center')
+      doc.line(5,35,210,35)
+      doc.setFont(undefined,'bold')
+      doc.text('INGRESOS',45,39,'center')
+      doc.text('DESCUENTOS',150,39,'center')
+      doc.line(5,40,210,40)
+      doc.line(110,40,110,70)
+      doc.setFont(undefined,'bold')
+      doc.text(['Monto:','Bono:'],15,45)
+      doc.setFont(undefined,'normal')
+      doc.text(['5000 Bs','100 Bs'],105,45,'right')
+      doc.setFont(undefined,'bold')
+      doc.text(['Adelanto:','Descuento'],115,45)
+      doc.setFont(undefined,'normal')
+      doc.text(['1000 Bs','100 Bs'],205,45,'right')
+      doc.line(5,65,210,65)
+      doc.setFont(undefined,'bold')
+      doc.text('Total ganado:',35,69,'center')
+      doc.text('Total descuento:',140,69,'center')
+      doc.setFont(undefined,'normal')
+      doc.text('5100 Bs',105,69,'right')
+      doc.text('1100 Bs',205,69,'right')
+      doc.line(5,70,210,70)
+      doc.setFont(undefined,'bold')
+      doc.text('Liquido pagable: 4010 Bs',110,75,'center')
+      let ClaseConversor = conversor.conversorNumerosALetras;
+      let miConversor = new ClaseConversor();
+      let a = miConversor.convertToText(4010);
+      // doc.text(1.5, y+4.4, 'SON: ')
+      doc.setFont(undefined,'normal')
+      doc.text('SON: '+a.toUpperCase()+' Bs',110, 80, 'center')
+      doc.setFont(undefined,'bold')
+      // // console.log(a)
+      doc.text(5, 90, '____________________________                     _____________________________________           ______________________________')
+      doc.text(10, 95, 'FIRMA SELLO CAJERO')
+      doc.text(75, 95, 'FIRMA SELLO CONTROL INTERNO')
+      doc.text(150, 95, 'FIRMA SELLO LIQUIDADOR')
+      // // doc.setFont(undefined,'normal')
+      // // doc.text(18, y+3.5, sumtotal+ ' Bs')
+      //
+      // $( '#docpdf' ).attr('src', doc.output('datauristring'));
+      window.open(doc.output('bloburl'), '_blank');
+
     },
     clickupdateplanilla(planilla){
       this.planilla=planilla
-      console.log(planilla)
+      // console.log(planilla)
       this.dialogplanilla=true
     },
     createempleado(){

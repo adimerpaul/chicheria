@@ -40,7 +40,6 @@
             row-key="name">
             <template v-slot:top-right>
                <q-btn color="amber-8" icon="shopping_cart" label="COMPRAS" @click="dialog_add=true; compras=[]"/>
-              
               <q-input dense outlined debounce="300" v-model="filter" placeholder="Buscar">
                 <template v-slot:append>
                   <q-icon name="search" />
@@ -53,6 +52,15 @@
                 <q-btn dense round flat color="cyan" @click="reporte(props)" icon="poll"></q-btn>
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
                 <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
+              </q-td>
+            </template>
+            <template v-slot:body-cell-stock="props" >
+              <q-td :props="props">
+                    <q-linear-progress size="25px" :value="calcular(props.row.stock,props.row.min)" :color="calcular(props.row.stock,props.row.min)<1?'negative':'positive'" class="full-width">
+                      <div class="absolute-full flex flex-center">
+                        <q-badge color="white" :text-color="calcular(props.row.stock,props.row.min)<1?'negative':'positive'" :label="props.row.stock" />
+                      </div>
+                    </q-linear-progress>
               </q-td>
             </template>
           </q-table>
@@ -99,7 +107,7 @@
               </tr>
               </tbody>
               </table>
-              </div>              
+              </div>
               <div>
                 <q-btn label="REGISTRAR" color="positive" icon="add_circle" @click="regcompra"/>
                 <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
@@ -504,6 +512,16 @@ export default {
         });
 
       },
+    calcular(stock,min){
+      let porcentaje=((stock/min*100)/100)
+      // console.log(porcentaje)
+      if (porcentaje>1){
+        return 1
+      }else{
+        return porcentaje
+      }
+
+    },
   editRow(props){
     this.material2=props.row;
     this.dialog_modmat=true;
