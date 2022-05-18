@@ -13,8 +13,8 @@
                 <q-avatar icon="edit" color="warning" text-color="white" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>Eliminar empleado</q-item-label>
-                <q-item-label caption>Eliminar empleado</q-item-label>
+                <q-item-label>Modificar empleado</q-item-label>
+                <q-item-label caption>Modificar empleado</q-item-label>
               </q-item-section>
           </q-item>
           <q-item clickable v-close-popup @click="deleteval(props.row)">
