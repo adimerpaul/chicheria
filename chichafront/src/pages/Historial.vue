@@ -16,10 +16,12 @@
             <div class="row">
             <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
             <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
-            <div class="col-4 col-sm-4 q-pa-xs flex flex-center">
-              <q-btn color="info"  label="Consultar" icon="search" type="submit" />
+            <div class="col-2 col-sm-4 q-pa-xs flex flex-center">
 
+              <q-btn color="info"  label="Consultar" icon="search" type="submit" />
+<q-checkbox v-model="valcobrar" label="X COBRAR" />
             </div>
+            <div class="col-2"></div>
             </div>
             </q-form>
             <div class="col-12">
@@ -226,6 +228,7 @@ export default {
   name: "Venta",
   data(){
     return{
+      valcobrar:false,
       fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha3:date.formatDate(new Date(),'YYYY-MM-DD'),
@@ -343,6 +346,8 @@ export default {
           $('#example').DataTable().destroy();
         res.data.forEach(r=>{
            console.log(r)
+          if(this.valcobrar && r.total>r.acuenta){
+
           this.ventas.push({
             id:r.id,
             fecha:r.fecha,
@@ -356,8 +361,8 @@ export default {
             user:r.user.name,
             pagos:r.pagos,
             producto:r.detalle.nombreproducto,
-            cantidad:r.detalle.cantidad
-          })
+            cantidad:r.detalle.cantidad,
+          })}
           // console.log({
           //   id:r.id,
           //   fecha:r.fecha,
