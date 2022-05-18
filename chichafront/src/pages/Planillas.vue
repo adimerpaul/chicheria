@@ -9,14 +9,22 @@
       <q-btn-dropdown color="primary" label="Opciones">
         <q-list>
           <q-item clickable v-close-popup @click="clickmod(props.row)" >
-            <q-item-section>
-              <q-item-label>Modificar Empleado</q-item-label>
-            </q-item-section>
+              <q-item-section avatar>
+                <q-avatar icon="edit" color="warning" text-color="white" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Eliminar empleado</q-item-label>
+                <q-item-label caption>Eliminar empleado</q-item-label>
+              </q-item-section>
           </q-item>
           <q-item clickable v-close-popup @click="deleteval(props.row)">
-            <q-item-section>
-              <q-item-label>Eliminar Empleado</q-item-label>
-            </q-item-section>
+              <q-item-section avatar>
+                <q-avatar icon="delete" color="negative" text-color="white" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Eliminar empleado</q-item-label>
+                <q-item-label caption>Eliminar empleado</q-item-label>
+              </q-item-section>
           </q-item>
           <q-item clickable v-close-popup @click="clickplanilla(props.row)">
             <q-item-section avatar>
@@ -155,7 +163,7 @@
                 <div class="col-3">
                   <q-input dense outlined label="monto" v-model="monto"/>
                 </div>
-                <div class="col-3">
+                <div class="col-3 flex flex-center">
                   <q-btn label="Crear planilla" class="full-width" type="submit" icon="add_circle" color="positive"  />
                 </div>
               </div>
@@ -235,9 +243,9 @@
             <div class="col-12">
               <q-input label="bono" dense outlined v-model="planilla.bono" />
             </div>
-            <div class="col-12">
-              <q-input label="restante" dense outlined v-model="planilla.restante" />
-            </div>
+<!--            <div class="col-12">-->
+<!--              <q-input label="restante" dense outlined v-model="planilla.restante" />-->
+<!--            </div>-->
             <div class="col-12">
               <q-input label="total" dense outlined v-model="planilla.total" />
             </div>
@@ -399,7 +407,7 @@ export default {
         {label:'adelanto',name:'adelanto',field:'adelanto',align:'left'},
         {label:'descuento',name:'descuento',field:'descuento',align:'left'},
         {label:'bono',name:'bono',field:'bono',align:'left'},
-        {label:'restante',name:'restante',field:'restante',align:'left'},
+        // {label:'restante',name:'restante',field:'restante',align:'left'},
         {label:'total',name:'total',field:'total',align:'left'},
         {label:'estado',name:'estado',field:'estado',align:'left'},
       ],
@@ -426,9 +434,33 @@ export default {
           this.$axios.put(process.env.API+'/planilla/'+this.planilla.id, {
             adelanto:this.planilla.adelanto,
             descuento:this.planilla.descuento,
-            bono:this.planilla.bono+this.logplanilla.monto,
-            restante:this.planilla.restante,
-            // total:this.planilla.total,
+            bono:parseInt(this.planilla.bono)+parseInt(this.logplanilla.monto),
+            // restante:this.planilla.restante,
+            total:parseInt(this.planilla.total)+parseInt(this.logplanilla.monto),
+            estado:'CREADO',
+          }).then(res=>{
+            this.mihistorialplanilla()
+          })
+        }
+        if (this.logplanilla.tipo=='DESCUENTO'){
+          this.$axios.put(process.env.API+'/planilla/'+this.planilla.id, {
+            adelanto:this.planilla.adelanto,
+            descuento:parseInt(this.planilla.descuento)+parseInt(this.logplanilla.monto),
+            bono:this.planilla.bono,
+            // restante:this.planilla.restante,
+            total:parseInt(this.planilla.total)-parseInt(this.logplanilla.monto),
+            estado:'CREADO',
+          }).then(res=>{
+            this.mihistorialplanilla()
+          })
+        }
+        if (this.logplanilla.tipo=='ADELANTO'){
+          this.$axios.put(process.env.API+'/planilla/'+this.planilla.id, {
+            adelanto:parseInt(this.planilla.adelanto)+parseInt(this.logplanilla.monto),
+            descuento:this.planilla.descuento,
+            bono:this.planilla.bono,
+            // restante:this.planilla.restante,
+            total:parseInt(this.planilla.total)-parseInt(this.logplanilla.monto),
             estado:'CREADO',
           }).then(res=>{
             this.mihistorialplanilla()
@@ -579,7 +611,7 @@ export default {
         doc.setFontSize(11);
         doc.text('CHICHERIA DOÑA NATI',110, 7, 'center')
         doc.text('BOLETA DE PAGO',110, 12, 'center')
-        doc.text('Correspondiente al a las fechas '+'2000-01-01'+' AL '+'2000-01-01',110, 17,'center' )
+        doc.text('Correspondiente al a las fechas '+planilla.fechainicio+' AL '+planilla.fechafin,110, 17,'center' )
         // doc.text('____________________________________________________________________________________________________',1, 2.5,'center')
         doc.line(5,20,210,20)
         // doc.text(2, 3, 'FECHA DE PAGO')
@@ -614,24 +646,24 @@ export default {
       doc.setFont(undefined,'bold')
       doc.text(['Monto:','Bono:'],15,45)
       doc.setFont(undefined,'normal')
-      doc.text(['5000 Bs','100 Bs'],105,45,'right')
+      doc.text([planilla.monto+' Bs',planilla.bono+' Bs'],105,45,'right')
       doc.setFont(undefined,'bold')
-      doc.text(['Adelanto:','Descuento'],115,45)
+      doc.text(['Adelanto:','Descuento:'],115,45)
       doc.setFont(undefined,'normal')
-      doc.text(['1000 Bs','100 Bs'],205,45,'right')
+      doc.text([planilla.adelanto+' Bs',planilla.descuento+' Bs'],205,45,'right')
       doc.line(5,65,210,65)
       doc.setFont(undefined,'bold')
       doc.text('Total ganado:',35,69,'center')
       doc.text('Total descuento:',140,69,'center')
       doc.setFont(undefined,'normal')
-      doc.text('5100 Bs',105,69,'right')
-      doc.text('1100 Bs',205,69,'right')
+      doc.text((parseInt(planilla.monto)+parseInt(planilla.bono))+' Bs',105,69,'right')
+      doc.text((parseInt(planilla.descuento)+parseInt(planilla.adelanto))+' Bs',205,69,'right')
       doc.line(5,70,210,70)
       doc.setFont(undefined,'bold')
-      doc.text('Liquido pagable: 4010 Bs',110,75,'center')
+      doc.text('Liquido pagable: '+planilla.total+' Bs',110,75,'center')
       let ClaseConversor = conversor.conversorNumerosALetras;
       let miConversor = new ClaseConversor();
-      let a = miConversor.convertToText(4010);
+      let a = miConversor.convertToText(planilla.total);
       // doc.text(1.5, y+4.4, 'SON: ')
       doc.setFont(undefined,'normal')
       doc.text('SON: '+a.toUpperCase()+' Bs',110, 80, 'center')
