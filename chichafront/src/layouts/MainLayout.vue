@@ -407,12 +407,12 @@
         </q-item>
         <q-item v-if="$store.state.login.empleados" active-class="my-menu-link" clickable exact to="planillas">
           <q-item-section avatar>
-            <q-icon name="inventory_2" size="lg" />
+            <q-icon name="receipt_long" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Planilla</q-item-label>
+            <q-item-label>Recursos humanos</q-item-label>
             <q-item-label caption>
-              Planillas de pago
+              Recursos humanos
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -425,7 +425,7 @@
           <q-item-section>
             <q-item-label>Almacen</q-item-label>
             <q-item-label caption>
-              Materiales 
+              Materiales
             </q-item-label>
           </q-item-section>
         </q-item>
