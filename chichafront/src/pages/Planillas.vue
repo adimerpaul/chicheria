@@ -640,7 +640,7 @@ export default {
         doc.setFontSize(11);
         doc.text('CHICHERIA DOÑA NATI',110, 7, 'center')
         doc.text('BOLETA DE PAGO',110, 12, 'center')
-        doc.text('Correspondiente  '+planilla.fechainicio+' Al '+planilla.fechafin+' Fecha de pago:' + (planilla.fechapago==null||planilla.fechapago==undefined||planilla.fechapago==''?'Sn':planilla.fechapago),110, 17,'center' )
+        doc.text('Correspondiente  '+planilla.fechainicio+' Al '+planilla.fechafin+' Fecha de pago: ' + (planilla.fechapago==null||planilla.fechapago==undefined||planilla.fechapago==''?'Sn':planilla.fechapago),110, 17,'center' )
         // doc.text('____________________________________________________________________________________________________',1, 2.5,'center')
         doc.line(5,20,210,20)
         // doc.text(2, 3, 'FECHA DE PAGO')
