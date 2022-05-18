@@ -171,11 +171,16 @@
           </div>
           <div class="col-12">
             <q-table :columns="columsmisplanillaempleado" title="Historial de planillas" :rows-per-page-options="[0]" :rows="misplanillaempleado">
+              <template v-slot:body-cell-estado="props">
+                <q-td :props="props">
+                  <q-badge :color="props.row.estado=='CREADO'?'positive':'negative'" :label="props.row.estado" />
+                </q-td>
+              </template>
               <template v-slot:body-cell-opcion="props">
                 <q-td :props="props" auto-width>
-                  <q-btn-dropdown color="info" label="Opciones">
+                  <q-btn-dropdown :color="props.row.estado=='CREADO'?'positive':'negative'" label="Opciones">
                     <q-list>
-                      <q-item clickable v-close-popup @click="clickupdateplanilla(props.row)">
+                      <q-item v-if="props.row.estado=='CREADO'" clickable v-close-popup @click="clickupdateplanilla(props.row)">
                         <q-item-section avatar>
                           <q-avatar icon="edit_note" color="accent" text-color="white" />
                         </q-item-section>
@@ -184,7 +189,7 @@
                           <q-item-label caption>Modificar planilla</q-item-label>
                         </q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="eliminarplanilla(props.row)">
+                      <q-item v-if="props.row.estado=='CREADO'" clickable v-close-popup @click="eliminarplanilla(props.row)">
                         <q-item-section avatar>
                           <q-avatar icon="delete" color="negative" text-color="white" />
                         </q-item-section>
@@ -202,13 +207,22 @@
                           <q-item-label caption>Imprimir planilla</q-item-label>
                         </q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="adelantodescuento(props.row)">
+                      <q-item v-if="props.row.estado=='CREADO'" clickable v-close-popup @click="adelantodescuento(props.row)">
                         <q-item-section avatar>
                           <q-avatar icon="paid" color="positive" text-color="white" />
                         </q-item-section>
                         <q-item-section>
                           <q-item-label>Adelanto y decuento</q-item-label>
                           <q-item-label caption>Adelanto y decuento</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-if="props.row.estado=='CREADO'" clickable v-close-popup @click="darcancelado(props.row)">
+                        <q-item-section avatar>
+                          <q-avatar icon="logout" color="accent" text-color="white" />
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Dar por cancelado</q-item-label>
+                          <q-item-label caption>Dar por cancelado</q-item-label>
                         </q-item-section>
                       </q-item>
                     </q-list>
@@ -585,6 +599,21 @@ export default {
         })
       })
     },
+    darcancelado(planilla){
+      this.$q.dialog({
+        title:"Seguro dar por cacelado?",
+        cancel:true
+      }).onOk(()=>{
+        this.$q.loading.show()
+        this.$axios.put(process.env.API+'/planilla/'+planilla.id,{
+          estado:'CANCELADO',
+          fechapago:date.formatDate(new Date(),'YYYY-MM-DD')
+        }).then(res=>{
+          this.mihistorialplanilla()
+        })
+      })
+
+    },
     adelantodescuento(planilla){
       this.planilla=planilla
       this.dialoglogplanilla=true
@@ -611,7 +640,7 @@ export default {
         doc.setFontSize(11);
         doc.text('CHICHERIA DOÑA NATI',110, 7, 'center')
         doc.text('BOLETA DE PAGO',110, 12, 'center')
-        doc.text('Correspondiente al a las fechas '+planilla.fechainicio+' AL '+planilla.fechafin,110, 17,'center' )
+        doc.text('Correspondiente  '+planilla.fechainicio+' Al '+planilla.fechafin+' Fecha de pago:' + (planilla.fechapago==null||planilla.fechapago==undefined||planilla.fechapago==''?'Sn':planilla.fechapago),110, 17,'center' )
         // doc.text('____________________________________________________________________________________________________',1, 2.5,'center')
         doc.line(5,20,210,20)
         // doc.text(2, 3, 'FECHA DE PAGO')
