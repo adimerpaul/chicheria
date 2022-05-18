@@ -19,7 +19,7 @@
             <div class="col-2 col-sm-4 q-pa-xs flex flex-center">
 
               <q-btn color="info"  label="Consultar" icon="search" type="submit" />
-<q-checkbox v-model="valcobrar" label="X COBRAR" />
+
             </div>
             <div class="col-2"></div>
             </div>
@@ -346,7 +346,6 @@ export default {
           $('#example').DataTable().destroy();
         res.data.forEach(r=>{
            console.log(r)
-          if(this.valcobrar && r.total>r.acuenta){
 
           this.ventas.push({
             id:r.id,
@@ -364,24 +363,7 @@ export default {
             cantidad:r.detalle.cantidad,
           })
 
-          }
-          else{
-                      this.ventas.push({
-            id:r.id,
-            fecha:r.fecha,
-            total:r.total,
-            acuenta:r.acuenta,
-            saldo:r.saldo,
-            tipocliente:r.cliente.tipocliente,
-            estado:r.estado,
-            local:r.cliente.local,
-            titular:r.cliente.titular,
-            user:r.user.name,
-            pagos:r.pagos,
-            producto:r.detalle.nombreproducto,
-            cantidad:r.detalle.cantidad,
-          })
-          }
+
           // console.log({
           //   id:r.id,
           //   fecha:r.fecha,
