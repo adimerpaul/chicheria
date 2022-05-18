@@ -95,10 +95,10 @@ class ProviderController extends Controller
      * @param  \App\Models\Provider  $provider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Provider $provider)
+    public function destroy($id)
     {
         //
-        $provider=Provider::find($request->id);
+        $provider=Provider::find($id);
         $provider->delete();
     }
 }

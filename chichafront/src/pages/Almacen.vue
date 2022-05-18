@@ -19,6 +19,11 @@
               </q-item-section>
             </q-item>
 
+            <q-item clickable v-close-popup @click="del_prov">
+              <q-item-section>
+                <q-item-label>ELIMINAR</q-item-label>
+              </q-item-section>
+            </q-item>
           </q-list>
         </q-btn-dropdown>
       </div>
@@ -369,7 +374,7 @@ export default {
         });
         return false}
       this.$axios.post(process.env.API+'/compra',{provider_id:this.proveedor.id,user_id:this.$store.getters["login/user"].id,compras:this.compras}).then(res=>{
-        console.log(res.data)
+        //console.log(res.data)
         this.dialog_add=false
         this.mismateriales();
       })
@@ -409,7 +414,7 @@ export default {
       this.$axios.post(process.env.API+'/recuento',this.recuento).then(res=>{
         this.recuento={}
         this.dialog_remove=false
-        this.misproveedores()
+        this.mismateriales()
       })
     },
     agregarRow(props){
@@ -556,6 +561,25 @@ export default {
         this.mismateriales();
         })
         this.$q.loading.hide();
+    },
+
+        del_prov(){
+        this.$q.dialog({
+        title:'Seguro de eliminar?',
+        cancel:true,
+        }).onOk(()=>{
+          this.$q.loading.show();
+          this.$axios.delete(process.env.API+'/provider/'+this.proveedor.id).then(res=>{
+          this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Eliminado correctamente'
+          });
+        this.misproveedores();
+        })
+        this.$q.loading.hide();
+        })
     },
 
 

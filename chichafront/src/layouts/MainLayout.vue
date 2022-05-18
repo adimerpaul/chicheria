@@ -417,6 +417,19 @@
           </q-item-section>
         </q-item>
 
+
+        <q-item v-if="$store.state.login.productos" active-class="my-menu-link" clickable exact to="almacen">
+          <q-item-section avatar>
+            <q-icon name="store" size="lg" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Almacen</q-item-label>
+            <q-item-label caption>
+              Materiales 
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item
           v-if="$store.state.login.cajachica"
           active-class="my-menu-link"
