@@ -362,7 +362,26 @@ export default {
             pagos:r.pagos,
             producto:r.detalle.nombreproducto,
             cantidad:r.detalle.cantidad,
-          })}
+          })
+
+          }
+          else{
+                      this.ventas.push({
+            id:r.id,
+            fecha:r.fecha,
+            total:r.total,
+            acuenta:r.acuenta,
+            saldo:r.saldo,
+            tipocliente:r.cliente.tipocliente,
+            estado:r.estado,
+            local:r.cliente.local,
+            titular:r.cliente.titular,
+            user:r.user.name,
+            pagos:r.pagos,
+            producto:r.detalle.nombreproducto,
+            cantidad:r.detalle.cantidad,
+          })
+          }
           // console.log({
           //   id:r.id,
           //   fecha:r.fecha,
