@@ -22,6 +22,7 @@ import Historialruta from "pages/Historialruta";
 import Caja from "pages/Caja";
 import Planillas from "pages/Planillas";
 import Almacen from "pages/Almacen";
+import Contable from "pages/Contable";
 // <<<<<<< HEAD
 // import User from "pages/User";
 // =======
@@ -58,6 +59,7 @@ const routes = [
       { path: 'caja', component: Caja,meta: {requiresAuth: true} },
       { path: 'planillas', component: Planillas,meta: {requiresAuth: true} },
       { path: 'almacen', component: Almacen,meta: {requiresAuth: true} },
+      { path: 'contable', component: Contable,meta: {requiresAuth: true} },
 
 // <<<<<<< HEAD
 //       { path: 'user', component: User,meta: {requiresAuth: true} },
