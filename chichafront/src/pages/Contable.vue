@@ -1,49 +1,51 @@
 <template>
     <div class="row">
       <div class="col-12">
-            <div class="text-h6">
-              <h5 style="text-align:center">RESUMEN DE INGRESOS Y EGRESOS</h5>
-            </div>
-
+        <div class="text-center text-bold">RESUMEN DE INGRESOS Y EGRESOS</div>
+      </div>
+      <div class="col-12">
                 <q-form @submit="listado" >
                 <div class="row">
-                <div class="col-2">
+                <div class="col-4">
                   <q-input
                     outlined
+                    dense
                     type="date"
                     v-model="fecha1"
                     label="Fecha ini"
                     required
+                    hint="Porfavor ingresar fecha inicio"
+                    clearable
+                    counter
                   />
                   </div>
-                  <div class="col-2">
+                  <div class="col-4">
                   <q-input
                     outlined
+                    dense
                     type="date"
                     v-model="fecha2"
                     label="Fecha fin"
                     required
                     :rules="[ val => val>=fecha1 || 'Fecha debe ser mayor o igual']"
+                    hint="Porfavor ingresar fecha fin"
+                    clearable
+                    counter
                   />
                   </div>
-
-                  <div class="col-2 flex flex-center">
-                    <q-btn label="Generar" type="submit" color="primary" icon="send" />
+                  <div class="col-4 flex ">
+                    <q-btn  label="Generar" class="full-width "  type="submit" color="primary" icon="send" />
                   </div>
                   </div>
 
                 </q-form>
 
 
-        <div class="q-pa-md">
+        <div class="col-12">
           <div class=" responsive">
-                <q-table title="INGRESOS" :rows="ingreso" :columns="columns" row-key="name" />
-                <q-table title="EGRESOS" :rows="egreso" :columns="columns2" row-key="name" />
-                
-              </div>
-    
-
-
+                <q-table dense title="Ingresos" :rows="ingreso" :columns="columns" row-key="name" />
+                <q-table dense title="Egresos" :rows="egreso" :columns="columns2" row-key="name" />
+          </div>
         </div>
 
             <div class="col-12">
