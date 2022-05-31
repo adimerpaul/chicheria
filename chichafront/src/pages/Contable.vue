@@ -57,11 +57,15 @@
                   <div class="col-4 q-pa-md">
                     <q-input type="text" label="Egreso Total" label-color="info"  v-model="totalegreso"  outlined/>
                   </div>
-
+                  <div class="col-4 q-pa-md">
+                    <q-input type="text" label="Balance" label-color="teal"  outlined v-model="balance"/>
+                  </div>
                 </div>
               </q-form>
             </div>
-
+      <div class="col-12">
+        <q-btn label="Imprimir" icon="print" color="accent" class="full-width" @click="impresion()"/>
+      </div>
       </div>
     </div>
 
@@ -76,6 +80,7 @@ export default {
     return{
       fecha1:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
+      resumen:[],
       usuarios:[],
       filter:'',
       usuario:'',
@@ -85,6 +90,7 @@ export default {
       egreso:[],
       regpago:{},
       pagos:{},
+      final:0,
       dato:{},
       alert:false,
       dialog_pago:false,
@@ -125,6 +131,7 @@ export default {
       },
     listado(){
       this.ingreso=[]
+      this.egreso=[]
           $('#example').DataTable().destroy();
       this.$axios.post(process.env.API+'/repventa',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
         //console.log(res.data)
@@ -156,13 +163,84 @@ export default {
           this.egreso.push({detalle:r.glosa,total:r.total})
         })
       })
-
+    
       //console.log(this.ingreso)
     },
 
+    impresion(){
+      this.resumen=[]
+      this.ingreso.forEach(r => {
+        this.resumen.push({detalle:r.detalle,ingreso:r.total,egreso:0});        
+      });
 
+      this.egreso.forEach(r => {
+        this.resumen.push({detalle:r.detalle,ingreso:0,egreso:r.total});        
+      });
+
+           let mc=this
+
+      function header(){
+        var img = new Image()
+        img.src = 'logo.png'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(5, 1, 'RESUMEN DE BALANCE ')
+        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(1, 3, 'DETALLE')
+        doc.text(10, 3, 'INGRESO')
+        doc.text(14, 3, 'EGRESO')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(12);
+      // var x=0,y=
+      header()
+      // let xx=x
+      // let yy=y
+      let y=0
+      let totalingreso=0
+      let totalegreso=0
+      this.resumen.forEach(r=>{
+        totalingreso=totalingreso+r.ingreso;
+        totalegreso=totalegreso+r.egreso;
+        // xx+=0.5
+        y+=0.5
+        doc.text(1, y+3, r.detalle)
+        doc.text(10, y+3, r.ingreso+'')
+        doc.text(14, y+3, r.egreso+'')
+
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+        })
+      doc.setFontSize(9);
+
+        doc.setFont(undefined,'bold')
+        doc.text(1, y+4, 'TOTAL INGRESO: ')
+        doc.setFont(undefined,'normal')
+        doc.text(4, y+4, totalingreso+' Bs')
+
+        doc.setFont(undefined,'bold')
+        doc.text(7, y+4, 'TOTAL EGRESO: ')
+        doc.setFont(undefined,'normal')
+        doc.text(10, y+4, totalegreso+' Bs')
+        var ttotal=totalingreso - totalegreso
+        doc.setFont(undefined,'bold')
+        doc.text(14, y+4, 'BALANCE: ')
+        doc.setFont(undefined,'normal')
+        doc.text(18, y+4, ttotal+'Bs')
+
+
+      // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      window.open(doc.output('bloburl'), '_blank');
+    },
   },
 computed:{
+
     totalingreso(){
       let total=0;
       this.ingreso.forEach(r=>{
@@ -177,6 +255,12 @@ computed:{
       })
       return total
     },
+
+    balance(){
+      var total=this.totalingreso - this.totalegreso
+      return total;
+      //return this.totalingreso() - this.totalegreso()
+    }
 
 }
 

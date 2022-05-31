@@ -492,6 +492,27 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+
+        <q-item
+          v-if="$store.state.login.reportes"
+          active-class="my-menu-link"
+          clickable
+          exact
+          to="contable"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="point_of_sale" size="lg" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Resumen contable</q-item-label>
+            <q-item-label caption>
+              reporte de Ingresos y Egresos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
 <!--<q-item-->
 <!--          v-if="$store.getters['login/isLoggedIn']"-->
 <!--          clickable-->
