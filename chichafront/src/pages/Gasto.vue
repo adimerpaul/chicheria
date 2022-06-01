@@ -457,6 +457,8 @@ export default {
       // let yy=y
       let y=0
       let ventas=0
+      let ccpago=0
+
       this.ventas.forEach(r=>{
         y+=0.5
         // console.log(r)
@@ -600,7 +602,6 @@ export default {
           y=0
         }
       
-
       this.rpagos.forEach(r=>{
         y+=0.5
         doc.setFontSize(6);
@@ -608,7 +609,8 @@ export default {
         doc.setFontSize(9);
         doc.text(3, y+3, 'Pagos')
         doc.text(6.5, y+3, r.monto!=null?r.monto.toString():''+' Bs.')
-        ventas+=r.monto;
+        //ventas+=r.monto;
+        ccpago+=r.monto
         doc.text(8, y+3, 'N-'+r.id)
         doc.text(10, y+3, r.nombreproducto!=null?r.nombreproducto.toString():'')
         doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
@@ -641,6 +643,7 @@ export default {
       doc.text(2, y+4, 'Total Ingreso: ')
         doc.setFont(undefined,'bold')
       doc.text(5.5, y+4, ventas+'Bs')
+
         doc.setFont(undefined,'normal')
       doc.text(8, y+4, 'Total gasto: ')
         doc.setFont(undefined,'bold')
@@ -650,6 +653,9 @@ export default {
         doc.setFont(undefined,'bold')
       doc.text(17, y+4, (ventas-gastos)+' Bs')
         doc.setFont(undefined,'normal')
+      doc.text(2, y+4.5, 'Total CxC pagos: ')
+        doc.setFont(undefined,'bold')
+      doc.text(5.5, y+4.5, ccpago+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },

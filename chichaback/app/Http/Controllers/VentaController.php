@@ -245,6 +245,7 @@ class VentaController extends Controller
                  ->where('tipo','DETALLE')
                  ->whereRaw("(fechaentrega is null OR fechaentrega='')")
                  //->where('saldo','>',0)
+                 ->whereRaw("total > acuenta")
                  ->get();
      }
 
@@ -257,6 +258,7 @@ class VentaController extends Controller
             ->where('tipo','LOCAL')
             ->whereRaw("(fechaentrega is null OR fechaentrega='')")
                  //->where('saldo','>',0)
+                 ->whereRaw("total > acuenta")
                  ->get();
     }
 
@@ -268,6 +270,7 @@ class VentaController extends Controller
             ->whereDate('fecha','<=',$request->fin)
             ->whereRaw("(fechaentrega is not null and fechaentrega!='')")
           //  ->where('saldo','>',0)
+                 ->whereRaw("total > acuenta")
                  ->get();
     }
 
