@@ -30,7 +30,7 @@ class EmpleadoController extends Controller
     public function missueldos(Request $request){
 //        return $request;
         return DB::select("
-        SELECT e.id,e.nombre,e.salario,e.ci,e.celular,
+        SELECT e.id,e.nombre,e.salario,e.ci,e.celular,e.fechanac,e.tipo,
         (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='ADELANTO' AND  date(fecha) >= '".$request->fecha1."' AND date(fecha)<= '".$request->fecha2."') as adelanto,
         (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='DESCUENTO' AND  date(fecha) >= '".$request->fecha1."' AND date(fecha)<= '".$request->fecha2."') as descuento,
         (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='EXTRA' AND  date(fecha) >= '".$request->fecha1."' AND date(fecha)<= '".$request->fecha2."') as extra,

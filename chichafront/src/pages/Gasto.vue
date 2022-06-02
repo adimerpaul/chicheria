@@ -264,7 +264,7 @@
             <q-form @submit.prevent="agregarcjchica">
               <div class="row">
                 <div class="col-12">
-                  <q-input outlined label="Monto" type="number" step="0.1" v-model="cchica.precio"     
+                  <q-input outlined label="Monto" type="number" step="0.1" v-model="cchica.precio"
                     :rules="[
                     val => val>0 && val<= montocajachica  || 'No debe exceder el monto',
                     ]"
@@ -529,7 +529,7 @@ export default {
           header()
           y=0
         }
-      
+
       if(this.totalanulado>0){
         ventas=ventas+this.totalanulado;
               this.anulados.forEach(element => {
@@ -545,7 +545,7 @@ export default {
           header()
           y=0
         }
-      
+
               });
       y+=0.5
         doc.text(1, y+3, 'T. Anulado')
@@ -564,7 +564,7 @@ export default {
           header()
           y=0
         }
-      
+
       this.prestamoventa.forEach(r=>{
         y+=0.5
         // console.log(r)
@@ -601,7 +601,7 @@ export default {
           header()
           y=0
         }
-      
+
       this.rpagos.forEach(r=>{
         y+=0.5
         doc.setFontSize(6);
@@ -1093,14 +1093,16 @@ console.log(this.ventas)
       })
     },
     agregarpago(){
+      if(this.empleadohistorial.tipo=='FIJO'){
             if((parseFloat(this.pago.empleado.element.salario)- this.totaldescuento) < parseFloat( this.pago.monto) && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='DESCUENTO'))
-      {
-          this.$q.notify({
-            message:'El monto excede al salario ',
-            icon:'info',
-            color:'red'
-          })
-        return false;
+          {
+              this.$q.notify({
+                message:'El monto excede al salario ',
+                icon:'info',
+                color:'red'
+              })
+            return false;
+          }
       }
 
       // console.log('a');
@@ -1121,7 +1123,7 @@ console.log(this.ventas)
         this.pago.tipo=''
         this.pago.observacion=''
         this.pago.fecha=date.formatDate( Date.now(),'YYYY-MM-DD');
-      }) 
+      })
     },
     misempleados(){
       this.$q.loading.show()
@@ -1159,7 +1161,7 @@ console.log(this.ventas)
           // this.empleados=res.data
           this.misgastos()
           this.listadog()
-          
+
           this.empleado.precio=0
           this.empleado.observacion=''
           this.empleado.glosa=''

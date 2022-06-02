@@ -10,6 +10,7 @@
         <div class="row">
           <div class="col-12 q-pa-xs col-sm-1"><q-input outlined label="CI" v-model="empleado.ci" required/></div>
           <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Nombre" v-model="empleado.nombre" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-select v-model="empleado.tipo" :options="['DESTAJO','FIJO']" label="Tipo" filled /></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" type="date" v-model="empleado.fechanac" required/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>
@@ -25,6 +26,11 @@
       :rows="empleados"
       :rows-per-page-options="[50,100,0]"
       >
+        <template v-slot:body-cell-tipo="props">
+          <q-td :props="props" auto-width>
+            <q-badge :color="props.row.tipo=='FIJO'?'green':'teal'">{{props.row.tipo}}</q-badge>
+          </q-td>
+        </template>
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
             <q-btn
@@ -94,6 +100,7 @@
                               <template v-if="$store.state.login.reimpresion" >
               <q-btn icon="print" dense color="yellow" @click="imprimirboleta(v)"/>
               <q-btn icon="money" dense color="green" @click="cancelar(v)" v-if="v.cancelar==undefined ||v.cancelar==0"/>
+              <q-btn icon="list" dense color="accent" @click="genplanilla(v)"/>
             </template></td>
                   </tr>
                   </tbody>
@@ -230,6 +237,8 @@
 import $ from "jquery";
 import {date} from 'quasar'
 import {jsPDF} from "jspdf";
+import moment from 'moment'
+const conversor = require('conversor-numero-a-letras-es-ar');
 export default {
   name: "Venta",
   data(){
@@ -237,18 +246,21 @@ export default {
       pagos:false,
       pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       empleados:[],
+      emp:{},
       empleados2:[],
       empleadohistorial:{},
       boolcrear:true,
       salarios:[],
+      planilla:{},
       modempleado:false,
       empleado:{fechanac:'2000-01-01'},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
       columns:[
         {name:'ci',label:'CI',field:'ci'},
-        {name:'nombre',label:'Nombre',field:'nombre'},
-        {name:'action',label:'Action',field:'action'},
+        {name:'nombre',label:'NOMBRE',field:'nombre'},
+        {name:'tipo',label:'TIPO',field:'tipo'},
+        {name:'action',label:'OPCION',field:'action'},
       ],
       columns2:[
         {name:'fecha',label:'FECHA',field:'fecha',sortable: true},
@@ -324,6 +336,104 @@ export default {
       })
 
     },
+    genplanilla(plan){
+        this.emp=plan
+        this.planilla.fechainicio=this.fecha1
+        this.planilla.fechafin=this.fecha2
+        this.planilla.fechapago=date.formatDate( Date.now(),'YYYY-MM-DD')
+        this.planilla.monto=plan.salario==null?0:plan.salario
+        this.planilla.adelanto=plan.adelanto==null?0:plan.adelanto
+        this.planilla.descuento=plan.descuento==null?0:plan.descuento
+        this.planilla.bono=plan.extra==null?0:plan.extra
+        this.planilla.total=parseFloat(this.planilla.monto) - parseFloat(plan.adelanto)-  parseFloat(plan.descuento)
+        this.planilla.empleado_id=plan.id
+
+      console.log(plan)
+      this.imprimirplanilla(this.planilla )
+    },
+
+    imprimirplanilla(planilla){
+      let cm=this;
+      function header(){
+        var img = new Image()
+        img.src = 'logo.png'
+        doc.addImage(img, 'png', 5, 2, 37, 17)
+        doc.setFont(undefined,'bold')
+        doc.setFontSize(8);
+        doc.text(170, 5, 'fecha de proceso: '+date.formatDate( Date.now(),'YYYY-MM-DD'))
+        doc.setFontSize(11);
+        doc.text('CHICHERIA DOÑA NATI',110, 7, 'center')
+        doc.text('BOLETA DE PAGO',110, 12, 'center')
+        doc.text('Correspondiente  '+planilla.fechainicio+' Al '+planilla.fechafin+' Fecha de pago: ' + (planilla.fechapago==null||planilla.fechapago==undefined||planilla.fechapago==''?'Sn':planilla.fechapago),110, 17,'center' )
+        // doc.text('____________________________________________________________________________________________________',1, 2.5,'center')
+        doc.line(5,20,210,20)
+        // doc.text(2, 3, 'FECHA DE PAGO')
+        // // doc.text(4, 3, 'Nº TRAMITE')
+        // doc.text(8, 3, 'N TRAMITES')
+        // // doc.text(13.5, 3, 'CI/RUN/RUC')
+        // doc.text(15, 3, 'MONTO PAGADO BS.')
+        // doc.text(18, 3, 'OPERADOR')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p',undefined,'letter')
+      doc.setFont("Times");
+      header()
+      doc.setFontSize(10);
+      doc.setFont(undefined,'bold')
+      doc.text(['CI:','Nombre:','Fecha nac:'],10,25)
+      doc.setFont(undefined,'normal')
+      doc.text([this.emp.ci,this.emp.nombre,this.emp.fechanac],65,25,'center')
+      doc.setFont(undefined,'bold')
+      doc.text(['Tipo:','Celular','Edad:'],130,25)
+      doc.setFont(undefined,'normal')
+      var nacimiento=moment(this.emp.fechanac);
+      var hoy=moment();
+      var anios=hoy.diff(nacimiento,"years");
+      doc.text([this.emp.tipo,this.emp.celular.toString(),anios.toString()],170,25,'center')
+      doc.line(5,35,210,35)
+      doc.setFont(undefined,'bold')
+      doc.text('INGRESOS',45,39,'center')
+      doc.text('DESCUENTOS',150,39,'center')
+      doc.line(5,40,210,40)
+      doc.line(110,40,110,70)
+      doc.setFont(undefined,'bold')
+      doc.text(['Monto:','Bono:'],15,45)
+      doc.setFont(undefined,'normal')
+      doc.text([planilla.monto+' Bs',planilla.bono+' Bs'],105,45,'right')
+      doc.setFont(undefined,'bold')
+      doc.text(['Adelanto:','Descuento:'],115,45)
+      doc.setFont(undefined,'normal')
+      doc.text([planilla.adelanto+' Bs',planilla.descuento+' Bs'],205,45,'right')
+      doc.line(5,65,210,65)
+      doc.setFont(undefined,'bold')
+      doc.text('Total ganado:',35,69,'center')
+      doc.text('Total descuento:',140,69,'center')
+      doc.setFont(undefined,'normal')
+      doc.text((parseInt(planilla.monto)+parseInt(planilla.bono))+' Bs',105,69,'right')
+      doc.text((parseInt(planilla.descuento)+parseInt(planilla.adelanto))+' Bs',205,69,'right')
+      doc.line(5,70,210,70)
+      doc.setFont(undefined,'bold')
+      doc.text('Liquido pagable: '+planilla.total+' Bs',110,75,'center')
+      let ClaseConversor = conversor.conversorNumerosALetras;
+      let miConversor = new ClaseConversor();
+      let a = miConversor.convertToText(parseInt(planilla.total));
+      //let a='aaa'
+      // doc.text(1.5, y+4.4, 'SON: ')
+      doc.setFont(undefined,'normal')
+      doc.text('SON: '+a.toUpperCase()+' Bs',110, 80, 'center')
+      doc.setFont(undefined,'bold')
+      // // console.log(a)
+      doc.text(5, 90, '____________________________                     _____________________________________           ______________________________')
+      doc.text(10, 95, 'FIRMA SELLO CAJERO')
+      doc.text(75, 95, 'FIRMA SELLO CONTROL INTERNO')
+      doc.text(150, 95, 'FIRMA SELLO LIQUIDADOR')
+      // // doc.setFont(undefined,'normal')
+      // // doc.text(18, y+3.5, sumtotal+ ' Bs')
+      //
+      // $( '#docpdf' ).attr('src', doc.output('datauristring'));
+      window.open(doc.output('bloburl'), '_blank');
+
+    },
     cancelar(boleta){
            let total=0;
       if(boleta.adelanto==null) boleta.adelanto=0;
@@ -331,7 +441,7 @@ export default {
       if(boleta.extra==null) boleta.extra=0;
       if(boleta.pago==null) boleta.pago=0;
       if(boleta.obs==null) boleta.obs='';
-      total = boleta.salario - boleta.adelanto - boleta.descuento + boleta.pago; 
+      total = boleta.salario - boleta.adelanto - boleta.descuento + boleta.pago;
       this.$axios.post(process.env.API+'/cancelacion',{monto:total,fecha:this.fecha2,empleado_id:boleta.id,empleado_nombre:boleta.nombre}).then(res=>{
         this.missalarios();
         //console.log(res.data);
@@ -471,14 +581,16 @@ export default {
     },
     agregarpago(){
       console.log(this.empleadohistorial)
-      if((parseFloat(this.empleadohistorial.salario)- this.totaldescuento) < parseFloat( this.pago.monto) && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='DESCUENTO'))
-      {
-          this.$q.notify({
-            message:'El monto excede al salario ',
-            icon:'info',
-            color:'red'
-          })
-        return false;
+      if(this.empleadohistorial.tipo=='FIJO'){
+        if((parseFloat(this.empleadohistorial.salario)- this.totaldescuento) < parseFloat( this.pago.monto) && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='DESCUENTO'))
+        {
+            this.$q.notify({
+              message:'El monto excede al salario ',
+              icon:'info',
+              color:'red'
+            })
+          return false;
+        }
       }
       //console.log(this.empleadohistorial);
       this.pago.empleado_id=this.empleadohistorial.id
