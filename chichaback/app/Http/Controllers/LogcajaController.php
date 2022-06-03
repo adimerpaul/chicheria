@@ -25,7 +25,14 @@ class LogcajaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function listcaja(Request $request){
-        return Logcaja::whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+        if($request->user()->id==1)
+        {
+            if($request->id==0) return Logcaja::with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+            else return Logcaja::with('user')->where('user_id',$request->user()->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+        }
+        else
+        return Logcaja::with('user')->where('user_id',$request->user()->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+       
     }
 
     public function totalcaja(){

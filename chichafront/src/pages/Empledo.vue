@@ -83,8 +83,6 @@
                 <th>ADELANTO</th>
                 <th>DESCUENTO</th>
                 <th>EXTRA</th>
-                <th>PAGO</th>
-                <th>CANCELAR</th>
                 <th>OPCION</th>
                 </tr>
                 </thead>
@@ -94,12 +92,10 @@
                   <td>{{v.adelanto}}</td>
                   <td>{{v.descuento}}</td>
                   <td>{{v.extra}}</td>
-                  <td>{{v.pago}}</td>
-                  <td>{{v.cancelar}}</td>
                   <td>
                               <template v-if="$store.state.login.reimpresion" >
-              <q-btn icon="print" dense color="yellow" @click="imprimirboleta(v)"/>
-              <q-btn icon="money" dense color="green" @click="cancelar(v)" v-if="v.cancelar==undefined ||v.cancelar==0"/>
+              <!--<q-btn icon="print" dense color="yellow" @click="imprimirboleta(v)"/>
+              <q-btn icon="money" dense color="green" @click="cancelar(v)" v-if="v.cancelar==undefined ||v.cancelar==0"/>-->
               <q-btn icon="list" dense color="accent" @click="genplanilla(v)"/>
             </template></td>
                   </tr>
@@ -171,6 +167,7 @@
       <q-form @submit.prevent="modificar">
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="CI" v-model="empleado2.ci" required/></div>
           <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Nombre" v-model="empleado2.nombre" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-select v-model="empleado2.tipo" :options="['DESTAJO','FIJO']" label="Tipo" filled /></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" type="date" v-model="empleado2.fechanac" required/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado2.celular"/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado2.salario" type="number"/></div>
@@ -194,7 +191,7 @@
                   <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
                 </div>
                 <div class="col-2">
-                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA','PAGO']"/>
+                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA']"/>
                 </div>
                 <div class="col-2">
                   <q-input outlined label="Fecha" v-model="pago.fecha" type="date"/>
@@ -254,6 +251,7 @@ export default {
       planilla:{},
       modempleado:false,
       empleado:{fechanac:'2000-01-01'},
+      dialog_plan:false,
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
       columns:[
@@ -347,9 +345,16 @@ export default {
         this.planilla.bono=plan.extra==null?0:plan.extra
         this.planilla.total=parseFloat(this.planilla.monto) - parseFloat(plan.adelanto)-  parseFloat(plan.descuento)
         this.planilla.empleado_id=plan.id
-
+        //this.dialog_plan=true
       console.log(plan)
+      this.$axios.post(process.env.API+'/planilla',this.planilla).then(res=>{
+          this.$q.notify({
+            message:'Planilla Creada',
+            icon:'info',
+            color:'green'
+          })
       this.imprimirplanilla(this.planilla )
+      })
     },
 
     imprimirplanilla(planilla){

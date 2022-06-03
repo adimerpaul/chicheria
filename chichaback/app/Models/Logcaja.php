@@ -16,4 +16,7 @@ class Logcaja extends Model
         'hora',
         'user_id',
     ];
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

@@ -50,16 +50,17 @@ class SueldoController extends Controller
         $sueldo->user_id=$request->user()->id;
         $sueldo->save();
 
-        if($request->tipo=='ADELANTO' || $request->tipo=='EXTRA'){
+        if($request->user()->id!=1){
+        if($request->tipo=='ADELANTO' || $request->tipo=='EXTRA' ){
 
-            $gasto=new Gasto();
+            /*$gasto=new Gasto();
             $gasto->precio=$request->monto;
             $gasto->observacion=$request->observacion.' '.$request->empleado_nombre;
             $gasto->glosa='CAJA CHICA';
             $gasto->fecha=date('Y-m-d');
             $gasto->hora=date('H:i:s');
             $gasto->user_id=$request->user()->id;
-            $gasto->save();
+            $gasto->save();*/
     
             $caja=Caja::find(1);
             $caja->monto= floatval($caja->monto) - floatval($request->monto);
@@ -73,7 +74,7 @@ class SueldoController extends Controller
             $log->hora=date('H:i:s');
             $log->user_id=$request->user()->id;
             $log->save();
-        }
+        }}
 
 //        return $sueldo;
         return Empleado::with('sueldos')

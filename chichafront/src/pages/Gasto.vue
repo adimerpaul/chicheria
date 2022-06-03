@@ -301,6 +301,7 @@ export default {
     return{
       filter:'',
       cchica:{},
+      chica:[],
       pagos:false,
       cajachica:false,
       pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
@@ -494,16 +495,24 @@ export default {
         // console.log(r)
         doc.text(3, y+3, 'Gasto')
         doc.text(6.5, y+3, r.precio!=null?r.precio.toString():''+'Bs.')
-        if(r.glosa=='CAJA CHICA')
-        caja+=parseFloat(r.precio!=null?r.precio:0)
-        else
-        if(r.glosa=='CANCELAR'){
-          cancelar+=parseFloat(r.precio!=null?r.precio:0)
-
-        }
-        else
         gastos+=parseFloat(r.precio!=null?r.precio:0)
         doc.text(8, y+3, r.glosa+': '+r.observacion)
+        // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
+        // doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
+        //doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })
+            this.chica.forEach(r=>{
+        y+=0.5
+        // console.log(r)
+        doc.text(3, y+3, 'Gasto')
+        doc.text(6.5, y+3, r.monto!=null?r.monto.toString():''+'Bs.')
+        caja+=parseFloat(r.monto!=null?r.monto:0)
+        doc.text(8, y+3, 'CAJA CHICA: '+r.motivo)
         // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
         // doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
         //doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
@@ -849,12 +858,6 @@ export default {
       let caja=0
       let cancelar=0
       this.gastos.forEach(r=>{
-        if(r.glosa=='CAJA CHICA')
-        caja+=parseFloat(r.precio)
-        else
-        if(r.glosa=='CANCELAR')
-        cancelar+=parseFloat(r.precio)
-        else
         sumgasto+=parseFloat(r.precio)
         console.log(r)
         // xx+=0.5
@@ -863,6 +866,25 @@ export default {
         doc.text(4, y+3, r.precio)
         doc.text(6.5, y+3, r.observacion)
         doc.text(11, y+3, r.glosa)
+        doc.text(15.5, y+3, r.fecha)
+        doc.text(17.5, y+3, r.hora)
+
+        cont++
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })
+            this.chica.forEach(r=>{
+        caja+=parseFloat(r.monto)
+        console.log(r)
+        // xx+=0.5
+        y+=0.5
+        doc.text(1.5, y+3, r.user.name)
+        doc.text(4, y+3, r.monto)
+        doc.text(6.5, y+3, r.motivo)
+        doc.text(11, y+3, 'CAJA CHICA')
         doc.text(15.5, y+3, r.fecha)
         doc.text(17.5, y+3, r.hora)
 
@@ -911,6 +933,7 @@ export default {
     misgastos(){
       this.$q.loading.show()
       this.gastos=[]
+      this.chica=[]
       $('#example').DataTable().destroy()
       this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
         // console.log(res.data)
@@ -927,6 +950,11 @@ export default {
             hora:r.hora,
             user:r.user.name,
           })
+      this.$axios.post(process.env.API+'/listcaja',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{})
+         res.data.forEach(r => {
+            if(r.tipo=='GASTO')
+              this.chica.push(r)
+         });
         })
 
 

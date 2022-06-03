@@ -60,14 +60,14 @@ class GastoController extends Controller
 
     public function gastocaja(Request $request)
     {
-        $gasto=new Gasto();
+        /*$gasto=new Gasto();
         $gasto->precio=$request->precio;
         $gasto->observacion=$request->observacion;
         $gasto->glosa='CAJA CHICA';
         $gasto->fecha=date('Y-m-d');
         $gasto->hora=date('H:i:s');
         $gasto->user_id=$request->user()->id;
-        $gasto->save();
+        $gasto->save();*/
 
         $caja=Caja::find(1);
         $caja->monto= floatval($caja->monto) - floatval($request->precio);
