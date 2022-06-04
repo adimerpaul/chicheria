@@ -237,7 +237,7 @@
               <div class="col-12"><q-input dense outlined label="fechainicio" v-model="planilla.fechainicio" disable /></div>
               <div class="col-12"><q-input dense outlined label="fechafin" v-model="planilla.fechafin" disable /></div>
               <div class="col-12"><q-input dense outlined label="fechapago" v-model="planilla.fechapago" disable /></div>
-              <div class="col-12"><q-input dense outlined label="monto" v-model="planilla.monto"/></div>
+              <div class="col-12"><q-input dense outlined label="monto" v-model="planilla.monto" @update:model-value="actualizamonto"/></div>
               <div class="col-12"><q-input dense outlined label="adelanto" v-model="planilla.adelanto" disable /></div>
               <div class="col-12"><q-input dense outlined label="descuento" v-model="planilla.descuento" disable /></div>
               <div class="col-12"><q-input dense outlined label="bono" v-model="planilla.bono" disable /></div>
@@ -610,10 +610,15 @@ export default {
         this.planilla.adelanto=plan.adelanto==null?0:plan.adelanto
         this.planilla.descuento=plan.descuento==null?0:plan.descuento
         this.planilla.bono=plan.extra==null?0:plan.extra
-        this.planilla.total=parseFloat(this.planilla.monto) - parseFloat(this.planilla.adelanto==null?0:this.planilla.adelanto)-  parseFloat(this.planilla.descuento==null?0:this.planilla.descuento)
+        this.planilla.total=this.totalmonto
         this.planilla.empleado_id=plan.id
         this.planilla.restante=0
     },
+    actualizamonto(){
+        this.planilla.total=this.totalmonto
+
+    },
+
     creategenplanilla(){
           this.$q.loading.show()
       this.$axios.post(process.env.API+'/planilla',this.planilla).then(res=>{
@@ -1262,6 +1267,11 @@ export default {
     }
   },
   computed:{
+     totalmonto(){
+       let tot=0
+       tot=parseFloat(this.planilla.monto) - parseFloat(this.planilla.adelanto==null?0:this.planilla.adelanto) - parseFloat(this.planilla.descuento==null?0:this.planilla.descuento)
+       return tot
+     },
       totaldescuento(){
         let total=0;
       this.empleadohistorial.sueldos.forEach(element => {
