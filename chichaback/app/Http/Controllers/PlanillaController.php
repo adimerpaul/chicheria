@@ -92,8 +92,9 @@ class PlanillaController extends Controller
      * @param  \App\Models\Planilla  $planilla
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Planilla $planilla)
+    public function destroy($id)
     {
+        $planilla=Planilla::find($id);
         $planilla->delete();
     }
 }

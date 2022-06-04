@@ -265,7 +265,16 @@
         <q-card-section class="text-center text-bold q-pa-none q-ma-none">Datos {{emp.nombre}}</q-card-section>
         <q-card-section>
             <div class="row">
-            <q-table title="PLANILLAS" :rows="planillas" :columns="colplan" row-key="name" />
+            <q-table title="PLANILLAS" :rows="planillas" :columns="colplan" row-key="name" >
+                    <template v-slot:body-cell-opcion="props">
+          <q-td :props="props">
+                <q-btn dense round flat color="info"  icon="print" @click="imprimirplanilla(props.row)"></q-btn>
+                <q-btn  color="negative" icon-right="delete" no-caps flat dense @click="delplanilla(props.row)"/>
+
+          </q-td>
+        </template>
+            </q-table>
+
             
             </div>
         </q-card-section>
@@ -329,6 +338,7 @@ export default {
         {name:'opcion',label:'opcion',field:'opcion'},
       ],
             colplan:[
+        {name:'opcion',label:'opcion',field:'opcion'},
         {name:'Fecha',label:'Fecha In',field:'fechainicio'},
         {name:'Fecha',label:'Fecha Fin',field:'fechafin'},
         {name:'Fecha',label:'Fecha pago',field:'fechapago'},
@@ -337,7 +347,6 @@ export default {
         {name:'descuento',label:'Descuento',field:'descuento'},
         {name:'extra',label:'Extra',field:'bono'},
         {name:'pago',label:'Pago',field:'total'},
-        {name:'opcion',label:'opcion',field:'opcion'},
       ],
     }
   },
@@ -623,6 +632,35 @@ export default {
       })
 
     },
+    delplanilla(planilla){
+      console.log(planilla)
+      this.$q.dialog({
+        title:'Seguro de eliminar?',
+        cancel:true,
+      }).onOk(()=>{
+        this.$q.loading.show()
+      this.$axios.delete(process.env.API+'/planilla/'+planilla.id).then(res=>{
+          this.$q.notify({
+            message:'Eliminado',
+            icon:'info',
+            color:'green'
+          })
+          this.dialogver=false
+          this.misempleados()
+      
+        }).catch(err=>{
+          // console.log(err.response)
+          this.$q.loading.hide()
+          this.$q.notify({
+            message:err.response.data.message,
+            icon:'error',
+            color:'red'
+          })
+        })
+      })
+
+
+    },
     delsueldo(sueldo){
       this.$axios.delete(process.env.API+'/sueldo/'+sueldo.id).then(res=>{
           this.$q.notify({
@@ -668,6 +706,7 @@ export default {
         })
         this.imprimirplanilla(this.planilla )
         this.dialoggenplanilla=false
+          this.misempleados()
       })
     },
 
