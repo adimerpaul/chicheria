@@ -230,20 +230,18 @@
   </div>
     <q-dialog v-model="dialoggenplanilla">
       <q-card>
-        <q-card-section class="text-center text-bold q-pa-none q-ma-none">Datos</q-card-section>
+        <q-card-section class="text-center text-bold q-pa-none q-ma-none">Datos {{emp.nombre}}</q-card-section>
         <q-card-section>
           <q-form @submit.prevent="creategenplanilla">
             <div class="row">
-              <div class="col-12"><q-input dense outlined label="fechainicio" v-model="planilla.fechainicio"/></div>
-              <div class="col-12"><q-input dense outlined label="fechafin" v-model="planilla.fechafin"/></div>
-              <div class="col-12"><q-input dense outlined label="fechapago" v-model="planilla.fechapago"/></div>
+              <div class="col-12"><q-input dense outlined label="fechainicio" v-model="planilla.fechainicio" disable /></div>
+              <div class="col-12"><q-input dense outlined label="fechafin" v-model="planilla.fechafin" disable /></div>
+              <div class="col-12"><q-input dense outlined label="fechapago" v-model="planilla.fechapago" disable /></div>
               <div class="col-12"><q-input dense outlined label="monto" v-model="planilla.monto"/></div>
-              <div class="col-12"><q-input dense outlined label="adelanto" v-model="planilla.adelanto"/></div>
-              <div class="col-12"><q-input dense outlined label="descuento" v-model="planilla.descuento"/></div>
-              <div class="col-12"><q-input dense outlined label="bono" v-model="planilla.bono"/></div>
-              <div class="col-12"><q-input dense outlined label="total" v-model="planilla.total"/></div>
-              <div class="col-12"><q-input dense outlined label="empleado_id" v-model="planilla.empleado_id"/></div>
-              <div class="col-12"><q-input dense outlined label="restante" v-model="planilla.restante"/></div>
+              <div class="col-12"><q-input dense outlined label="adelanto" v-model="planilla.adelanto" disable /></div>
+              <div class="col-12"><q-input dense outlined label="descuento" v-model="planilla.descuento" disable /></div>
+              <div class="col-12"><q-input dense outlined label="bono" v-model="planilla.bono" disable /></div>
+              <div class="col-12"><q-input dense outlined label="total" v-model="planilla.total" disable /></div>
               <div class="col-12">
                 <q-btn class="full-width	" type="submit" color="primary" icon="add_circle" label="crear planilla" />
               </div>
@@ -612,7 +610,7 @@ export default {
         this.planilla.adelanto=plan.adelanto==null?0:plan.adelanto
         this.planilla.descuento=plan.descuento==null?0:plan.descuento
         this.planilla.bono=plan.extra==null?0:plan.extra
-        this.planilla.total=parseFloat(this.planilla.monto) - parseFloat(plan.adelanto==NaN?0:plan.adelanto)-  parseFloat(plan.descuento)
+        this.planilla.total=parseFloat(this.planilla.monto) - parseFloat(this.planilla.adelanto==null?0:this.planilla.adelanto)-  parseFloat(this.planilla.descuento==null?0:this.planilla.descuento)
         this.planilla.empleado_id=plan.id
         this.planilla.restante=0
     },
