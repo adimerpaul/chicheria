@@ -33,6 +33,15 @@
         </template>
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
+                      <q-btn
+              color="accent"
+              icon-right="payment"
+              no-caps
+              label="Planilla"
+              flat
+              dense
+              @click="verplanilla(props.row)"
+            />
             <q-btn
               color="warning"
               icon-right="edit"
@@ -237,7 +246,7 @@
               <div class="col-12"><q-input dense outlined label="fechainicio" v-model="planilla.fechainicio" disable /></div>
               <div class="col-12"><q-input dense outlined label="fechafin" v-model="planilla.fechafin" disable /></div>
               <div class="col-12"><q-input dense outlined label="fechapago" v-model="planilla.fechapago" disable /></div>
-              <div class="col-12"><q-input dense outlined label="monto" v-model="planilla.monto" @update:model-value="actualizamonto"/></div>
+              <div class="col-12"><q-input dense outlined label="Salario" v-model="planilla.monto" @update:model-value="actualizamonto"/></div>
               <div class="col-12"><q-input dense outlined label="adelanto" v-model="planilla.adelanto" disable /></div>
               <div class="col-12"><q-input dense outlined label="descuento" v-model="planilla.descuento" disable /></div>
               <div class="col-12"><q-input dense outlined label="bono" v-model="planilla.bono" disable /></div>
@@ -250,6 +259,19 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+
+        <q-dialog v-model="dialogver">
+      <q-card>
+        <q-card-section class="text-center text-bold q-pa-none q-ma-none">Datos {{emp.nombre}}</q-card-section>
+        <q-card-section>
+            <div class="row">
+            <q-table title="PLANILLAS" :rows="planillas" :columns="colplan" row-key="name" />
+            
+            </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
 </q-page>
 </template>
 
@@ -265,6 +287,7 @@ export default {
   data(){
     return{
       dialoggenplanilla:false,
+      dialogver:false,
       pagos:false,
       pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       empleados:[],
@@ -273,6 +296,7 @@ export default {
       empleadohistorial:{},
       boolcrear:true,
       salarios:[],
+      planillas:[],
       planilla:{},
       modempleado:false,
       empleado:{fechanac:'2000-01-01'},
@@ -302,6 +326,17 @@ export default {
         {name:'extra',label:'Extra',field:'extra'},
         {name:'pago',label:'Pago',field:'pago'},
         {name:'cancelar',label:'Cancelar',field:'cancelar'},
+        {name:'opcion',label:'opcion',field:'opcion'},
+      ],
+            colplan:[
+        {name:'Fecha',label:'Fecha In',field:'fechainicio'},
+        {name:'Fecha',label:'Fecha Fin',field:'fechafin'},
+        {name:'Fecha',label:'Fecha pago',field:'fechapago'},
+        {name:'salario',label:'Sueldo',field:'monto'},
+        {name:'adelanto',label:'Adelanto',field:'adelanto'},
+        {name:'descuento',label:'Descuento',field:'descuento'},
+        {name:'extra',label:'Extra',field:'bono'},
+        {name:'pago',label:'Pago',field:'total'},
         {name:'opcion',label:'opcion',field:'opcion'},
       ],
     }
@@ -621,6 +656,8 @@ export default {
 
     creategenplanilla(){
           this.$q.loading.show()
+          //console.log(this.planilla)
+          //return false
       this.$axios.post(process.env.API+'/planilla',this.planilla).then(res=>{
         // console.log(res.data)
         this.$q.loading.hide()
@@ -1235,6 +1272,11 @@ export default {
         })
       })
 
+    },
+    verplanilla(empleado){
+        this.emp=empleado
+        this.planillas=this.emp.planillas
+        this.dialogver=true
     },
     updateval(index){
       this.empleado2=index

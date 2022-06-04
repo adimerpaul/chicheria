@@ -15,7 +15,7 @@ class EmpleadoController extends Controller
      */
     public function index()
     {
-        return Empleado::with('sueldos')->get();
+        return Empleado::with('planillas')->with('sueldos')->get();
     }
 
     /**
