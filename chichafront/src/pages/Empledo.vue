@@ -3,19 +3,19 @@
   <q-page class="q-pa-xs">
   <div class="row">
     <div class="col-12">
-      <div class="text-subtitle1 bg-primary text-center text-white">Control de empleados</div>
+      <div class="text-subtitle1 bg-primary text-center text-white">CONTROL EMPLEADOS</div>
     </div>
     <div class="col-12">
       <q-form @submit.prevent="agregar">
         <div class="row">
-          <div class="col-12 q-pa-xs col-sm-1"><q-input outlined label="CI" v-model="empleado.ci" required/></div>
-          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Nombre" v-model="empleado.nombre" required/></div>
-          <div class="col-12 q-pa-xs col-sm-3"><q-select v-model="empleado.tipo" :options="['DESTAJO','FIJO']" label="Tipo" filled /></div>
-          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" type="date" v-model="empleado.fechanac" required/></div>
-          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>
-          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>
-          <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
-            <q-btn icon="send" label="CREAR" type="submit" color="positive"/>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined dense label="CI" v-model="empleado.ci" required/></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined dense label="Nombre" v-model="empleado.nombre" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-select outlined dense v-model="empleado.tipo" :options="['DESTAJO','FIJO']" label="Tipo"  /></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined dense label="Fecha Nacimiento" type="date" v-model="empleado.fechanac" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined dense label="Celular" v-model="empleado.celular"/></div>
+          <div class="col-12 q-pa-xs col-sm-1"><q-input outlined dense label="Salario" v-model="empleado.salario" type="number"/></div>
+          <div class="col-12 col-sm-12 flex flex-center">
+            <q-btn class="full-width" icon="send" label="CREAR" type="submit" color="positive"/>
           </div>
         </div>
       </q-form>
@@ -67,12 +67,12 @@
       </q-table>
       <div class="row">
         <div class="col-12">
-          <div class="text-subtitle1 bg-accent text-center text-white">Historial de pagos</div>
+          <div class="text-subtitle1 bg-accent text-center text-white">HISTORIAL DE PAGOS</div>
         </div>
-        <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha1" outlined required/></div>
-        <div class="col-6 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
+        <div class="col-6 col-sm-4 q-pa-xs"><q-input dense type="date" label="Desde" v-model="fecha1" outlined required/></div>
+        <div class="col-6 col-sm-4 q-pa-xs"><q-input dense type="date" label="Hasta" v-model="fecha2" outlined required/></div>
         <div class="col-6 col-sm-4 q-pa-xs flex flex-center">
-          <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="missalarios" />
+          <q-btn color="info" class="full-width"  label="Consultar" icon="search" type="submit" @click="missalarios" />
         </div>
         <div class="col-12">
             <div class=" responsive">
@@ -93,11 +93,12 @@
                   <td>{{v.descuento}}</td>
                   <td>{{v.extra}}</td>
                   <td>
-                              <template v-if="$store.state.login.reimpresion" >
-              <!--<q-btn icon="print" dense color="yellow" @click="imprimirboleta(v)"/>
-              <q-btn icon="money" dense color="green" @click="cancelar(v)" v-if="v.cancelar==undefined ||v.cancelar==0"/>-->
-              <q-btn icon="list" dense color="accent" @click="genplanilla(v)"/>
-            </template></td>
+                    <template v-if="$store.state.login.reimpresion" >
+                      <!--<q-btn icon="print" dense color="yellow" @click="imprimirboleta(v)"/>
+                      <q-btn icon="money" dense color="green" @click="cancelar(v)" v-if="v.cancelar==undefined ||v.cancelar==0"/>-->
+                      <q-btn icon="list" dense color="accent" @click="genplanilla(v)"/>
+                    </template>
+                  </td>
                   </tr>
                   </tbody>
                 </table>
@@ -167,7 +168,7 @@
       <q-form @submit.prevent="modificar">
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="CI" v-model="empleado2.ci" required/></div>
           <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Nombre" v-model="empleado2.nombre" required/></div>
-          <div class="col-12 q-pa-xs col-sm-3"><q-select v-model="empleado2.tipo" :options="['DESTAJO','FIJO']" label="Tipo" filled /></div>
+          <div class="col-12 q-pa-xs col-sm-3"><q-select v-model="empleado2.tipo" :options="['DESTAJO','FIJO']" label="Tipo" outlined /></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" type="date" v-model="empleado2.fechanac" required/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado2.celular"/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado2.salario" type="number"/></div>
@@ -187,20 +188,20 @@
           <q-card-section class="q-pt-none">
             <q-form @submit.prevent="agregarpago">
               <div class="row">
-                <div class="col-4">
-                  <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
+                <div class="col-2">
+                  <q-input outlined dense label="Monto" type="number" v-model="pago.monto" required/>
                 </div>
                 <div class="col-2">
-                  <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA']"/>
+                  <q-select outlined dense label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA']"/>
                 </div>
                 <div class="col-2">
-                  <q-input outlined label="Fecha" v-model="pago.fecha" type="date"/>
+                  <q-input outlined dense label="Fecha" v-model="pago.fecha" type="date"/>
                 </div>
                 <div class="col-4">
-                  <q-input outlined type="text" label="observacion" v-model="pago.observacion" />
+                  <q-input outlined dense type="text" label="observacion" v-model="pago.observacion" />
                 </div>
-                <div class="col-4 flex flex-center">
-                  <q-btn label="Agregar" type="submit" icon="send" color="info"/>
+                <div class="col-2 flex flex-center">
+                  <q-btn  class="full-with" label="Agregar" type="submit" icon="send" color="info"/>
                 </div>
               </div>
             </q-form>
@@ -210,7 +211,7 @@
             :columns="columns2"
             :rows="empleadohistorial.sueldos"
             >
-                    <template v-slot:body-cell-opcion="props">
+        <template v-slot:body-cell-opcion="props">
           <q-td :props="props">
             <q-btn  color="negative" icon-right="delete" no-caps flat dense @click="delsueldo(props.row)"/>
                 <q-btn dense round flat color="teal" @click="printRow(props)" icon="print"></q-btn>
@@ -227,6 +228,30 @@
     </div>
 
   </div>
+    <q-dialog v-model="dialoggenplanilla">
+      <q-card>
+        <q-card-section class="text-center text-bold q-pa-none q-ma-none">Datos</q-card-section>
+        <q-card-section>
+          <q-form @submit.prevent="creategenplanilla">
+            <div class="row">
+              <div class="col-12"><q-input dense outlined label="fechainicio" v-model="planilla.fechainicio"/></div>
+              <div class="col-12"><q-input dense outlined label="fechafin" v-model="planilla.fechafin"/></div>
+              <div class="col-12"><q-input dense outlined label="fechapago" v-model="planilla.fechapago"/></div>
+              <div class="col-12"><q-input dense outlined label="monto" v-model="planilla.monto"/></div>
+              <div class="col-12"><q-input dense outlined label="adelanto" v-model="planilla.adelanto"/></div>
+              <div class="col-12"><q-input dense outlined label="descuento" v-model="planilla.descuento"/></div>
+              <div class="col-12"><q-input dense outlined label="bono" v-model="planilla.bono"/></div>
+              <div class="col-12"><q-input dense outlined label="total" v-model="planilla.total"/></div>
+              <div class="col-12"><q-input dense outlined label="empleado_id" v-model="planilla.empleado_id"/></div>
+              <div class="col-12"><q-input dense outlined label="restante" v-model="planilla.restante"/></div>
+              <div class="col-12">
+                <q-btn class="full-width	" type="submit" color="primary" icon="add_circle" label="crear planilla" />
+              </div>
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
 </q-page>
 </template>
 
@@ -235,11 +260,13 @@ import $ from "jquery";
 import {date} from 'quasar'
 import {jsPDF} from "jspdf";
 import moment from 'moment'
+import planillas from "pages/Planillas";
 const conversor = require('conversor-numero-a-letras-es-ar');
 export default {
   name: "Venta",
   data(){
     return{
+      dialoggenplanilla:false,
       pagos:false,
       pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       empleados:[],
@@ -283,7 +310,248 @@ export default {
   },
   mounted() {
         $('#example').DataTable( {
-      dom: 'Blfrtip',
+      "language":{
+        "processing": "Procesando...",
+        "lengthMenu": "Mostrar _MENU_ registros",
+        "zeroRecords": "No se encontraron resultados",
+        "emptyTable": "Ningún dato disponible en esta tabla",
+        "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "search": "Buscar:",
+        "infoThousands": ",",
+        "loadingRecords": "Cargando...",
+        "paginate": {
+          "first": "Primero",
+          "last": "Último",
+          "next": "Siguiente",
+          "previous": "Anterior"
+        },
+        "aria": {
+          "sortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sortDescending": ": Activar para ordenar la columna de manera descendente"
+        },
+        "buttons": {
+          "copy": "Copiar",
+          "colvis": "Visibilidad",
+          "collection": "Colección",
+          "colvisRestore": "Restaurar visibilidad",
+          "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+          "copySuccess": {
+            "1": "Copiada 1 fila al portapapeles",
+            "_": "Copiadas %ds fila al portapapeles"
+          },
+          "copyTitle": "Copiar al portapapeles",
+          "csv": "CSV",
+          "excel": "Excel",
+          "pageLength": {
+            "-1": "Mostrar todas las filas",
+            "_": "Mostrar %d filas"
+          },
+          "pdf": "PDF",
+          "print": "Imprimir",
+          "renameState": "Cambiar nombre",
+          "updateState": "Actualizar",
+          "createState": "Crear Estado",
+          "removeAllStates": "Remover Estados",
+          "removeState": "Remover",
+          "savedStates": "Estados Guardados",
+          "stateRestore": "Estado %d"
+        },
+        "autoFill": {
+          "cancel": "Cancelar",
+          "fill": "Rellene todas las celdas con <i>%d<\/i>",
+          "fillHorizontal": "Rellenar celdas horizontalmente",
+          "fillVertical": "Rellenar celdas verticalmentemente"
+        },
+        "decimal": ",",
+        "searchBuilder": {
+          "add": "Añadir condición",
+          "button": {
+            "0": "Constructor de búsqueda",
+            "_": "Constructor de búsqueda (%d)"
+          },
+          "clearAll": "Borrar todo",
+          "condition": "Condición",
+          "conditions": {
+            "date": {
+              "after": "Despues",
+              "before": "Antes",
+              "between": "Entre",
+              "empty": "Vacío",
+              "equals": "Igual a",
+              "notBetween": "No entre",
+              "notEmpty": "No Vacio",
+              "not": "Diferente de"
+            },
+            "number": {
+              "between": "Entre",
+              "empty": "Vacio",
+              "equals": "Igual a",
+              "gt": "Mayor a",
+              "gte": "Mayor o igual a",
+              "lt": "Menor que",
+              "lte": "Menor o igual que",
+              "notBetween": "No entre",
+              "notEmpty": "No vacío",
+              "not": "Diferente de"
+            },
+            "string": {
+              "contains": "Contiene",
+              "empty": "Vacío",
+              "endsWith": "Termina en",
+              "equals": "Igual a",
+              "notEmpty": "No Vacio",
+              "startsWith": "Empieza con",
+              "not": "Diferente de",
+              "notContains": "No Contiene",
+              "notStarts": "No empieza con",
+              "notEnds": "No termina con"
+            },
+            "array": {
+              "not": "Diferente de",
+              "equals": "Igual",
+              "empty": "Vacío",
+              "contains": "Contiene",
+              "notEmpty": "No Vacío",
+              "without": "Sin"
+            }
+          },
+          "data": "Data",
+          "deleteTitle": "Eliminar regla de filtrado",
+          "leftTitle": "Criterios anulados",
+          "logicAnd": "Y",
+          "logicOr": "O",
+          "rightTitle": "Criterios de sangría",
+          "title": {
+            "0": "Constructor de búsqueda",
+            "_": "Constructor de búsqueda (%d)"
+          },
+          "value": "Valor"
+        },
+        "searchPanes": {
+          "clearMessage": "Borrar todo",
+          "collapse": {
+            "0": "Paneles de búsqueda",
+            "_": "Paneles de búsqueda (%d)"
+          },
+          "count": "{total}",
+          "countFiltered": "{shown} ({total})",
+          "emptyPanes": "Sin paneles de búsqueda",
+          "loadMessage": "Cargando paneles de búsqueda",
+          "title": "Filtros Activos - %d",
+          "showMessage": "Mostrar Todo",
+          "collapseMessage": "Colapsar Todo"
+        },
+        "select": {
+          "cells": {
+            "1": "1 celda seleccionada",
+            "_": "%d celdas seleccionadas"
+          },
+          "columns": {
+            "1": "1 columna seleccionada",
+            "_": "%d columnas seleccionadas"
+          },
+          "rows": {
+            "1": "1 fila seleccionada",
+            "_": "%d filas seleccionadas"
+          }
+        },
+        "thousands": ".",
+        "datetime": {
+          "previous": "Anterior",
+          "next": "Proximo",
+          "hours": "Horas",
+          "minutes": "Minutos",
+          "seconds": "Segundos",
+          "unknown": "-",
+          "amPm": [
+            "AM",
+            "PM"
+          ],
+          "months": {
+            "0": "Enero",
+            "1": "Febrero",
+            "10": "Noviembre",
+            "11": "Diciembre",
+            "2": "Marzo",
+            "3": "Abril",
+            "4": "Mayo",
+            "5": "Junio",
+            "6": "Julio",
+            "7": "Agosto",
+            "8": "Septiembre",
+            "9": "Octubre"
+          },
+          "weekdays": [
+            "Dom",
+            "Lun",
+            "Mar",
+            "Mie",
+            "Jue",
+            "Vie",
+            "Sab"
+          ]
+        },
+        "editor": {
+          "close": "Cerrar",
+          "create": {
+            "button": "Nuevo",
+            "title": "Crear Nuevo Registro",
+            "submit": "Crear"
+          },
+          "edit": {
+            "button": "Editar",
+            "title": "Editar Registro",
+            "submit": "Actualizar"
+          },
+          "remove": {
+            "button": "Eliminar",
+            "title": "Eliminar Registro",
+            "submit": "Eliminar",
+            "confirm": {
+              "_": "¿Está seguro que desea eliminar %d filas?",
+              "1": "¿Está seguro que desea eliminar 1 fila?"
+            }
+          },
+          "error": {
+            "system": "Ha ocurrido un error en el sistema (<a target=\"\\\" rel=\"\\ nofollow\" href=\"\\\">Más información&lt;\\\/a&gt;).<\/a>"
+          },
+          "multi": {
+            "title": "Múltiples Valores",
+            "info": "Los elementos seleccionados contienen diferentes valores para este registro. Para editar y establecer todos los elementos de este registro con el mismo valor, hacer click o tap aquí, de lo contrario conservarán sus valores individuales.",
+            "restore": "Deshacer Cambios",
+            "noMulti": "Este registro puede ser editado individualmente, pero no como parte de un grupo."
+          }
+        },
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+        "stateRestore": {
+          "creationModal": {
+            "button": "Crear",
+            "name": "Nombre:",
+            "order": "Clasificación",
+            "paging": "Paginación",
+            "search": "Busqueda",
+            "select": "Seleccionar",
+            "columns": {
+              "search": "Búsqueda de Columna",
+              "visible": "Visibilidad de Columna"
+            },
+            "title": "Crear Nuevo Estado",
+            "toggleLabel": "Incluir:"
+          },
+          "emptyError": "El nombre no puede estar vacio",
+          "removeConfirm": "¿Seguro que quiere eliminar este %s?",
+          "removeError": "Error al eliminar el registro",
+          "removeJoiner": "y",
+          "removeSubmit": "Eliminar",
+          "renameButton": "Cambiar Nombre",
+          "renameLabel": "Nuevo nombre para %s",
+          "duplicateError": "Ya existe un Estado con este nombre.",
+          "emptyStates": "No hay Estados guardados",
+          "removeTitle": "Remover Estado",
+          "renameTitle": "Cambiar Nombre Estado"
+        }
+      },dom: 'Blfrtip',
       buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print'
       ],
@@ -335,6 +603,7 @@ export default {
 
     },
     genplanilla(plan){
+        this.dialoggenplanilla=true
         this.emp=plan
         this.planilla.fechainicio=this.fecha1
         this.planilla.fechafin=this.fecha2
@@ -343,17 +612,22 @@ export default {
         this.planilla.adelanto=plan.adelanto==null?0:plan.adelanto
         this.planilla.descuento=plan.descuento==null?0:plan.descuento
         this.planilla.bono=plan.extra==null?0:plan.extra
-        this.planilla.total=parseFloat(this.planilla.monto) - parseFloat(plan.adelanto)-  parseFloat(plan.descuento)
+        this.planilla.total=parseFloat(this.planilla.monto) - parseFloat(plan.adelanto==NaN?0:plan.adelanto)-  parseFloat(plan.descuento)
         this.planilla.empleado_id=plan.id
-        //this.dialog_plan=true
-      console.log(plan)
+        this.planilla.restante=0
+    },
+    creategenplanilla(){
+          this.$q.loading.show()
       this.$axios.post(process.env.API+'/planilla',this.planilla).then(res=>{
-          this.$q.notify({
-            message:'Planilla Creada',
-            icon:'info',
-            color:'green'
-          })
-      this.imprimirplanilla(this.planilla )
+        // console.log(res.data)
+        this.$q.loading.hide()
+        this.$q.notify({
+          message:'Planilla Creada',
+          icon:'info',
+          color:'green'
+        })
+        this.imprimirplanilla(this.planilla )
+        this.dialoggenplanilla=false
       })
     },
 
@@ -524,6 +798,7 @@ export default {
         let sumatoria=0
         this.salarios.forEach(r=>{
           // xx+=0.5
+          // console.log(r)
           let extra=r.extra==null?0:r.extra;
           let adelanto=r.adelanto==null?0:r.adelanto;
           let descuento=r.descuento==null?0:r.descuento;
@@ -562,11 +837,253 @@ export default {
     missalarios(){
       this.$q.loading.show()
       this.$axios.post(process.env.API+'/missueldos',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         this.salarios=res.data
         $('#example').DataTable().destroy();
         this.$nextTick(()=>{
           $('#example').DataTable( {
+            "language":{
+              "processing": "Procesando...",
+              "lengthMenu": "Mostrar _MENU_ registros",
+              "zeroRecords": "No se encontraron resultados",
+              "emptyTable": "Ningún dato disponible en esta tabla",
+              "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+              "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+              "search": "Buscar:",
+              "infoThousands": ",",
+              "loadingRecords": "Cargando...",
+              "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+              },
+              "aria": {
+                "sortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sortDescending": ": Activar para ordenar la columna de manera descendente"
+              },
+              "buttons": {
+                "copy": "Copiar",
+                "colvis": "Visibilidad",
+                "collection": "Colección",
+                "colvisRestore": "Restaurar visibilidad",
+                "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+                "copySuccess": {
+                  "1": "Copiada 1 fila al portapapeles",
+                  "_": "Copiadas %ds fila al portapapeles"
+                },
+                "copyTitle": "Copiar al portapapeles",
+                "csv": "CSV",
+                "excel": "Excel",
+                "pageLength": {
+                  "-1": "Mostrar todas las filas",
+                  "_": "Mostrar %d filas"
+                },
+                "pdf": "PDF",
+                "print": "Imprimir",
+                "renameState": "Cambiar nombre",
+                "updateState": "Actualizar",
+                "createState": "Crear Estado",
+                "removeAllStates": "Remover Estados",
+                "removeState": "Remover",
+                "savedStates": "Estados Guardados",
+                "stateRestore": "Estado %d"
+              },
+              "autoFill": {
+                "cancel": "Cancelar",
+                "fill": "Rellene todas las celdas con <i>%d<\/i>",
+                "fillHorizontal": "Rellenar celdas horizontalmente",
+                "fillVertical": "Rellenar celdas verticalmentemente"
+              },
+              "decimal": ",",
+              "searchBuilder": {
+                "add": "Añadir condición",
+                "button": {
+                  "0": "Constructor de búsqueda",
+                  "_": "Constructor de búsqueda (%d)"
+                },
+                "clearAll": "Borrar todo",
+                "condition": "Condición",
+                "conditions": {
+                  "date": {
+                    "after": "Despues",
+                    "before": "Antes",
+                    "between": "Entre",
+                    "empty": "Vacío",
+                    "equals": "Igual a",
+                    "notBetween": "No entre",
+                    "notEmpty": "No Vacio",
+                    "not": "Diferente de"
+                  },
+                  "number": {
+                    "between": "Entre",
+                    "empty": "Vacio",
+                    "equals": "Igual a",
+                    "gt": "Mayor a",
+                    "gte": "Mayor o igual a",
+                    "lt": "Menor que",
+                    "lte": "Menor o igual que",
+                    "notBetween": "No entre",
+                    "notEmpty": "No vacío",
+                    "not": "Diferente de"
+                  },
+                  "string": {
+                    "contains": "Contiene",
+                    "empty": "Vacío",
+                    "endsWith": "Termina en",
+                    "equals": "Igual a",
+                    "notEmpty": "No Vacio",
+                    "startsWith": "Empieza con",
+                    "not": "Diferente de",
+                    "notContains": "No Contiene",
+                    "notStarts": "No empieza con",
+                    "notEnds": "No termina con"
+                  },
+                  "array": {
+                    "not": "Diferente de",
+                    "equals": "Igual",
+                    "empty": "Vacío",
+                    "contains": "Contiene",
+                    "notEmpty": "No Vacío",
+                    "without": "Sin"
+                  }
+                },
+                "data": "Data",
+                "deleteTitle": "Eliminar regla de filtrado",
+                "leftTitle": "Criterios anulados",
+                "logicAnd": "Y",
+                "logicOr": "O",
+                "rightTitle": "Criterios de sangría",
+                "title": {
+                  "0": "Constructor de búsqueda",
+                  "_": "Constructor de búsqueda (%d)"
+                },
+                "value": "Valor"
+              },
+              "searchPanes": {
+                "clearMessage": "Borrar todo",
+                "collapse": {
+                  "0": "Paneles de búsqueda",
+                  "_": "Paneles de búsqueda (%d)"
+                },
+                "count": "{total}",
+                "countFiltered": "{shown} ({total})",
+                "emptyPanes": "Sin paneles de búsqueda",
+                "loadMessage": "Cargando paneles de búsqueda",
+                "title": "Filtros Activos - %d",
+                "showMessage": "Mostrar Todo",
+                "collapseMessage": "Colapsar Todo"
+              },
+              "select": {
+                "cells": {
+                  "1": "1 celda seleccionada",
+                  "_": "%d celdas seleccionadas"
+                },
+                "columns": {
+                  "1": "1 columna seleccionada",
+                  "_": "%d columnas seleccionadas"
+                },
+                "rows": {
+                  "1": "1 fila seleccionada",
+                  "_": "%d filas seleccionadas"
+                }
+              },
+              "thousands": ".",
+              "datetime": {
+                "previous": "Anterior",
+                "next": "Proximo",
+                "hours": "Horas",
+                "minutes": "Minutos",
+                "seconds": "Segundos",
+                "unknown": "-",
+                "amPm": [
+                  "AM",
+                  "PM"
+                ],
+                "months": {
+                  "0": "Enero",
+                  "1": "Febrero",
+                  "10": "Noviembre",
+                  "11": "Diciembre",
+                  "2": "Marzo",
+                  "3": "Abril",
+                  "4": "Mayo",
+                  "5": "Junio",
+                  "6": "Julio",
+                  "7": "Agosto",
+                  "8": "Septiembre",
+                  "9": "Octubre"
+                },
+                "weekdays": [
+                  "Dom",
+                  "Lun",
+                  "Mar",
+                  "Mie",
+                  "Jue",
+                  "Vie",
+                  "Sab"
+                ]
+              },
+              "editor": {
+                "close": "Cerrar",
+                "create": {
+                  "button": "Nuevo",
+                  "title": "Crear Nuevo Registro",
+                  "submit": "Crear"
+                },
+                "edit": {
+                  "button": "Editar",
+                  "title": "Editar Registro",
+                  "submit": "Actualizar"
+                },
+                "remove": {
+                  "button": "Eliminar",
+                  "title": "Eliminar Registro",
+                  "submit": "Eliminar",
+                  "confirm": {
+                    "_": "¿Está seguro que desea eliminar %d filas?",
+                    "1": "¿Está seguro que desea eliminar 1 fila?"
+                  }
+                },
+                "error": {
+                  "system": "Ha ocurrido un error en el sistema (<a target=\"\\\" rel=\"\\ nofollow\" href=\"\\\">Más información&lt;\\\/a&gt;).<\/a>"
+                },
+                "multi": {
+                  "title": "Múltiples Valores",
+                  "info": "Los elementos seleccionados contienen diferentes valores para este registro. Para editar y establecer todos los elementos de este registro con el mismo valor, hacer click o tap aquí, de lo contrario conservarán sus valores individuales.",
+                  "restore": "Deshacer Cambios",
+                  "noMulti": "Este registro puede ser editado individualmente, pero no como parte de un grupo."
+                }
+              },
+              "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+              "stateRestore": {
+                "creationModal": {
+                  "button": "Crear",
+                  "name": "Nombre:",
+                  "order": "Clasificación",
+                  "paging": "Paginación",
+                  "search": "Busqueda",
+                  "select": "Seleccionar",
+                  "columns": {
+                    "search": "Búsqueda de Columna",
+                    "visible": "Visibilidad de Columna"
+                  },
+                  "title": "Crear Nuevo Estado",
+                  "toggleLabel": "Incluir:"
+                },
+                "emptyError": "El nombre no puede estar vacio",
+                "removeConfirm": "¿Seguro que quiere eliminar este %s?",
+                "removeError": "Error al eliminar el registro",
+                "removeJoiner": "y",
+                "removeSubmit": "Eliminar",
+                "renameButton": "Cambiar Nombre",
+                "renameLabel": "Nuevo nombre para %s",
+                "duplicateError": "Ya existe un Estado con este nombre.",
+                "emptyStates": "No hay Estados guardados",
+                "removeTitle": "Remover Estado",
+                "renameTitle": "Cambiar Nombre Estado"
+              }
+            },
             dom: 'Bfrtip',
             buttons: [
               'copy', 'csv', 'excel', 'pdf', 'print'

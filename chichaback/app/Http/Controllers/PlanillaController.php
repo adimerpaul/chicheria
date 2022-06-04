@@ -36,6 +36,7 @@ class PlanillaController extends Controller
      */
     public function store(Request $request)
     {
+        return $request;
         $planilla= new Planilla;
         $planilla->fechainicio=$request->fechainicio;
         $planilla->fechafin=$request->fechafin;
@@ -44,6 +45,7 @@ class PlanillaController extends Controller
         $planilla->adelanto=$request->adelanto;
         $planilla->descuento=$request->descuento;
         $planilla->bono=$request->bono;
+        $planilla->restante=$request->restante;
         $planilla->restante=$request->restante;
         $planilla->total=$request->total;
         $planilla->empleado_id=$request->empleado_id;
