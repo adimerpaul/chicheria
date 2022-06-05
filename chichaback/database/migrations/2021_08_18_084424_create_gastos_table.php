@@ -20,6 +20,8 @@ class CreateGastosTable extends Migration
             $table->string('observacion');
             $table->date('fecha');
             $table->time('hora');
+            $table->unsignedBigInteger('glosa_id')->nullable();
+            $table->foreign('glosa_id')->references('id')->on('glosas');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

@@ -32,11 +32,11 @@ class GastoController extends Controller
     public function misgastos(Request  $request){
         if($request->user()->id==1)
         {
-            if($request->id==0) return Gasto::with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('id','desc')->get();
-            else return Gasto::with('user')->where('user_id',$request->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('id','desc')->get();
+            if($request->id==0) return Gasto::with('glosa')->with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('id','desc')->get();
+            else return Gasto::with('glosa')->with('user')->where('user_id',$request->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('id','desc')->get();
         }
         else
-        return Gasto::with('user')->where('user_id',$request->user()->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('id','desc')->get();
+        return Gasto::with('glosa')->with('user')->where('user_id',$request->user()->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('id','desc')->get();
         //return Gasto::with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
     }
 
@@ -54,6 +54,7 @@ class GastoController extends Controller
         $gasto->glosa=$request->glosa;
         $gasto->fecha=$request->fecha;
         $gasto->hora=date('H:i:s');
+        $gasto->glosa_id=$request->glosa_id;
         $gasto->user_id=$request->user()->id;
         $gasto->save();
     }

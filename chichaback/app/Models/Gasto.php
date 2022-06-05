@@ -15,9 +15,14 @@ class Gasto extends Model
         'glosa',
         'fecha',
         'hora',
+        'glosa_id',
         'user_id'
     ];
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function glosa(){
+        return $this->belongsTo(Glosa::class);
     }
 }

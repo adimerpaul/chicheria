@@ -16,10 +16,15 @@
           <div class="col-12 q-pa-xs col-sm-2">
           <q-input dense outlined type="number" step="0.1" label="Precio" v-model="empleado.precio" required/></div>
           <div class="col-12 q-pa-xs col-sm-3">
-            <q-input dense outlined type="text" label="Glosa"  v-model="empleado.glosa" style="text-transform: uppercase" required list="glosas"/>
-                <datalist id="glosas">
-                    <option v-for="(listg,index) in gl" :key="index">{{listg.glosa}}</option>
-                </datalist>
+            <q-select outlined v-model="glosa" :options="glosas" label="Glosa" use-input @filter="filterFn"       >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
           </div>
           <div class="col-12 q-pa-xs col-sm-3"><q-input dense outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input dense outlined label="Fecha " type="date" v-model="empleado.fecha" required/></div>
@@ -102,7 +107,7 @@
         <tr v-for="g in gastos" :key="g.i">
           <td>{{g.id}}</td>
           <td>{{g.precio}}</td>
-          <td>{{g.glosa}}</td>
+          <td>{{g.glosa.nombre}}</td>
           <td>{{g.observacion}}</td>
           <td>{{g.fecha}}</td>
           <td>{{g.hora}}</td>
@@ -301,6 +306,8 @@ export default {
     return{
       filter:'',
       cchica:{},
+      glosa:{},
+      glosas:[],
       chica:[],
       pagos:false,
       cajachica:false,
@@ -316,6 +323,7 @@ export default {
       users:[],
       user:{},
       gl:[],
+      filterglosa:[],
       pageTotal:'',
       tot:'',
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
@@ -325,7 +333,7 @@ export default {
       columns:[
         {name:'id',label:'Id',field:'id'},
         {name:'precio',label:'Precio',field:'precio'},
-        {name:'glosa',label:'Glosa',field:'glosa'},
+        {name:'glosa',label:'Glosa',field:row=>row.glosa.nombre},
         {name:'observacion',label:'Observacion',field:'observacion'},
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'hora',label:'Hora',field:'hora'},
@@ -354,6 +362,7 @@ export default {
     $('#example').DataTable();
     this.misgastos()
     this.misuser()
+    this.misglosa()
     // this.misempleados()
     // console.log(this.$store.state.login)
     // this.$axios.get(process.env.API+'/cliente').then(res=>{
@@ -379,6 +388,20 @@ export default {
     this.totalcaja();
   },
   methods:{
+          filterFn (val, update) {
+        if (val === '') {
+          update(() => {
+            this.glosas = this.filterglosa
+          })
+          return
+        }
+
+        update(() => {
+          const needle = val.toLowerCase()
+          this.glosas = this.filterglosa.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+        })
+      },
+    
     printRow(props){
       this.$axios.get(process.env.API + "/impade/"+props.row.id).then((res) => {
                 let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
@@ -424,6 +447,18 @@ export default {
 
         });
         this.user=this.users[0];
+      })
+    },
+        misglosa(){
+          this.glosas=[]
+      this.$axios.get(process.env.API+'/glosa').then(res=>{
+        res.data.forEach(r => {
+          r.label=r.nombre
+          this.glosas.push(r);
+
+        });
+        this.filterglosa=this.glosas
+        this.glosa={label:''};
       })
     },
     imprimirmisventasygastos(us){
@@ -1178,9 +1213,14 @@ console.log(this.ventas)
       })
     },
     agregar(){
+     // console.log(this.glosa)
+      if(this.glosa.id==undefined){
+        return false
+      }
       this.$q.loading.show()
       this.empleado.observacion=this.empleado.observacion.toUpperCase()
-      this.empleado.glosa=this.empleado.glosa.toUpperCase()
+      this.empleado.glosa=this.glosa.nombre
+      this.empleado.glosa_id=this.glosa.id
       if (this.boolcrear){
         this.$axios.post(process.env.API+'/gasto',this.empleado).then(res=>{
           // this.ventas=res.data
@@ -1193,6 +1233,7 @@ console.log(this.ventas)
           this.empleado.precio=0
           this.empleado.observacion=''
           this.empleado.glosa=''
+          this.glosa={label:''}
           this.$q.notify({
             message:'Creado correctamente',
             icon:'info',
@@ -1279,6 +1320,9 @@ console.log(this.ventas)
 
     },
     updateval(index){
+      console.log(index)
+      index.glosa.label=index.glosa.nombre
+      this.glosa=index.glosa
       this.empleado=index
       this.boolcrear=false
       // this.detalles.splice(index, 1);
