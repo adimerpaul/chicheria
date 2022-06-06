@@ -13,10 +13,10 @@
     <div class="col-12">
       <q-form @submit.prevent="agregar">
         <div class="row">
-          <div class="col-12 q-pa-xs col-sm-2">
+          <div class="col-12 q-pa-xs col-sm-1">
           <q-input dense outlined type="number" step="0.1" label="Precio" v-model="empleado.precio" required/></div>
           <div class="col-12 q-pa-xs col-sm-3">
-            <q-select outlined v-model="glosa" :options="glosas" label="Glosa" use-input @filter="filterFn"       >
+            <q-select outlined v-model="glosa" :options="glosas" label="Glosa" use-input @filter="filterFn"     dense  >
               <template v-slot:no-option>
                 <q-item>
                   <q-item-section class="text-grey">
@@ -25,6 +25,10 @@
                 </q-item>
               </template>
             </q-select>
+          </div>
+          <div class="col-12 q-pa-xs col-sm-1">
+             <q-btn color="green" icon="add_circle"  @click="dialogaddglosa=true"/>
+            
           </div>
           <div class="col-12 q-pa-xs col-sm-3"><q-input dense outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input dense outlined label="Fecha " type="date" v-model="empleado.fecha" required/></div>
@@ -107,7 +111,7 @@
         <tr v-for="g in gastos" :key="g.i">
           <td>{{g.id}}</td>
           <td>{{g.precio}}</td>
-          <td>{{g.glosa.nombre}}</td>
+          <td>{{g.glosa}}</td>
           <td>{{g.observacion}}</td>
           <td>{{g.fecha}}</td>
           <td>{{g.hora}}</td>
@@ -290,6 +294,33 @@
         </q-card>
       </q-dialog>
 
+
+            <q-dialog v-model="dialogaddglosa">
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Registro / Mod  Glosa</div>
+          </q-card-section>
+          <q-card-section class="q-pt-none">
+            <q-form @submit.prevent="regglosa">
+              <div class="row">
+                <div class="col-9">
+                  <q-input outlined label="Nombre" v-model="glosa.nombre"
+                    :rules="[
+                    val => val.length>0  || 'INGRESE NOMBRE',
+                    ]"
+                lazy-rules/>
+                </div>
+                <div class="col-3 ">
+                  <q-btn label="Reg/Mod" type="submit" icon="send" color="info" dense/>
+                </div>
+              </div>
+            </q-form>
+          </q-card-section>
+          <q-card-actions align="right" class="bg-white text-teal">
+            <q-btn flat label="Cerrar" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </div>
 
   </div>
@@ -309,6 +340,7 @@ export default {
       glosa:{},
       glosas:[],
       chica:[],
+      dialogaddglosa:false,
       pagos:false,
       cajachica:false,
       pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
@@ -333,7 +365,7 @@ export default {
       columns:[
         {name:'id',label:'Id',field:'id'},
         {name:'precio',label:'Precio',field:'precio'},
-        {name:'glosa',label:'Glosa',field:row=>row.glosa.nombre},
+        {name:'glosa',label:'Glosa',field:'glosa'},
         {name:'observacion',label:'Observacion',field:'observacion'},
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'hora',label:'Hora',field:'hora'},
@@ -388,6 +420,32 @@ export default {
     this.totalcaja();
   },
   methods:{
+    regglosa(){
+      if(this.glosa.id==undefined){
+        this.$axios.post(process.env.API+'/glosa',{nombre:this.glosa.nombre}).then(res=>{
+          this.misglosa()
+          this.dialogaddglosa=false;
+                          this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Registrado correctamente'
+        });
+        })
+      }
+      else{
+
+                this.$axios.put(process.env.API+'/glosa/'+this.glosa.id,this.glosa).then(res=>{
+          this.misglosa()
+          this.dialogaddglosa=false;
+                          this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Modificado correctamente'
+        });
+      })}
+    },
           filterFn (val, update) {
         if (val === '') {
           update(() => {
@@ -450,7 +508,7 @@ export default {
       })
     },
         misglosa(){
-          this.glosas=[]
+          this.glosas=[{label:''}]
       this.$axios.get(process.env.API+'/glosa').then(res=>{
         res.data.forEach(r => {
           r.label=r.nombre
@@ -458,7 +516,7 @@ export default {
 
         });
         this.filterglosa=this.glosas
-        this.glosa={label:''};
+        this.glosa=this.glosas[0];
       })
     },
     imprimirmisventasygastos(us){
@@ -971,15 +1029,16 @@ export default {
       this.chica=[]
       $('#example').DataTable().destroy()
       this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
-        // console.log(res.data)
+        //console.log(res.data)
         // this.gastos=res.data
         // $('#example').DataTable().destroy()
 
         res.data.forEach(r=>{
+          //console.log(r.glosa.nombre)
           this.gastos.push({
             id:r.id,
             observacion:r.observacion,
-            glosa:r.glosa,
+            glosa:r.glosa.nombre,
             precio:r.precio,
             fecha:r.fecha,
             hora:r.hora,
