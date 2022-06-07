@@ -82,7 +82,7 @@
   </q-table>
 
   <hr>
-  <table id="example" style="width:100%" v-if="tab=='local'">
+  <table id="example" style="width:100%" v-if="tab=='local'" class="cell-border">
     <thead><tr><th>Local</th><th>Titular</th><th>Material</th><th>Total</th> <th>Monto</th></tr></thead>
     <tbody>
       <tr v-for="r of reportepres" :key="r">
