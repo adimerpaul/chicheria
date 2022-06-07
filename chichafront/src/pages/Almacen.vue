@@ -56,7 +56,7 @@
                 <q-btn dense round flat color="accent" @click="retirarRow(props)" icon="download"></q-btn>
                 <q-btn dense round flat color="cyan" @click="reporte(props)" icon="poll"></q-btn>
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit" v-if="$store.state.login.editalmacen"></q-btn>
-                <q-btn dense round flat color="red" @click="delRow(props)" icon="delete" v-if="$store.state.login.editalmacen"></q-btn>
+                <!--<q-btn dense round flat color="red" @click="delRow(props)" icon="delete" v-if="$store.state.login.editalmacen"></q-btn>-->
               </q-td>
             </template>
             <template v-slot:body-cell-stock="props" >
@@ -90,8 +90,8 @@
 
             <template v-slot:body-cell-opcion="props" >
               <q-td key="opcion" :props="props" >
-                <q-btn dense round flat color="teal" icon="edit" v-if="$store.state.login.editalmacen"></q-btn>
-                <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen"></q-btn>
+                <q-btn dense round flat color="teal" icon="edit" v-if="$store.state.login.editalmacen" @click="modcompra(props.row)"/>
+                <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen" @click="delcompra(props.row)"/>
               </q-td>
             </template>
 
@@ -161,6 +161,27 @@
             <q-form             @submit="onRegRecuento2"             class="q-gutter-md"          >
               <q-input outlined type="text" v-model="recuento.cantidad" label="Cantidad"/>
               <q-input outlined  type="text"  v-model="recuento.observacion" label="Observacion" />
+              <div>
+                <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+            <q-dialog v-model="dialog_modcompra">
+        <q-card>
+          <q-card-section class="bg-green-14 text-white">
+            <div class="text-h7">Modificar Compra material : {{compra2.material.nombre}}</div>
+          </q-card-section>
+          <q-card-section class="q-pt-xs">
+            <q-form             @submit="updatecompra"             class="q-gutter-md"          >
+              <q-input outlined type="text" v-model="compra2.cantidad" label="Cantidad"/>
+              <q-input outlined type="number" v-model="compra2.costo" label="Costo"/>
+              <q-input outlined type="date" v-model="compra2.fechaven" label="fecha Ven"/>
+              <q-input outlined type="text" v-model="compra2.lote" label="Lote"/>
+              <q-input outlined  type="text"  v-model="compra2.observacion" label="Observacion" />
               <div>
                 <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
                 <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
@@ -300,6 +321,7 @@ export default {
         dialog_mat:false,
         dialog_modmat:false,
         dialog_reporte:false,
+        dialog_modcompra:false,
         material:{},
         materiales:[],
         material2:{},
@@ -308,6 +330,7 @@ export default {
         compras:[],
         comptodo:[],
         compra:{},
+        compra2:{},
       crear:false,
       recuento:{},
       filter:'',
@@ -355,6 +378,38 @@ export default {
       this.mismateriales()
   },
   methods: {
+    updatecompra(){
+      this.$axios.put(process.env.API+'/compra/'+this.compra2.id,this.compra2).then(res=>{
+                this.mismateriales()
+        this.consultmaterial()
+        this.dialog_modcompra=false
+                this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'info',
+          message: 'modificado '
+        });
+      })
+
+    },
+    modcompra(compra){
+      this.compra2=compra;
+      this.dialog_modcompra=true
+
+    },
+    delcompra(compra){
+      console.log(compra)
+      this.$axios.delete(process.env.API+'/compra/'+compra.id).then(res=>{
+        this.mismateriales()
+        this.consultmaterial()
+                this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'info',
+          message: 'Eliminado '
+        });
+      })
+    },
     consultmaterial(){
       this.$axios.post(process.env.API+'/consultar',{material_id:this.material3.id,fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
         console.log(res.data)

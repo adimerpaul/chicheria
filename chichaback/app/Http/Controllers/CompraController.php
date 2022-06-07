@@ -95,6 +95,18 @@ class CompraController extends Controller
     public function update(Request $request, Compra $compra)
     {
         //
+        $compra=Compra::find($request->id);
+        $material=Material::find($request->material_id);
+        if($compra->cantidad != $request->cantidad){
+        $material->stock=$material->stock - $compra->cantidad + $request->cantidad;
+        $material->save();}
+        $compra->fechaven=$request->fechaven;
+        $compra->cantidad=$request->cantidad;
+        $compra->costo=$request->costo;
+        $compra->observacion=$request->observacion;
+        $compra->lote=$request->lote;
+        $compra->save();
+        
     }
 
     /**
@@ -103,8 +115,12 @@ class CompraController extends Controller
      * @param  \App\Models\Compra  $compra
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Compra $compra)
+    public function destroy($id)
     {
-        //
+        $compra=Compra::find($id);
+        $material=Material::find($compra->material_id);
+        $material->stock=$material->stock - $compra->cantidad;
+        $material->save();
+        $compra->delete();
     }
 }
