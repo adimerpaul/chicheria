@@ -37,7 +37,7 @@
         <div class="q-pa-none">
           <q-table
             dense
-            :rows-per-page-options="[0]"
+            :rows-per-page-options="[10,20,50,100,0]"
             title="LISTA DE MATERIALES "
             :rows="materiales"
             :columns="columns"
@@ -71,6 +71,33 @@
           </q-table>
         </div>
 
+          <div class="row">
+              <div class="col-3"><q-input dense outlined v-model="fecha3" label="Fecha Ini" type="date"/></div>
+              <div class="col-3"><q-input dense outlined v-model="fecha4" label="Fecha fin" type="date"/></div>
+              <div class="col-3"><q-select dense outlined v-model="material" :options="materiales" label="Material" /></div>
+              <div class="col-3"> <q-btn color="info" label="Consultar"  @click="consultmaterial"/>
+              </div>
+          </div>
+        <div class="q-pa-none">
+          <q-table
+            dense
+            :rows-per-page-options="[10,20,50,100,0]"
+            title="LISTA DE COMPRAS "
+            :rows="comptodo"
+            :columns="colcompra"
+            :filter="filter"
+            row-key="name">
+
+            <template v-slot:body-cell-opcion="props" >
+              <q-td key="opcion" :props="props" >
+                <q-btn dense round flat color="teal" icon="edit"></q-btn>
+                <q-btn dense round flat color="red"  icon="delete"></q-btn>
+              </q-td>
+            </template>
+
+          </q-table>
+        </div>
+
       </div>
       <q-dialog v-model="dialog_add">
         <q-card style="width: 800px; max-width: 80vw;">
@@ -83,6 +110,7 @@
               <div class="col-12"><q-select dense outlined v-model="material" :options="materiales" label="Material" /></div>
               <div class="col-2"><q-input dense outlined type="text" v-model="compra.cantidad" label="Cantidad"/></div>
               <div class="col-2"><q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo" /></div>
+              <div class="col-3"><q-input dense outlined  type="text" v-model="compra.lote"  label="Lote"  /></div>
               <div class="col-3"><q-input dense outlined  type="date" v-model="compra.fechaven"  label="Fecha Vencimiento"  /></div>
               <div class="col-3"><q-input dense outlined  type="text"  v-model="compra.observacion" label="Observacion" /></div>
               <div class="col-1"> <q-btn  dense color="green" icon="add_circle" @click="agregarcompra"/>
@@ -94,6 +122,7 @@
               <th>MATERIAL</th>
               <th>CANTIDAD</th>
               <th>COSTO</th>
+              <th>LOTE</th>
               <th>FEC VEN</th>
               <th>OBS</th>
               <th>OPCION</th>
@@ -105,6 +134,7 @@
                 <td>{{d.material}}</td>
                 <td>{{d.cantidad}}</td>
                 <td>{{d.costo}}</td>
+                <td>{{d.lote}}</td>
                 <td>{{d.fechaven}}</td>
                 <td>{{d.observacion}}</td>
                 <td> <q-btn color="red" icon="delete" @click="eliminar(index)"/>
@@ -273,8 +303,10 @@ export default {
         material:{},
         materiales:[],
         material2:{},
+        material3:{},
         proveedores:[],
         compras:[],
+        comptodo:[],
         compra:{},
       crear:false,
       recuento:{},
@@ -291,12 +323,27 @@ export default {
       dato:{},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
+      fecha3:date.formatDate( Date.now(),'YYYY-MM-DD'),
+      fecha4:date.formatDate( Date.now(),'YYYY-MM-DD'),
       columns : [
 
   { name: 'nombre', align: 'center', label: 'Nombre', field: 'nombre', sortable: true },
   { name: 'unid', align: 'center', label: 'unidad', field: 'unid', sortable: true },
   { name: 'min', align: 'center', label: 'Minimo', field: 'min', sortable: true },
   { name: 'stock', align: 'center', label: 'stock', field: 'stock', sortable: true },
+  { name: 'opcion', label: 'OPCIONES', field: 'opcion' }
+],
+
+      colcompra : [
+
+  { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+  { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
+  { name: 'costo', align: 'center', label: 'COSTO', field: 'costo', sortable: true },
+  { name: 'lote', align: 'center', label: 'LOTE', field: 'lote', sortable: true },
+  { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: 'fechaven', sortable: true },
+  { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
+  { name: 'provider', align: 'center', label: 'PROVEEDOR', field: row=>row.provider.razon, sortable: true },
+  { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
   { name: 'opcion', label: 'OPCIONES', field: 'opcion' }
 ],
 
@@ -308,6 +355,13 @@ export default {
       this.mismateriales()
   },
   methods: {
+    consultmaterial(){
+      this.$axios.post(process.env.API+'/consultar',{material_id:this.material3.id,fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
+        console.log(res.data)
+        this.comptodo=res.data
+      })
+
+    },
     genreporte(){
 
       this.$axios.post(process.env.API+'/repalmacen',{id:this.material2.id,fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
@@ -389,6 +443,7 @@ export default {
       if(this.compra.costo==undefined || this.compra.costo=='') this.compra.costo=''
       if(this.compra.fechaven==undefined || this.compra.fechaven=='') this.compra.fechaven=''
       if(this.compra.observacion==undefined || this.compra.observacion=='') this.compra.observacion=''
+      if(this.compra.lote==undefined || this.compra.lote=='') this.compra.lote=''
       this.compra.material_id=this.material.id
       this.compra.material=this.material.nombre
       this.compras.push(this.compra)
@@ -476,6 +531,7 @@ export default {
               this.materiales.push(r)
           });
           this.material=this.materiales[0]
+          this.material3=this.materiales[0]
       })
 
       },

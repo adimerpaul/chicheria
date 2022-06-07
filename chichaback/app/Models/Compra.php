@@ -13,10 +13,19 @@ class Compra extends Model
         'hora',
         'cantidad',
         'observacion',
+        'lote',
         'provider_id',
         'material_id',
         'user_id'
 
     ];
     protected $hidden = ["created_at", "updated_at"];
+
+    public function material(){
+        return $this->belongsTo(Material::class);
+    }
+
+    public function provider(){
+        return $this->belongsTo(Provider::class);
+    }
 }

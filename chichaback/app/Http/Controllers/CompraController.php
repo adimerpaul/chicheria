@@ -16,6 +16,7 @@ class CompraController extends Controller
     public function index()
     {
         //
+        
     }
 
     /**
@@ -51,6 +52,7 @@ class CompraController extends Controller
         $compra->costo=$r['costo'];
         $compra->fechaven=$r['fechaven'];
         $compra->observacion=$r['observacion'];
+        $compra->lote=$r['lote'];
         $compra->material_id=$r['material_id'];
         $compra->provider_id=$request->provider_id;
         $compra->user_id=$request->user_id;
@@ -65,9 +67,11 @@ class CompraController extends Controller
      * @param  \App\Models\Compra  $compra
      * @return \Illuminate\Http\Response
      */
-    public function show(Compra $compra)
+    public function consultar(Request $request)
     {
         //
+        return Compra::with('material')->with('provider')->where('material_id',$request->material_id)
+        ->whereDate('fecha','>=',$request->fecha1)->where('fecha','<=',$request->fecha2)->get();
     }
 
     /**

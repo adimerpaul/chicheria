@@ -104,4 +104,5 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/repventpago',[\App\Http\Controllers\ContableController::class,'repventpago']);
     Route::post('/repingprestamo',[\App\Http\Controllers\ContableController::class,'repingprestamo']);
     Route::post('/repgastos',[\App\Http\Controllers\ContableController::class,'repgastos']);
+    Route::post('/consultar',[\App\Http\Controllers\CompraController::class,'consultar']);
 });
