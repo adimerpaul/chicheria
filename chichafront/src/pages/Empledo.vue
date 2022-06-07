@@ -85,7 +85,7 @@
         </div>
         <div class="col-12">
             <div class=" responsive">
-                <table id="example" style="width:100%">
+                <table id="example" style="width:100%" class="cell-border">
                 <thead>
                 <tr>
                 <th>EMPLEADO</th>
