@@ -97,4 +97,8 @@ class PlanillaController extends Controller
         $planilla=Planilla::find($id);
         $planilla->delete();
     }
+
+    public function valplanilla(Request $request){
+        return Planilla::whereDate('fechainicio',$request->fechainicio)->whereDate('fechafin',$request->fechafin)->where('empleado_id',$request->empleado_id)->get();
+    }
 }

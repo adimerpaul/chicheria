@@ -252,7 +252,7 @@
               <div class="col-12"><q-input dense outlined label="bono" v-model="planilla.bono" disable /></div>
               <div class="col-12"><q-input dense outlined label="total" v-model="planilla.total" disable /></div>
               <div class="col-12">
-                <q-btn class="full-width	" type="submit" color="primary" icon="add_circle" label="crear planilla" />
+                <q-btn class="full-width	" type="submit" color="primary" icon="add_circle" label="crear planilla" v-if="validarplan"/>
               </div>
             </div>
           </q-form>
@@ -260,8 +260,8 @@
       </q-card>
     </q-dialog>
 
-        <q-dialog v-model="dialogver">
-      <q-card>
+        <q-dialog v-model="dialogver" >
+      <q-card style="width: 800px; max-width: 80vw;">
         <q-card-section class="text-center text-bold q-pa-none q-ma-none">Datos {{emp.nombre}}</q-card-section>
         <q-card-section>
             <div class="row">
@@ -307,6 +307,7 @@ export default {
       salarios:[],
       planillas:[],
       planilla:{},
+      validarplan:true,
       modempleado:false,
       empleado:{fechanac:'2000-01-01'},
       dialog_plan:false,
@@ -686,6 +687,13 @@ export default {
         this.planilla.total=this.totalmonto
         this.planilla.empleado_id=plan.id
         this.planilla.restante=0
+        this.$axios.post(process.env.API+'/valplanilla',this.planilla).then(res=>{
+          if(res.data.length>0)
+            this.validarplan=false
+          else
+            this.validarplan=true
+        })
+
     },
     actualizamonto(){
         this.planilla.total=this.totalmonto
@@ -1222,6 +1230,9 @@ export default {
         //   })
         // })
       })
+    },
+    valplanilla(){
+
     },
     modificar(){
               this.$axios.put(process.env.API+'/empleado/'+this.empleado2.id,this.empleado2).then(res=>{
