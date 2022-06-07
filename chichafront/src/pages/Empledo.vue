@@ -275,7 +275,7 @@
         </template>
             </q-table>
 
-            
+
             </div>
         </q-card-section>
       </q-card>
@@ -353,7 +353,8 @@ export default {
   },
   mounted() {
         $('#example').DataTable( {
-      "language":{
+          paging: false,
+          "language":{
         "processing": "Procesando...",
         "lengthMenu": "Mostrar _MENU_ registros",
         "zeroRecords": "No se encontraron resultados",
@@ -648,7 +649,7 @@ export default {
           })
           this.dialogver=false
           this.misempleados()
-      
+
         }).catch(err=>{
           // console.log(err.response)
           this.$q.loading.hide()
