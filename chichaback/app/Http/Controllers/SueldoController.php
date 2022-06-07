@@ -8,6 +8,7 @@ use App\Models\Gasto;
 use App\Models\Caja;
 use App\Models\Logcaja;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Else_;
 
 class SueldoController extends Controller
 {
@@ -53,19 +54,12 @@ class SueldoController extends Controller
         if($request->user()->id!=1){
         if($request->tipo=='ADELANTO' || $request->tipo=='EXTRA' ){
 
-            /*$gasto=new Gasto();
-            $gasto->precio=$request->monto;
-            $gasto->observacion=$request->observacion.' '.$request->empleado_nombre;
-            $gasto->glosa='CAJA CHICA';
-            $gasto->fecha=date('Y-m-d');
-            $gasto->hora=date('H:i:s');
-            $gasto->user_id=$request->user()->id;
-            $gasto->save();*/
-    
+
+
             $caja=Caja::find(1);
             $caja->monto= floatval($caja->monto) - floatval($request->monto);
             $caja->save();
-    
+
             $log=new Logcaja ;
             $log->monto=$request->monto;
             $log->motivo=$request->observacion.' '.$request->empleado_nombre;;
@@ -75,6 +69,18 @@ class SueldoController extends Controller
             $log->user_id=$request->user()->id;
             $log->save();
         }}
+
+        else{
+        if($request->tipo=='ADELANTO' || $request->tipo=='EXTRA' ){
+            $gasto=new Gasto();
+            $gasto->precio=$request->monto;
+            $gasto->observacion=$request->observacion.' '.$request->empleado_nombre;
+            $gasto->glosa=$request->tipo;
+            $gasto->fecha=date('Y-m-d');
+            $gasto->hora=date('H:i:s');
+            $gasto->user_id=$request->user()->id;
+            $gasto->save();}
+        }
 
 //        return $sueldo;
         return Empleado::with('sueldos')
@@ -94,14 +100,14 @@ class SueldoController extends Controller
             $sueldo->observacion='Cancelado';
             $sueldo->user_id=$request->user()->id;
             $sueldo->save();
-    
+
               if($request->tipo=='CANCELAR'){
-    
+
                 $gasto=new Gasto();
                 $gasto->precio=$request->monto;
                 $gasto->observacion='Cancelado'.' '.$request->empleado_nombre;
                 $gasto->glosa='CANCELAR';
-                $gasto->fecha=$request->fecha; 
+                $gasto->fecha=$request->fecha;
                 $gasto->hora=date('H:i:s');
                 $gasto->user_id=$request->user()->id;
                 $gasto->save();
