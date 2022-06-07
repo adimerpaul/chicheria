@@ -581,8 +581,7 @@ export default {
                 "removeTitle": "Remover Estado",
                 "renameTitle": "Cambiar Nombre Estado"
               }
-            },
-            dom: 'Blfrtip',
+            },dom: 'Blfrtip',
             buttons: [
               'copy', 'csv', 'excel', 'pdf', 'print'
             ],
