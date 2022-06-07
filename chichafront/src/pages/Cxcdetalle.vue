@@ -339,10 +339,11 @@ export default {
         $('#example').DataTable().destroy();
         this.$nextTick(()=>{
           $('#example').DataTable( {
-            dom: 'Bfrtip',
+            dom: 'Blfrtip',
             buttons: [
               'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+            ],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
           } );
         })
         // console.log(this.ventas)

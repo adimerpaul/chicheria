@@ -469,8 +469,10 @@ export default {
 
           $('#example').DataTable( {
             dom: 'Blfrtip',
-            // pageLength: 5,
-            lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "Todos"]],
+            buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             // buttons: [
             //   'copy', 'csv', 'excel', 'pdf', 'print'
             // ],
