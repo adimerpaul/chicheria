@@ -353,7 +353,6 @@ export default {
   },
   mounted() {
         $('#example').DataTable( {
-          paging: false,
           "language":{
         "processing": "Procesando...",
         "lengthMenu": "Mostrar _MENU_ registros",
@@ -1171,11 +1170,11 @@ export default {
                 "removeTitle": "Remover Estado",
                 "renameTitle": "Cambiar Nombre Estado"
               }
-            },
-            dom: 'Bfrtip',
+            },dom: 'Blfrtip',
             buttons: [
               'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
+            ],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
           } );
         })
         this.$q.loading.hide()
