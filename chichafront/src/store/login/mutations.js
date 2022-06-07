@@ -31,6 +31,7 @@ export function auth_success(state, data){
   state.cobrarlocal=data.user.permisos.find(p=>p.id===20)!=undefined
   state.cobrarruta=data.user.permisos.find(p=>p.id===21)!=undefined
   state.cajachica=data.user.permisos.find(p=>p.id===22)!=undefined
+  state.editalmacen=data.user.permisos.find(p=>p.id===23)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -60,4 +61,5 @@ export function salir(state){
   state.cobrarlocal=false
   state.cobrarruta=false
   state.cajachica=false
+  state.editalmacen=false
 }

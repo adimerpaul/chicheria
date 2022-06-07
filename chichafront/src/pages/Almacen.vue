@@ -5,9 +5,9 @@
         <div class="text-h5 text-center text-bold"  >INVENTARIO DE  MATERIAL</div>
       </div>
       <div class="col-3 flex flex-center">
-        <q-btn-dropdown icon="list" class="full-width" color="accent" label="PROVEEDOR">
+        <q-btn-dropdown icon="list" class="full-width" color="accent" label="PROVEEDOR" v-if="$store.state.login.editalmacen">
           <q-list>
-            <q-item clickable v-close-popup @click="dialog_prov=true; proveedor={}">
+            <q-item clickable v-close-popup @click="dialog_prov=true; proveedor={}" >
               <q-item-section>
                 <q-item-label>REGISTRO</q-item-label>
               </q-item-section>
@@ -28,10 +28,10 @@
         </q-btn-dropdown>
       </div>
       <div class="col-6">
-        <q-select dense outlined v-model="proveedor" :options="proveedores" label="Provedores" />
+        <q-select dense outlined v-model="proveedor" :options="proveedores" label="Provedores" v-if="$store.state.login.editalmacen"/>
       </div>
       <div class="col-3 flex flex-center">
-        <q-btn icon="engineering" color="teal" class="full-width" label="Registrar Material" @click="dialog_mat=true; material={}"/>
+        <q-btn icon="engineering" color="teal" class="full-width" label="Registrar Material" @click="dialog_mat=true; material={}" v-if="$store.state.login.editalmacen"/>
       </div>
         <div class="col-12">
         <div class="q-pa-none">
@@ -43,8 +43,8 @@
             :columns="columns"
             :filter="filter"
             row-key="name">
-            <template v-slot:top-right>
-               <q-btn color="amber-8" icon="shopping_cart" label="COMPRAS" @click="dialog_add=true; compras=[]"/>
+            <template v-slot:top-right >
+               <q-btn color="amber-8" icon="shopping_cart" label="COMPRAS" @click="dialog_add=true; compras=[]" v-if="$store.state.login.editalmacen"/>
               <q-input dense outlined debounce="300" v-model="filter" placeholder="Buscar">
                 <template v-slot:append>
                   <q-icon name="search" />
@@ -55,8 +55,8 @@
               <q-td key="opcion" :props="props" >
                 <q-btn dense round flat color="accent" @click="retirarRow(props)" icon="download"></q-btn>
                 <q-btn dense round flat color="cyan" @click="reporte(props)" icon="poll"></q-btn>
-                <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
-                <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
+                <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit" v-if="$store.state.login.editalmacen"></q-btn>
+                <q-btn dense round flat color="red" @click="delRow(props)" icon="delete" v-if="$store.state.login.editalmacen"></q-btn>
               </q-td>
             </template>
             <template v-slot:body-cell-stock="props" >
@@ -90,8 +90,8 @@
 
             <template v-slot:body-cell-opcion="props" >
               <q-td key="opcion" :props="props" >
-                <q-btn dense round flat color="teal" icon="edit"></q-btn>
-                <q-btn dense round flat color="red"  icon="delete"></q-btn>
+                <q-btn dense round flat color="teal" icon="edit" v-if="$store.state.login.editalmacen"></q-btn>
+                <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen"></q-btn>
               </q-td>
             </template>
 
