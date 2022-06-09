@@ -20,5 +20,7 @@ class Recuento extends Model
 
     ];
     protected $hidden = ["created_at", "updated_at"];
-
+    public function material(){
+        return $this->belongsTo(Material::class);
+    }   
 }

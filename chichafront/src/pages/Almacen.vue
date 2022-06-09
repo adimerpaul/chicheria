@@ -98,6 +98,26 @@
           </q-table>
         </div>
 
+        <div class="q-pa-none">
+          <q-table
+            dense
+            :rows-per-page-options="[10,20,50,100,0]"
+            title="LISTA DE RETIROS "
+            :rows="recutodo"
+            :columns="colrecuento"
+            :filter="filter"
+            row-key="name">
+
+            <template v-slot:body-cell-opcion="props" >
+              <q-td key="opcion" :props="props" >
+                <q-btn dense round flat color="accent" icon="edit" v-if="$store.state.login.editalmacen" @click="modrecuento(props.row)"/>
+                <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen" @click="delrecuento(props.row)"/>
+              </q-td>
+            </template>
+
+          </q-table>
+        </div>
+
       </div>
       <q-dialog v-model="dialog_add">
         <q-card style="width: 800px; max-width: 80vw;">
@@ -182,6 +202,24 @@
               <q-input outlined type="date" v-model="compra2.fechaven" label="fecha Ven"/>
               <q-input outlined type="text" v-model="compra2.lote" label="Lote"/>
               <q-input outlined  type="text"  v-model="compra2.observacion" label="Observacion" />
+              <div>
+                <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+        <q-dialog v-model="dialog_modret">
+        <q-card>
+          <q-card-section class="bg-green-14 text-white">
+            <div class="text-h7">Modificar Retiro material : {{recuento2.material.nombre}}</div>
+          </q-card-section>
+          <q-card-section class="q-pt-xs">
+            <q-form             @submit="updateretiro"             class="q-gutter-md"          >
+              <q-input outlined type="text" v-model="recuento2.cantidad" label="Cantidad"/>
+              <q-input outlined  type="text"  v-model="recuento2.observacion" label="Observacion" />
               <div>
                 <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
                 <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
@@ -304,6 +342,9 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+
+
+
     </div>
   </q-page>
 </template>
@@ -322,6 +363,7 @@ export default {
         dialog_modmat:false,
         dialog_reporte:false,
         dialog_modcompra:false,
+        dialog_modret:false,
         material:{},
         materiales:[],
         material2:{},
@@ -331,8 +373,10 @@ export default {
         comptodo:[],
         compra:{},
         compra2:{},
+        recutodo:[],
       crear:false,
       recuento:{},
+      recuento2:{},
       filter:'',
       dialog_mod:false,
       dialog_del:false,
@@ -370,6 +414,15 @@ export default {
   { name: 'opcion', label: 'OPCIONES', field: 'opcion' }
 ],
 
+      colrecuento : [
+
+  { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+  { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
+  { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
+  { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
+  { name: 'opcion', label: 'OPCIONES', field: 'opcion' }
+],
+
   rows:[],
 
   }},
@@ -392,14 +445,42 @@ export default {
       })
 
     },
+    modrecuento(recuento){
+      this.recuento2=recuento;
+      this.dialog_modret=true
+
+    },
+
+        updateretiro(){
+      this.$axios.put(process.env.API+'/recuento/'+this.recuento2.id,this.recuento2).then(res=>{
+        this.mismateriales()
+        this.consultmaterial()
+        this.dialog_modret=false
+                this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'info',
+          message: 'modificado '
+        });
+      })
+
+    },
     modcompra(compra){
       this.compra2=compra;
       this.dialog_modcompra=true
 
     },
+
     delcompra(compra){
-      console.log(compra)
-      this.$axios.delete(process.env.API+'/compra/'+compra.id).then(res=>{
+      //console.log(compra)
+      this.$q.dialog({
+        title: 'ADVERTENCIA',
+        message: 'Esta seguro de eliminar registro?',
+        cancel: true,
+        persistent: false
+      }).onOk(() => {
+        // console.log('>>>> OK')
+              this.$axios.delete(process.env.API+'/compra/'+compra.id).then(res=>{
         this.mismateriales()
         this.consultmaterial()
                 this.$q.notify({
@@ -409,12 +490,54 @@ export default {
           message: 'Eliminado '
         });
       })
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+
+    },
+
+    delrecuento(recuento){
+      //console.log(recuento)
+      this.$q.dialog({
+        title: 'ADVERTENCIA',
+        message: 'Esta seguro de eliminar registro?',
+        cancel: true,
+        persistent: false
+      }).onOk(() => {
+        // console.log('>>>> OK')
+              this.$axios.delete(process.env.API+'/recuento/'+recuento.id).then(res=>{
+        this.mismateriales()
+        this.consultmaterial()
+                this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'info',
+          message: 'Eliminado '
+        });
+      })
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+
     },
     consultmaterial(){
       this.$axios.post(process.env.API+'/consultar',{material_id:this.material3.id,fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
         console.log(res.data)
         this.comptodo=res.data
       })
+
+      this.$axios.post(process.env.API+'/consulrecuento',{material_id:this.material3.id,fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
+        this.recutodo=res.data
+      })
+      
 
     },
     genreporte(){
@@ -566,6 +689,7 @@ export default {
           this.material={}
         })
       },
+
       misproveedores(){
           this.proveedores=[]
       this.$axios.get(process.env.API+'/provider').then(res=>{
