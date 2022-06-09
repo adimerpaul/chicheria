@@ -28,7 +28,7 @@ class LogcajaController extends Controller
         //return $request;
         if($request->user()->id==1)
         {
-            if($request->id==0) return Logcaja::with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+            if($request->user_id==0) return Logcaja::with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
             else return Logcaja::with('user')->where('user_id',$request->user_id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
         }
         else
