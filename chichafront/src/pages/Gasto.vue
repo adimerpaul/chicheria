@@ -1351,7 +1351,7 @@ export default {
             user:r.user.name,
           })
       this.$axios.post(process.env.API+'/listcaja',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
-        console.log(re.data)
+        console.log(res.data)
                  res.data.forEach(r => {
             if(r.tipo=='GASTO')
               this.chica.push(r)
