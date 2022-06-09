@@ -1254,6 +1254,9 @@ export default {
       let caja=0
       let cancelar=0
       this.gastos.forEach(r=>{
+        if(r.glosa=='CAJA CHICA')
+        caja+=parseFloat(r.precio)
+        else
         sumgasto+=parseFloat(r.precio)
         console.log(r)
         // xx+=0.5
@@ -1347,11 +1350,13 @@ export default {
             hora:r.hora,
             user:r.user.name,
           })
-      this.$axios.post(process.env.API+'/listcaja',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{})
-         res.data.forEach(r => {
+      this.$axios.post(process.env.API+'/listcaja',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
+                 res.data.forEach(r => {
             if(r.tipo=='GASTO')
               this.chica.push(r)
          });
+      })
+
         })
 
 
