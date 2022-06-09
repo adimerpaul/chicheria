@@ -1262,7 +1262,7 @@ export default {
         // xx+=0.5
         y+=0.5
         doc.text(1.5, y+3, r.user)
-        doc.text(4, y+3, r.precio)
+        doc.text(4, y+3, r.precio+'')
         doc.text(6.5, y+3, r.observacion)
         doc.text(11, y+3, r.glosa)
         doc.text(15.5, y+3, r.fecha)
@@ -1281,7 +1281,7 @@ export default {
         // xx+=0.5
         y+=0.5
         doc.text(1.5, y+3, r.user.name)
-        doc.text(4, y+3, r.monto)
+        doc.text(4, y+3, r.monto+'')
         doc.text(6.5, y+3, r.motivo)
         doc.text(11, y+3, 'CAJA CHICA')
         doc.text(15.5, y+3, r.fecha)
