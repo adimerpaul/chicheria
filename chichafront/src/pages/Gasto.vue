@@ -1333,7 +1333,7 @@ export default {
       this.$q.loading.show()
       this.gastos=[]
       this.chica=[]
-            this.$axios.post(process.env.API+'/listcaja',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
+            this.$axios.post(process.env.API+'/listcaja',{fecha1:this.fecha1,fecha2:this.fecha2,user_id:this.user.id}).then(res=>{
         console.log(res.data)
         //return false
                  res.data.forEach(r => {
@@ -1342,7 +1342,7 @@ export default {
          });
       })
       $('#example').DataTable().destroy()
-      this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
+      this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,user_id:this.user.id}).then(res=>{
         //console.log(res.data)
         // this.gastos=res.data
         // $('#example').DataTable().destroy()
