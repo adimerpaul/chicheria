@@ -1333,6 +1333,14 @@ export default {
       this.$q.loading.show()
       this.gastos=[]
       this.chica=[]
+            this.$axios.post(process.env.API+'/listcaja',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
+        console.log(res.data)
+        //return false
+                 res.data.forEach(r => {
+            if(r.tipo=='GASTO')
+              this.chica.push(r)
+         });
+      })
       $('#example').DataTable().destroy()
       this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
         //console.log(res.data)
@@ -1350,13 +1358,7 @@ export default {
             hora:r.hora,
             user:r.user.name,
           })
-      this.$axios.post(process.env.API+'/listcaja',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
-        console.log(res.data)
-                 res.data.forEach(r => {
-            if(r.tipo=='GASTO')
-              this.chica.push(r)
-         });
-      })
+
 
         })
 
