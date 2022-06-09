@@ -888,6 +888,9 @@ export default {
         // console.log(r)
         doc.text(3, y+3, 'Gasto')
         doc.text(6.5, y+3, r.precio!=null?r.precio.toString():''+'Bs.')
+        if(r.glosa=='CAJA CHICA')
+        caja+=parseFloat(r.precio!=null?r.precio:0)
+        else
         gastos+=parseFloat(r.precio!=null?r.precio:0)
         doc.text(8, y+3, r.glosa+': '+r.observacion)
         // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
