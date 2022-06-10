@@ -1343,7 +1343,7 @@ export default {
       })
       $('#example').DataTable().destroy()
       this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,user_id:this.user.id}).then(res=>{
-        //console.log(res.data)
+        console.log(res.data)
         // this.gastos=res.data
         // $('#example').DataTable().destroy()
 
