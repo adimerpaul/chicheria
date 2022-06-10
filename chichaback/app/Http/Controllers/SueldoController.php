@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Empleado;
 use App\Models\Sueldo;
 use App\Models\Gasto;
+use App\Models\Glosa;
 use App\Models\Caja;
 use App\Models\Logcaja;
 use Illuminate\Http\Request;
@@ -72,10 +73,13 @@ class SueldoController extends Controller
 
         else{
         if($request->tipo=='ADELANTO' || $request->tipo=='EXTRA' ){
+            $glosa=Glosa::where('nombre',$request->tipo)->get();
+
             $gasto=new Gasto();
             $gasto->precio=$request->monto;
             $gasto->observacion=$request->observacion.' '.$request->empleado_nombre;
             $gasto->glosa=$request->tipo;
+            $gasto->glosa_id=$glosa[0]['id'];
             $gasto->fecha=date('Y-m-d');
             $gasto->hora=date('H:i:s');
             $gasto->user_id=$request->user()->id;
