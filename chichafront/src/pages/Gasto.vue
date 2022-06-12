@@ -240,6 +240,10 @@
                 <div class="col-3">
                   <q-input outlined label="Fecha" type="date" v-model="pago.fecha" />
                 </div>
+                <div class="col-3">
+                  <q-checkbox v-model="checkgasto" label="GASTO / CAJA" />
+                  
+                </div>
                 <div class="col-3 flex flex-center">
                   <q-btn label="Agregar" type="submit" icon="send" color="info"/>
                 </div>
@@ -340,6 +344,7 @@ export default {
       glosa:{},
       glosas:[],
       chica:[],
+      checkgasto:true,
       dialogaddglosa:false,
       pagos:false,
       cajachica:false,
@@ -358,6 +363,7 @@ export default {
       filterglosa:[],
       pageTotal:'',
       tot:'',
+      resumenplanilla:0,
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -878,7 +884,7 @@ export default {
         doc.text(3, y+3, ventas+' Bs.')
       let gastos=0
       let caja=0
-      let cancelar=0
+      
             y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
@@ -923,8 +929,8 @@ export default {
         doc.text(3, y+3, gastos+'Bs.')
         doc.text(8, y+3, 'Gasto Caja Chica:')
         doc.text(12, y+3, caja+'Bs.')
-        doc.text(13.5, y+3, 'Cancelado:')
-        doc.text(16, y+3, cancelar+'Bs.')
+        doc.text(13.5, y+3, 'Salarios:')
+        doc.text(16, y+3, this.resumenplanilla+'Bs.')
       y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
@@ -1252,7 +1258,7 @@ export default {
       let cont=1
       let sumgasto=0
       let caja=0
-      let cancelar=0
+      
       this.gastos.forEach(r=>{
         if(r.glosa=='CAJA CHICA')
         caja+=parseFloat(r.precio)
@@ -1317,9 +1323,9 @@ export default {
         }
       y+=0.5
                 doc.setFont(undefined,'bold')
-          doc.text(1, y+3, 'CANCELAR:')
+          doc.text(1, y+3, 'SALARIOS:')
         doc.setFont(undefined,'normal')
-        doc.text(3.5, y+3, cancelar+' Bs')
+        doc.text(3.5, y+3, this.resumenplanilla+' Bs')
       // doc.text(2, y+4, 'Ventas totales: ')
       // doc.text(5, y+4, this.ventat+'Bs')
       // doc.text(7, y+4, 'Por cobrar totales: ')
@@ -1667,8 +1673,12 @@ export default {
             }
           } );
         })
+  
 
-
+        this.$axios.post(process.env.API+'/replanilla',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+          console.log(res.data)
+            this.resumenplanilla=res.data[0].total==null?0:res.data[0].total
+        })
         this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
           this.$q.loading.hide()
 
@@ -1739,7 +1749,7 @@ export default {
               }
               }
           })
-console.log(this.ventas)
+          console.log(this.ventas)
           this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
             console.log(res.data)
           this.anulados=res.data;
@@ -1784,16 +1794,20 @@ console.log(this.ventas)
       //this.pago.fecha=date.formatDate( Date.now(),'YYYY-MM-DD');
       this.pago.empleado_id=this.pago.empleado.element.id
       this.pago.empleado_nombre=this.pago.empleado.label;
+      this.pago.checkbox=this.checkgasto
        //console.log(this.pago)
       // return false
 
       this.$axios.post(process.env.API+'/sueldo',this.pago).then(res=>{
+        //console.log(res.data)
+        //return false
         //this.empleadohistorial=res.data
         this.misempleados()
         this.misgastos()
           this.totalcaja()
 
         this.pagos=false
+        this.checkgasto=true
         this.pago.monto=0
         this.pago.tipo=''
         this.pago.observacion=''

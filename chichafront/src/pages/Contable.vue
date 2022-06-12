@@ -162,8 +162,16 @@ export default {
         if(r.total!=null && r.total!=undefined)
           this.egreso.push({detalle:r.glosa,total:r.total})
         })
+
       })
-    
+            this.$axios.post(process.env.API+'/replanilla',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+          console.log(res.data)
+          let t=res.data[0]
+          if(t.total!=null && t.total!=undefined){
+            this.egreso.push({detalle:'SALARIOS',total:t.total})}
+          console.log(this.egreso)
+
+        })
       //console.log(this.ingreso)
     },
 

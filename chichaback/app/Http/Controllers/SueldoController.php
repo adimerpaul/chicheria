@@ -41,6 +41,7 @@ class SueldoController extends Controller
      */
     public function store(Request $request)
     {
+        //return $request;
 //        return Sueldo::create($request->all());
         $sueldo=new Sueldo();
         $sueldo->fecha=$request->fecha;
@@ -52,11 +53,8 @@ class SueldoController extends Controller
         $sueldo->user_id=$request->user()->id;
         $sueldo->save();
 
-        if($request->user()->id!=1){
+        if($request->checkbox){
         if($request->tipo=='ADELANTO' || $request->tipo=='EXTRA' ){
-
-
-
             $caja=Caja::find(1);
             $caja->monto= floatval($caja->monto) - floatval($request->monto);
             $caja->save();
@@ -70,7 +68,6 @@ class SueldoController extends Controller
             $log->user_id=$request->user()->id;
             $log->save();
         }}
-
         else{
         if($request->tipo=='ADELANTO' || $request->tipo=='EXTRA' ){
             $glosa=Glosa::where('nombre',$request->tipo)->get();

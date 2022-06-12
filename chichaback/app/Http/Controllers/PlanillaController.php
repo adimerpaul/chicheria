@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Empleado;
 use App\Models\Planilla;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PlanillaController extends Controller
 {
@@ -100,5 +101,9 @@ class PlanillaController extends Controller
 
     public function valplanilla(Request $request){
         return Planilla::whereDate('fechainicio',$request->fechainicio)->whereDate('fechafin',$request->fechafin)->where('empleado_id',$request->empleado_id)->get();
+    }
+
+    public function replanilla(Request $request){
+        return DB::SELECT("SELECT SUM(total) as total from planillas where fechapago >= '$request->fecha1' and  fechapago <= '$request->fecha2'");
     }
 }
