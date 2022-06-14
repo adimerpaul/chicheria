@@ -53,7 +53,7 @@ class SueldoController extends Controller
         $sueldo->user_id=$request->user()->id;
         $sueldo->save();
 
-        if($request->checkbox){
+        if($request->checkbox=='CAJA'){
         if($request->tipo=='ADELANTO' || $request->tipo=='EXTRA' ){
             $caja=Caja::find(1);
             $caja->monto= floatval($caja->monto) - floatval($request->monto);

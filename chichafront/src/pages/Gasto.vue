@@ -241,8 +241,9 @@
                   <q-input outlined label="Fecha" type="date" v-model="pago.fecha" />
                 </div>
                 <div class="col-3">
-                  <q-checkbox v-model="checkgasto" label="GASTO / CAJA" />
-                  
+                  <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
+                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA" />
+
                 </div>
                 <div class="col-3 flex flex-center">
                   <q-btn label="Agregar" type="submit" icon="send" color="info"/>
@@ -344,7 +345,7 @@ export default {
       glosa:{},
       glosas:[],
       chica:[],
-      checkgasto:true,
+      checkgasto:'GASTO',
       dialogaddglosa:false,
       pagos:false,
       cajachica:false,
@@ -884,7 +885,7 @@ export default {
         doc.text(3, y+3, ventas+' Bs.')
       let gastos=0
       let caja=0
-      
+
             y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
@@ -1258,7 +1259,7 @@ export default {
       let cont=1
       let sumgasto=0
       let caja=0
-      
+
       this.gastos.forEach(r=>{
         if(r.glosa=='CAJA CHICA')
         caja+=parseFloat(r.precio)
@@ -1673,7 +1674,7 @@ export default {
             }
           } );
         })
-  
+
 
         this.$axios.post(process.env.API+'/replanilla',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
           console.log(res.data)
@@ -1807,7 +1808,7 @@ export default {
           this.totalcaja()
 
         this.pagos=false
-        this.checkgasto=true
+        this.checkgasto='GASTO'
         this.pago.monto=0
         this.pago.tipo=''
         this.pago.observacion=''
