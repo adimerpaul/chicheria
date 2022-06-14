@@ -930,8 +930,9 @@ export default {
         doc.text(3, y+3, gastos+'Bs.')
         doc.text(8, y+3, 'Gasto Caja Chica:')
         doc.text(12, y+3, caja+'Bs.')
+                if(this.$store.state.login.user.id==r.user_id){
         doc.text(13.5, y+3, 'Salarios:')
-        doc.text(16, y+3, this.resumenplanilla+'Bs.')
+        doc.text(16, y+3, this.resumenplanilla+'Bs.')}
       y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
