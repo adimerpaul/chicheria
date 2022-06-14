@@ -1323,10 +1323,11 @@ export default {
           y=0
         }
       y+=0.5
+                if(this.$store.state.login.user.id==1){
                 doc.setFont(undefined,'bold')
           doc.text(1, y+3, 'SALARIOS:')
         doc.setFont(undefined,'normal')
-        doc.text(3.5, y+3, this.resumenplanilla+' Bs')
+        doc.text(3.5, y+3, this.resumenplanilla+' Bs')}
       // doc.text(2, y+4, 'Ventas totales: ')
       // doc.text(5, y+4, this.ventat+'Bs')
       // doc.text(7, y+4, 'Por cobrar totales: ')
