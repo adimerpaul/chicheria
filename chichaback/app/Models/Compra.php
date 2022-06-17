@@ -11,7 +11,9 @@ class Compra extends Model
     protected $fillable=[
         'fecha',
         'hora',
+        'costo',
         'cantidad',
+        'subtotal',
         'observacion',
         'lote',
         'provider_id',

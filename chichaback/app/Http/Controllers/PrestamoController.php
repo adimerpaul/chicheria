@@ -18,7 +18,7 @@ class PrestamoController extends Controller
     public function index()
     {
         //
-        return Prestamo::with('cliente')->with('inventario')->with('logprestamos')->orderBy('id','desc')->get();
+        return Prestamo::with('cliente')->with('user')->with('inventario')->with('logprestamos')->orderBy('id','desc')->get();
     }
 
     public function reportecliente(){
@@ -209,9 +209,13 @@ public function reporteventa(Request $request){
      * @param  \App\Models\Prestamo  $prestamo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Prestamo $prestamo)
+    public function destroy($id)
     {
 //        return $prestamo;
+        $prestamo=Prestamo::find($id);
+        $inventario=Inventario::find($prestamo->inventario_id);
+        $inventario->cantidad=$inventario->cantidad + $prestamo->cantidad;
+        $inventario->save();
         $prestamo->delete();
     }
 

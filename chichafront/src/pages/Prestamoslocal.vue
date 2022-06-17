@@ -3,27 +3,31 @@
   <q-form @submit.prevent="agregar">
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select use-input @filter="filterFn" v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" option-label="label" />
-      <q-select v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
+      <q-select dense use-input @filter="filterFn" v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" option-label="label" />
+      <q-select dense v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
+      <q-select dense outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades"/>
+      <q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades"/>
     </div>
             <div class="col-12 col-sm-3 q-pa-xs">
       <q-input dense outlined label="Fecha" v-model="fecha" type="date"/>
     </div>
 
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input outlined label="Efectivo" v-model="efectivo" type="number"/>
+      <q-input dense outlined label="Efectivo" v-model="efectivo" type="number"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input outlined label="Fisico" v-model="fisico"  style="text-transform: uppercase"/>
+      <q-input dense outlined label="Fisico" v-model="fisico"  style="text-transform: uppercase"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input outlined label="Observacion" v-model="observacion"  style="text-transform: uppercase"/>
+      <q-input dense outlined label="Observacion" v-model="observacion"  style="text-transform: uppercase"/>
+    </div>
+        <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
+      <input type="radio" value="EN PRESTAMO" v-model="tipo" style="margin-right: 0.5em;font;height:35px; width:35px; "  /><b :style="tipo=='EN PRESTAMO'?'color:red':''"> EN PRESTAMO </b>
+      <input type="radio" value="VENTA" v-model="tipo" style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "/><b :style="tipo=='VENTA'?'color:red':''"> VENTA </b>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
       <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
@@ -61,6 +65,9 @@
                   <q-badge color="positive" v-if="props.row.estado=='EN PRESTAMO'">
                     {{ props.row.estado }}
                   </q-badge>
+                                  <q-badge color="blue" v-if="props.row.estado=='VENTA'">
+                  {{ props.row.estado }}
+                </q-badge>
                 </q-td>
             </template>
             <template v-slot:body-cell-logprestamos="props" >
@@ -75,7 +82,8 @@
                     <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
                     <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
                     <q-btn size="xs" @click="onMod(props.row)"  color="yellow" icon="edit"/>
-                    <q-btn size="xs" @click="onEliminar(props.row)" v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  color="negative" icon="delete" />
+                    <q-btn size="xs" @click="onEliminar(props.row)" v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  color="red-12" icon="cancel" />
+                    <q-btn size="xs" @click="ondelete(props.row)" v-if="(props.row.estado=='EN PRESTAMO' || props.row.estado=='VENTA')&& $store.state.login.delprestamo"  color="negative" icon="delete"/>
                 </q-td>
             </template>
 
@@ -198,6 +206,7 @@ export default {
   { name: 'efectivo', label: 'EFECTIVO', field: 'efectivo', sortable: true },
   { name: 'fisico', label: 'FISICO', field: 'fisico', sortable: true },
   { name: 'observacion', label: 'OBSERVACION', field: 'observacion' },
+  { name: 'user', label: 'USUARIO', field: row=>row.user.name },
   { name: 'logprestamos', label: 'HISTORIAL', field: 'logprestamos' },
   { name: 'opcion', label: 'OPCION', field: 'opcion' },
 ],
@@ -783,6 +792,17 @@ export default {
         })
       }
 
+    },
+        ondelete(p){
+           if (confirm('seguro de ELIMINAR?')){
+        this.$axios.delete(process.env.API+'/prestamo/'+p.id).then(res=>{
+          // this.totalefectivo=res.data[0].total;
+          this.listclientes()
+          this.cajaprestamo()
+          this.listadoprestamo()
+          console.log(res.data)
+        })
+      }
     },
     onList(p){
       this.listado=p.logprestamos;

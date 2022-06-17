@@ -15,7 +15,7 @@ class GlosaController extends Controller
     public function index()
     {
         //
-        return Glosa::all();
+        return Glosa::orderBy('orden','asc')->get();
     }
 
     /**
@@ -39,6 +39,7 @@ class GlosaController extends Controller
         //
         $glosa=new Glosa;
         $glosa->nombre=strtoupper($request->nombre);
+        $glosa->orden=$request->orden;
         $glosa->save();
     }
 
@@ -76,6 +77,7 @@ class GlosaController extends Controller
         //
         $glosa=Glosa::find($request->id);
         $glosa->nombre=strtoupper($request->nombre);
+        $glosa->orden=$request->orden;
         $glosa->save();
     }
 

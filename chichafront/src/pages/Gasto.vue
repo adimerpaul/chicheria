@@ -27,7 +27,7 @@
             </q-select>
           </div>
           <div class="col-12 q-pa-xs col-sm-1">
-             <q-btn color="green" icon="add_circle"  @click="dialogaddglosa=true"/>
+             <q-btn color="green" icon="add_circle"  @click="dialogaddglosa=true" v-if="$store.state.login.editglosa"/>
 
           </div>
           <div class="col-12 q-pa-xs col-sm-3"><q-input dense outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
@@ -240,7 +240,7 @@
                 <div class="col-3">
                   <q-input outlined label="Fecha" type="date" v-model="pago.fecha" />
                 </div>
-                <div class="col-3">
+                <div class="col-3" v-if="$store.state.login.user.id==1">
                   <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
                   <q-radio v-model="checkgasto" val="CAJA" label="CAJA" />
 
@@ -277,6 +277,17 @@
           <q-card-section class="q-pt-none">
             <q-form @submit.prevent="agregarcjchica">
               <div class="row">
+            <div class="col-12">
+            <q-select outlined v-model="glosa" :options="glosas" label="Glosa" use-input @filter="filterFn"     dense  >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </div>
                 <div class="col-12">
                   <q-input outlined label="Monto" type="number" step="0.1" v-model="cchica.precio"
                     :rules="[
@@ -308,10 +319,17 @@
           <q-card-section class="q-pt-none">
             <q-form @submit.prevent="regglosa">
               <div class="row">
-                <div class="col-9">
+                <div class="col-6">
                   <q-input outlined label="Nombre" v-model="glosa.nombre"
                     :rules="[
                     val => val.length>0  || 'INGRESE NOMBRE',
+                    ]"
+                lazy-rules/>
+                </div>
+                <div class="col-3">
+                  <q-input outlined label="N orden" v-model="glosa.orden" type="number"
+                    :rules="[
+                    val => val>=0  || 'INGRESE nummero',
                     ]"
                 lazy-rules/>
                 </div>
@@ -345,7 +363,7 @@ export default {
       glosa:{},
       glosas:[],
       chica:[],
-      checkgasto:'GASTO',
+      checkgasto:'CAJA',
       dialogaddglosa:false,
       pagos:false,
       cajachica:false,
@@ -729,7 +747,7 @@ export default {
   methods:{
     regglosa(){
       if(this.glosa.id==undefined){
-        this.$axios.post(process.env.API+'/glosa',{nombre:this.glosa.nombre}).then(res=>{
+        this.$axios.post(process.env.API+'/glosa',{nombre:this.glosa.nombre,orden:this.glosa.orden==undefined?0:this.glosa.orden}).then(res=>{
           this.misglosa()
           this.dialogaddglosa=false;
                           this.$q.notify({
@@ -741,7 +759,7 @@ export default {
         })
       }
       else{
-
+            this.glosa.orden==undefined?0:this.glosa.orden
                 this.$axios.put(process.env.API+'/glosa/'+this.glosa.id,this.glosa).then(res=>{
           this.misglosa()
           this.dialogaddglosa=false;
@@ -752,6 +770,7 @@ export default {
           message: 'Modificado correctamente'
         });
       })}
+      
     },
           filterFn (val, update) {
         if (val === '') {
@@ -778,10 +797,18 @@ export default {
 
     },
     agregarcjchica(){
+      if(this.glosa.id==undefined)
+      {
+        return false
+      }
+      this.cchica.glosa_id=this.glosa.id
+      //console.log(this.cchica)
+      //  return false
       this.$axios.post(process.env.API + "/gastocaja",this.cchica).then((res) => {
         this.cchica.precio=0;
         this.cchica.observacion='';
         this.cajachica=false;
+        this.glosa={}
         this.misgastos()
         this.totalcaja()
                 this.$q.notify({
@@ -817,6 +844,7 @@ export default {
         misglosa(){
           this.glosas=[{label:''}]
       this.$axios.get(process.env.API+'/glosa').then(res=>{
+        //console.log(res.data)
         res.data.forEach(r => {
           r.label=r.nombre
           this.glosas.push(r);
@@ -887,9 +915,11 @@ export default {
       let caja=0
 
             y+=0.5
+        doc.setFont(undefined,'bold')
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
         doc.text(1, y+3, 'DETALLE DE GASTO')
+        doc.setFont(undefined,'normal')
       this.gastos.forEach(r=>{
         y+=0.5
         // console.log(r)
@@ -909,13 +939,20 @@ export default {
           y=0
         }
       })
+        doc.setFont(undefined,'bold')
+                  y+=0.5
+        doc.text(1, y+3, '-------------------------------------------------------')
+      y+=0.5
+        doc.text(1, y+3, 'DETALLE DE GASTO CAJA CHICA')
+        y+=0.5
+        doc.setFont(undefined,'normal')
             this.chica.forEach(r=>{
         y+=0.5
         // console.log(r)
         doc.text(3, y+3, 'Gasto')
         doc.text(6.5, y+3, r.monto!=null?r.monto.toString():''+'Bs.')
         caja+=parseFloat(r.monto!=null?r.monto:0)
-        doc.text(8, y+3, 'CAJA CHICA: '+r.motivo)
+        doc.text(8, y+3, r.glosa==null?'GASTO':r.glosa.nombre+' : '+r.motivo)
         // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
         // doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
         //doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
@@ -936,7 +973,9 @@ export default {
       y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
+        doc.setFont(undefined,'bold')
         doc.text(1, y+3, 'INGRESOS DE ANULADOS PRESTAMOS')
+        doc.setFont(undefined,'normal')
                 if (y+3>25){
           doc.addPage();
           header()
@@ -1283,6 +1322,13 @@ export default {
           y=0
         }
       })
+              doc.setFont(undefined,'bold')
+                  y+=0.5
+        doc.text(1, y+3, '-------------------------------------------------------')
+      y+=0.5
+        doc.text(1, y+3, 'DETALLE DE GASTO CAJA CHICA')
+        y+=0.5
+        doc.setFont(undefined,'normal')
             this.chica.forEach(r=>{
         caja+=parseFloat(r.monto)
         console.log(r)
@@ -1291,7 +1337,7 @@ export default {
         doc.text(1.5, y+3, r.user.name)
         doc.text(4, y+3, r.monto+'')
         doc.text(6.5, y+3, r.motivo)
-        doc.text(11, y+3, 'CAJA CHICA')
+        doc.text(11, y+3, r.glosa==null?'GASTO':r.glosa.nombre+' : '+r.motivo)
         doc.text(15.5, y+3, r.fecha)
         doc.text(17.5, y+3, r.hora)
 
@@ -1347,6 +1393,7 @@ export default {
         //return false
                  res.data.forEach(r => {
             if(r.tipo=='GASTO')
+              
               this.chica.push(r)
          });
       })
@@ -1810,7 +1857,7 @@ export default {
           this.totalcaja()
 
         this.pagos=false
-        this.checkgasto='GASTO'
+        this.checkgasto='CAJA'
         this.pago.monto=0
         this.pago.tipo=''
         this.pago.observacion=''

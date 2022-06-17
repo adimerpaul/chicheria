@@ -13,6 +13,7 @@ class Inventario extends Model
         'nombre',
         'cantidad',
         'detalle',
+        'orden',
         'estado',
     ];
     protected $hidden = ["created_at", "updated_at"];

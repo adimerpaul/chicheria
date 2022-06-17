@@ -102,8 +102,8 @@
             </template>
             <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
-                <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
-                <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
+                <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit" v-if="$store.state.login.editproducto"></q-btn>
+                <q-btn dense round flat color="red" @click="delRow(props)" icon="delete" v-if="$store.state.login.editproducto"></q-btn>
                 </q-td>
             </template>
           </q-table>

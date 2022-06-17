@@ -58,6 +58,18 @@
 
                     </div>
                     <div class="col-12 col-sm-2 q-pa-xs">
+                      <q-input
+                        outlined
+                        dense
+                        type="number"
+                        v-model="inventario.orden"
+                        label="ORDEN"
+                                                :rules="[
+                          val => val >= 0 || 'Por favor ingrese dato']"
+                      />
+
+                    </div>
+                    <div class="col-12 col-sm-2 q-pa-xs">
 
                       <q-input
                         outlined
@@ -142,6 +154,7 @@
                     <th>VENTAS</th>
                     <th>SALDO</th>
                     <th>OBSERVACIONES</th>
+                    <th>ORDEN</th>
                     <th>ESTADO</th>
                     <th>OPCIONES</th>
                   </tr>
@@ -155,6 +168,7 @@
                   <td>{{v.ventas}}</td>
                   <td>{{v.cantidad}}</td>
                   <td>{{v.detalle}}</td>
+                  <td>{{v.orden}}</td>
                   <td >                  
                   <q-btn @click="activar(v)" dense :color="v.estado=='ACTIVO'?'green':'red'"  >
                     {{v.estado}}
@@ -166,8 +180,8 @@
                 <q-btn  dense round flat color="red" @click="substractRow(v)" icon="remove"></q-btn>
 
                 <q-btn dense round flat color="accent" @click="logRow(v)" icon="list"></q-btn>
-                <q-btn dense round flat color="yellow" @click="editRow(v)" icon="edit"></q-btn>
-                <q-btn dense round flat color="red" @click="delRow(v)" icon="delete"></q-btn>
+                <q-btn dense round flat color="yellow" @click="editRow(v)" icon="edit" v-if="$store.state.login.editinventario"></q-btn>
+                <q-btn dense round flat color="red" @click="delRow(v)" icon="delete" v-if="$store.state.login.editinventario"></q-btn>
                 </td>
                   </tr>
                   </tbody>
@@ -185,15 +199,36 @@
             @submit="onMod"
             class="q-gutter-md"
           >
-                  <q-input
+                            <q-input
                     filled
                     type="text"
-                    v-model="dato.nombre"
-                    label="Nombre"
+                    v-model="dato.codigo"
+                    label="Codigo"
                               style="text-transform: uppercase"
                     lazy-rules
                     :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
                   />
+                  <q-input
+                    filled
+                    type="text"
+                    v-model="dato.nombre"
+                    label="Item"
+                              style="text-transform: uppercase"
+                    lazy-rules
+                    :rules="[ val => val.length > 0 || 'Por favor ingrese dato']"
+                  />
+                                      <div class="col-12 col-sm-2 q-pa-xs">
+                      <q-input
+                        filled
+                        dense
+                        type="number"
+                        v-model="dato.orden"
+                        label="ORDEN"
+                                                :rules="[
+                          val => val >= 0 || 'Por favor ingrese dato']"
+                      />
+
+                    </div>
                   <q-input
                     filled
                     type="text"
@@ -373,7 +408,7 @@ export default {
       dialog_log:false,
       agregar:'',
       disminuir:'',
-      inventario:{},
+      inventario:{orden:0},
       productos:[],
       color:'',
       dato:{},
@@ -385,6 +420,7 @@ export default {
         { name: 'ventas', align: 'center', label: 'VENTAS', field: 'ventas', sortable: true },
         { name: 'cantidad', align: 'center', label: 'SALDO', field: 'cantidad', sortable: true },
         { name: 'detalle', align: 'center', label: 'OBSERVACIONES', field: 'detalle', sortable: true },
+        { name: 'orden', align: 'center', label: 'ORDEN', field: 'orden', sortable: true },
         { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
         { name: 'opcion', label: 'OPCIONES', field: 'action' }
       ],
@@ -470,6 +506,7 @@ export default {
     },
     registrar(){
       // this.inventario.producto_id=this.inventario.producto_id.value;
+        this.inventario.orden=this.inventario.orden==undefined?0:this.inventario.orden
         this.$axios.post(process.env.API+'/inventario', this.inventario).then(res=>{
         this.$q.notify({
           color: 'green-4',
@@ -604,7 +641,7 @@ export default {
         this.listado();})
     },
   onReset(){
-    this.inventario={};
+    this.inventario={orden:0};
   }
 
   },

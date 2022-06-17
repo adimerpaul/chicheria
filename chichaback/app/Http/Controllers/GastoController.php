@@ -80,6 +80,7 @@ class GastoController extends Controller
         $log->tipo='GASTO';
         $log->fecha=date('Y-m-d');
         $log->hora=date('H:i:s');
+        $log->glosa_id=$request->glosa_id;
         $log->user_id=$request->user()->id;
         $log->save();
     }

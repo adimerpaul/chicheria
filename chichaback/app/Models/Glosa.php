@@ -9,6 +9,7 @@ class Glosa extends Model
 {
     use HasFactory;
     protected $fillable=[
-        'nombre'
+        'nombre',
+        'orden'
     ];
 }

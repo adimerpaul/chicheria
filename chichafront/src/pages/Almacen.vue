@@ -129,7 +129,8 @@
               <div class="row">
               <div class="col-12"><q-select dense outlined v-model="material" :options="materiales" label="Material" /></div>
               <div class="col-2"><q-input dense outlined type="text" v-model="compra.cantidad" label="Cantidad"/></div>
-              <div class="col-2"><q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo" /></div>
+              <div class="col-2"><q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo U" /></div>
+              <div class="col-2">Subtotal: {{compra.costo * compra.cantidad}}</div>
               <div class="col-3"><q-input dense outlined  type="text" v-model="compra.lote"  label="Lote"  /></div>
               <div class="col-3"><q-input dense outlined  type="date" v-model="compra.fechaven"  label="Fecha Vencimiento"  /></div>
               <div class="col-3"><q-input dense outlined  type="text"  v-model="compra.observacion" label="Observacion" /></div>
@@ -142,6 +143,7 @@
               <th>MATERIAL</th>
               <th>CANTIDAD</th>
               <th>COSTO</th>
+              <th>SUBTOTAL</th>
               <th>LOTE</th>
               <th>FEC VEN</th>
               <th>OBS</th>
@@ -154,6 +156,7 @@
                 <td>{{d.material}}</td>
                 <td>{{d.cantidad}}</td>
                 <td>{{d.costo}}</td>
+                <td>{{d.subtotal}}</td>
                 <td>{{d.lote}}</td>
                 <td>{{d.fechaven}}</td>
                 <td>{{d.observacion}}</td>
@@ -198,7 +201,8 @@
           <q-card-section class="q-pt-xs">
             <q-form             @submit="updatecompra"             class="q-gutter-md"          >
               <q-input outlined type="text" v-model="compra2.cantidad" label="Cantidad"/>
-              <q-input outlined type="number" v-model="compra2.costo" label="Costo"/>
+              <q-input outlined type="number" v-model="compra2.costo" label="Costo U"/>
+              Subtotal: {{compra2.costo * compra2.cantidad}}
               <q-input outlined type="date" v-model="compra2.fechaven" label="fecha Ven"/>
               <q-input outlined type="text" v-model="compra2.lote" label="Lote"/>
               <q-input outlined  type="text"  v-model="compra2.observacion" label="Observacion" />
@@ -406,6 +410,7 @@ export default {
   { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
   { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
   { name: 'costo', align: 'center', label: 'COSTO', field: 'costo', sortable: true },
+  { name: 'subtotal', align: 'center', label: 'SUBTOTAL', field: 'subtotal', sortable: true },
   { name: 'lote', align: 'center', label: 'LOTE', field: 'lote', sortable: true },
   { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: 'fechaven', sortable: true },
   { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
@@ -618,11 +623,12 @@ export default {
     agregarcompra(){
       if(this.compra.cantidad=='' || this.compra.cantidad==0 || this.compra.cantidad==undefined)
         return false
-      if(this.compra.costo==undefined || this.compra.costo=='') this.compra.costo=''
+      if(this.compra.costo==undefined || this.compra.costo=='' || this.compra.costo==0) return false
       if(this.compra.fechaven==undefined || this.compra.fechaven=='') this.compra.fechaven=''
       if(this.compra.observacion==undefined || this.compra.observacion=='') this.compra.observacion=''
       if(this.compra.lote==undefined || this.compra.lote=='') this.compra.lote=''
       this.compra.material_id=this.material.id
+      this.compra.subtotal=parseFloat(this.compra.cantidad) * parseFloat(this.compra.costo)
       this.compra.material=this.material.nombre
       this.compras.push(this.compra)
       this.compra={}
@@ -820,8 +826,12 @@ export default {
 
   onReset(){
     this.producto={};
-  }
+  },
+  
+  computed:{
 
+
+  }
   },
 
 

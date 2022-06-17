@@ -115,6 +115,7 @@ export default {
         {name: "fecha", align: "left", label: "FECHA ", field: "fecha", sortable: true,},
         {name: "monto", align: "left", label: "MONTO", field: "monto", sortable: true,},
         {name: "motivo", align: "left", label: "MOTIVO", field: "motivo", sortable: true,},
+        {name: "glosa", align: "left", label: "GLOSA", field: row=>row.glosa==null?'':row.glosa.nombre, sortable: true,},
         {name: "tipo", align: "left", label: "TIPO", field: "tipo", sortable: true,},
         {name: "opcion", align: "left", label: "OPCION", field: "opcion" }
 
@@ -157,7 +158,7 @@ export default {
 
     misdatos() {
       this.$q.loading.show();
-      this.$axios.post(process.env.API + "/listcaja",{fecha1:this.fecha1,fecha2:this.fecha2}).then((res) => {
+      this.$axios.post(process.env.API + "/listcaja",{fecha1:this.fecha1,fecha2:this.fecha2,user_id:0}).then((res) => {
          console.log(res.data)
         this.data = res.data;
         this.totalcaja();

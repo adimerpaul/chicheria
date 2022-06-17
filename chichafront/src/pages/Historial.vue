@@ -540,11 +540,6 @@ export default {
       "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
     } );
 
-    //this.misventas()
-    // console.log(this.$store.state.login)
-
-
-    // })
     this.$axios.post(process.env.API+'/me').then(res=>{
       // console.log(res.data)
       this.responsable=res.data.name
@@ -577,7 +572,7 @@ export default {
     misventas(){
       this.$q.loading.show()
       this.ventas=[];
-        // $('#example').DataTable().destroy();
+         $('#example').DataTable().destroy();
 
       this.$axios.post(process.env.API+'/listadoventa',{ini:this.fecha2,fin:this.fecha3}).then(res=>{
         // this.ventas=res.data
@@ -604,21 +599,7 @@ export default {
             cantidad:r.detalle.cantidad,
           })
 
-
-          // console.log({
-          //   id:r.id,
-          //   fecha:r.fecha,
-          //   total:r.total,
-          //   acuenta:r.acuenta,
-          //   saldo:r.saldo,
-          //   tipocliente:r.cliente.tipocliente,
-          //   estado:r.estado,
-          //   local:r.cliente.local,
-          //   titular:r.cliente.titular,
-          //   user:r.user.name,
-          //   pagos:r.pagos
-          // })
-        })
+       })
 
 
           this.$nextTick(()=>{
@@ -871,91 +852,9 @@ export default {
               "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
             } );
           })
-        // console.log(this.ventas)
       })
     },
 
-    guardar(){
-      if (this.model==0){
-        this.$q.notify({
-          message:'Tienes que seleccionar cliente',
-          color:'red',
-          icon:'error'
-        })
-        return false;
-      }
-            if (this.fecha==undefined){
-        this.$q.notify({
-          message:'Tienes que seleccionar fecha',
-          color:'red',
-          icon:'error'
-        })
-        return false;
-      }
-      // console.log(this.detalles)
-      // return  false
-      // return false
-      this.$q.loading.show()
-      // console.log({
-      //   nombreproducto:this.producto.nombre,
-      //   precio:this.producto.precio,
-      //   producto_id:this.producto.id,
-      //   cantidad:this.cantidad,
-      //   subtotal:this.subtotal,
-      // })
-      // return false
-
-      this.$axios.post(process.env.API+'/venta',{
-        fecha:this.fecha,
-        total:this.subtotal,
-        acuenta:this.acuenta,
-        saldo:this.saldo,
-        estado:this.estado,
-        filtro:'',
-        tipo:'LOCAL',
-        cliente_id:this.model.id,
-        detalles:[{
-          nombreproducto:this.producto.nombre,
-          precio:this.producto.precio,
-          producto_id:this.producto.id,
-          cantidad:this.cantidad,
-          subtotal:this.subtotal,
-        }],
-
-      }).then(res=>{
-        // console.log(res.data)
-        this.$q.notify({
-          message:'Venta exitosa',
-          color:'green',
-          icon:'info'
-        })
-                  let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
-                  myWindow.document.write(res.data);
-                  myWindow.document.close();
-        this.misventas()
-
-          this.subtotal=''
-          this.acuenta=''
-          this.saldo=''
-          this.estado=''
-          this.model=''
-          this.producto=''
-          this.cantidad=1
-          this.subtotal=0
-        this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
-      }).catch(err=>{
-        this.$q.loading.hide()
-        console.error(err)
-        this.$q.notify({
-          message:err.response.data.message,
-          color:'red',
-          icon:'error'
-        })
-      })
-    },
-    deleteval(index){
-      this.detalles.splice(index, 1);
-    },
     generar(){
       if (this.model==0){
         this.$q.notify({

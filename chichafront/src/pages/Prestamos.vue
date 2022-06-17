@@ -83,7 +83,8 @@
                     <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
                     <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
                     <q-btn size="xs" @click="onMod(props.row)"  color="yellow" icon="edit" v-if="props.row.estado=='EN PRESTAMO'"/>
-                    <q-btn size="xs" @click="onEliminar(props.row)" v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  color="negative" icon="delete"/>
+                    <q-btn size="xs" @click="onEliminar(props.row)" v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  color="red-12" icon="cancel"/>
+                    <q-btn size="xs" @click="ondelete(props.row)" v-if="(props.row.estado=='EN PRESTAMO' || props.row.estado=='VENTA') && $store.state.login.delprestamo"  color="negative" icon="delete"/>
                 </q-td>
             </template>
 
@@ -203,6 +204,7 @@ export default {
   { name: 'prestado', label: 'PENDIENTE', field: 'prestado', sortable: true },
   { name: 'efectivo', label: 'EFECTIVO', field: 'efectivo', sortable: true },
   { name: 'fisico', label: 'FISICO', field: 'fisico', sortable: true },
+  { name: 'user', label: 'USUARIO', field: row=>row.user.name },
   { name: 'observacion', label: 'OBSERVACION', field: 'observacion' },
   { name: 'logprestamos', label: 'HISTORIAL', field: 'logprestamos' },
   { name: 'opcion', label: 'OPCION', field: 'opcion' },
@@ -311,7 +313,7 @@ export default {
       this.dialog_dev=true;
     },
     onEliminar(p){
-      if (confirm('seguro de eliminar?')){
+      if (confirm('seguro de Anular?')){
         this.$axios.post(process.env.API+'/anularprestamo',p).then(res=>{
           // this.totalefectivo=res.data[0].total;
           this.listclientes()
@@ -321,6 +323,17 @@ export default {
         })
       }
 
+    },
+    ondelete(p){
+           if (confirm('seguro de ELIMINAR?')){
+        this.$axios.delete(process.env.API+'/prestamo/'+p.id).then(res=>{
+          // this.totalefectivo=res.data[0].total;
+          this.listclientes()
+          this.cajaprestamo()
+          this.listadoprestamo()
+          console.log(res.data)
+        })
+      }
     },
     onList(p){
       this.listado=p.logprestamos;

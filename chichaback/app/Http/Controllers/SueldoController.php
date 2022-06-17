@@ -59,10 +59,12 @@ class SueldoController extends Controller
             $caja->monto= floatval($caja->monto) - floatval($request->monto);
             $caja->save();
 
+            $glosa=Glosa::where('nombre',$request->tipo)->get();
             $log=new Logcaja ;
             $log->monto=$request->monto;
             $log->motivo=$request->observacion.' '.$request->empleado_nombre;;
             $log->tipo='GASTO';
+            $log->glosa_id=$glosa[0]['id'];
             $log->fecha=date('Y-m-d');
             $log->hora=date('H:i:s');
             $log->user_id=$request->user()->id;

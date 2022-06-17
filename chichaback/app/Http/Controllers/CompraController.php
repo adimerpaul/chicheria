@@ -50,6 +50,7 @@ class CompraController extends Controller
         $compra->hora=date('H:i:s');
         $compra->cantidad=$r['cantidad'];
         $compra->costo=$r['costo'];
+        $compra->subtotal=$r['subtotal'];
         $compra->fechaven=$r['fechaven'];
         $compra->observacion=$r['observacion'];
         $compra->lote=$r['lote'];
@@ -123,4 +124,6 @@ class CompraController extends Controller
         $material->save();
         $compra->delete();
     }
+
+
 }

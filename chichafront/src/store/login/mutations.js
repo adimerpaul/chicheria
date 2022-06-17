@@ -32,6 +32,10 @@ export function auth_success(state, data){
   state.cobrarruta=data.user.permisos.find(p=>p.id===21)!=undefined
   state.cajachica=data.user.permisos.find(p=>p.id===22)!=undefined
   state.editalmacen=data.user.permisos.find(p=>p.id===23)!=undefined
+  state.editproducto=data.user.permisos.find(p=>p.id===24)!=undefined
+  state.editinventario=data.user.permisos.find(p=>p.id===25)!=undefined
+  state.editglosa=data.user.permisos.find(p=>p.id===26)!=undefined
+  state.delprestamo=data.user.permisos.find(p=>p.id===27)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -62,4 +66,8 @@ export function salir(state){
   state.cobrarruta=false
   state.cajachica=false
   state.editalmacen=false
+  state.editproducto=false
+  state.editinventario=false
+  state.editglosa=false
+  state.delprestamo=false
 }

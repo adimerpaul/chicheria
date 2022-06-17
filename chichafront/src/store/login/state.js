@@ -26,5 +26,9 @@ export default function () {
     cobrarruta:false,
     cajachica:false,
     editalmacen:false,
+    editproducto:false,
+    editinventario:false,
+    editglosa:false,
+    delprestamo:false,
   }
 }

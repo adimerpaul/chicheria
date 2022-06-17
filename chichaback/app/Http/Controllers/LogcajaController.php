@@ -28,11 +28,11 @@ class LogcajaController extends Controller
         //return $request;
         if($request->user()->id==1)
         {
-            if($request->user_id==0) return Logcaja::with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
-            else return Logcaja::with('user')->where('user_id',$request->user_id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+            if($request->user_id==0) return Logcaja::with('glosa')->with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+            else return Logcaja::with('glosa')->with('user')->where('user_id',$request->user_id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
         }
         else
-        return Logcaja::with('user')->where('user_id',$request->user()->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+        return Logcaja::with('glosa')->with('user')->where('user_id',$request->user()->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
        
     }
 
@@ -60,6 +60,7 @@ class LogcajaController extends Controller
         $log->tipo=$request->tipo;
         $log->fecha=date('Y-m-d');
         $log->hora=date('H:i:s');
+        $log->glosa_id=null;
         $log->user_id=$request->user()->id;
         $log->save();
         $caja=Caja::find(1);
@@ -131,5 +132,8 @@ class LogcajaController extends Controller
         }
         $logcaja->delete();
 
+    }
+    public function repcaja(Request $request){
+        return DB::SELECT("SELECT SUM(total) as total from planillas where fechapago >= '$request->fecha1' and  fechapago <= '$request->fecha2'");
     }
 }

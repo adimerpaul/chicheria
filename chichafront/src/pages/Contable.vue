@@ -143,13 +143,13 @@ export default {
       })
 
      this.$axios.post(process.env.API+'/repventpago',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
-        console.log(res.data)
+      //  console.log(res.data)
         if(res.data.total!=null && res.data.total!=undefined)
           this.ingreso.push({detalle:'CxC pagos',total:res.data.total})
       })
 
       this.$axios.post(process.env.API+'/repingprestamo',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
-        console.log(res.data)
+        //console.log(res.data)
         res.data.forEach(r=>{
         if(r.total!=null && r.total!=undefined)
           this.ingreso.push({detalle:'Prest/mat '+r.estado,total:r.total})
@@ -157,22 +157,39 @@ export default {
       })
 
     this.$axios.post(process.env.API+'/repgastos',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
-        console.log(res.data)
+    //    console.log(res.data)
         res.data.forEach(r=>{
         if(r.total!=null && r.total!=undefined)
           this.egreso.push({detalle:r.glosa,total:r.total})
         })
 
       })
-            this.$axios.post(process.env.API+'/replanilla',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
-          console.log(res.data)
+      this.$axios.post(process.env.API+'/replanilla',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+       //   console.log(res.data)
           let t=res.data[0]
           if(t.total!=null && t.total!=undefined){
             this.egreso.push({detalle:'SALARIOS',total:t.total})}
-          console.log(this.egreso)
+         // console.log(this.egreso)
 
         })
-      //console.log(this.ingreso)
+      this.$axios.post(process.env.API+'/repcompra',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+          console.log(res.data)
+          let t=res.data[0]
+          if(t.total!=null && t.total!=undefined){
+            this.egreso.push({detalle:'COMPRA ALMACEN',total:t.total})}
+         // console.log(this.egreso)
+
+        })
+      this.$axios.post(process.env.API+'/repcaja',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+          console.log(res.data)
+          //let t=res.data[0]
+          res.data.forEach(r => {
+            this.egreso.push({detalle:'CJA CHICA: '+r.glosa,total:r.total})})
+            
+          
+         // console.log(this.egreso)
+
+        })
     },
 
     impresion(){
