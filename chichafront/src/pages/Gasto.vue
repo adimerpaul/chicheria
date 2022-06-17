@@ -939,6 +939,9 @@ export default {
           y=0
         }
       })
+            y+=0.5
+        doc.text(1, y+3, 'T GASTO:')
+        doc.text(3, y+3, gastos+'Bs.')
         doc.setFont(undefined,'bold')
                   y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
@@ -962,14 +965,11 @@ export default {
           y=0
         }
       })
+
       y+=0.5
-        doc.text(1, y+3, 'T GASTO:')
-        doc.text(3, y+3, gastos+'Bs.')
-        doc.text(8, y+3, 'Gasto Caja Chica:')
-        doc.text(12, y+3, caja+'Bs.')
-                if(this.$store.state.login.user.id==1){
-        doc.text(13.5, y+3, 'Salarios:')
-        doc.text(16, y+3, this.resumenplanilla+'Bs.')}
+        doc.text(1, y+3, 'Gasto Caja Chica:')
+        doc.text(6, y+3, caja+'Bs.')
+
       y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
@@ -1105,9 +1105,12 @@ export default {
         doc.setFont(undefined,'bold')
       doc.text(17, y+4, (ventas-gastos)+' Bs')
         doc.setFont(undefined,'normal')
-      doc.text(2, y+4.5, 'Total CxC pagos: ')
+      doc.text(2, y+4.5, 'T. CxC pagos: ')
         doc.setFont(undefined,'bold')
       doc.text(5.5, y+4.5, ccpago+'Bs')
+      if(this.$store.state.login.user.id==1){
+        doc.text(13.5, y+3, 'Salarios:')
+        doc.text(16, y+3, this.resumenplanilla+'Bs.')}
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
