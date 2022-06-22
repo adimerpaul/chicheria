@@ -45,6 +45,7 @@
           <div class=" responsive">
                 <q-table dense title="Ingresos" :rows="ingreso" :columns="columns" row-key="name" />
                 <q-table dense title="Egresos" :rows="egreso" :columns="columns2" row-key="name" />
+                <q-table dense title="Caja Chica" :rows="cchica" :columns="columns3" row-key="name" />
           </div>
         </div>
 
@@ -88,6 +89,7 @@ export default {
       deudas:[],
       ingreso:[],
       egreso:[],
+      cchica:[],
       regpago:{},
       pagos:{},
       final:0,
@@ -103,6 +105,11 @@ export default {
 
 
       columns2 : [
+
+  { name: 'detalle', align: 'center', label: 'DETALLE', field: 'detalle', sortable: true },
+  { name: 'total', align: 'center', label: 'total', field: 'total'},
+],
+      columns3 : [
 
   { name: 'detalle', align: 'center', label: 'DETALLE', field: 'detalle', sortable: true },
   { name: 'total', align: 'center', label: 'total', field: 'total'},
@@ -132,27 +139,28 @@ export default {
     listado(){
       this.ingreso=[]
       this.egreso=[]
+      this.cchica=[]
           $('#example').DataTable().destroy();
       this.$axios.post(process.env.API+'/repventa',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
         //console.log(res.data)
         //return false
         res.data.forEach(r=>{
         if(r.total!=null && r.total!=undefined)
-          this.ingreso.push({detalle:'Venta '+r.tipo,total:r.total})
+          this.ingreso.push({detalle:'Venta '+r.tipo,total:r.total,ingreso:r.total,egreso:0})
         })
       })
 
      this.$axios.post(process.env.API+'/repventpago',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
       //  console.log(res.data)
         if(res.data.total!=null && res.data.total!=undefined)
-          this.ingreso.push({detalle:'CxC pagos',total:res.data.total})
+          this.ingreso.push({detalle:'CxC pagos',total:res.data.total,ingreso:res.data.total,egreso:0})
       })
 
       this.$axios.post(process.env.API+'/repingprestamo',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
         //console.log(res.data)
         res.data.forEach(r=>{
         if(r.total!=null && r.total!=undefined)
-          this.ingreso.push({detalle:'Prest/mat '+r.estado,total:r.total})
+          this.ingreso.push({detalle:'Prest/mat '+r.estado,total:r.total,ingreso:r.total,egreso:0})
         })
       })
 
@@ -160,7 +168,7 @@ export default {
     //    console.log(res.data)
         res.data.forEach(r=>{
         if(r.total!=null && r.total!=undefined)
-          this.egreso.push({detalle:r.glosa,total:r.total})
+          this.egreso.push({detalle:r.glosa,total:r.total,egreso:r.total,ingreso:0})
         })
 
       })
@@ -168,7 +176,7 @@ export default {
        //   console.log(res.data)
           let t=res.data[0]
           if(t.total!=null && t.total!=undefined){
-            this.egreso.push({detalle:'SALARIOS',total:t.total})}
+            this.egreso.push({detalle:'SALARIOS',total:t.total,egreso:t.total,ingreso:0})}
          // console.log(this.egreso)
 
         })
@@ -176,7 +184,7 @@ export default {
           console.log(res.data)
           let t=res.data[0]
           if(t.total!=null && t.total!=undefined){
-            this.egreso.push({detalle:'COMPRA ALMACEN',total:t.total})}
+            this.egreso.push({detalle:'COMPRA ALMACEN',total:t.total,egreso:t.total,ingreso:0})}
          // console.log(this.egreso)
 
         })
@@ -184,7 +192,7 @@ export default {
           console.log(res.data)
           //let t=res.data[0]
           res.data.forEach(r => {
-            this.egreso.push({detalle:'CJA CHICA: '+r.glosa,total:r.total})})
+            this.cchica.push({detalle:'CJA CHICA: '+r.glosa,total:r.total,egreso:r.total,ingreso:0})})
             
           
          // console.log(this.egreso)
@@ -227,8 +235,24 @@ export default {
       let y=0
       let totalingreso=0
       let totalegreso=0
-      this.resumen.forEach(r=>{
+      let totalcaja=0
+      this.ingreso.forEach(r=>{
         totalingreso=totalingreso+r.ingreso;
+        // xx+=0.5
+        y+=0.5
+        doc.text(1, y+3, r.detalle)
+        doc.text(10, y+3, r.ingreso+'')
+        doc.text(14, y+3, r.egreso+'')
+
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+        })
+        y+=0.5
+
+              this.egreso.forEach(r=>{
         totalegreso=totalegreso+r.egreso;
         // xx+=0.5
         y+=0.5
@@ -242,6 +266,22 @@ export default {
           y=0
         }
         })
+        y+=0.5
+              this.cchica.forEach(r=>{
+        totalcaja=totalcaja+r.egreso;
+        // xx+=0.5
+        y+=0.5
+        doc.text(1, y+3, r.detalle)
+        doc.text(10, y+3, r.ingreso+'')
+        doc.text(14, y+3, r.egreso+'')
+
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+        })
+
       doc.setFontSize(9);
 
         doc.setFont(undefined,'bold')
@@ -253,6 +293,12 @@ export default {
         doc.text(7, y+4, 'TOTAL EGRESO: ')
         doc.setFont(undefined,'normal')
         doc.text(10, y+4, totalegreso+' Bs')
+
+        doc.setFont(undefined,'bold')
+        doc.text(7, y+4.5, 'T. CJA CHICA: ')
+        doc.setFont(undefined,'normal')
+        doc.text(10, y+4.5, totalcaja+' Bs')
+
         var ttotal=totalingreso - totalegreso
         doc.setFont(undefined,'bold')
         doc.text(14, y+4, 'BALANCE: ')
@@ -269,14 +315,14 @@ computed:{
     totalingreso(){
       let total=0;
       this.ingreso.forEach(r=>{
-        total+= parseFloat(r.total)
+        total+= parseFloat(r.ingreso)
       })
       return total
     },
     totalegreso(){
       let total=0;
       this.egreso.forEach(r=>{
-        total+= parseFloat(r.total)
+        total+= parseFloat(r.egreso)
       })
       return total
     },

@@ -211,6 +211,7 @@ export default {
     },
     deleteval(index){
       this.detalles.splice(index, 1);
+
     }
   },
   computed:{
