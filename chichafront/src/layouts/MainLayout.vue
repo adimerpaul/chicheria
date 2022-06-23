@@ -405,6 +405,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <!--
         <q-item v-if="$store.state.login.empleados" active-class="my-menu-link" clickable exact to="planillas">
           <q-item-section avatar>
             <q-icon name="receipt_long" size="lg" />
@@ -417,7 +418,7 @@
           </q-item-section>
         </q-item>
 
-
+-->
         <q-item v-if="$store.state.login.productos" active-class="my-menu-link" clickable exact to="almacen">
           <q-item-section avatar>
             <q-icon name="store" size="lg" />

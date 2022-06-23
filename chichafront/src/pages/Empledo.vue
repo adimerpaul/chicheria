@@ -789,10 +789,9 @@ export default {
       doc.text('SON: '+a.toUpperCase()+' Bs',110, 80, 'center')
       doc.setFont(undefined,'bold')
       // // console.log(a)
-      doc.text(5, 90, '____________________________                     _____________________________________           ______________________________')
-      doc.text(10, 95, 'FIRMA SELLO CAJERO')
-      doc.text(75, 95, 'FIRMA SELLO CONTROL INTERNO')
-      doc.text(150, 95, 'FIRMA SELLO LIQUIDADOR')
+      doc.text(5, 90, '____________________________                                                                   ______________________________')
+      doc.text(10, 95, 'FIRMA EMPLEADO')
+      doc.text(150, 95, 'FIRMA RESPONSABLE')
       // // doc.setFont(undefined,'normal')
       // // doc.text(18, y+3.5, sumtotal+ ' Bs')
       //

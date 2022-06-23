@@ -15,7 +15,7 @@
                     label="Fecha ini"
                     required
                     hint="Porfavor ingresar fecha inicio"
-                    clearable
+
                     counter
                   />
                   </div>
@@ -29,7 +29,6 @@
                     required
                     :rules="[ val => val>=fecha1 || 'Fecha debe ser mayor o igual']"
                     hint="Porfavor ingresar fecha fin"
-                    clearable
                     counter
                   />
                   </div>
@@ -193,8 +192,8 @@ export default {
           //let t=res.data[0]
           res.data.forEach(r => {
             this.cchica.push({detalle:'CJA CHICA: '+r.glosa,total:r.total,egreso:r.total,ingreso:0})})
-            
-          
+
+
          // console.log(this.egreso)
 
         })
@@ -203,11 +202,11 @@ export default {
     impresion(){
       this.resumen=[]
       this.ingreso.forEach(r => {
-        this.resumen.push({detalle:r.detalle,ingreso:r.total,egreso:0});        
+        this.resumen.push({detalle:r.detalle,ingreso:r.total,egreso:0});
       });
 
       this.egreso.forEach(r => {
-        this.resumen.push({detalle:r.detalle,ingreso:0,egreso:r.total});        
+        this.resumen.push({detalle:r.detalle,ingreso:0,egreso:r.total});
       });
 
            let mc=this
