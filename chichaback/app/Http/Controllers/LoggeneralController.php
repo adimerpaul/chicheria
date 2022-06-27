@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loggeneral;
+use App\Models\General;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

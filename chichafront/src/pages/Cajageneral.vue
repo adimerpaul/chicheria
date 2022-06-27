@@ -139,7 +139,7 @@ export default {
         cancel: true,
         persistent: false
       }).onOk(() => {
-               this.$axios.delete(process.env.API + "/logcaja/"+logcaja.id).then((res) => {
+               this.$axios.delete(process.env.API + "/loggeneral/"+logcaja.id).then((res) => {
                  console.log(res.data)
                                   this.misdatos()
         })
