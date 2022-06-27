@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Empleado;
 use App\Models\Planilla;
+use App\Models\Caja;
+use App\Models\Logcaja;
 use App\Models\General;
 use App\Models\Loggeneral;
 use Illuminate\Http\Request;
@@ -53,7 +55,9 @@ class PlanillaController extends Controller
         $planilla->empleado_id=$request->empleado_id;
         $planilla->save();
 
-        /*$general=General::find(1);
+        if($request->tpago=='GASTO'){
+
+        $general=General::find(1);
         $general->monto=$general->monto - $request->precio;
         $general->save();
 
@@ -67,7 +71,24 @@ class PlanillaController extends Controller
         $loggeneral->hora=date("H:i:s");
         $loggeneral->glosa_id=null;
         $loggeneral->user_id=$request->user()->id;
-        $loggeneral->save();*/
+        $loggeneral->save();}
+
+        if($request->tpago=='CAJA'){
+            $caja=Caja::find(1);
+            $caja->monto= floatval($caja->monto) - floatval($planilla->total);
+            $caja->save();
+
+            $log=new Logcaja ;
+            $log->monto=$planilla->total;
+            $log->motivo='PAGO SALARIO '.$planilla->id;
+            $log->tipo='GASTO';
+            $log->glosa_id=null;
+            $log->fecha=date('Y-m-d');
+            $log->hora=date('H:i:s');
+            $log->user_id=$request->user()->id;
+            $log->save(); 
+        }
+
     }
 
     /**

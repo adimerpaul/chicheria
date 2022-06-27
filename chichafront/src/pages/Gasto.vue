@@ -242,7 +242,7 @@
                 </div>
                 <div class="col-3" v-if="$store.state.login.user.id==1">
                   <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
-                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA" />
+                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
 
                 </div>
                 <div class="col-3 flex flex-center">
@@ -1859,6 +1859,23 @@ export default {
       this.pago.empleado_id=this.pago.empleado.element.id
       this.pago.empleado_nombre=this.pago.empleado.label;
       this.pago.checkbox=this.checkgasto
+      if(this.checkgasto=='GASTO' && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='EXTRA') && this.pago.monto > this.montogeneral){
+                      this.$q.notify({
+                message:'El monto excede en General ',
+                icon:'info',
+                color:'red'
+              })
+        return false
+      }
+
+     if(this.checkgasto=='CAJA' && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='EXTRA') && this.pago.monto > this.montocajachica){
+                      this.$q.notify({
+                message:'El monto excede en Caja Chica ',
+                icon:'info',
+                color:'red'
+              })
+        return false
+      }
        //console.log(this.pago)
       // return false
 

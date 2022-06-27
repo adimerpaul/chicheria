@@ -77,6 +77,15 @@
           </template>
         </q-input>
       </template>
+            <template v-slot:body-cell-tipo="props">
+          <q-td key="opcion" :props="props">
+              <q-badge color="green" v-if="props.row.tipo=='INGRESO'">{{props.row.tipo}}</q-badge>
+              <q-badge color="red" v-if="props.row.tipo=='EGRESO'">{{props.row.tipo}}</q-badge>
+              <q-badge color="blue" v-if="props.row.tipo=='AGREGAR'">{{props.row.tipo}}</q-badge>
+              <q-badge color="purple" v-if="props.row.tipo=='RETIRAR'">{{props.row.tipo}}</q-badge>
+          </q-td>
+
+      </template>
       <template v-slot:body-cell-opcion="props">
           <q-td key="opcion" :props="props">
             <q-btn

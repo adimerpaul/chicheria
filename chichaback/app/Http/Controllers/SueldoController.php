@@ -61,12 +61,12 @@ class SueldoController extends Controller
             $caja->monto= floatval($caja->monto) - floatval($request->monto);
             $caja->save();
 
-            $glosa=Glosa::where('nombre',$request->tipo)->get();
+            $glosa=Glosa::where('nombre',$request->tipo)->get()[0];
             $log=new Logcaja ;
             $log->monto=$request->monto;
             $log->motivo=$request->observacion.' '.$request->empleado_nombre;;
             $log->tipo='GASTO';
-            $log->glosa_id=$glosa[0]['id'];
+            $log->glosa_id=$glosa->id;
             $log->fecha=date('Y-m-d');
             $log->hora=date('H:i:s');
             $log->user_id=$request->user()->id;
@@ -74,13 +74,13 @@ class SueldoController extends Controller
         }}
         else{
         if($request->tipo=='ADELANTO' || $request->tipo=='EXTRA' ){
-            $glosa=Glosa::where('nombre',$request->tipo)->get();
+            $glosa=Glosa::where('nombre',$request->tipo)->get()[0];
 
             $gasto=new Gasto();
             $gasto->precio=$request->monto;
             $gasto->observacion=$request->observacion.' '.$request->empleado_nombre;
             $gasto->glosa=$request->tipo;
-            $gasto->glosa_id=$glosa[0]['id'];
+            $gasto->glosa_id=$glosa->id;
             $gasto->fecha=date('Y-m-d');
             $gasto->hora=date('H:i:s');
             $gasto->user_id=$request->user()->id;
@@ -98,7 +98,7 @@ class SueldoController extends Controller
             $loggeneral->tipo='EGRESO';
             $loggeneral->fecha=$gasto->fecha;
             $loggeneral->hora=date("H:i:s");
-            $loggeneral->glosa_id=$request->glosa_id;
+            $loggeneral->glosa_id=$glosa->id;
             $loggeneral->user_id=$request->user()->id;
             $loggeneral->save();
         

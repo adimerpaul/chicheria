@@ -211,7 +211,7 @@
                 </div>
                 <div class="col-3" >
                   <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
-                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA" />
+                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
 
                 </div>
                 <div class="col-2 flex flex-center">
@@ -246,6 +246,11 @@
       <q-card>
         <q-card-section class="text-center text-bold q-pa-none q-ma-none">Datos {{emp.nombre}}</q-card-section>
         <q-card-section>
+                        <div class="col-3" >
+                  <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
+                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
+
+                </div>
           <q-form @submit.prevent="creategenplanilla">
             <div class="row">
               <div class="col-12"><q-input dense outlined label="fechainicio" v-model="planilla.fechainicio" disable /></div>
@@ -319,6 +324,8 @@ export default {
       dialog_plan:false,
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
+      montocaja:0,
+      montogeneral:0,
       columns:[
         {name:'ci',label:'CI',field:'ci'},
         {name:'nombre',label:'NOMBRE',field:'nombre'},
@@ -710,6 +717,7 @@ export default {
           this.$q.loading.show()
           //console.log(this.planilla)
           //return false
+          this.planilla.tpago=this.checkgasto
       this.$axios.post(process.env.API+'/planilla',this.planilla).then(res=>{
         // console.log(res.data)
         this.$q.loading.hide()
@@ -1193,6 +1201,16 @@ export default {
         })
       })
     },
+          totalcaja(){
+      this.$axios.post(process.env.API + "/totalcaja").then((res) => {
+          this.montocajachica=res.data.monto;
+      })
+      },
+                        totalgeneral(){
+      this.$axios.post(process.env.API + "/totalgeneral").then((res) => {
+          this.montogeneral=parseFloat( res.data.monto);
+      })
+      },
     agregarpago(){
 
       console.log(this.empleadohistorial)
@@ -1206,6 +1224,23 @@ export default {
             })
           return false;
         }
+      }
+      if(this.checkgasto=='GASTO' && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='EXTRA') && this.pago.monto > this.montogeneral){
+                      this.$q.notify({
+                message:'El monto excede en General ',
+                icon:'info',
+                color:'red'
+              })
+        return false
+      }
+
+     if(this.checkgasto=='CAJA' && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='EXTRA') && this.pago.monto > this.montocajachica){
+                      this.$q.notify({
+                message:'El monto excede en Caja Chica ',
+                icon:'info',
+                color:'red'
+              })
+        return false
       }
       //console.log(this.empleadohistorial);
       this.pago.empleado_id=this.empleadohistorial.id

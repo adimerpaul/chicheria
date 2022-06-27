@@ -56,9 +56,9 @@ class PagoController extends Controller
         $general->save();
 
         $loggeneral= new Loggeneral;
-        $loggeneral->numero=$request->venta_id;
+        $loggeneral->numero=$venta->id;
         $loggeneral->monto= $request->monto;
-        $loggeneral->detalle='CXC '+$venta->tipo;
+        $loggeneral->detalle='CXC '.$venta->tipo;
         $loggeneral->motivo='PAGO CXC';
         $loggeneral->tipo='INGRESO';
         $loggeneral->fecha=date('Y-m-d');
