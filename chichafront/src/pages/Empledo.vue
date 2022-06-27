@@ -209,6 +209,11 @@
                 <div class="col-4">
                   <q-input outlined dense type="text" label="observacion" v-model="pago.observacion" />
                 </div>
+                <div class="col-3" >
+                  <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
+                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA" />
+
+                </div>
                 <div class="col-2 flex flex-center">
                   <q-btn  class="full-with" label="Agregar" type="submit" icon="send" color="info"/>
                 </div>
@@ -298,6 +303,7 @@ export default {
       dialoggenplanilla:false,
       dialogver:false,
       pagos:false,
+      checkgasto:"CAJA",
       pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       empleados:[],
       emp:{},
@@ -1188,6 +1194,7 @@ export default {
       })
     },
     agregarpago(){
+
       console.log(this.empleadohistorial)
       if(this.empleadohistorial.tipo=='FIJO'){
         if((parseFloat(this.empleadohistorial.salario)- this.totaldescuento) < parseFloat( this.pago.monto) && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='DESCUENTO'))
@@ -1203,6 +1210,8 @@ export default {
       //console.log(this.empleadohistorial);
       this.pago.empleado_id=this.empleadohistorial.id
       this.pago.empleado_nombre=this.empleadohistorial.nombre
+      this.pago.checkbox=this.checkgasto
+
       // console.log(this.pago)
       // return false
 

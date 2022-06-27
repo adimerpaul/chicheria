@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Empleado;
 use App\Models\Planilla;
+use App\Models\General;
+use App\Models\Loggeneral;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -50,6 +52,22 @@ class PlanillaController extends Controller
         $planilla->total=$request->total;
         $planilla->empleado_id=$request->empleado_id;
         $planilla->save();
+
+        /*$general=General::find(1);
+        $general->monto=$general->monto - $request->precio;
+        $general->save();
+
+        $loggeneral= new Loggeneral;
+        $loggeneral->numero=$planilla->id;
+        $loggeneral->monto= $planilla->total;
+        $loggeneral->detalle='SALARIO';
+        $loggeneral->motivo='';
+        $loggeneral->tipo='EGRESO';
+        $loggeneral->fecha=$planilla->fechapago;
+        $loggeneral->hora=date("H:i:s");
+        $loggeneral->glosa_id=null;
+        $loggeneral->user_id=$request->user()->id;
+        $loggeneral->save();*/
     }
 
     /**
@@ -96,6 +114,12 @@ class PlanillaController extends Controller
     public function destroy($id)
     {
         $planilla=Planilla::find($id);
+        /*$general=General::find(1);
+        $general->monto=$general->monto + $planilla->total;
+        $general->save();
+
+        $loggeneral= Loggeneral::where('numero',$planilla->id)->where('tipo','EGRESO')->where('detalle','SALARIO')->get()[0];
+        $loggeneral->delete();*/
         $planilla->delete();
     }
 

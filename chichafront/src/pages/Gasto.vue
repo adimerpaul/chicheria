@@ -111,7 +111,7 @@
         <tr v-for="g in gastos" :key="g.i">
           <td>{{g.id}}</td>
           <td>{{g.precio}}</td>
-          <td>{{g.glosa}}</td>
+          <td>{{g.glosa.nombre}}</td>
           <td>{{g.observacion}}</td>
           <td>{{g.fecha}}</td>
           <td>{{g.hora}}</td>
@@ -387,10 +387,11 @@ export default {
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
       montocajachica:0,
+      montogeneral:0,
       columns:[
         {name:'id',label:'Id',field:'id'},
         {name:'precio',label:'Precio',field:'precio'},
-        {name:'glosa',label:'Glosa',field:'glosa'},
+        {name:'glosa',label:'Glosa',field:row=>row.glosa.nombre},
         {name:'observacion',label:'Observacion',field:'observacion'},
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'hora',label:'Hora',field:'hora'},
@@ -743,8 +744,15 @@ export default {
     this.listadog();
     this.misempleados();
     this.totalcaja();
+    this.totalgeneral();
   },
+
   methods:{
+                  totalgeneral(){
+      this.$axios.post(process.env.API + "/totalgeneral").then((res) => {
+          this.montogeneral=parseFloat( res.data.monto);
+      })
+      },
     regglosa(){
       if(this.glosa.id==undefined){
         this.$axios.post(process.env.API+'/glosa',{nombre:this.glosa.nombre,orden:this.glosa.orden==undefined?0:this.glosa.orden}).then(res=>{
@@ -820,11 +828,14 @@ export default {
       })
 
     },
-          totalcaja(){
+      totalcaja(){
       this.$axios.post(process.env.API + "/totalcaja").then((res) => {
           this.montocajachica=res.data.monto;
       })
       },
+
+
+
     listadog(){
       this.$axios.post(process.env.API+'/listglosa').then(res=>{
         this.gl=res.data
@@ -1411,7 +1422,7 @@ export default {
           this.gastos.push({
             id:r.id,
             observacion:r.observacion,
-            glosa:r.glosa.nombre,
+            glosa:r.glosa,
             precio:r.precio,
             fecha:r.fecha,
             hora:r.hora,
@@ -1894,6 +1905,18 @@ export default {
     agregar(){
      // console.log(this.glosa)
       if(this.glosa.id==undefined){
+        return false
+      }
+
+      this.totalgeneral()
+      console.log(this.montogeneral)
+      //return false
+      if(parseFloat(this.montogeneral) < parseFloat(this.empleado.precio)){
+          this.$q.notify({
+            message:'No se Tiene Fondos',
+            icon:'info',
+            color:'red'
+          })
         return false
       }
       this.$q.loading.show()

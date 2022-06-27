@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Prestamo;
 use App\Models\Inventario;
 use App\Models\Logprestamo;
+use App\Models\General;
+use App\Models\Loggeneral;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -67,6 +69,24 @@ class PrestamoController extends Controller
         $prestamo->cliente_id=$request->cliente_id;
         $prestamo->inventario_id=$request->inventario_id;
          $prestamo->save();
+
+         if($request->tipo=='VENTA'){
+            $general=General::find(1);
+            $general->monto=$general->monto +  $prestamo->efectivo;
+            $general->save();
+    
+            $loggeneral= new Loggeneral;
+            $loggeneral->numero=$prestamo->id;
+            $loggeneral->monto= $prestamo->efectivo;
+            $loggeneral->detalle='PRESTAMO/VENTA';
+            $loggeneral->motivo='VENTA INVENTARIO';
+            $loggeneral->tipo='INGRESO';
+            $loggeneral->fecha=$prestamo->fecha;
+            $loggeneral->hora=date("H:i:s");
+            $loggeneral->glosa_id=null;
+            $loggeneral->user_id= $prestamo->user_id;
+            $loggeneral->save();
+         }
          $inv=Inventario::find($request->inventario_id);
          $inv->cantidad=$inv->cantidad - $request->cantidad;
          $inv->save();
@@ -85,7 +105,25 @@ class PrestamoController extends Controller
     public function anularprestamo(Request $request){
         $prestamo=Prestamo::find($request->id);
         $prestamo->user_id=$request->user()->id;
-        $prestamo->estado='ANULADO';
+            $prestamo->fecha=date('Y-m-d');
+            $prestamo->estado='ANULADO';
+        if($prestamo->efectivo>0 && $prestamo->efectivo!=null){
+            $general=General::find(1);
+            $general->monto=$general->monto + $prestamo->efectivo;
+            $general->save();
+    
+            $loggeneral= new Loggeneral;
+            $loggeneral->numero=$prestamo->id;
+            $loggeneral->monto= $prestamo->efectivo;
+            $loggeneral->detalle='PRESTAMO/ANULADO';
+            $loggeneral->motivo='PRESTAMO INVENTARIO';
+            $loggeneral->tipo='INGRESO';
+            $loggeneral->fecha=$prestamo->fecha;
+            $loggeneral->hora=date("H:i:s");
+            $loggeneral->glosa_id=null;
+            $loggeneral->user_id= $request->user()->id;
+            $loggeneral->save();
+        }
         return $prestamo->save();
     }
 
@@ -213,6 +251,18 @@ public function reporteventa(Request $request){
     {
 //        return $prestamo;
         $prestamo=Prestamo::find($id);
+        if($prestamo->tipo=='VENTA'){
+            $general=General::find(1);
+            $general->monto=$general->monto -  $prestamo->efectivo;
+            $general->save();
+    
+            $loggeneral= Loggeneral::where('numero',$prestamo->id)
+            
+            ->where('detalle','PRESTAMO/VENTA')
+            ->where('motivo','VENTA INVENTARIO')
+            ->where('tipo','INGRESO')->get()[0];
+            $loggeneral->delete();
+         }
         $inventario=Inventario::find($prestamo->inventario_id);
         $inventario->cantidad=$inventario->cantidad + $prestamo->cantidad;
         $inventario->save();

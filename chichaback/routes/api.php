@@ -98,8 +98,12 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::resource('/material',\App\Http\Controllers\MaterialController::class);
     Route::resource('/recuento',\App\Http\Controllers\RecuentoController::class);
     Route::resource('/glosa',\App\Http\Controllers\GlosaController::class);
+    Route::resource('/general',\App\Http\Controllers\GeneralController::class);
+    Route::resource('/loggeneral',\App\Http\Controllers\LoggeneralController::class);
     Route::post('/listcaja',[\App\Http\Controllers\LogcajaController::class,'listcaja']);
+    Route::post('/listgeneral',[\App\Http\Controllers\LoggeneralController::class,'listgeneral']);
     Route::post('/totalcaja',[\App\Http\Controllers\LogcajaController::class,'totalcaja']);
+    Route::post('/totalgeneral',[\App\Http\Controllers\LoggeneralController::class,'totalgeneral']);
     Route::post('/repventa',[\App\Http\Controllers\ContableController::class,'repventa']);
     Route::post('/repventpago',[\App\Http\Controllers\ContableController::class,'repventpago']);
     Route::post('/repingprestamo',[\App\Http\Controllers\ContableController::class,'repingprestamo']);

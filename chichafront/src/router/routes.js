@@ -20,6 +20,7 @@ import Cxclocal from "pages/Cxclocal";
 import Cxcruta from "pages/Cxcruta";
 import Historialruta from "pages/Historialruta";
 import Caja from "pages/Caja";
+import Cajageneral from "pages/Cajageneral";
 import Planillas from "pages/Planillas";
 import Almacen from "pages/Almacen";
 import Contable from "pages/Contable";
@@ -57,6 +58,7 @@ const routes = [
       { path: 'cxcruta', component: Cxcruta,meta: {requiresAuth: true} },
       { path: 'historialruta', component: Historialruta,meta: {requiresAuth: true} },
       { path: 'caja', component: Caja,meta: {requiresAuth: true} },
+      { path: 'cajageneral', component: Cajageneral,meta: {requiresAuth: true} },
       { path: 'planillas', component: Planillas,meta: {requiresAuth: true} },
       { path: 'almacen', component: Almacen,meta: {requiresAuth: true} },
       { path: 'contable', component: Contable,meta: {requiresAuth: true} },

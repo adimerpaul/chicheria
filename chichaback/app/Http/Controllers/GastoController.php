@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Gasto;
 use App\Models\Caja;
 use App\Models\Logcaja;
+use App\Models\General;
+use App\Models\Loggeneral;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -57,6 +59,22 @@ class GastoController extends Controller
         $gasto->glosa_id=$request->glosa_id;
         $gasto->user_id=$request->user()->id;
         $gasto->save();
+
+        $general=General::find(1);
+        $general->monto=$general->monto - $request->precio;
+        $general->save();
+
+        $loggeneral= new Loggeneral;
+        $loggeneral->numero=$gasto->id;
+        $loggeneral->monto= $request->precio;
+        $loggeneral->detalle='GASTO';
+        $loggeneral->motivo=$request->observacion;
+        $loggeneral->tipo='EGRESO';
+        $loggeneral->fecha=$gasto->fecha;
+        $loggeneral->hora=date("H:i:s");
+        $loggeneral->glosa_id=$request->glosa_id;
+        $loggeneral->user_id=$request->user()->id;
+        $loggeneral->save();
     }
 
     public function gastocaja(Request $request)
@@ -116,7 +134,27 @@ class GastoController extends Controller
      */
     public function update(Request $request, Gasto $gasto)
     {
-        $gasto->update($request->all());
+        //$gasto->update($request->all());
+        $gasto=Gasto::find($request->id);
+        $gasto->precio=$request->precio;
+        $aux=$gasto->precio;
+        $gasto->observacion=$request->observacion;
+        $gasto->glosa=$request->glosa;
+        $gasto->fecha=$request->fecha;
+        $gasto->glosa_id=$request->glosa_id;
+        $gasto->save();
+
+        $general=General::find(1);
+        $general->monto=$general->monto - $request->precio + $aux;
+        $general->save();
+
+        $loggeneral= Loggeneral::where('numero',$gasto->id)->where('detalle','GASTO')->where('tipo','EGRESO')->get()[0];
+        $loggeneral->monto= $request->precio;
+        $loggeneral->motivo=$request->observacion;
+        $loggeneral->fecha=$gasto->fecha;
+        $loggeneral->hora=date("H:i:s");
+        $loggeneral->glosa_id=$request->glosa_id;
+        $loggeneral->save();
     }
 
     /**
@@ -125,8 +163,15 @@ class GastoController extends Controller
      * @param  \App\Models\Gasto  $gasto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Gasto $gasto)
+    public function destroy($id)
     {
+        $gasto=Gasto::find($id);
+        $general=General::find(1);
+        $general->monto=$general->monto + $gasto->precio ;
+        $general->save();
+
+        $loggeneral= Loggeneral::where('numero',$gasto->id)->where('detalle','GASTO')->where('tipo','EGRESO')->get()[0];
+        $loggeneral->delete();
         $gasto->delete();
     }
 

@@ -429,13 +429,21 @@ export default {
 ],
 
   rows:[],
+  montogeneral:0,
+  totalcompra:0,
 
   }},
   created() {
       this.misproveedores()
       this.mismateriales()
+      this.totalgeneral()
   },
   methods: {
+                      totalgeneral(){
+      this.$axios.post(process.env.API + "/totalgeneral").then((res) => {
+          this.montogeneral=parseFloat( res.data.monto);
+      })
+      },
     updatecompra(){
       this.$axios.put(process.env.API+'/compra/'+this.compra2.id,this.compra2).then(res=>{
                 this.mismateriales()
@@ -610,6 +618,20 @@ export default {
           message: 'Debe registrar '
         });
         return false}
+      this.totalgeneral();
+      this.totalcompra=0
+            this.compras.forEach(r => {
+          this.totalcompra+=r.subtotal
+      });
+      if(parseFloat(this.montogeneral) < parseFloat(this.totalcompra)){
+           this.$q.notify({
+          color: 'red-4',
+          textColor: 'white',
+          icon: 'info',
+          message: 'No puede exeder monto'
+        });
+        return false
+      }
       this.$axios.post(process.env.API+'/compra',{provider_id:this.proveedor.id,user_id:this.$store.getters["login/user"].id,compras:this.compras}).then(res=>{
         //console.log(res.data)
         this.dialog_add=false

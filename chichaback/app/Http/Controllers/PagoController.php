@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Pago;
 use App\Models\Venta;
+use App\Models\General;
+use App\Models\Loggeneral;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -45,8 +47,26 @@ class PagoController extends Controller
         $pago->monto=$request->monto;
         $pago->observacion=$request->observacion;
         $pago->save();
+
         $venta=Venta::find($request->venta_id);
         $venta->saldo=$venta->saldo - $request->monto;
+
+        $general=General::find(1);
+        $general->monto=$general->monto +  $request->monto;
+        $general->save();
+
+        $loggeneral= new Loggeneral;
+        $loggeneral->numero=$request->venta_id;
+        $loggeneral->monto= $request->monto;
+        $loggeneral->detalle='CXC '+$venta->tipo;
+        $loggeneral->motivo='PAGO CXC';
+        $loggeneral->tipo='INGRESO';
+        $loggeneral->fecha=date('Y-m-d');
+        $loggeneral->hora=date("H:i:s");
+        $loggeneral->glosa_id=null;
+        $loggeneral->user_id=$request->user()->id;
+        $loggeneral->save();
+
         if($venta->saldo==0)
         $venta->estado='CANCELADO';
         return $venta->save();

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLogcajasTable extends Migration
+class CreateLoggeneralsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,19 @@ class CreateLogcajasTable extends Migration
      */
     public function up()
     {
-        Schema::create('logcajas', function (Blueprint $table) {
+        Schema::create('loggenerals', function (Blueprint $table) {
             $table->id();
+            $table->integer('numero')->default(0);
             $table->double('monto')->default(0);
+            $table->string('detalle')->nullable();
             $table->string('motivo')->nullable();
             $table->string('tipo')->default('AGREGA');
             $table->date('fecha');
             $table->time('hora');
             $table->unsignedBigInteger('glosa_id')->nullable();
-            $table->foreign('glosa_id')->references('id')->on('glosas');
+            $table->foreign('glosa_id')->references('id')->on('glosas');  
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');  
             $table->timestamps();
         });
     }
@@ -35,6 +37,6 @@ class CreateLogcajasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logcajas');
+        Schema::dropIfExists('loggenerals');
     }
 }

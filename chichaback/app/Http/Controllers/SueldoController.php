@@ -8,6 +8,8 @@ use App\Models\Gasto;
 use App\Models\Glosa;
 use App\Models\Caja;
 use App\Models\Logcaja;
+use App\Models\General;
+use App\Models\Loggeneral;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Else_;
 
@@ -82,7 +84,27 @@ class SueldoController extends Controller
             $gasto->fecha=date('Y-m-d');
             $gasto->hora=date('H:i:s');
             $gasto->user_id=$request->user()->id;
-            $gasto->save();}
+            $gasto->save();
+
+            $general=General::find(1);
+            $general->monto=$general->monto - $request->monto;
+            $general->save();
+    
+            $loggeneral= new Loggeneral;
+            $loggeneral->numero=$gasto->id;
+            $loggeneral->monto= $request->monto;
+            $loggeneral->detalle='GASTO';
+            $loggeneral->motivo=$request->observacion;
+            $loggeneral->tipo='EGRESO';
+            $loggeneral->fecha=$gasto->fecha;
+            $loggeneral->hora=date("H:i:s");
+            $loggeneral->glosa_id=$request->glosa_id;
+            $loggeneral->user_id=$request->user()->id;
+            $loggeneral->save();
+        
+        }
+
+
         }
 
 //        return $sueldo;

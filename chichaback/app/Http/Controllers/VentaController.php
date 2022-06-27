@@ -7,6 +7,8 @@ use App\Models\Venta;
 use App\Models\Producto;
 use App\Models\Garantia;
 use App\Models\Pago;
+use App\Models\General;
+use App\Models\Loggeneral;
 use App\Models\Detalleprestamo;
 use Illuminate\Http\Request;
 
@@ -84,6 +86,7 @@ class VentaController extends Controller
         $venta->user_id=$request->user()->id;
         $venta->cliente_id=$request->cliente_id;
         $venta->save();
+
 //        return $venta;
         foreach ($request->detalles as $detalle){
 //            var_dump($detalle);
@@ -99,6 +102,22 @@ class VentaController extends Controller
             $d->save();
 //            echo $detalle;
         }
+        $general=General::find(1);
+        $general->monto=$general->monto + $venta->acuenta;
+        $general->save();
+
+        $loggeneral= new Loggeneral;
+        $loggeneral->numero=$venta->id;
+        $loggeneral->monto=$venta->acuenta;
+        $loggeneral->detalle=$venta->tipo;
+        $loggeneral->motivo='VENTA PRODUCTOS';
+        $loggeneral->tipo='INGRESO';
+        $loggeneral->fecha=$venta->fecha;
+        $loggeneral->hora=date("H:i:s");
+        $loggeneral->glosa_id=null;
+        $loggeneral->user_id= $venta->user_id;
+        $loggeneral->save();
+
         return $this->impresiondetalle($venta->id);
 
     }
@@ -132,6 +151,22 @@ class VentaController extends Controller
             $prod->cantidad-=$d->cantidad;
             $prod->save();
         }
+        $general=General::find(1);
+        $general->monto=$general->monto + $venta->acuenta;
+        $general->save();
+
+        $loggeneral= new Loggeneral;
+        $loggeneral->numero=$venta->id;
+        $loggeneral->monto=$venta->acuenta;
+        $loggeneral->detalle=$venta->tipo;
+        $loggeneral->motivo='VENTA PRODUCTOS';
+        $loggeneral->tipo='INGRESO';
+        $loggeneral->fecha=$venta->fecha;
+        $loggeneral->hora=date("H:i:s");
+        $loggeneral->glosa_id=null;
+        $loggeneral->user_id= $venta->user_id;
+        $loggeneral->save();
+
         foreach ($request->garantias as $garantia){
 
             $g=new Garantia();
@@ -377,6 +412,13 @@ class VentaController extends Controller
 
     public function anular(Request $request,$id){
         $venta=Venta::find($id);
+        $general=General::find(1);
+        $general->monto=$general->monto - $venta->acuenta;
+        $general->save();
+
+        $loggeneral=Loggeneral::where('motivo','VENTA PRODUCTOS')->where('numero',$venta->id)->where('tipo','INGRESO')->get()[0];
+        $loggeneral->delete();
+
         $venta->estado='ANULADO';
         $venta->total=0;
         $venta->acuenta=0;

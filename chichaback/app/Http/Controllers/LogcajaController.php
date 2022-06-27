@@ -118,7 +118,7 @@ class LogcajaController extends Controller
     {
         //
 
-        if($logcaja->tipo=='GASTO' || $logcaja->tipo=='RETIRO'){
+        if($logcaja->tipo=='GASTO' || $logcaja->tipo=='RETIRA'){
             $caja=Caja::find(1);
             $caja->monto=floatval($caja->monto) + floatval($logcaja->monto);
             $caja->save();

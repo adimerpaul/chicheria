@@ -453,6 +453,27 @@
         </q-item>
 
         <q-item
+          v-if="$store.state.login.cajachica"
+          active-class="my-menu-link"
+          clickable
+          exact
+          to="cajageneral"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="point_of_sale" size="lg" />
+          </q-item-section>
+
+           <q-item-section>
+            <q-item-label>Caja General</q-item-label>
+            <q-item-label caption>
+              Efectivo de Caja
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
           v-if="$store.state.login.gastos"
           active-class="my-menu-link"
           clickable
