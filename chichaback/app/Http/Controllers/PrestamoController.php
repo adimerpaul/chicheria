@@ -251,13 +251,12 @@ public function reporteventa(Request $request){
     {
 //        return $prestamo;
         $prestamo=Prestamo::find($id);
-        if($prestamo->tipo=='VENTA'){
+        if($prestamo->estado=='VENTA'){
             $general=General::find(1);
             $general->monto=$general->monto -  $prestamo->efectivo;
             $general->save();
 
             $loggeneral= Loggeneral::where('numero',$prestamo->id)
-
             ->where('detalle','PRESTAMO/VENTA')
             ->where('motivo','VENTA INVENTARIO')
             ->where('tipo','INGRESO')->first();

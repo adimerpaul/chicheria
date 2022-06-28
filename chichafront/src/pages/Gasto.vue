@@ -778,7 +778,7 @@ export default {
           message: 'Modificado correctamente'
         });
       })}
-      
+
     },
           filterFn (val, update) {
         if (val === '') {
@@ -1407,7 +1407,7 @@ export default {
         //return false
                  res.data.forEach(r => {
             if(r.tipo=='GASTO')
-              
+
               this.chica.push(r)
          });
       })
@@ -1422,7 +1422,7 @@ export default {
           this.gastos.push({
             id:r.id,
             observacion:r.observacion,
-            glosa:r.glosa,
+            glosa:r.glosa.nombre,
             precio:r.precio,
             fecha:r.fecha,
             hora:r.hora,
