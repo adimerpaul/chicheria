@@ -110,19 +110,18 @@ class LoggeneralController extends Controller
      * @param  \App\Models\Loggeneral  $loggeneral
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Loggeneral $loggeneral)
+    public function destroy($id)
     {
         //
         $caja=General::find(1);
+        $loggeneral=Loggeneral::find($id);
 
         if($loggeneral->tipo=='EGRESO' || $loggeneral->tipo=='RETIRAR'){
-            $caja=General::find(1);
             $caja->monto=floatval($caja->monto) + floatval($loggeneral->monto);
             $caja->save();
 
         }
         if($loggeneral->tipo=='AGREGAR' || $loggeneral->tipo=='INGRESO'){
-            $caja=General::find(1);
             $caja->monto=floatval($caja->monto) - floatval($loggeneral->monto);
             $caja->save();
 
