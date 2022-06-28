@@ -32,13 +32,13 @@ class LoggeneralController extends Controller
     public function listgeneral(Request $request){
         //return $request;
         return Loggeneral::with('glosa')->with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
-       
+
     }
 
     public function totalgeneral(){
         return DB::SELECT('SELECT * from generals where id=1')[0];
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -63,10 +63,10 @@ class LoggeneralController extends Controller
 
         if($request->tipo=='RETIRAR')
             $caja->monto=floatval($caja->monto) - floatval($request->monto);
-            
+
         else
             $caja->monto=floatval($caja->monto) + floatval($request->monto);
-        
+
             $caja->save();
     }
 
@@ -113,17 +113,19 @@ class LoggeneralController extends Controller
     public function destroy(Loggeneral $loggeneral)
     {
         //
+        $caja=General::find(1);
+
         if($loggeneral->tipo=='EGRESO' || $loggeneral->tipo=='RETIRAR'){
             $caja=General::find(1);
             $caja->monto=floatval($caja->monto) + floatval($loggeneral->monto);
             $caja->save();
-        
+
         }
         if($loggeneral->tipo=='AGREGAR' || $loggeneral->tipo=='INGRESO'){
             $caja=General::find(1);
             $caja->monto=floatval($caja->monto) - floatval($loggeneral->monto);
             $caja->save();
-        
+
         }
         $loggeneral->delete();
     }

@@ -74,7 +74,7 @@ class PrestamoController extends Controller
             $general=General::find(1);
             $general->monto=$general->monto +  $prestamo->efectivo;
             $general->save();
-    
+
             $loggeneral= new Loggeneral;
             $loggeneral->numero=$prestamo->id;
             $loggeneral->monto= $prestamo->efectivo;
@@ -111,7 +111,7 @@ class PrestamoController extends Controller
             $general=General::find(1);
             $general->monto=$general->monto + $prestamo->efectivo;
             $general->save();
-    
+
             $loggeneral= new Loggeneral;
             $loggeneral->numero=$prestamo->id;
             $loggeneral->monto= $prestamo->efectivo;
@@ -255,12 +255,12 @@ public function reporteventa(Request $request){
             $general=General::find(1);
             $general->monto=$general->monto -  $prestamo->efectivo;
             $general->save();
-    
+
             $loggeneral= Loggeneral::where('numero',$prestamo->id)
-            
+
             ->where('detalle','PRESTAMO/VENTA')
             ->where('motivo','VENTA INVENTARIO')
-            ->where('tipo','INGRESO')->get()[0];
+            ->where('tipo','INGRESO')->get();
             $loggeneral->delete();
          }
         $inventario=Inventario::find($prestamo->inventario_id);
