@@ -714,11 +714,28 @@ export default {
     },
 
     creategenplanilla(){
+            if(this.checkgasto=='GASTO'  && this.planilla.total > this.montogeneral){
+                      this.$q.notify({
+                message:'El monto excede en General ',
+                icon:'info',
+                color:'red'
+              })
+        return false
+      }
+
+     if(this.checkgasto=='CAJA' && this.planilla.total > this.montocajachica){
+                      this.$q.notify({
+                message:'El monto excede en Caja Chica ',
+                icon:'info',
+                color:'red'
+              })
+        return false
+      }
           this.$q.loading.show()
           //console.log(this.planilla)
           //return false
           this.planilla.tpago=this.checkgasto
-      this.$axios.post(process.env.API+'/planilla',this.planilla).then(res=>{
+       this.$axios.post(process.env.API+'/planilla',this.planilla).then(res=>{
         // console.log(res.data)
         this.$q.loading.hide()
         this.$q.notify({
