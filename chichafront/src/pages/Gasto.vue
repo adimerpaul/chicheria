@@ -229,7 +229,7 @@
                   <q-select outlined label="Empleado" v-model="pago.empleado" :options="empleados"/>
                 </div>
                 <div class="col-3">
-                  <q-input outlined label="Monto" type="number" v-model="pago.monto" required/>
+                  <q-input outlined label="Monto" type="number" step="0.01" v-model="pago.monto" required/>
                 </div>
                 <div class="col-3">
                   <q-select outlined label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA']"/>
