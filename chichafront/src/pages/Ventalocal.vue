@@ -488,7 +488,7 @@ export default {
           type:'text',
         }
       }).onOk((data) => {
-      this.$axios.post(process.env.API+'/anular/'+venta.id,{observacion:data})
+      this.$axios.post(process.env.API+'/anular',{id:venta.id,observacion:data})
         .then(res=>{
         this.misventas();
 

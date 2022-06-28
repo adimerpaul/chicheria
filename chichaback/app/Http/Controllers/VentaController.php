@@ -410,8 +410,8 @@ class VentaController extends Controller
               return $cadena;
     }
 
-    public function anular(Request $request,$id){
-        $venta=Venta::find($id);
+    public function anular(Request $request){
+        $venta=Venta::find($request->id);
         $general=General::find(1);
         $general->monto=$general->monto - $venta->acuenta;
         $general->save();
