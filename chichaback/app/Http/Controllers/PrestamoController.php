@@ -260,7 +260,7 @@ public function reporteventa(Request $request){
 
             ->where('detalle','PRESTAMO/VENTA')
             ->where('motivo','VENTA INVENTARIO')
-            ->where('tipo','INGRESO')->get();
+            ->where('tipo','INGRESO')->first();
             $loggeneral->delete();
          }
         $inventario=Inventario::find($prestamo->inventario_id);

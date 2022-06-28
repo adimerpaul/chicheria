@@ -18,7 +18,7 @@ class CompraController extends Controller
     public function index()
     {
         //
-        
+
     }
 
     /**
@@ -39,14 +39,14 @@ class CompraController extends Controller
      */
     public function store(Request $request)
     {
-        //        return $request; 
+        //        return $request;
         foreach ($request->compras as $r) {
             $material=Material::find($r['material_id']);
             $material->stock=$material->stock + $r['cantidad'];
             $material->save();
 
 
-        
+
         $compra=new Compra;
         $compra->fecha=date('Y-m-d');
         $compra->hora=date('H:i:s');
@@ -141,7 +141,7 @@ class CompraController extends Controller
         $compra->save();
 
 
-        
+
     }
 
     /**
@@ -157,7 +157,7 @@ class CompraController extends Controller
         $general->monto=$general->monto +  $compra->subtotal ;
         $general->save();
 
-        $loggeneral= Loggeneral::where('numero',$compra->id)->where('detalle','COMPRA ALMACEN')->where('tipo','EGRESO')->get()[0];
+        $loggeneral= Loggeneral::where('numero',$compra->id)->where('detalle','COMPRA ALMACEN')->where('tipo','EGRESO')->first();
         $loggeneral->delete();
 
         $material=Material::find($compra->material_id);

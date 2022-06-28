@@ -170,7 +170,7 @@ class GastoController extends Controller
         $general->monto=$general->monto + $gasto->precio ;
         $general->save();
 
-        $loggeneral= Loggeneral::where('numero',$gasto->id)->where('detalle','GASTO')->where('tipo','EGRESO')->get()[0];
+        $loggeneral= Loggeneral::where('numero',$gasto->id)->where('detalle','GASTO')->where('tipo','EGRESO')->first();
         $loggeneral->delete();
         $gasto->delete();
     }

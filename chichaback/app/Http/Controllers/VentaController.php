@@ -416,7 +416,7 @@ class VentaController extends Controller
         $general->monto=$general->monto - $venta->acuenta;
         $general->save();
 
-        $loggeneral=Loggeneral::where('motivo','VENTA PRODUCTOS')->where('numero',$venta->id)->where('tipo','INGRESO')->get();
+        $loggeneral=Loggeneral::where('motivo','VENTA PRODUCTOS')->where('numero',$venta->id)->where('tipo','INGRESO')->first();
         $loggeneral->delete();
 
         $venta->estado='ANULADO';
