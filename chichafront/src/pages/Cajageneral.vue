@@ -65,10 +65,10 @@
       </q-card>
     </q-dialog>
 
-    <q-table :filter="filter" title="Caja General" 
-      :rows="data" 
-      :columns="columns" 
-      row-key="name" 
+    <q-table :filter="filter" title="Caja General"
+      :rows="data"
+      :columns="columns"
+      row-key="name"
       :rows-per-page-options="[50,100]">
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -95,6 +95,7 @@
               color="red"
               @click="deleteRow(props.row)"
               icon="delete"
+              v-if="props.row.tipo=='AGREGAR' || props.row.tipo=='RETIRAR'"
             ></q-btn>
           </q-td>
 
@@ -138,7 +139,7 @@ export default {
 
     this.misdatos();
     this.totalcaja();
-  
+
   },
   methods: {
       deleteRow(logcaja){
