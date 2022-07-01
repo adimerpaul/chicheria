@@ -111,7 +111,7 @@
         <tr v-for="g in gastos" :key="g.i">
           <td>{{g.id}}</td>
           <td>{{g.precio}}</td>
-          <td>{{g.glosa.nombre}}</td>
+          <td>{{g.glosa}}</td>
           <td>{{g.observacion}}</td>
           <td>{{g.fecha}}</td>
           <td>{{g.hora}}</td>
