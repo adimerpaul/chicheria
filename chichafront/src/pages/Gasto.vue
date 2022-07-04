@@ -1418,6 +1418,7 @@ xlsx(datacaja, settings) // Will download the excel file
         this.misempleados()
         this.misgastos()
           this.totalcaja()
+          this.totalgeneral()
 
         this.pagos=false
         this.checkgasto='CAJA'
@@ -1480,6 +1481,7 @@ xlsx(datacaja, settings) // Will download the excel file
           // this.empleados=res.data
           this.misgastos()
           this.listadog()
+          this.totalgeneral()
 
           this.empleado.precio=0
           this.empleado.observacion=''

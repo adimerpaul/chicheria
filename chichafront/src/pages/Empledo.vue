@@ -209,11 +209,7 @@
                 <div class="col-4">
                   <q-input outlined dense type="text" label="observacion" v-model="pago.observacion" />
                 </div>
-                <div class="col-3" >
-                  <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
-                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
 
-                </div>
                 <div class="col-2 flex flex-center">
                   <q-btn  class="full-with" label="Agregar" type="submit" icon="send" color="info"/>
                 </div>
@@ -246,11 +242,7 @@
       <q-card>
         <q-card-section class="text-center text-bold q-pa-none q-ma-none">Datos {{emp.nombre}}</q-card-section>
         <q-card-section>
-                        <div class="col-3" >
-                  <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
-                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
 
-                </div>
           <q-form @submit.prevent="creategenplanilla">
             <div class="row">
               <div class="col-12"><q-input dense outlined label="fechainicio" v-model="planilla.fechainicio" disable /></div>
@@ -300,6 +292,7 @@ import {date} from 'quasar'
 import {jsPDF} from "jspdf";
 import moment from 'moment'
 import planillas from "pages/Planillas";
+import { Console } from "console";
 const conversor = require('conversor-numero-a-letras-es-ar');
 export default {
   name: "Venta",
@@ -308,7 +301,7 @@ export default {
       dialoggenplanilla:false,
       dialogver:false,
       pagos:false,
-      checkgasto:"CAJA",
+      checkgasto:"GASTO",
       pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       empleados:[],
       emp:{},
@@ -615,6 +608,7 @@ export default {
     } );
     this.missalarios()
     this.misempleados()
+    this.totalgeneral()
     // console.log(this.$store.state.login)
     // this.$axios.get(process.env.API+'/cliente').then(res=>{
     //   this.clientes=res.data
@@ -746,6 +740,7 @@ export default {
         this.imprimirplanilla(this.planilla )
         this.dialoggenplanilla=false
           this.misempleados()
+          this.totalgeneral()
       })
     },
 
@@ -1225,6 +1220,8 @@ export default {
       },
                         totalgeneral(){
       this.$axios.post(process.env.API + "/totalgeneral").then((res) => {
+        console.log(res.data.monto)
+         
           this.montogeneral=parseFloat( res.data.monto);
       })
       },
@@ -1243,6 +1240,7 @@ export default {
         }
       }
       if(this.checkgasto=='GASTO' && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='EXTRA') && this.pago.monto > this.montogeneral){
+        //console.log(this.montogeneral)
                       this.$q.notify({
                 message:'El monto excede en General ',
                 icon:'info',
@@ -1270,6 +1268,7 @@ export default {
       this.$axios.post(process.env.API+'/sueldo',this.pago).then(res=>{
         this.empleadohistorial=res.data
         this.pago={fecha:date.formatDate( Date.now(),'YYYY-MM-DD')}
+        this.totalgeneral()
       })
     },
     misempleados(){
