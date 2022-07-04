@@ -150,6 +150,37 @@
         </tr>
         </tfoot>
       </table>
+      <q-table title="Gastos Caja Chica" :rows="chica" :columns="columns4" row-key="name" >
+            <template v-slot:top-right>
+             <q-btn color="deep-purple-6" label="Exportar Excel"  @click="exportTable"/>
+            
+      </template>
+    </q-table>
+
+<!--            <table id="example" style="width:100%" class="cell-border">
+        <thead>
+        <tr>
+          <th>id</th>
+          <th>Monto</th>
+          <th>glosa</th>
+          <th>Motivo</th>
+          <th>fecha</th>
+          <th>hora</th>
+          <th>user</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="c in chica" :key="c.id">
+          <td>{{c.id}}</td>
+          <td>{{c.monto}}</td>
+          <td>{{c.glosa==null?'GASTO':c.glosa.nombre}}</td>
+          <td>{{c.motivo}}</td>
+          <td>{{c.fecha}}</td>
+          <td>{{c.hora}}</td>
+          <td>{{c.user.name}}</td>
+        </tr>
+        </tbody>
+      </table>-->
 <!--      <div class="row">-->
 <!--        <div class="col-12">-->
 <!--&lt;!&ndash;          <div class="text-subtitle1 bg-accent text-center text-white">Historial de pagos</div>&ndash;&gt;-->
@@ -354,6 +385,7 @@
 import {date} from 'quasar'
 import {jsPDF} from "jspdf";
 import $ from "jquery";
+import xlsx from "json-as-xlsx"
 export default {
   name: "Venta",
   data(){
@@ -381,7 +413,9 @@ export default {
       gl:[],
       filterglosa:[],
       pageTotal:'',
+      pageTotal2:'',
       tot:'',
+      tot2:'',
       resumenplanilla:0,
       empleado:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -414,310 +448,20 @@ export default {
         // {name:'detalle',label:'detalle',field:'detalle'},
         {name:'descuento',label:'Descuento',field:'descuento'},
       ],
+      columns4:[
+        {name:'id',label:'Id',field:'id'},
+        {name:'monto',label:'Monto',field:'monto'},
+        {name:'glosa',label:'Glosa',field:'glosa'},
+        {name:'motivo',label:'Motivo',field:'motivo'},
+        {name:'fecha',label:'Fecha',field:'fecha'},
+        {name:'hora',label:'Hora',field:'hora'},
+        {name:'user',label:'Usuario',field:'user'},
+      ],
+      encabezado:{"id":'id',"Monto":'monto',"Glosa":'glosa',"Motivo":'glosa',"Fecha":"fecha","Hora":"hora","Usuario":'user'}
     }
   },
   mounted() {
-    $('#example').DataTable( {
-      "language":{
-        "processing": "Procesando...",
-        "lengthMenu": "Mostrar _MENU_ registros",
-        "zeroRecords": "No se encontraron resultados",
-        "emptyTable": "Ningún dato disponible en esta tabla",
-        "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-        "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-        "search": "Buscar:",
-        "infoThousands": ",",
-        "loadingRecords": "Cargando...",
-        "paginate": {
-          "first": "Primero",
-          "last": "Último",
-          "next": "Siguiente",
-          "previous": "Anterior"
-        },
-        "aria": {
-          "sortAscending": ": Activar para ordenar la columna de manera ascendente",
-          "sortDescending": ": Activar para ordenar la columna de manera descendente"
-        },
-        "buttons": {
-          "copy": "Copiar",
-          "colvis": "Visibilidad",
-          "collection": "Colección",
-          "colvisRestore": "Restaurar visibilidad",
-          "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
-          "copySuccess": {
-            "1": "Copiada 1 fila al portapapeles",
-            "_": "Copiadas %ds fila al portapapeles"
-          },
-          "copyTitle": "Copiar al portapapeles",
-          "csv": "CSV",
-          "excel": "Excel",
-          "pageLength": {
-            "-1": "Mostrar todas las filas",
-            "_": "Mostrar %d filas"
-          },
-          "pdf": "PDF",
-          "print": "Imprimir",
-          "renameState": "Cambiar nombre",
-          "updateState": "Actualizar",
-          "createState": "Crear Estado",
-          "removeAllStates": "Remover Estados",
-          "removeState": "Remover",
-          "savedStates": "Estados Guardados",
-          "stateRestore": "Estado %d"
-        },
-        "autoFill": {
-          "cancel": "Cancelar",
-          "fill": "Rellene todas las celdas con <i>%d<\/i>",
-          "fillHorizontal": "Rellenar celdas horizontalmente",
-          "fillVertical": "Rellenar celdas verticalmentemente"
-        },
-        "decimal": ",",
-        "searchBuilder": {
-          "add": "Añadir condición",
-          "button": {
-            "0": "Constructor de búsqueda",
-            "_": "Constructor de búsqueda (%d)"
-          },
-          "clearAll": "Borrar todo",
-          "condition": "Condición",
-          "conditions": {
-            "date": {
-              "after": "Despues",
-              "before": "Antes",
-              "between": "Entre",
-              "empty": "Vacío",
-              "equals": "Igual a",
-              "notBetween": "No entre",
-              "notEmpty": "No Vacio",
-              "not": "Diferente de"
-            },
-            "number": {
-              "between": "Entre",
-              "empty": "Vacio",
-              "equals": "Igual a",
-              "gt": "Mayor a",
-              "gte": "Mayor o igual a",
-              "lt": "Menor que",
-              "lte": "Menor o igual que",
-              "notBetween": "No entre",
-              "notEmpty": "No vacío",
-              "not": "Diferente de"
-            },
-            "string": {
-              "contains": "Contiene",
-              "empty": "Vacío",
-              "endsWith": "Termina en",
-              "equals": "Igual a",
-              "notEmpty": "No Vacio",
-              "startsWith": "Empieza con",
-              "not": "Diferente de",
-              "notContains": "No Contiene",
-              "notStarts": "No empieza con",
-              "notEnds": "No termina con"
-            },
-            "array": {
-              "not": "Diferente de",
-              "equals": "Igual",
-              "empty": "Vacío",
-              "contains": "Contiene",
-              "notEmpty": "No Vacío",
-              "without": "Sin"
-            }
-          },
-          "data": "Data",
-          "deleteTitle": "Eliminar regla de filtrado",
-          "leftTitle": "Criterios anulados",
-          "logicAnd": "Y",
-          "logicOr": "O",
-          "rightTitle": "Criterios de sangría",
-          "title": {
-            "0": "Constructor de búsqueda",
-            "_": "Constructor de búsqueda (%d)"
-          },
-          "value": "Valor"
-        },
-        "searchPanes": {
-          "clearMessage": "Borrar todo",
-          "collapse": {
-            "0": "Paneles de búsqueda",
-            "_": "Paneles de búsqueda (%d)"
-          },
-          "count": "{total}",
-          "countFiltered": "{shown} ({total})",
-          "emptyPanes": "Sin paneles de búsqueda",
-          "loadMessage": "Cargando paneles de búsqueda",
-          "title": "Filtros Activos - %d",
-          "showMessage": "Mostrar Todo",
-          "collapseMessage": "Colapsar Todo"
-        },
-        "select": {
-          "cells": {
-            "1": "1 celda seleccionada",
-            "_": "%d celdas seleccionadas"
-          },
-          "columns": {
-            "1": "1 columna seleccionada",
-            "_": "%d columnas seleccionadas"
-          },
-          "rows": {
-            "1": "1 fila seleccionada",
-            "_": "%d filas seleccionadas"
-          }
-        },
-        "thousands": ".",
-        "datetime": {
-          "previous": "Anterior",
-          "next": "Proximo",
-          "hours": "Horas",
-          "minutes": "Minutos",
-          "seconds": "Segundos",
-          "unknown": "-",
-          "amPm": [
-            "AM",
-            "PM"
-          ],
-          "months": {
-            "0": "Enero",
-            "1": "Febrero",
-            "10": "Noviembre",
-            "11": "Diciembre",
-            "2": "Marzo",
-            "3": "Abril",
-            "4": "Mayo",
-            "5": "Junio",
-            "6": "Julio",
-            "7": "Agosto",
-            "8": "Septiembre",
-            "9": "Octubre"
-          },
-          "weekdays": [
-            "Dom",
-            "Lun",
-            "Mar",
-            "Mie",
-            "Jue",
-            "Vie",
-            "Sab"
-          ]
-        },
-        "editor": {
-          "close": "Cerrar",
-          "create": {
-            "button": "Nuevo",
-            "title": "Crear Nuevo Registro",
-            "submit": "Crear"
-          },
-          "edit": {
-            "button": "Editar",
-            "title": "Editar Registro",
-            "submit": "Actualizar"
-          },
-          "remove": {
-            "button": "Eliminar",
-            "title": "Eliminar Registro",
-            "submit": "Eliminar",
-            "confirm": {
-              "_": "¿Está seguro que desea eliminar %d filas?",
-              "1": "¿Está seguro que desea eliminar 1 fila?"
-            }
-          },
-          "error": {
-            "system": "Ha ocurrido un error en el sistema (<a target=\"\\\" rel=\"\\ nofollow\" href=\"\\\">Más información&lt;\\\/a&gt;).<\/a>"
-          },
-          "multi": {
-            "title": "Múltiples Valores",
-            "info": "Los elementos seleccionados contienen diferentes valores para este registro. Para editar y establecer todos los elementos de este registro con el mismo valor, hacer click o tap aquí, de lo contrario conservarán sus valores individuales.",
-            "restore": "Deshacer Cambios",
-            "noMulti": "Este registro puede ser editado individualmente, pero no como parte de un grupo."
-          }
-        },
-        "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-        "stateRestore": {
-          "creationModal": {
-            "button": "Crear",
-            "name": "Nombre:",
-            "order": "Clasificación",
-            "paging": "Paginación",
-            "search": "Busqueda",
-            "select": "Seleccionar",
-            "columns": {
-              "search": "Búsqueda de Columna",
-              "visible": "Visibilidad de Columna"
-            },
-            "title": "Crear Nuevo Estado",
-            "toggleLabel": "Incluir:"
-          },
-          "emptyError": "El nombre no puede estar vacio",
-          "removeConfirm": "¿Seguro que quiere eliminar este %s?",
-          "removeError": "Error al eliminar el registro",
-          "removeJoiner": "y",
-          "removeSubmit": "Eliminar",
-          "renameButton": "Cambiar Nombre",
-          "renameLabel": "Nuevo nombre para %s",
-          "duplicateError": "Ya existe un Estado con este nombre.",
-          "emptyStates": "No hay Estados guardados",
-          "removeTitle": "Remover Estado",
-          "renameTitle": "Cambiar Nombre Estado"
-        }
-      },
-      dom: 'Blfrtip',
-      // pageLength: 5,
-      lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "All"]],
-      // buttons: [
-      //   'copy', 'csv', 'excel', 'pdf', 'print'
-      // ],
-      "footerCallback": function ( row, data, start, end, display ) {
-        var api = this.api(), data;
-
-        // Remove the formatting to get integer data for summation
-        var intVal = function ( i ) {
-          return typeof i === 'string' ?
-            i.replace(/[\$,]/g, '')*1 :
-            typeof i === 'number' ?
-              i : 0;
-        };
-
-        // Total over all pages
-        this.tot = api
-          .column( 1 )
-          .data()
-          .reduce( function (a, b) {
-            return intVal(a) + intVal(b);
-          }, 0 );
-        // console.log(this.tot)
-        // Total over this page
-        this.pageTotal = api
-          .column( 1, { page: 'current'} )
-          .data()
-          .reduce( function (a, b) {
-            return intVal(a) + intVal(b);
-          }, 0 );
-        // this.ttotal= api
-        //   .column( 3, { page: 'current'} )
-        //   .data()
-        //   .reduce( function (a, b) {
-        //     return intVal(a) + intVal(b);
-        //   }, 0 );
-        // this.tcuenta= api
-        //   .column(4 , { page: 'current'} )
-        //   .data()
-        //   .reduce( function (a, b) {
-        //     return intVal(a) + intVal(b);
-        //   }, 0 );
-        // this.tsaldo= api
-        //   .column(5 , { page: 'current'} )
-        //   .data()
-        //   .reduce( function (a, b) {
-        //     return intVal(a) + intVal(b);
-        //   }, 0 );
-
-        // Update footer
-        $( api.column( 4 ).footer() ).html(
-          '$'+this.pageTotal +' ( $'+ this.tot +' total)'
-          // 'total:'+this.ttotal +' a cuenta:'+this.tcuenta +' saldo:'+this.tsaldo +' '
-        );
-      }
-    } );
+    $('#example').DataTable( )
     this.misgastos()
     this.misuser()
     this.misglosa()
@@ -748,6 +492,32 @@ export default {
   },
 
   methods:{
+          exportTable () {
+let datacaja = [
+  {
+    sheet: "Caja Chica",
+    columns: [
+      { label: "id", value: "id" }, // Top level data
+      { label: "Monto", value: "monto" }, // Top level data
+      { label: "Glosa", value: "glosa" }, // Top level data
+      { label: "Motivo", value: "motivo" }, // Top level data
+      { label: "fecha", value: "fecha" }, // Top level data
+      { label: "Hora", value: "hora" }, // Top level data
+      { label: "Usuario", value: "user" }, // Top level data
+    ],
+    content: this.chica
+  },
+
+]
+
+let settings = {
+  fileName: "CajaChica", // Name of the resulting spreadsheet
+  extraLength: 7, // A bigger number means that columns will be wider
+  writeOptions: {}, // Style options from https://github.com/SheetJS/sheetjs#writing-options
+}
+
+xlsx(datacaja, settings) // Will download the excel file
+      },
                   totalgeneral(){
       this.$axios.post(process.env.API + "/totalgeneral").then((res) => {
           this.montogeneral=parseFloat( res.data.monto);
@@ -966,7 +736,7 @@ export default {
         doc.text(3, y+3, 'Gasto')
         doc.text(6.5, y+3, r.monto!=null?r.monto.toString():''+'Bs.')
         caja+=parseFloat(r.monto!=null?r.monto:0)
-        doc.text(8, y+3, r.glosa==null?'GASTO':r.glosa.nombre+' : '+r.motivo)
+        doc.text(8, y+3, r.glosa==null?'GASTO':r.glosa+' : '+r.motivo)
         // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
         // doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
         //doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
@@ -1351,7 +1121,7 @@ export default {
         doc.text(1.5, y+3, r.user.name)
         doc.text(4, y+3, r.monto+'')
         doc.text(6.5, y+3, r.motivo)
-        doc.text(11, y+3, r.glosa==null?'GASTO':r.glosa.nombre+' : '+r.motivo)
+        doc.text(11, y+3, r.glosa==null?'GASTO':r.glosa+' : '+r.motivo)
         doc.text(15.5, y+3, r.fecha)
         doc.text(17.5, y+3, r.hora)
 
@@ -1402,21 +1172,13 @@ export default {
       this.$q.loading.show()
       this.gastos=[]
       this.chica=[]
-            this.$axios.post(process.env.API+'/listcaja',{fecha1:this.fecha1,fecha2:this.fecha2,user_id:this.user.id}).then(res=>{
-        console.log(res.data)
-        //return false
-                 res.data.forEach(r => {
-            if(r.tipo=='GASTO')
 
-              this.chica.push(r)
-         });
-      })
       $('#example').DataTable().destroy()
       this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,user_id:this.user.id}).then(res=>{
-        console.log(res.data)
+        //console.log(res.data)
         // this.gastos=res.data
-        // $('#example').DataTable().destroy()
-
+         $('#example').DataTable().destroy()
+        console.log(res.data)
         res.data.forEach(r=>{
           //console.log(r.glosa.nombre)
           this.gastos.push({
@@ -1426,259 +1188,29 @@ export default {
             precio:r.precio,
             fecha:r.fecha,
             hora:r.hora,
-            user:r.user.name,
+            user:r.user.name
           })
-
-
         })
-
-
-
+            this.$axios.post(process.env.API+'/listcaja',{fecha1:this.fecha1,fecha2:this.fecha2,user_id:this.user.id}).then(res=>{
+        console.log(res.data)
+        //return false
+                 res.data.forEach(r => {
+            if(r.tipo=='GASTO'){
+                this.chica.push({ 
+                  id:r.id,
+                  motivo:r.motivo,
+                  glosa:r.glosa==null?'GASTO':r.glosa.nombre,
+                  monto:r.monto,
+                  fecha:r.fecha,
+                  hora:r.hora,
+                  user:r.user.name
+                  })
+                        }
+         })
+      
         this.$nextTick(()=>{
           $('#example').DataTable( {
-            "language":{
-              "processing": "Procesando...",
-              "lengthMenu": "Mostrar _MENU_ registros",
-              "zeroRecords": "No se encontraron resultados",
-              "emptyTable": "Ningún dato disponible en esta tabla",
-              "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-              "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-              "search": "Buscar:",
-              "infoThousands": ",",
-              "loadingRecords": "Cargando...",
-              "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
-              },
-              "aria": {
-                "sortAscending": ": Activar para ordenar la columna de manera ascendente",
-                "sortDescending": ": Activar para ordenar la columna de manera descendente"
-              },
-              "buttons": {
-                "copy": "Copiar",
-                "colvis": "Visibilidad",
-                "collection": "Colección",
-                "colvisRestore": "Restaurar visibilidad",
-                "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
-                "copySuccess": {
-                  "1": "Copiada 1 fila al portapapeles",
-                  "_": "Copiadas %ds fila al portapapeles"
-                },
-                "copyTitle": "Copiar al portapapeles",
-                "csv": "CSV",
-                "excel": "Excel",
-                "pageLength": {
-                  "-1": "Mostrar todas las filas",
-                  "_": "Mostrar %d filas"
-                },
-                "pdf": "PDF",
-                "print": "Imprimir",
-                "renameState": "Cambiar nombre",
-                "updateState": "Actualizar",
-                "createState": "Crear Estado",
-                "removeAllStates": "Remover Estados",
-                "removeState": "Remover",
-                "savedStates": "Estados Guardados",
-                "stateRestore": "Estado %d"
-              },
-              "autoFill": {
-                "cancel": "Cancelar",
-                "fill": "Rellene todas las celdas con <i>%d<\/i>",
-                "fillHorizontal": "Rellenar celdas horizontalmente",
-                "fillVertical": "Rellenar celdas verticalmentemente"
-              },
-              "decimal": ",",
-              "searchBuilder": {
-                "add": "Añadir condición",
-                "button": {
-                  "0": "Constructor de búsqueda",
-                  "_": "Constructor de búsqueda (%d)"
-                },
-                "clearAll": "Borrar todo",
-                "condition": "Condición",
-                "conditions": {
-                  "date": {
-                    "after": "Despues",
-                    "before": "Antes",
-                    "between": "Entre",
-                    "empty": "Vacío",
-                    "equals": "Igual a",
-                    "notBetween": "No entre",
-                    "notEmpty": "No Vacio",
-                    "not": "Diferente de"
-                  },
-                  "number": {
-                    "between": "Entre",
-                    "empty": "Vacio",
-                    "equals": "Igual a",
-                    "gt": "Mayor a",
-                    "gte": "Mayor o igual a",
-                    "lt": "Menor que",
-                    "lte": "Menor o igual que",
-                    "notBetween": "No entre",
-                    "notEmpty": "No vacío",
-                    "not": "Diferente de"
-                  },
-                  "string": {
-                    "contains": "Contiene",
-                    "empty": "Vacío",
-                    "endsWith": "Termina en",
-                    "equals": "Igual a",
-                    "notEmpty": "No Vacio",
-                    "startsWith": "Empieza con",
-                    "not": "Diferente de",
-                    "notContains": "No Contiene",
-                    "notStarts": "No empieza con",
-                    "notEnds": "No termina con"
-                  },
-                  "array": {
-                    "not": "Diferente de",
-                    "equals": "Igual",
-                    "empty": "Vacío",
-                    "contains": "Contiene",
-                    "notEmpty": "No Vacío",
-                    "without": "Sin"
-                  }
-                },
-                "data": "Data",
-                "deleteTitle": "Eliminar regla de filtrado",
-                "leftTitle": "Criterios anulados",
-                "logicAnd": "Y",
-                "logicOr": "O",
-                "rightTitle": "Criterios de sangría",
-                "title": {
-                  "0": "Constructor de búsqueda",
-                  "_": "Constructor de búsqueda (%d)"
-                },
-                "value": "Valor"
-              },
-              "searchPanes": {
-                "clearMessage": "Borrar todo",
-                "collapse": {
-                  "0": "Paneles de búsqueda",
-                  "_": "Paneles de búsqueda (%d)"
-                },
-                "count": "{total}",
-                "countFiltered": "{shown} ({total})",
-                "emptyPanes": "Sin paneles de búsqueda",
-                "loadMessage": "Cargando paneles de búsqueda",
-                "title": "Filtros Activos - %d",
-                "showMessage": "Mostrar Todo",
-                "collapseMessage": "Colapsar Todo"
-              },
-              "select": {
-                "cells": {
-                  "1": "1 celda seleccionada",
-                  "_": "%d celdas seleccionadas"
-                },
-                "columns": {
-                  "1": "1 columna seleccionada",
-                  "_": "%d columnas seleccionadas"
-                },
-                "rows": {
-                  "1": "1 fila seleccionada",
-                  "_": "%d filas seleccionadas"
-                }
-              },
-              "thousands": ".",
-              "datetime": {
-                "previous": "Anterior",
-                "next": "Proximo",
-                "hours": "Horas",
-                "minutes": "Minutos",
-                "seconds": "Segundos",
-                "unknown": "-",
-                "amPm": [
-                  "AM",
-                  "PM"
-                ],
-                "months": {
-                  "0": "Enero",
-                  "1": "Febrero",
-                  "10": "Noviembre",
-                  "11": "Diciembre",
-                  "2": "Marzo",
-                  "3": "Abril",
-                  "4": "Mayo",
-                  "5": "Junio",
-                  "6": "Julio",
-                  "7": "Agosto",
-                  "8": "Septiembre",
-                  "9": "Octubre"
-                },
-                "weekdays": [
-                  "Dom",
-                  "Lun",
-                  "Mar",
-                  "Mie",
-                  "Jue",
-                  "Vie",
-                  "Sab"
-                ]
-              },
-              "editor": {
-                "close": "Cerrar",
-                "create": {
-                  "button": "Nuevo",
-                  "title": "Crear Nuevo Registro",
-                  "submit": "Crear"
-                },
-                "edit": {
-                  "button": "Editar",
-                  "title": "Editar Registro",
-                  "submit": "Actualizar"
-                },
-                "remove": {
-                  "button": "Eliminar",
-                  "title": "Eliminar Registro",
-                  "submit": "Eliminar",
-                  "confirm": {
-                    "_": "¿Está seguro que desea eliminar %d filas?",
-                    "1": "¿Está seguro que desea eliminar 1 fila?"
-                  }
-                },
-                "error": {
-                  "system": "Ha ocurrido un error en el sistema (<a target=\"\\\" rel=\"\\ nofollow\" href=\"\\\">Más información&lt;\\\/a&gt;).<\/a>"
-                },
-                "multi": {
-                  "title": "Múltiples Valores",
-                  "info": "Los elementos seleccionados contienen diferentes valores para este registro. Para editar y establecer todos los elementos de este registro con el mismo valor, hacer click o tap aquí, de lo contrario conservarán sus valores individuales.",
-                  "restore": "Deshacer Cambios",
-                  "noMulti": "Este registro puede ser editado individualmente, pero no como parte de un grupo."
-                }
-              },
-              "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-              "stateRestore": {
-                "creationModal": {
-                  "button": "Crear",
-                  "name": "Nombre:",
-                  "order": "Clasificación",
-                  "paging": "Paginación",
-                  "search": "Busqueda",
-                  "select": "Seleccionar",
-                  "columns": {
-                    "search": "Búsqueda de Columna",
-                    "visible": "Visibilidad de Columna"
-                  },
-                  "title": "Crear Nuevo Estado",
-                  "toggleLabel": "Incluir:"
-                },
-                "emptyError": "El nombre no puede estar vacio",
-                "removeConfirm": "¿Seguro que quiere eliminar este %s?",
-                "removeError": "Error al eliminar el registro",
-                "removeJoiner": "y",
-                "removeSubmit": "Eliminar",
-                "renameButton": "Cambiar Nombre",
-                "renameLabel": "Nuevo nombre para %s",
-                "duplicateError": "Ya existe un Estado con este nombre.",
-                "emptyStates": "No hay Estados guardados",
-                "removeTitle": "Remover Estado",
-                "renameTitle": "Cambiar Nombre Estado"
-              }
-            },
-            dom: 'Blfrtip',
+                      dom: 'Blfrtip',
             // pageLength: 5,
              lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "All"]],
             // buttons: [
@@ -1738,11 +1270,12 @@ export default {
           } );
         })
 
-
+        })
         this.$axios.post(process.env.API+'/replanilla',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
           console.log(res.data)
             this.resumenplanilla=res.data[0].total==null?0:res.data[0].total
         })
+
         this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
           this.$q.loading.hide()
 
@@ -1830,7 +1363,6 @@ export default {
           })
 
         })
-
 
       }).catch(err=>{
         this.$q.loading.hide()
