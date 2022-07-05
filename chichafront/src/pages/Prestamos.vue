@@ -173,7 +173,7 @@ export default {
       pagination: { rowsPerPage: 20 },
       cantidad:1,
       fisico:'',
-      efectivo:'',
+      efectivo:0,
       observacion:'',
       tipo:'EN PRESTAMO',
       totalefectivo:0,

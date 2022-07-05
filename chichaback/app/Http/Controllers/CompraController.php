@@ -61,7 +61,7 @@ class CompraController extends Controller
         $compra->user_id=$request->user_id;
         $compra->save();
 
-        $general=General::find(1);
+        /*$general=General::find(1);
         $general->monto=$general->monto - $compra->subtotal;
         $general->save();
 
@@ -75,7 +75,7 @@ class CompraController extends Controller
         $loggeneral->hora=date("H:i:s");
         $loggeneral->glosa_id=null;
         $loggeneral->user_id= $compra->user_id;
-        $loggeneral->save();
+        $loggeneral->save();*/
 
         }
 

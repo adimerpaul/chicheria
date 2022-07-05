@@ -364,7 +364,7 @@ export default {
       observacion:'NINGUNA',
       cantidad:1,
       cantidades:[],
-      acuenta:'',
+      acuenta:0,
       detalles:[],
       garantia:{},
       dialog_garantia:false,
@@ -763,7 +763,7 @@ export default {
         this.misventas()
 
           this.subtotal=''
-          this.acuenta=''
+          this.acuenta=0
           this.saldo=''
           this.estado=''
           this.model=''

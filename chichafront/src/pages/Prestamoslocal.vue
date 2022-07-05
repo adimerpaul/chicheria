@@ -171,7 +171,7 @@ export default {
       cantidades:[],
       cantidad:1,
       fisico:'',
-      efectivo:'',
+      efectivo:0,
       observacion:'',
       totalefectivo:0,
       dialog_dev:false,
