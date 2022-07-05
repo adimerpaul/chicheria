@@ -82,7 +82,7 @@
                     <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
                     <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
                     <q-btn size="xs" @click="onMod(props.row)"  color="yellow" icon="edit"/>
-                    <q-btn size="xs" @click="onEliminar(props.row)" v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  color="red-12" icon="cancel" />
+                    <q-btn size="xs" @click="onEliminar(props.row)" v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  color="red-12" label="AN" />
                     <q-btn size="xs" @click="ondelete(props.row)" v-if="(props.row.estado=='EN PRESTAMO' || props.row.estado=='VENTA')&& $store.state.login.delprestamo"  color="negative" icon="delete"/>
                 </q-td>
             </template>
