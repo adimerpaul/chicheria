@@ -92,12 +92,12 @@
               <q-td key="estado" :props="props" >
                   <q-badge :color="props.row.estado=='POR PAGAR'?'red':'green'"  >{{props.row.estado}}</q-badge>
 
-                  
+
               </q-td>
             </template>
             <template v-slot:body-cell-opcion="props" >
               <q-td key="opcion" :props="props" >
-                <q-btn dense round flat color="green" icon="money" v-if="$store.state.login.editalmacen && props.row.deuda>0" @click="pagarcompra(props.row)"/>
+                <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.editalmacen && props.row.deuda>0" @click="pagarcompra(props.row)"/>
                 <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.editalmacen && props.row.logcompras.length>0" @click="listpago(props.row)"/>
                 <!--<q-btn dense round flat color="teal" icon="edit" v-if="$store.state.login.editalmacen" @click="modcompra(props.row)"/>-->
                 <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen" @click="delcompra(props.row)"/>
@@ -308,7 +308,7 @@
           </q-card-section>
           <q-card-section class="q-pt-xs">
             <q-form @submit="regpago" class="q-gutter-md" >
-              <q-input outlined type="text" v-model="pago.monto" label="Monto" step="0.01" 
+              <q-input outlined type="text" v-model="pago.monto" label="Monto" step="0.01"
                     lazy-rules
                     :rules="[ val => val && val > 0 && val <=compra2.deuda || 'ingrese otro monto']"
                     />
@@ -382,7 +382,7 @@
         <q-card>
           <q-card-section class="row items-center">
           <q-table title="pagos" :rows="pagos" :columns="colpagos" row-key="name" />
-          
+
           </q-card-section>
 
           <q-card-actions align="right">
@@ -636,7 +636,7 @@ export default {
       this.$axios.post(process.env.API+'/consulrecuento',{material_id:this.material3.id,fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
         this.recutodo=res.data
       })
-      
+
 
     },
     genreporte(){
@@ -935,7 +935,7 @@ export default {
   onReset(){
     this.producto={};
   },
-  
+
   computed:{
 
 
