@@ -88,9 +88,18 @@
             :filter="filter"
             row-key="name">
 
+            <template v-slot:body-cell-estado="props" >
+              <q-td key="estado" :props="props" >
+                  <q-badge :color="props.row.estado=='POR PAGAR'?'red':'green'"  >{{props.row.estado}}</q-badge>
+
+                  
+              </q-td>
+            </template>
             <template v-slot:body-cell-opcion="props" >
               <q-td key="opcion" :props="props" >
-                <q-btn dense round flat color="teal" icon="edit" v-if="$store.state.login.editalmacen" @click="modcompra(props.row)"/>
+                <q-btn dense round flat color="green" icon="money" v-if="$store.state.login.editalmacen && props.row.deuda>0" @click="pagarcompra(props.row)"/>
+                <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.editalmacen && props.row.logcompras.length>0" @click="listpago(props.row)"/>
+                <!--<q-btn dense round flat color="teal" icon="edit" v-if="$store.state.login.editalmacen" @click="modcompra(props.row)"/>-->
                 <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen" @click="delcompra(props.row)"/>
               </q-td>
             </template>
@@ -292,6 +301,27 @@
         </q-card>
       </q-dialog>
 
+      <q-dialog v-model="dialogpagar">
+        <q-card>
+          <q-card-section class="bg-green-14 text-white">
+            <div class="text-h7">PAGAR POR LA COMPRA</div>
+          </q-card-section>
+          <q-card-section class="q-pt-xs">
+            <q-form @submit="regpago" class="q-gutter-md" >
+              <q-input outlined type="text" v-model="pago.monto" label="Monto" step="0.01" 
+                    lazy-rules
+                    :rules="[ val => val && val > 0 && val <=compra2.deuda || 'ingrese otro monto']"
+                    />
+              <q-input outlined type="text" v-model="pago.observacion" label="Observacion"/>
+              <div>
+                <q-btn label="Registrar" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
       <q-dialog v-model="dialog_modprov">
         <q-card>
           <q-card-section class="bg-yellow-14 text-white">
@@ -348,6 +378,18 @@
       </q-dialog>
 
 
+      <q-dialog v-model="dialoglistpagos" >
+        <q-card>
+          <q-card-section class="row items-center">
+          <q-table title="pagos" :rows="pagos" :columns="colpagos" row-key="name" />
+          
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Cancelar" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
 
     </div>
   </q-page>
@@ -387,6 +429,9 @@ export default {
       dialog_add:false,
       dialog_remove:false,
       dialog_log:false,
+      dialogpagar:false,
+      dialoglistpagos:false,
+      pago:{},
       agregar:0,
       disminuir:0,
       producto:{},
@@ -407,30 +452,39 @@ export default {
 
       colcompra : [
 
+  { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
+  { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
   { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
   { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
   { name: 'costo', align: 'center', label: 'COSTO', field: 'costo', sortable: true },
   { name: 'subtotal', align: 'center', label: 'SUBTOTAL', field: 'subtotal', sortable: true },
+  { name: 'deuda', align: 'center', label: 'DEUDA', field: 'deuda', sortable: true },
   { name: 'lote', align: 'center', label: 'LOTE', field: 'lote', sortable: true },
   { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: 'fechaven', sortable: true },
   { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
   { name: 'provider', align: 'center', label: 'PROVEEDOR', field: row=>row.provider.razon, sortable: true },
   { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
-  { name: 'opcion', label: 'OPCIONES', field: 'opcion' }
 ],
 
       colrecuento : [
 
+  { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
   { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
   { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
   { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
   { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
-  { name: 'opcion', label: 'OPCIONES', field: 'opcion' }
+],
+      colpagos : [
+
+  { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+  { name: 'monto', align: 'center', label: 'MONTO', field: 'monto', sortable: true },
+  { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
 ],
 
   rows:[],
   montogeneral:0,
   totalcompra:0,
+  pagos:[]
 
   }},
   created() {
@@ -439,6 +493,32 @@ export default {
       this.totalgeneral()
   },
   methods: {
+    listpago(compra){
+      this.pagos=compra.logcompras
+      this.dialoglistpagos=true
+    },
+    regpago(){
+      if(this.montogeneral<this.pago.monto){
+                        this.$q.notify({
+          color: 'red',
+          icon: 'info',
+          message: 'No ay suficiente en Cja General '
+        });
+        return false
+      }
+      this.pago.compra_id=this.compra2.id
+      this.$axios.post(process.env.API + "/logcompra",this.pago).then((res) => {
+        this.dialogpagar=false
+                this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'info',
+          message: 'registrado '
+        });
+        this.consultmaterial()
+      })
+
+    },
                       totalgeneral(){
       this.$axios.post(process.env.API + "/totalgeneral").then((res) => {
           this.montogeneral=parseFloat( res.data.monto);
@@ -481,6 +561,12 @@ export default {
     modcompra(compra){
       this.compra2=compra;
       this.dialog_modcompra=true
+
+    },
+    pagarcompra(compra){
+      this.compra2=compra
+      this.pago={}
+      this.dialogpagar=true
 
     },
 

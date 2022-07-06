@@ -19,8 +19,11 @@ class CreateComprasTable extends Migration
             $table->time('hora');
             $table->integer('cantidad');
             $table->double('costo')->nullable();
+            $table->double('subtotal')->nullable();
+            $table->double('deuda')->nullable();
 //            $table->string('tipo');
             $table->date('fechaven')->nullable();
+            $table->string('estado')->nullable();
             $table->string('observacion')->nullable();
             $table->unsignedBigInteger('material_id');
             $table->foreign('material_id')->references('id')->on('materials');

@@ -888,8 +888,10 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.setFont(undefined,'bold')
       doc.text(5.5, y+4.5, ccpago+'Bs')
       if(this.$store.state.login.user.id==1){
-        doc.text(13.5, y+3, 'Salarios:')
-        doc.text(16, y+3, this.resumenplanilla+'Bs.')}
+        doc.setFont(undefined,'normal')
+        doc.text(8, y+4.5, 'Salarios:')
+        doc.setFont(undefined,'bold')
+        doc.text(11, y+4.5, this.resumenplanilla+'Bs.')}
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },

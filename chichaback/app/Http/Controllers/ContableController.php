@@ -80,7 +80,7 @@ class ContableController extends Controller
     }
 
     public function repcompra(Request $request){
-        return DB::SELECT("SELECT SUM(subtotal) as total from compras where fecha >= '$request->fecha1' and  fecha <= '$request->fecha2'");
+        return DB::SELECT("SELECT SUM(monto) as total from logcompras where fecha >= '$request->fecha1' and  fecha <= '$request->fecha2'");
     }
 
     public function repcaja(Request $request){

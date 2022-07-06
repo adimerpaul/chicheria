@@ -6,6 +6,7 @@ use App\Models\Compra;
 use App\Models\Material;
 use App\Models\General;
 use App\Models\Loggeneral;
+use App\Models\Logcompra;
 use Illuminate\Http\Request;
 
 class CompraController extends Controller
@@ -53,6 +54,7 @@ class CompraController extends Controller
         $compra->cantidad=$r['cantidad'];
         $compra->costo=$r['costo'];
         $compra->subtotal=$r['subtotal'];
+        $compra->deuda=$r['subtotal'];
         $compra->fechaven=$r['fechaven'];
         $compra->observacion=$r['observacion'];
         $compra->lote=$r['lote'];
@@ -90,7 +92,7 @@ class CompraController extends Controller
     public function consultar(Request $request)
     {
         //
-        return Compra::with('material')->with('provider')->where('material_id',$request->material_id)
+        return Compra::with('material')->with('provider')->with('logcompras')->where('material_id',$request->material_id)
         ->whereDate('fecha','>=',$request->fecha1)->where('fecha','<=',$request->fecha2)->get();
     }
 
@@ -123,7 +125,7 @@ class CompraController extends Controller
 
 
     }
-        $general=General::find(1);
+        /*$general=General::find(1);
         $general->monto=$general->monto +  $compra->subtotal - $request->subtotal;
         $general->save();
 
@@ -139,7 +141,7 @@ class CompraController extends Controller
         $compra->observacion=$request->observacion;
         $compra->lote=$request->lote;
         $compra->save();
-
+*/
 
 
     }
@@ -153,13 +155,13 @@ class CompraController extends Controller
     public function destroy($id)
     {
         $compra=Compra::find($id);
-        $general=General::find(1);
+        /*$general=General::find(1);
         $general->monto=$general->monto +  $compra->subtotal ;
         $general->save();
 
         $loggeneral= Loggeneral::where('numero',$compra->id)->where('detalle','COMPRA ALMACEN')->where('tipo','EGRESO')->first();
         $loggeneral->delete();
-
+        */
         $material=Material::find($compra->material_id);
         $material->stock=$material->stock - $compra->cantidad;
         $material->save();

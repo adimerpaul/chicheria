@@ -30,4 +30,12 @@ class Compra extends Model
     public function provider(){
         return $this->belongsTo(Provider::class);
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function logcompras(){
+        return $this->hasMany(Logcompra::class);
+    }
 }

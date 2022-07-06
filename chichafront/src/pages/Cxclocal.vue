@@ -163,7 +163,7 @@
                     hint="Efectivo"
                     type="number"
                     lazy-rules
-                    :rules="[ val => val && val > 0 && val <=regpago.saldo || 'Please type something']"
+                    :rules="[ val => val && val > 0 && val <=regpago.saldo || 'no exceder el monto']"
                     />
                     <q-input filled type="text"
                     v-model="regpago.observacion"

@@ -100,6 +100,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::resource('/glosa',\App\Http\Controllers\GlosaController::class);
     Route::resource('/general',\App\Http\Controllers\GeneralController::class);
     Route::resource('/loggeneral',\App\Http\Controllers\LoggeneralController::class);
+    Route::resource('/logcompra',\App\Http\Controllers\LogcompraController::class);
     Route::post('/listcaja',[\App\Http\Controllers\LogcajaController::class,'listcaja']);
     Route::post('/listgeneral',[\App\Http\Controllers\LoggeneralController::class,'listgeneral']);
     Route::post('/totalcaja',[\App\Http\Controllers\LogcajaController::class,'totalcaja']);
