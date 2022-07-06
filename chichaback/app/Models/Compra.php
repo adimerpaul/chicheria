@@ -14,8 +14,10 @@ class Compra extends Model
         'costo',
         'cantidad',
         'subtotal',
+        'deuda',
         'observacion',
         'lote',
+        'estado',
         'provider_id',
         'material_id',
         'user_id'
