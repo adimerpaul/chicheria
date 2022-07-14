@@ -783,7 +783,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(3, y+3, this.totalanulado+' Bs')
 
       }
-      if(this.totalpresventa>0){
+      //if(this.totalpresventa>0){
       doc.setFont(undefined,'bold')
       y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
@@ -796,7 +796,7 @@ xlsx(datacaja, settings) // Will download the excel file
           y=0
         }
 
-      //this.prestamoventa.forEach(r=>{
+      this.prestamoventa.forEach(r=>{
         y+=0.5
         // console.log(r)
        doc.setFontSize(6);
