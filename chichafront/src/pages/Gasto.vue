@@ -806,7 +806,9 @@ xlsx(datacaja, settings) // Will download the excel file
         ventas+=parseFloat(r.efectivo)
         doc.text(3, y+3, 'Material')
         doc.text(8, y+3, r.cantidad+'')
+       doc.setFontSize(6);
         doc.text(10, y+3, r.inventario.nombre)
+       doc.setFontSize(9);
         doc.text(13.5, y+3, r.cliente.titular)
         doc.text(18.5, y+3, r.cliente.local)
         if (y+3>25){
