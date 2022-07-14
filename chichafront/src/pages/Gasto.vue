@@ -796,7 +796,7 @@ xlsx(datacaja, settings) // Will download the excel file
           y=0
         }
 
-      this.prestamoventa.forEach(r=>{
+      //this.prestamoventa.forEach(r=>{
         y+=0.5
         // console.log(r)
        doc.setFontSize(6);
@@ -817,7 +817,7 @@ xlsx(datacaja, settings) // Will download the excel file
       })
              y+=0.5
         doc.text(1, y+3, 'T MATERIAL')
-        doc.text(3, y+3, this.totalpresventa+' Bs.')}
+        doc.text(3, y+3, this.totalpresventa+' Bs.')
 
       if(this.totalpagos>0){
         y+=0.5
@@ -1597,7 +1597,7 @@ xlsx(datacaja, settings) // Will download the excel file
               this.rpagos=[];
               this.rpagos=res.data;
             this.$axios.post(process.env.API+'/reporteventa',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
-              console.log(res.data)
+              //console.log(res.data)
             this.prestamoventa=[];
             this.prestamoventa=res.data;
             })
