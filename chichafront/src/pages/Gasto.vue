@@ -1597,6 +1597,7 @@ xlsx(datacaja, settings) // Will download the excel file
               this.rpagos=[];
               this.rpagos=res.data;
             this.$axios.post(process.env.API+'/reporteventa',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
+              console.log(res.data)
             this.prestamoventa=[];
             this.prestamoventa=res.data;
             })
