@@ -122,7 +122,7 @@
                   color="warning"
                   icon-right="edit"
                   no-caps
-                  label="Modificar"
+                  
                   flat
                   size="xs"
                   dense
@@ -133,11 +133,20 @@
                   color="negative"
                   icon-right="delete"
                   no-caps
-                  label="Eliminar"
-                  flat
+                   flat
                   size="xs"
                   dense
                   @click="deleteval(g)"
+                />
+                <q-btn
+                v-if="$store.state.login.user.id==1"
+                  color="info"
+                  icon-right="print"
+                  no-caps
+                   flat
+                  size="xs"
+                  dense
+                  @click="printgasto(g)"
                 />
               </q-td>
           </td>
@@ -154,7 +163,12 @@
             <template v-slot:top-right>
              <q-btn color="deep-purple-6" label="Exportar Excel"  @click="exportTable"/>
             
-      </template>
+            </template>
+                        <template v-slot:body-cell-opcion="props" >
+                <q-td key="opcion" :props="props" >
+                    <q-btn size="xs" @click="printcaja(props.row)" v-if="$store.state.login.user.id==1" color="primary" icon="print"/>
+                </q-td>
+            </template>
     </q-table>
 
 <!--            <table id="example" style="width:100%" class="cell-border">
@@ -454,6 +468,7 @@ export default {
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'hora',label:'Hora',field:'hora'},
         {name:'user',label:'Usuario',field:'user'},
+        {name:'opcion',label:'Opcion'},
       ],
       encabezado:{"id":'id',"Monto":'monto',"Glosa":'glosa',"Motivo":'glosa',"Fecha":"fecha","Hora":"hora","Usuario":'user'}
     }
@@ -572,6 +587,22 @@ xlsx(datacaja, settings) // Will download the excel file
       })
 
     },
+    printcaja(caja){
+        let cadena="<style>   .textcnt{   text-align:center;        }        table{width:100%;}        td{vertical-align:top;}        </style>"
+        cadena+="<div class='textcnt'> DETALLE GASTO CAJA CHICA</div>"
+        cadena+="<div class='textcnt'>Nro "+caja.id+"</div>        <hr>"
+        cadena+="<div>Nombre: "+caja.user+"</div>"
+        cadena+="<div>Fecha: "+caja.fecha+"</div>        <hr>"
+        cadena+="<table>        <tr><td>Glosa: </td><td><b>"+caja.glosa+"</b></td></tr>"
+        cadena+="<tr><td>Costo: </td><td><b>"+caja.monto+"</b></td></tr>"
+        cadena+="<tr><td>Observacion: </td><td><b>"+caja.motivo+"</b></td></tr>        </table>"
+        cadena+="    <br>"
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(cadena);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+    },
     agregarcjchica(){
       if(this.glosa.id==undefined)
       {
@@ -581,6 +612,11 @@ xlsx(datacaja, settings) // Will download the excel file
       //console.log(this.cchica)
       //  return false
       this.$axios.post(process.env.API + "/gastocaja",this.cchica).then((res) => {
+                        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
         this.cchica.precio=0;
         this.cchica.observacion='';
         this.cajachica=false;
@@ -1722,6 +1758,13 @@ xlsx(datacaja, settings) // Will download the excel file
         this.$axios.post(process.env.API+'/gasto',this.empleado).then(res=>{
           // this.ventas=res.data
           // console.log(res.data)
+                  let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.focus();
+        // setTimeout(function(){
+          myWindow.print();
+          myWindow.close();
           this.$q.loading.hide()
           // this.empleados=res.data
           this.misgastos()
@@ -1788,6 +1831,25 @@ xlsx(datacaja, settings) // Will download the excel file
         })
         this.misventas()
       })
+    },
+    printgasto(gasto){
+      let cadena="<style>   .textcnt{   text-align:center;        }        table{width:100%;}        td{vertical-align:top;}        </style>"
+        cadena+="<div class='textcnt'> DETALLE GASTO</div>"
+        cadena+="<div class='textcnt'>Nro "+gasto.id+"</div>        <hr>"
+        cadena+="<div>Nombre: "+gasto.user+"</div>"
+        cadena+="<div>Fecha: "+gasto.fecha+"</div>        <hr>"
+        cadena+="<table>        <tr><td>Glosa: </td><td><b>"+gasto.glosa+"</b></td></tr>"
+        cadena+="<tr><td>Costo: </td><td><b>"+gasto.precio+"</b></td></tr>"
+        cadena+="<tr><td>Observacion: </td><td><b>"+gasto.observacion+"</b></td></tr>        </table>"
+        cadena+="    <br>"
+        
+      let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(cadena);
+        myWindow.document.close();
+        myWindow.focus();
+        // setTimeout(function(){
+          myWindow.print();
+          myWindow.close();
     },
     deleteval(index){
       // this.detalles.splice(index, 1);

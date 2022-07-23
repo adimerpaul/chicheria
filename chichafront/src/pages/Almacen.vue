@@ -74,7 +74,7 @@
           <div class="row">
               <div class="col-3"><q-input dense outlined v-model="fecha3" label="Fecha Ini" type="date"/></div>
               <div class="col-3"><q-input dense outlined v-model="fecha4" label="Fecha fin" type="date"/></div>
-              <div class="col-3"><q-select dense outlined v-model="material" :options="materiales" label="Material" /></div>
+              <div class="col-3"><q-select dense outlined v-model="material3" :options="materiales" label="Material" /></div>
               <div class="col-3"> <q-btn color="info" label="Consultar"  @click="consultmaterial"/>
               </div>
           </div>

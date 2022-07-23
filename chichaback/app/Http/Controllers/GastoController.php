@@ -7,6 +7,8 @@ use App\Models\Caja;
 use App\Models\Logcaja;
 use App\Models\General;
 use App\Models\Loggeneral;
+use App\Models\user;
+use App\Models\glosa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -75,6 +77,32 @@ class GastoController extends Controller
         $loggeneral->glosa_id=$request->glosa_id;
         $loggeneral->user_id=$request->user()->id;
         $loggeneral->save();
+
+        $usuario=User::find($gasto->user_id);
+
+        $cadena='
+        <style>
+        .textcnt{
+            text-align:center;
+        }
+        table{width:100%;}
+        td{vertical-align:top;}
+        </style>
+        <div class="textcnt"> DETALLE GASTO</div>
+        <div class="textcnt">Nro '.$gasto->id.'</div>
+        <hr>
+        <div>Nombre: '.$usuario->name.'</div>
+        <div>Fecha: '.$gasto->fecha.'</div>
+        <hr>
+        <table>
+        <tr><td>Glosa: </td><td><b>'.$gasto->glosa.'</b></td></tr>
+        <tr><td>Costo: </td><td><b>'.$gasto->precio.'</b></td></tr>
+        <tr><td>Observacion: </td><td><b>'.$gasto->observacion.'</b></td></tr>
+        </table>
+        <div style="color:white">-----------------</div>
+        <br>
+              ';
+              return $cadena;
     }
 
     public function gastocaja(Request $request)
@@ -101,6 +129,32 @@ class GastoController extends Controller
         $log->glosa_id=$request->glosa_id;
         $log->user_id=$request->user()->id;
         $log->save();
+
+        $usuario=User::find( $log->user_id);
+        $glosa=Glosa::find($log->glosa_id);
+        $cadena='
+        <style>
+        .textcnt{
+            text-align:center;
+        }
+        table{width:100%;}
+        td{vertical-align:top;}
+        </style>
+        <div class="textcnt"> DETALLE GASTO CAJA CHICA</div>
+        <div class="textcnt">Nro '.$log->id.'</div>
+        <hr>
+        <div>Nombre: '.$usuario->name.'</div>
+        <div>Fecha: '.$log->fecha.'</div>
+        <hr>
+        <table>
+        <tr><td>Glosa: </td><td><b>'.$glosa->nombre.'</b></td></tr>
+        <tr><td>Costo: </td><td><b>'.$log->monto.'</b></td></tr>
+        <tr><td>Observacion: </td><td><b>'.$log->motivo.'</b></td></tr>
+        </table>
+        <div style="color:white">-----------------</div>
+        <br>
+              ';
+              return $cadena;
     }
 
     /**
