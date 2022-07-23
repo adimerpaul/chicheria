@@ -7,8 +7,8 @@ use App\Models\Caja;
 use App\Models\Logcaja;
 use App\Models\General;
 use App\Models\Loggeneral;
-use App\Models\user;
-use App\Models\glosa;
+use App\Models\User;
+use App\Models\Glosa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

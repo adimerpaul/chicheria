@@ -434,6 +434,7 @@ export default {
         this.listclientes();
         // this.cliente=this.prestamos[0]
         this.cantidad=1;
+        this.efectivo=0
         this.cliente=this.cliente[0];
         this.inventario=this.inventario[0];
       })
