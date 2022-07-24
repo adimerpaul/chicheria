@@ -61,6 +61,7 @@ class CompraController extends Controller
         $compra->material_id=$r['material_id'];
         $compra->provider_id=$request->provider_id;
         $compra->user_id=$request->user_id;
+        $compra->estado='POR PAGAR';
         $compra->save();
 
         /*$general=General::find(1);

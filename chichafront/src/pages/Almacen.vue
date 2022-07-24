@@ -307,6 +307,11 @@
             <div class="text-h7">PAGAR POR LA COMPRA</div>
           </q-card-section>
           <q-card-section class="q-pt-xs">
+                <div class="col-3" >
+                  <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
+                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
+
+                </div>
             <q-form @submit="regpago" class="q-gutter-md" >
               <q-input outlined type="text" v-model="pago.monto" label="Monto" step="0.01"
                     lazy-rules
@@ -410,6 +415,7 @@ export default {
         dialog_reporte:false,
         dialog_modcompra:false,
         dialog_modret:false,
+        checkgasto:'CAJA',
         material:{},
         materiales:[],
         material2:{},
@@ -484,6 +490,7 @@ export default {
   rows:[],
   montogeneral:0,
   totalcompra:0,
+  montocaja:0,
   pagos:[]
 
   }},
@@ -491,14 +498,20 @@ export default {
       this.misproveedores()
       this.mismateriales()
       this.totalgeneral()
+      this.totalcaja()
   },
   methods: {
     listpago(compra){
       this.pagos=compra.logcompras
       this.dialoglistpagos=true
     },
+          totalcaja(){
+      this.$axios.post(process.env.API + "/totalcaja").then((res) => {
+          this.montocaja=res.data.monto;
+      })
+      },
     regpago(){
-      if(this.montogeneral<this.pago.monto){
+      if(this.montogeneral<this.pago.monto && this.checkgasto=='GASTO'){
                         this.$q.notify({
           color: 'red',
           icon: 'info',
@@ -506,8 +519,23 @@ export default {
         });
         return false
       }
+
+      if(this.montocaja<this.pago.monto && this.checkgasto=='CAJA'){
+                        this.$q.notify({
+          color: 'red',
+          icon: 'info',
+          message: 'No ay suficiente en Cja Chica '
+        });
+        return false
+      }
       this.pago.compra_id=this.compra2.id
+      this.pago.checktipo=this.checkgasto
       this.$axios.post(process.env.API + "/logcompra",this.pago).then((res) => {
+                let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+                        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
         this.dialogpagar=false
                 this.$q.notify({
           color: 'green-4',
@@ -515,7 +543,10 @@ export default {
           icon: 'info',
           message: 'registrado '
         });
+        this.checkgasto='CAJA'
         this.consultmaterial()
+
+
       })
 
     },

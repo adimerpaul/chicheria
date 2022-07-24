@@ -122,7 +122,7 @@
                   color="warning"
                   icon-right="edit"
                   no-caps
-                  
+
                   flat
                   size="xs"
                   dense
@@ -162,7 +162,7 @@
       <q-table title="Gastos Caja Chica" :rows="chica" :columns="columns4" row-key="name" >
             <template v-slot:top-right>
              <q-btn color="deep-purple-6" label="Exportar Excel"  @click="exportTable"/>
-            
+
             </template>
                         <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
@@ -1234,7 +1234,7 @@ xlsx(datacaja, settings) // Will download the excel file
         //return false
                  res.data.forEach(r => {
             if(r.tipo=='GASTO'){
-                this.chica.push({ 
+                this.chica.push({
                   id:r.id,
                   motivo:r.motivo,
                   glosa:r.glosa==null?'GASTO':r.glosa.nombre,
@@ -1245,7 +1245,7 @@ xlsx(datacaja, settings) // Will download the excel file
                   })
                         }
          })
-      
+
         this.$nextTick(()=>{
           $('#example').DataTable( {
                        "language":{
@@ -1842,7 +1842,7 @@ xlsx(datacaja, settings) // Will download the excel file
         cadena+="<tr><td>Costo: </td><td><b>"+gasto.precio+"</b></td></tr>"
         cadena+="<tr><td>Observacion: </td><td><b>"+gasto.observacion+"</b></td></tr>        </table>"
         cadena+="    <br>"
-        
+
       let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(cadena);
         myWindow.document.close();

@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Logcompra;
 use App\Models\Compra;
 use App\Models\General;
+use App\Models\Caja;
+use App\Models\Logcaja;
+use App\Models\User;
 use App\Models\Loggeneral;
+use App\Models\Material;
+use App\Models\Provider;
 use Illuminate\Http\Request;
 
 class LogcompraController extends Controller
@@ -50,6 +55,7 @@ class LogcompraController extends Controller
         $compra=Compra::find($request->compra_id);
         $compra->deuda=$compra->deuda - $request->monto;
 
+        if($request->checktipo=='GASTO'){
         $general=General::find(1);
         $general->monto=$general->monto - $request->monto;
         $general->save();
@@ -65,10 +71,55 @@ class LogcompraController extends Controller
         $loggeneral->glosa_id=null;
         $loggeneral->user_id=$request->user()->id;
         $loggeneral->save();
+        }
+        else{
+        $caja=Caja::find(1);
+        $caja->monto= floatval($caja->monto) - floatval($request->monto);
+        $caja->save();
 
-        if($compra->deuda==0)
+        $log=new Logcaja ;
+        $log->monto=$request->monto;
+        $log->motivo='Almacen Pago '.$compra->id.' : '.$request->observacion;
+        $log->tipo='GASTO';
+        $log->fecha=date('Y-m-d');
+        $log->hora=date('H:i:s');
+        $log->glosa_id=null;
+        $log->user_id=$request->user()->id;
+        $log->save();
+        }
+        if($compra->deuda<=0)
             $compra->estado='CANCELADO';
-        return $compra->save();
+        $compra->save();
+        $usuario=User::find($request->user()->id);
+        $prov=Provider::find($compra->provider_id);
+        $mat=Material::find($compra->material_id);
+        $cadena='
+        <style>
+        .textcnt{
+            text-align:center;
+        }
+        table{width:100%;}
+        td{vertical-align:top;}
+        </style>
+        <div class="textcnt"> DETALLE PAGO COMPRA</div>
+        <div class="textcnt">Nro '.$compra->id.'</div>
+        <hr>
+        <div>Usuario   : '.$usuario->name.'</div>
+        <div>Fec Compra: '.$compra->fecha.'</div>
+        <div>Proveedor : '.$prov->razon.'</div>
+        <div>Material  : '.$mat->nombre.'</div>
+        <div>Cantidad  : '.$compra->cantidad.'</div>
+        <div>Costo     : '.$compra->costo.'</div>
+        <hr>
+        <table>
+        <tr><td>Fecha Pago: </td><td><b>'.$logcompra->fecha.'</b></td></tr>
+        <tr><td>Monto: </td><td><b>'.$logcompra->monto.'</b></td></tr>
+        <tr><td>Saldo: </td><td><b>'.$compra->deuda.'</b></td></tr>
+        <tr><td>Observacion: </td><td><b>'.$logcompra->observacion.'</b></td></tr>
+        </table>
+        <br>
+              ';
+        return $cadena;
     }
 
     /**
