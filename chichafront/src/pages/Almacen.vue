@@ -307,7 +307,7 @@
             <div class="text-h7">PAGAR POR LA COMPRA</div>
           </q-card-section>
           <q-card-section class="q-pt-xs">
-                <div class="col-3" >
+                <div class="col-3" v-if="$store.state.login.user.id==1">
                   <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
                   <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
 
