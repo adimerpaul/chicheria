@@ -30,5 +30,7 @@ export default function () {
     editinventario:false,
     editglosa:false,
     delprestamo:false,
+    veralmacen:false,
+    pagoalmacen:false,
   }
 }

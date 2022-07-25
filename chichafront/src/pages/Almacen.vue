@@ -97,7 +97,7 @@
             </template>
             <template v-slot:body-cell-opcion="props" >
               <q-td key="opcion" :props="props" >
-                <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.editalmacen && props.row.deuda>0" @click="pagarcompra(props.row)"/>
+                <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.pagoalmacen && props.row.deuda>0" @click="pagarcompra(props.row)"/>
                 <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.editalmacen && props.row.logcompras.length>0" @click="listpago(props.row)"/>
                 <!--<q-btn dense round flat color="teal" icon="edit" v-if="$store.state.login.editalmacen" @click="modcompra(props.row)"/>-->
                 <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen" @click="delcompra(props.row)"/>
