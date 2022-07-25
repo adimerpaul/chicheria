@@ -461,6 +461,7 @@ export default {
   { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
   { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
   { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+  { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
   { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
   { name: 'costo', align: 'center', label: 'COSTO', field: 'costo', sortable: true },
   { name: 'subtotal', align: 'center', label: 'SUBTOTAL', field: 'subtotal', sortable: true },
