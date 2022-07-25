@@ -307,11 +307,7 @@
             <div class="text-h7">PAGAR POR LA COMPRA</div>
           </q-card-section>
           <q-card-section class="q-pt-xs">
-                <div class="col-3" v-if="$store.state.login.user.id==1">
-                  <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
-                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
 
-                </div>
             <q-form @submit="regpago" class="q-gutter-md" >
               <q-input outlined type="text" v-model="pago.monto" label="Monto" step="0.01"
                     lazy-rules
@@ -512,6 +508,8 @@ export default {
       })
       },
     regpago(){
+      if(this.$store.state.login.user.id==1){this.checkgasto='GASTO'}
+      else{this.checkgasto='CAJA'}
       if(this.montogeneral<this.pago.monto && this.checkgasto=='GASTO'){
                         this.$q.notify({
           color: 'red',
@@ -598,6 +596,9 @@ export default {
     pagarcompra(compra){
       this.compra2=compra
       this.pago={}
+      if(this.$store.state.login.user.id==1){this.checkgasto='GASTO'}
+      else{this.checkgasto='CAJA'}
+
       this.dialogpagar=true
 
     },
