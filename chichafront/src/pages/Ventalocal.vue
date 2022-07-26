@@ -198,6 +198,9 @@
                   <q-td key="user" :props="props">
                       {{ props.row.user }}
                     </q-td>
+                                          <q-td key="observacion" :props="props">
+                        <q-badge :color="props.row.observacion=='CANCELADO'?'positive':'negative'">{{ props.row.observacion }}</q-badge>
+                      </q-td>
                       <q-td key="opcion" :props="props">
                         <q-btn dense icon="cancel" color="red" v-if="props.row.estado!='ANULADO' && $store.state.login.anularventa" @click="anular(props.row)" />
                         <template v-if="$store.state.login.reimpresion" >
@@ -385,6 +388,7 @@ export default {
         {name:'acuenta',label:'A cuenta',field:'acuenta'},
         {name:'saldo',label:'Saldo',field:'saldo'},
         {name:'estado',label:'Estado',field:'estado'},
+        {name:'observacion',label:'Observacion',field:'observacion'},
         {name:'user',label:'Usuario',field:'user'},
         {name:'opcion',label:'Opcion',field:'opcion'},
       ],

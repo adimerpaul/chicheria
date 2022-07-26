@@ -159,8 +159,13 @@
         </tr>
         </tfoot>
       </table>
-      <q-table title="Gastos Caja Chica" :rows="chica" :columns="columns4" row-key="name" >
+      <q-table title="Gastos Caja Chica" :rows="chica" :columns="columns4" row-key="name" :filter="filtercaja">
             <template v-slot:top-right>
+                          <q-input dense outlined debounce="300" v-model="filtercaja" placeholder="Buscar">
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
              <q-btn color="deep-purple-6" label="Exportar Excel"  @click="exportTable"/>
 
             </template>
@@ -405,6 +410,7 @@ export default {
   data(){
     return{
       filter:'',
+      filtercaja:'',
       cchica:{},
       glosa:{},
       glosas:[],
