@@ -32,5 +32,6 @@ export default function () {
     delprestamo:false,
     veralmacen:false,
     pagoalmacen:false,
+    cajageneral:false,
   }
 }

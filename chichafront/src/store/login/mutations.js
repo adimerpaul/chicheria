@@ -38,6 +38,7 @@ export function auth_success(state, data){
   state.delprestamo=data.user.permisos.find(p=>p.id===27)!=undefined
   state.veralmacen=data.user.permisos.find(p=>p.id===28)!=undefined
   state.pagoalmacen=data.user.permisos.find(p=>p.id===29)!=undefined
+  state.cajageneral=data.user.permisos.find(p=>p.id===30)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -74,4 +75,5 @@ export function salir(state){
   state.delprestamo=false
   state.veralmacen=false
   state.pagoalmacen=false
+  state.cajageneral=false
 }

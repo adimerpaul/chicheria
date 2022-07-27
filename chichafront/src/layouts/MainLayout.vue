@@ -453,7 +453,7 @@
         </q-item>
 
         <q-item
-          v-if="$store.state.login.cajachica"
+          v-if="$store.state.login.cajageneral"
           active-class="my-menu-link"
           clickable
           exact
