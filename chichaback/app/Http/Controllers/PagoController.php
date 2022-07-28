@@ -76,7 +76,7 @@ class PagoController extends Controller
         
         $usuario=User::find($request->user()->id);
         $cliente=Cliente::find($venta->cliente_id);
-        $detalle=Detalle::find($venta->id);
+        $detalle=Detalle::where('venta_id',$venta->id)->first();
 
         if($cliente->local == null || $cliente->local=='')  $cliente->local=' ';
         if($pago->observacion == null || $pago->observacion=='') $pago->observacion=' ';

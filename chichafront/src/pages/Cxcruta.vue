@@ -541,6 +541,13 @@ export default {
           myWindow.document.close();
           myWindow.print();
           myWindow.close();
+
+                              let myWindow2 = window.open("", "Imprimir", "width=1000,height=1000");
+          myWindow2.document.write(res.data);
+          myWindow2.document.close();
+          myWindow2.print();
+          myWindow2.close();
+          
           this.regpago={}
           this.misventas();
                   this.$q.notify({
