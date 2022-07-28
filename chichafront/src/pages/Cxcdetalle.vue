@@ -533,8 +533,16 @@ export default {
   methods:{
       onPago(){
       this.$axios.post(process.env.API+'/pago',this.regpago).then(res=>{
+         console.log(res.data)
           this.regpago={};
           this.dialog_pago=false;
+          
+          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+          myWindow.document.write(res.data);
+          myWindow.document.close();
+          myWindow.print();
+          myWindow.close();
+          this.regpago={}
           this.misventas();
                   this.$q.notify({
           message:'Registro correcto',

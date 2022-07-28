@@ -6,6 +6,9 @@ use App\Models\Pago;
 use App\Models\Venta;
 use App\Models\General;
 use App\Models\Loggeneral;
+use App\Models\User;
+use App\Models\Cliente;
+use App\Models\Detalle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -69,7 +72,42 @@ class PagoController extends Controller
 
         if($venta->saldo==0)
         $venta->estado='CANCELADO';
-        return $venta->save();
+        $venta->save();
+        
+        $usuario=User::find($request->user()->id);
+        $cliente=Cliente::find($venta->cliente_id);
+        $detalle=Detalle::find($venta->id);
+
+        if($cliente->local == null || $cliente->local=='')  $cliente->local=' ';
+        if($pago->observacion == null || $pago->observacion=='') $pago->observacion=' ';
+        $cadena=
+        " <style>
+        .textcnt{
+            text-align:center;
+        }
+        table{width:100%;}
+        td{vertical-align:top;}
+        </style>
+        <div class='textcnt'> DETALLE CUENTA POR PAGAR</div>
+        <div class='textcnt'>Nro ".$venta->id."</div>
+        <hr>
+        <div>Usuario   : ".$usuario->name."</div>
+        <div>Fec Reg   : ".$venta->fecha."</div>
+        <div>Local     : ".$cliente->local."</div>
+        <div>Titular   : ".$cliente->titular."</div>
+        <div>Producto  : ".$detalle->nombreproducto."</div>
+        <div>Cantidad  : ".$detalle->cantidad."</div>
+        <div>Costo     : ".$detalle->subtotal."</div>
+        <hr>
+        <table>
+        <tr><td>Fecha: </td><td><b>".$pago->fecha."</b></td></tr>
+        <tr><td>Monto: </td><td><b>".$pago->monto."</b></td></tr>
+        <tr><td>Saldo: </td><td><b>".$venta->saldo."</b></td></tr>
+        <tr><td>Observacion: </td><td><b>".$pago->observacion."</b></td></tr>
+        </table>
+        <br>";
+
+        return $cadena;
     }
 
     /**
