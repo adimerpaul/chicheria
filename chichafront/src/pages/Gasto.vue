@@ -480,10 +480,11 @@ export default {
     }
   },
   mounted() {
-    if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
+
     $('#example').DataTable( )
-    this.misgastos()
     this.misuser()
+        if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
+    this.misgastos()
     this.misglosa()
     // this.misempleados()
     // console.log(this.$store.state.login)
