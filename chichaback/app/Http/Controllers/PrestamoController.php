@@ -325,6 +325,8 @@ public function reporteventa(Request $request){
 
         </table>
         <br>
+        <br>
+        <br>
         <div class="textc">Firma</div>
         <br>
         <br>

@@ -482,9 +482,7 @@ export default {
   mounted() {
 
     $('#example').DataTable( )
-    this.misuser()
-        if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
-    this.misgastos()
+
     this.misglosa()
     // this.misempleados()
     // console.log(this.$store.state.login)
@@ -510,6 +508,9 @@ export default {
     this.misempleados();
     this.totalcaja();
     this.totalgeneral();
+        this.misuser()
+        if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
+    this.misgastos()
   },
 
   methods:{
