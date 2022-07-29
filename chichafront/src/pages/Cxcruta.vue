@@ -173,7 +173,7 @@
 
                 </q-card>
                 </q-dialog>
-
+            <!--
             <div class="col-12">
               <q-form>
                 <div class="row">
@@ -189,7 +189,7 @@
                 </div>
               </q-form>
             </div>
-
+-->
           </div>
         </div>
       </div>

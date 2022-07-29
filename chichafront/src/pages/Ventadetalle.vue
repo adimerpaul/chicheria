@@ -231,6 +231,7 @@
                   </template>
                 </q-table>
               </div>
+              <!--
               <div class="col-12">
                 <q-form>
                   <div class="row">
@@ -245,7 +246,7 @@
                     </div>
                   </div>
                 </q-form>
-              </div>
+              </div>-->
               <div class="col-12">
                 <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
               </div>

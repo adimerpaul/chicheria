@@ -122,12 +122,12 @@
                     </td>
                   </tr>
                   </tbody>
-                  <tfoot>
+<!--                  <tfoot>
                   <tr>
                     <th colspan="9" style="text-align:right">Total:</th>
                     <th></th>
                   </tr>
-                  </tfoot>
+                  </tfoot>-->
                 </table>
               </div>
             </div>
@@ -179,6 +179,7 @@
 
                 </q-card>
                 </q-dialog>
+            <!--
 
             <div class="col-12">
               <q-form>
@@ -195,7 +196,7 @@
                 </div>
               </q-form>
             </div>
-
+-->
           </div>
         </div>
       </div>

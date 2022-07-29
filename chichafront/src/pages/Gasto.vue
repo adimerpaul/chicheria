@@ -6,7 +6,7 @@
     </div>
     <div class="col-6 col-sm-3 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha1" outlined required/></div>
     <div class="col-6 col-sm-3 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha2" outlined required/></div>
-    <div class="col-6 col-sm-3 q-pa-xs" v-if="$store.state.login.user.id==1"><q-select dense v-model="user" :options="users" label="Usuarios" outlined /></div>
+    <div class="col-6 col-sm-3 q-pa-xs" v-if="$store.state.login.gastoreporteuser"><q-select dense v-model="user" :options="users" label="Usuarios" outlined /></div>
     <div class="col-6 col-sm-3 q-pa-xs flex flex-center">
       <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misgastos" />
     </div>
@@ -1216,7 +1216,7 @@ xlsx(datacaja, settings) // Will download the excel file
       this.$q.loading.show()
       this.gastos=[]
       this.chica=[]
-
+      if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
       $('#example').DataTable().destroy()
       this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,user_id:this.user.id}).then(res=>{
         //console.log(res.data)
@@ -1557,6 +1557,7 @@ xlsx(datacaja, settings) // Will download the excel file
         })
 
         })
+
         this.$axios.post(process.env.API+'/replanilla',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
           console.log(res.data)
             this.resumenplanilla=res.data[0].total==null?0:res.data[0].total
@@ -1572,7 +1573,7 @@ xlsx(datacaja, settings) // Will download the excel file
           this.ventas=[]
           res.data.forEach(r=>{
              if (r.estado!='ANULADO'){
-              if(this.$store.state.login.user.id==1){
+              if(this.$store.state.login.gastoreporteuser){
               if(this.user.id==0){this.ventas.push({
                 fecha:r.fecha,
                 total:r.total,
