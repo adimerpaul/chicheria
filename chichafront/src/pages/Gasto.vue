@@ -1217,6 +1217,7 @@ xlsx(datacaja, settings) // Will download the excel file
       this.gastos=[]
       this.chica=[]
       if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
+      console.log(this.user)
       $('#example').DataTable().destroy()
       this.$axios.post(process.env.API+'/misgastos',{fecha1:this.fecha1,fecha2:this.fecha2,user_id:this.user.id}).then(res=>{
         //console.log(res.data)
