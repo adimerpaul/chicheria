@@ -1239,6 +1239,7 @@ xlsx(datacaja, settings) // Will download the excel file
             user:r.user.name
           })
         })
+          if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
             this.$axios.post(process.env.API+'/listcaja',{fecha1:this.fecha1,fecha2:this.fecha2,user_id:this.user.id}).then(res=>{
         console.log(res.data)
         //return false
