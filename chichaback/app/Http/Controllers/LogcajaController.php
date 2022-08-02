@@ -106,6 +106,20 @@ class LogcajaController extends Controller
     public function update(Request $request, Logcaja $logcaja)
     {
         //
+        $log=Logcaja::find($request->id) ;
+
+
+        $caja=Caja::find(1);
+        $caja->monto = floatval($caja->monto) + floatval($log->monto) - floatval($request->monto);
+        
+        $log->monto=$request->monto;
+        $log->motivo=$request->motivo;
+        $log->glosa_id=$request->glosa_id;
+        $caja->save();
+        $log->save();
+
+        return $caja->monto;
+
     }
 
     /**

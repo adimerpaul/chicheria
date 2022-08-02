@@ -171,6 +171,7 @@
             </template>
                         <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
+                    <q-btn size="xs" @click="modifcaja(props.row)" v-if="$store.state.login.user.id==1" color="yellow" icon="edit"/>
                     <q-btn size="xs" @click="printcaja(props.row)" v-if="$store.state.login.user.id==1" color="primary" icon="print"/>
                 </q-td>
             </template>
@@ -360,6 +361,47 @@
         </q-card>
       </q-dialog>
 
+            <q-dialog v-model="modifcajachica">
+        <q-card>
+          <q-card-section>
+            <div class="text-h6">Modificar Gasto de Caja Chica {{montocajachica}} Bs</div>
+          </q-card-section>
+          <q-card-section class="q-pt-none">
+            <q-form @submit.prevent="modificarcjchica">
+              <div class="row">
+            <div class="col-12">
+            <q-select outlined v-model="glosa" :options="glosas" label="Glosa" use-input @filter="filterFn"     dense  >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </div>
+                <div class="col-12">
+                  <q-input outlined label="Monto" type="number" step="0.1" v-model="cchica2.monto"
+                    :rules="[
+                    val => val>0 && val<= montocajachica  || 'No debe exceder el monto',
+                    ]"
+                lazy-rules/>
+                </div>
+                 <div class="col-12">
+                  <q-input outlined label="Observacion" type="text" v-model="cchica2.motivo" />
+                </div>
+                <div class="col-3 flex flex-center">
+                  <q-btn label="Registrar" type="submit" icon="send" color="info"/>
+                </div>
+              </div>
+            </q-form>
+          </q-card-section>
+          <q-card-actions align="right" class="bg-white text-teal">
+            <q-btn flat label="Cerrar" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
 
             <q-dialog v-model="dialogaddglosa">
         <q-card>
@@ -412,6 +454,7 @@ export default {
       filter:'',
       filtercaja:'',
       cchica:{},
+      cchica2:{},
       glosa:{},
       glosas:[],
       chica:[],
@@ -419,6 +462,7 @@ export default {
       dialogaddglosa:false,
       pagos:false,
       cajachica:false,
+      modifcajachica:false,
       pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       empleados:[],
       empleadohistorial:{},
@@ -514,6 +558,29 @@ export default {
   },
 
   methods:{
+    modificarcjchica(){
+      if(this.glosa.id==undefined)
+      {
+        return false
+      }
+      this.cchica2.glosa_id=this.glosa.id
+      //console.log(this.cchica)
+      //  return false
+      this.$axios.put(process.env.API + "/logcaja/"+this.cchica2.id,this.cchica2).then((res) => {
+        console.log(res.data)
+        this.modifcajachica=false;
+        this.glosa={label:''}
+        this.misgastos()
+        this.totalcaja()
+                this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Modificado correctamente'
+        });
+      })
+
+    },
           exportTable () {
 let datacaja = [
   {
@@ -595,6 +662,15 @@ xlsx(datacaja, settings) // Will download the excel file
         myWindow.close();
       })
 
+    },
+    modifcaja(log){
+
+      this.cchica2=log
+      let glosa=log.gl
+      glosa.label=glosa.nombre
+      this.glosa=glosa
+      this.modifcajachica=true
+        console.log(this.cchica2)
     },
     printcaja(caja){
         let cadena="<style>   .textcnt{   text-align:center;        }        table{width:100%;}        td{vertical-align:top;}        </style>"
@@ -1252,7 +1328,8 @@ xlsx(datacaja, settings) // Will download the excel file
                   monto:r.monto,
                   fecha:r.fecha,
                   hora:r.hora,
-                  user:r.user.name
+                  user:r.user.name,
+                  gl:r.glosa==null?'GASTO':r.glosa,
                   })
                         }
          })
