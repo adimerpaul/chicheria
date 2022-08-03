@@ -103,7 +103,7 @@
 <!--            outlined            />-->
 <!--          </div>-->
 <!--          </div>-->
-            <q-btn color="accent" class="full-width"  label="Generar Venta" icon="send" type="submit" />
+            <q-btn color="accent" class="" size="lg"  label="Generar Venta" icon="send" type="submit" />
           </div>
         </div>
       </q-form>
