@@ -1721,9 +1721,14 @@ xlsx(datacaja, settings) // Will download the excel file
             console.log(res.data)
           this.anulados=res.data;
 
+          if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
+
             this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
               this.rpagos=[];
               this.rpagos=res.data;
+          if(!this.$store.state.login.gastoreporteuser) 
+          this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
+
             this.$axios.post(process.env.API+'/reporteventa',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
               //console.log(res.data)
             this.prestamoventa=[];
