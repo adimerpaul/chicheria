@@ -756,8 +756,10 @@ xlsx(datacaja, settings) // Will download the excel file
     },
     imprimirmisventasygastos(us){
       let mc=this
-      if(this.$store.state.login.user.id!=1)
+          if(!this.$store.state.login.gastoreporteuser) 
+
       us.label=this.$store.state.login.user.name;
+      
       function header(){
         var img = new Image()
         img.src = 'logo.png'
@@ -1020,7 +1022,8 @@ xlsx(datacaja, settings) // Will download the excel file
     },
     imprimirmisventasdetalle(us){
       let mc=this
-      if(this.$store.state.login.user.id!=1)
+                if(!this.$store.state.login.gastoreporteuser) 
+
       us.label=this.$store.state.login.user.name;
 
       function header(){
@@ -1100,7 +1103,8 @@ xlsx(datacaja, settings) // Will download the excel file
 
     imprimirmisventaslocal(us){
       let mc=this
-      if(this.$store.state.login.user.id!=1)
+                if(!this.$store.state.login.gastoreporteuser) 
+
       us.label=this.$store.state.login.user.name;
 
       function header(){
@@ -1180,7 +1184,8 @@ xlsx(datacaja, settings) // Will download the excel file
 
     imprimir(us){
       let mc=this
-      if(this.$store.state.login.user.id!=1)
+                if(!this.$store.state.login.gastoreporteuser) 
+
       us.label=this.$store.state.login.user.name;
 
       function header(){
