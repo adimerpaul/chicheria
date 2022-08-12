@@ -321,7 +321,7 @@ public function reporteventa(Request $request){
         <tr><td>Fisico: </td><td>'.$garantia->fisico.'</td></tr>
         <tr><td>Detalle: </td><td>'.$garantia->inventario->nombre.'</td></tr>
         <tr><td>Cantidad: </td><td>'.$garantia->cantidad.'</td></tr>
-        <tr><td>Fecha: </td><td>'.$garantia->fecha.'</td></tr>
+        <tr><td>Fecha: </td><td>'.date('d/m/Y',strtotime($garantia->fecha)).'</td></tr>
 
         </table>
         <br>

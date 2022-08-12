@@ -105,14 +105,14 @@ class LogcompraController extends Controller
         <div class="textcnt">Nro '.$compra->id.'</div>
         <hr>
         <div>Usuario   : '.$usuario->name.'</div>
-        <div>Fec Compra: '.$compra->fecha.'</div>
+        <div>Fec Compra: '.date('d/m/Y',strtotime($compra->fecha)).'</div>
         <div>Proveedor : '.$prov->razon.'</div>
         <div>Material  : '.$mat->nombre.'</div>
         <div>Cantidad  : '.$compra->cantidad.'</div>
         <div>Costo     : '.$compra->costo.'</div>
         <hr>
         <table>
-        <tr><td>Fecha Pago: </td><td><b>'.$logcompra->fecha.'</b></td></tr>
+        <tr><td>Fecha Pago: </td><td><b>'.date('d/m/Y',strtotime($logcompra->fecha)).'</b></td></tr>
         <tr><td>Monto: </td><td><b>'.$logcompra->monto.'</b></td></tr>
         <tr><td>Saldo: </td><td><b>'.$compra->deuda.'</b></td></tr>
         <tr><td>Observacion: </td><td><b>'.$logcompra->observacion.'</b></td></tr>

@@ -351,7 +351,7 @@ class VentaController extends Controller
         <hr>
         <div>Local: '.$venta->cliente->local.'</div>
         <div>Nombre: '.$venta->cliente->titular.'</div>
-        <div>Fecha: '.$venta->fecha.'</div>
+        <div>Fecha: '.date('d/m/Y',strtotime($venta->fecha)).'</div>
         <hr>
         <table>
         <tr><td>Cantidad: </td><td><b>'.$venta->detalle->cantidad.'</b></td></tr>
@@ -385,8 +385,8 @@ class VentaController extends Controller
         <div class="textcnt"> HOJA DE RUTA</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
         <table><tr>
-        <td>Fecha: </td><td>'.$venta->fecha.'</td></tr>
-        <tr><td>Fecha entrega: </td><td><b>'.$venta->fechaentrega.'</b></td>
+        <td>Fecha: </td><td>'.date('d/m/Y',strtotime($venta->fecha)).'</td></tr>
+        <tr><td>Fecha entrega: </td><td><b>'.date('d/m/Y',strtotime($venta->fechaentrega)).'</b></td>
         </tr></table>
         <hr>
         <table>

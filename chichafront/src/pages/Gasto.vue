@@ -766,7 +766,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'HISTORIAL DE INGRESOS Y GASTOS '+us.label)
-        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(5, 1.5,  'DE '+date.formatDate(mc.fecha1,'DD/MM/YYYY')+' AL '+date.formatDate(mc.fecha2,'DD/MM/YYYY'))
         // doc.text(1, 3, 'Total')
         doc.text(1, 3, 'Ruta/tip')
         doc.text(3, 3, 'Tipo')
@@ -1032,7 +1032,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de ventas DETALLE ' +us.label)
-        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(5, 1.5,  'DE '+date.formatDate(mc.fecha1,'DD/MM/YYYY')+' AL '+date.formatDate(mc.fecha2,'DD/MM/YYYY'))
         doc.text(1, 3, 'Usuario')
         doc.text(3, 3, 'Fecha')
         doc.text(5.5, 3, 'Total')
@@ -1066,7 +1066,7 @@ xlsx(datacaja, settings) // Will download the excel file
         // xx+=0.5
         y+=0.5
         doc.text(1, y+3, r.user!=null?r.user.substring(0,8 ):'')
-        doc.text(3, y+3, r.fecha+'')
+        doc.text(3, y+3, date.formatDate(r.fecha,'DD/MM/YYYY')+'')
         doc.text(5.5, y+3, r.total!=null?r.total.toString():'')
         doc.text(6.7, y+3, r.acuenta!=null?r.acuenta.toString():'')
         doc.text(8.2, y+3, r.saldo!=null?r.saldo.toString():'')
@@ -1113,7 +1113,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de ventas LOCAL '+ us.label)
-        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(5, 1.5,  'DE '+date.formatDate(mc.fecha1,'DD/MM/YYYY')+' AL '+date.formatDate(mc.fecha2,'DD/MM/YYYY'))
         doc.text(1, 3, 'Usuario')
         doc.text(2.5, 3, 'Fecha Hora')
         doc.text(6, 3, 'Producto')
@@ -1194,7 +1194,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de gastos '+ us.label)
-        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(5, 1.5,  'DE '+date.formatDate(mc.fecha1,'DD/MM/YYYY')+' AL '+date.formatDate(mc.fecha2,'DD/MM/YYYY'))
         doc.text(1.5, 3, 'Usuario')
         doc.text(4, 3, 'Precio')
         doc.text(6.5, 3, 'Observacion')
@@ -1224,7 +1224,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(4, y+3, r.precio+'')
         doc.text(6.5, y+3, r.observacion)
         doc.text(11, y+3, r.glosa)
-        doc.text(15.5, y+3, r.fecha)
+        doc.text(15.5, y+3, date.formatDate(r.fecha,'DD/MM/YYYY'))
         doc.text(17.5, y+3, r.hora)
 
         cont++
@@ -1250,7 +1250,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(4, y+3, r.monto+'')
         doc.text(6.5, y+3, r.motivo)
         doc.text(11, y+3, r.glosa==null?'GASTO':r.glosa+' : '+r.motivo)
-        doc.text(15.5, y+3, r.fecha)
+        doc.text(15.5, y+3, date.formatDate(r.fecha,'DD/MM/YYYY'))
         doc.text(17.5, y+3, r.hora)
 
         cont++

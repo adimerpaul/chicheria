@@ -636,11 +636,11 @@ export default {
         doc.addImage(img, 'png', 5, 2, 37, 17)
         doc.setFont(undefined,'bold')
         doc.setFontSize(8);
-        doc.text(170, 5, 'fecha de proceso: '+cm.fechahoy)
+        doc.text(170, 5, 'fecha de proceso: '+date.formatDate(cm.fechahoy,'DD/MM/YYYY'))
         doc.setFontSize(11);
         doc.text('CHICHERIA DOÑA NATI',110, 7, 'center')
         doc.text('BOLETA DE PAGO',110, 12, 'center')
-        doc.text('Correspondiente  '+planilla.fechainicio+' Al '+planilla.fechafin+' Fecha de pago: ' + (planilla.fechapago==null||planilla.fechapago==undefined||planilla.fechapago==''?'Sn':planilla.fechapago),110, 17,'center' )
+        doc.text('Correspondiente  '+date.formatDate(planilla.fechainicio,'DD/MM/YYYY')+' Al '+date.formatDate(planilla.fechafin,'DD/MM/YYYY')+' Fecha de pago: ' + (planilla.fechapago==null||planilla.fechapago==undefined||planilla.fechapago==''?'Sn':date.formatDate(planilla.fechapago,'DD/MM/YYYY')),110, 17,'center' )
         // doc.text('____________________________________________________________________________________________________',1, 2.5,'center')
         doc.line(5,20,210,20)
         // doc.text(2, 3, 'FECHA DE PAGO')

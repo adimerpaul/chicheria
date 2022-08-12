@@ -92,7 +92,7 @@ class GastoController extends Controller
         <div class="textcnt">Nro '.$gasto->id.'</div>
         <hr>
         <div>Nombre: '.$usuario->name.'</div>
-        <div>Fecha: '.$gasto->fecha.'</div>
+        <div>Fecha: '.date('d/m/Y',strtotime($gasto->fecha)).'</div>
         <hr>
         <table>
         <tr><td>Glosa: </td><td><b>'.$gasto->glosa.'</b></td></tr>
@@ -144,7 +144,7 @@ class GastoController extends Controller
         <div class="textcnt">Nro '.$log->id.'</div>
         <hr>
         <div>Nombre: '.$usuario->name.'</div>
-        <div>Fecha: '.$log->fecha.'</div>
+        <div>Fecha: '.date('d/m/Y',strtotime($log->fecha)).'</div>
         <hr>
         <table>
         <tr><td>Glosa: </td><td><b>'.$glosa->nombre.'</b></td></tr>

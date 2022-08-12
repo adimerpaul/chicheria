@@ -812,7 +812,7 @@ export default {
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(3, 1, 'Historial de prestmos '+ mc.model.label)
-        doc.text(5, 1.5,  'DE '+mc.fecha4+' AL '+mc.fecha5)
+        doc.text(5, 1.5,  'DE '+date.formatDate(mc.fecha4,'DD/MM/YYYY')+' AL '+date.formatDate(mc.fecha5,'DD/MM/YYYY'))
         doc.text(1, 3, 'Fecha')
         doc.text(3, 3, 'Material')
         doc.text(5, 3, 'Efectivo')
@@ -834,7 +834,7 @@ export default {
       this.prestamos.forEach(r=>{
         // xx+=0.5
         y+=0.5
-        doc.text(1, y+3, r.fecha.toString())
+        doc.text(1, y+3, date.formatDate(r.fecha,'DD/MM/YYYY').toString())
         doc.text(3, y+3, r.nombre.toString())
         doc.text(5, y+3, r.efectivo==null?'':''+r.efectivo)
         doc.text(7, y+3, r.fisico==null?'':''+r.fisico)
@@ -866,7 +866,7 @@ export default {
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de ventas')
-        doc.text(5, 1.5,  'DE '+mc.fecha2+' AL '+mc.fecha3)
+        doc.text(5, 1.5,  'DE '+date.formatDate(mc.fecha2,'DD/MM/YYYY')+' AL '+date.formatDate(mc.fecha3,'DD/MM/YYYY'))
         doc.text(1, 3, 'Total')
         doc.text(3, 3, 'A cuenta')
         doc.text(5, 3, 'Saldo')

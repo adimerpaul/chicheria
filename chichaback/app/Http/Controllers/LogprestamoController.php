@@ -58,7 +58,7 @@ class LogprestamoController extends Controller
         $cadena="
 <table>
 
-<tr><td><b>Fecha:</b></td><td>$logpres->fecha</td></tr>
+<tr><td><b>Fecha:</b></td><td>".date('d/m/Y',strtotime($logpres->fecha))."</td></tr>
 <tr><td><b>Cliente:</b></td><td>$cliente->local  $cliente->titular</td></tr>
 <tr><td><b>Item:</b></td><td> $inv->nombre</td></tr>
 <tr><td><b>Cantidad:</b></td><td>$logpres->cantidad</td></tr>

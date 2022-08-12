@@ -92,7 +92,7 @@ class PagoController extends Controller
         <div class='textcnt'>Nro ".$venta->id."</div>
         <hr>
         <div>Usuario   : ".$usuario->name."</div>
-        <div>Fec Reg   : ".$venta->fecha."</div>
+        <div>Fec Reg   : ".date('d/m/Y',strtotime($venta->fecha))."</div>
         <div>Local     : ".$cliente->local."</div>
         <div>Titular   : ".$cliente->titular."</div>
         <div>Producto  : ".$detalle->nombreproducto."</div>
@@ -100,7 +100,7 @@ class PagoController extends Controller
         <div>Costo     : ".$detalle->subtotal."</div>
         <hr>
         <table>
-        <tr><td>Fecha: </td><td><b>".$pago->fecha."</b></td></tr>
+        <tr><td>Fecha: </td><td><b>".date('d/m/Y',strtotime($pago->fecha))."</b></td></tr>
         <tr><td>Monto: </td><td><b>".$pago->monto."</b></td></tr>
         <tr><td>Saldo: </td><td><b>".$venta->saldo."</b></td></tr>
         <tr><td>Observacion: </td><td><b>".$pago->observacion."</b></td></tr>
