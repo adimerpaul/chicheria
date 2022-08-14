@@ -684,7 +684,7 @@ export default {
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'INVENTARIO MATERIAL : ' + mc.material2.nombre)
-        doc.text(5, 1.5,  'DE '+date.formatDate(mc.fecha1,'DD-MM-YYYY')+' AL '+date.formatDate(mc.fecha2,'DD-MM-YYYY'))
+        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
         doc.text(1, 3, 'TIPO')
         doc.text(2.5, 3, 'PROVEEDOR')
         doc.text(5, 3, 'MATERIAL')

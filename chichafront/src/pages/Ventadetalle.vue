@@ -866,7 +866,7 @@ export default {
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de ventas')
-        doc.text(5, 1.5,  'DE '+date.formatDate(mc.fecha2,'DD/MM/YYYY')+' AL '+date.formatDate(mc.fecha3,'DD/MM/YYYY'))
+        doc.text(5, 1.5,  'DE '+mc.fecha2+' AL '+mc.fecha3)
         doc.text(1, 3, 'Total')
         doc.text(3, 3, 'A cuenta')
         doc.text(5, 3, 'Saldo')

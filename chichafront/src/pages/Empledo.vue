@@ -756,7 +756,7 @@ export default {
         doc.setFontSize(11);
         doc.text('CHICHERIA DOÑA NATI',110, 7, 'center')
         doc.text('BOLETA DE PAGO',110, 12, 'center')
-        doc.text('Correspondiente  '+date.formatDate(planilla.fechainicio,'DD/MM/YYYY')+' Al '+date.formatDate(planilla.fechafin,'DD/MM/YYYY')+' Fecha de pago: ' + (planilla.fechapago==null||planilla.fechapago==undefined||planilla.fechapago==''?'Sn':date.formatDate(planilla.fechapago,'DD/MM/YYYY')),110, 17,'center')
+        doc.text('Correspondiente  '+planilla.fechainicio+' Al '+planilla.fechafin+' Fecha de pago: ' + (planilla.fechapago==null||planilla.fechapago==undefined||planilla.fechapago==''?'Sn':planilla.fechapago),110, 17,'center')
         // doc.text('____________________________________________________________________________________________________',1, 2.5,'center')
         doc.line(5,20,210,20)
         // doc.text(2, 3, 'FECHA DE PAGO')
@@ -886,7 +886,7 @@ export default {
           doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
           doc.setFont(undefined,'bold')
           doc.text(5, 1, 'Historial de prestmos Sueldos pagos Adelantos')
-          doc.text(5, 1.5,  'DE '+date.formatDate(mc.fecha1,'DD/MM/YYYY'))
+          doc.text(5, 1.5,  'DE '+mc.fecha1)
           doc.text(1, 3, 'Empleado')
           doc.text(7, 3, 'Sueldo')
           doc.text(9, 3, 'Extra')
