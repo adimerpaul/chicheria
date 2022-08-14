@@ -447,6 +447,8 @@ import {date} from 'quasar'
 import {jsPDF} from "jspdf";
 import $ from "jquery";
 import xlsx from "json-as-xlsx"
+import moment from 'moment'
+
 export default {
   name: "Venta",
   data(){
@@ -677,7 +679,7 @@ xlsx(datacaja, settings) // Will download the excel file
         cadena+="<div class='textcnt'> DETALLE GASTO CAJA CHICA</div>"
         cadena+="<div class='textcnt'>Nro "+caja.id+"</div>        <hr>"
         cadena+="<div>Nombre: "+caja.user+"</div>"
-        cadena+="<div>Fecha: "+date.formatDate( caja.fecha,'DD/MM/YYYY')+"</div>        <hr>"
+        cadena+="<div>Fecha: "+moment(caja.fecha).format('DD/MM/YYYY')+"</div>        <hr>"
         cadena+="<table>        <tr><td>Glosa: </td><td><b>"+caja.glosa+"</b></td></tr>"
         cadena+="<tr><td>Costo: </td><td><b>"+caja.monto+"</b></td></tr>"
         cadena+="<tr><td>Observacion: </td><td><b>"+caja.motivo+"</b></td></tr>        </table>"
@@ -766,7 +768,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'HISTORIAL DE INGRESOS Y GASTOS '+us.label)
-        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(5, 1.5,  'DE '+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY'))
         // doc.text(1, 3, 'Total')
         doc.text(1, 3, 'Ruta/tip')
         doc.text(3, 3, 'Tipo')
@@ -1032,7 +1034,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de ventas DETALLE ' +us.label)
-        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(5, 1.5,  'DE '+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY'))
         doc.text(1, 3, 'Usuario')
         doc.text(3, 3, 'Fecha')
         doc.text(5.5, 3, 'Total')
@@ -1113,7 +1115,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de ventas LOCAL '+ us.label)
-        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(5, 1.5,  'DE '+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY'))
         doc.text(1, 3, 'Usuario')
         doc.text(2.5, 3, 'Fecha Hora')
         doc.text(6, 3, 'Producto')
@@ -1194,7 +1196,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de gastos '+ us.label)
-        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(5, 1.5,  'DE '+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY'))
         doc.text(1.5, 3, 'Usuario')
         doc.text(4, 3, 'Precio')
         doc.text(6.5, 3, 'Observacion')
@@ -1224,7 +1226,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(4, y+3, r.precio+'')
         doc.text(6.5, y+3, r.observacion)
         doc.text(11, y+3, r.glosa)
-        doc.text(15.5, y+3, date.formatDate(r.fecha,'DD/MM/YYYY'))
+        doc.text(15.5, y+3, moment(r.fecha).format('DD/MM/YYYY')+'')
         doc.text(17.5, y+3, r.hora)
 
         cont++
@@ -1250,7 +1252,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(4, y+3, r.monto+'')
         doc.text(6.5, y+3, r.motivo)
         doc.text(11, y+3, r.glosa==null?'GASTO':r.glosa+' : '+r.motivo)
-        doc.text(15.5, y+3, date.formatDate(r.fecha,'DD/MM/YYYY'))
+        doc.text(15.5, y+3, moment(r.fecha).format('DD/MM/YYYY'))
         doc.text(17.5, y+3, r.hora)
 
         cont++

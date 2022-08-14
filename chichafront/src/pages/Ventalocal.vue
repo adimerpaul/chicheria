@@ -347,6 +347,7 @@
 <script>
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
+import moment from 'moment'
 
 export default {
   name: "Venta",
@@ -527,7 +528,7 @@ export default {
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(3, 1, 'Historial de prestmos '+ mc.model.label)
-        doc.text(5, 1.5,  'DE '+mc.fecha4 +' AL '+mc.fecha5)
+        doc.text(5, 1.5,  'DE '+moment(mc.fecha4).format('DD/MM/YYYY') +' AL '+moment(mc.fecha5).format('DD/MM/YYYY'))
         doc.text(1, 3, 'Fecha')
         doc.text(3, 3, 'Material')
         doc.text(5, 3, 'Efectivo')
@@ -581,7 +582,7 @@ export default {
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'Historial de ventas')
-        doc.text(5, 1.5,  'DE '+dmc.fecha2+' AL '+mc.fecha3)
+        doc.text(5, 1.5,  'DE '+moment(mc.fecha2).format('DD/MM/YYYY')+' AL '+moment(mc.fecha3).format('DD/MM/YYYY'))
         doc.text(1, 3, 'Total')
         doc.text(3, 3, 'A cuenta')
         doc.text(5, 3, 'Saldo')

@@ -399,6 +399,8 @@
 import {date} from 'quasar'
 import {jsPDF} from "jspdf";
 import $ from "jquery";
+import moment from 'moment'
+
 export default {
   data(){
     return{
@@ -673,7 +675,7 @@ export default {
 
     },
     genreporte(){
-
+      console.log(date.formatDate(new Date(),'DD/MM/YYYY HH:mm:ss'))
       this.$axios.post(process.env.API+'/repalmacen',{id:this.material2.id,fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
           console.log(res.data)
       let mc=this
@@ -684,7 +686,7 @@ export default {
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'INVENTARIO MATERIAL : ' + mc.material2.nombre)
-        doc.text(5, 1.5,  'DE '+mc.fecha1+' AL '+mc.fecha2)
+        doc.text(5, 1.5,  'DE '+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY'))
         doc.text(1, 3, 'TIPO')
         doc.text(2.5, 3, 'PROVEEDOR')
         doc.text(5, 3, 'MATERIAL')
@@ -709,7 +711,7 @@ export default {
         doc.text(1, y+3, r.tipo)
         doc.text(2.5, y+3, r.razon)
         doc.text(5, y+3, r.nombre)
-        doc.text(7, y+3, date.formatDate(r.fecha,'DD/MM/YYYY'))
+        doc.text(7, y+3, date.formatDate(new Date(r.fecha),'DD/MM/YYYY'))
         doc.text(9.5, y+3, r.costo==null?'':r.costo+'')
         doc.text(11, y+3, r.cantidad+'')
         doc.text(13, y+3, r.fechaven==null?'':r.fechaven)

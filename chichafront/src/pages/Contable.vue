@@ -74,6 +74,7 @@
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
 import $ from "jquery";
+import moment from 'moment'
 
 export default {
   data(){
@@ -217,7 +218,7 @@ export default {
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'RESUMEN DE BALANCE ')
-        doc.text(5, 1.5,  'DE '+date.formatDate(mc.fecha1,'DD-MM-YYYY')+' AL '+date.formatDate(mc.fecha2,'DD-MM-YYYY'))
+        doc.text(5, 1.5,  'DE '+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY'))
         doc.text(1, 3, 'DETALLE')
         doc.text(10, 3, 'INGRESO')
         doc.text(14, 3, 'EGRESO')
