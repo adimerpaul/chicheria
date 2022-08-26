@@ -78,7 +78,7 @@
               <q-badge class="full-width full-height" color="positive">Subtotal <br> {{subtotal}}</q-badge>
             </div>
             <div class="col-6 col-sm-1 q-pa-xs">
-              <q-input dense type="number" label="A cuenta" step="0.1" v-model="acuenta" outlined/>
+              <q-input dense type="number" label="A cuenta" step="0.1" v-model="acuenta" outlined required/>
             </div>
             <div class="col-6 col-sm-1 q-pa-xs">
               <!--            <q-input type="text" label="Saldo" v-model="saldo" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" disable outlined/>-->
