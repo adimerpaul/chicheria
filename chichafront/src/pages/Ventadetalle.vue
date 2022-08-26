@@ -996,7 +996,14 @@ export default {
         })
         return false;
       }
-
+      if (this.acuenta>this.subtotal || this.acuenta<0){
+        this.$q.notify({
+          message:'Ingrese monto acuenta correcto',
+          color:'red',
+          icon:'error'
+        })
+        return false;
+      }
       // console.log(this.detalles)
       // return  false
       // return false
