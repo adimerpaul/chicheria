@@ -345,6 +345,7 @@ class VentaController extends Controller
         }
         table{width:100%;}
         td{vertical-align:top;}
+        .textgrd{font-size:20px}
         </style>
         <div class="textcnt"> CONTROL DESPACHO</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
@@ -354,8 +355,8 @@ class VentaController extends Controller
         <div>Fecha: '.date('d/m/Y',strtotime($venta->fecha)).'</div>
         <hr>
         <table>
-        <tr><td>Cantidad: </td><td><b>'.$venta->detalle->cantidad.'</b></td></tr>
-        <tr><td>Producto: </td><td><b>'.$venta->detalle->nombreproducto.'</b></td></tr>
+        <tr><td>Cantidad: </td><td class="textgrd"><b>'.$venta->detalle->cantidad.'</b></td></tr>
+        <tr><td>Producto: </td><td class="textgrd"><b>'.$venta->detalle->nombreproducto.'</b></td></tr>
         <tr><td>Codigo: </td><td><b>'.$venta->total.'</b></td></tr>
         <tr><td>Usuario: </td><td><b>'.$venta->user->name.'</b></td></tr>
         <tr><td>Observacion: </td><td><b>'.$venta->observacion.'</b></td></tr>
@@ -381,6 +382,7 @@ class VentaController extends Controller
 
         table{width:100%}
         td{vertical-align:top;}
+        .textgrd{font-size:20px}
         </style>
         <div class="textcnt"> HOJA DE RUTA</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
@@ -390,8 +392,8 @@ class VentaController extends Controller
         </tr></table>
         <hr>
         <table>
-        <tr><td>Producto: </td><td>'.$venta->detalle->nombreproducto.'</td></tr>
-        <tr><td>Cantidad </td><td>'.$venta->detalle->cantidad.'</td></tr>
+        <tr><td>Producto: </td><td class="textgrd">'.$venta->detalle->nombreproducto.'</td></tr>
+        <tr><td>Cantidad </td><td class="textgrd">'.$venta->detalle->cantidad.'</td></tr>
         <tr><td>Turno: </td><td>'.$venta->turno.' Hora: '.$venta->hora.'</td></tr>
         <tr><td>Nombre: </td><td>'.$venta->cliente->titular.'</td></tr>
         <tr><td>Tel1: </td><td>'.$venta->telefono1.'</td></tr>

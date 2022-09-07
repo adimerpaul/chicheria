@@ -564,6 +564,7 @@ export default {
         {name:'opcion',label:'opcion',field:'opcion'},
       ],
       ventas:[],
+      respuesta:{},
       venta:{},
       prestamos:[],
       filter:'',
@@ -703,6 +704,11 @@ export default {
         // console.log(res.data)
         // return false
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(this.respuesta);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+        myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.print();
@@ -721,6 +727,7 @@ export default {
         this.subtotal=0
         this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
         this.modalgarantia=false
+        this.respuesta={}
       }).catch(err=>{
         this.$q.loading.hide()
         this.$q.notify({
@@ -1039,14 +1046,14 @@ export default {
         // let myWindow = window.open("", "Imprimir", "width=200,height=100");
         // myWindow.document.write(res.data);
         // myWindow.document.close();
-
-        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        this.respuesta=res.data
+       /*  let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.focus();
         // setTimeout(function(){
           myWindow.print();
-          myWindow.close();
+          myWindow.close(); */
         // },500);
 
         this.$q.notify({
@@ -1062,6 +1069,13 @@ export default {
         }).onOk(()=>{
           this.modalgarantia=true
         }).onCancel(()=>{
+          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+          myWindow.document.write(this.respuesta);
+          myWindow.document.close();
+          myWindow.focus();
+          // setTimeout(function(){
+            myWindow.print();
+            myWindow.close();
           this.subtotal=''
           this.acuenta=0
           this.saldo=''
@@ -1071,6 +1085,7 @@ export default {
           this.observacion='NINGUNA'
           this.cantidad=1
           this.subtotal=0
+          this.respuesta={}
         })
       }).catch(err=>{
         this.$q.loading.hide()
