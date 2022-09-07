@@ -514,9 +514,11 @@ export default {
     impprestamos(){
       if (this.model==''){
         this.$q.notify({
-          message:'Tienes que seleccionar cliente',
+          message:'<h5>Tienes que seleccionar cliente</h5>',
           color:'red',
-          icon:'error'
+          html:true,
+          icon:'error',
+          position:'center'
         })
         return false;
       }
@@ -705,25 +707,31 @@ export default {
     guardar(){
       if (this.model==0){
         this.$q.notify({
-          message:'Tienes que seleccionar cliente',
+          message:'<h5>Tienes que seleccionar cliente</h5>',
           color:'red',
-          icon:'error'
+          html:true,
+          icon:'error',
+          position:'center'
         })
         return false;
       }
             if (this.fecha==undefined){
         this.$q.notify({
-          message:'Tienes que seleccionar fecha',
+          message:'<h5>Tienes que seleccionar fecha</h5>',
           color:'red',
-          icon:'error'
+          html:true,
+          position:'center',
+          icon:'error',
         })
         return false;
       }
       if (this.acuenta>this.subtotal || this.acuenta<0){
         this.$q.notify({
-          message:'Ingrese monto acuenta correcto',
+          message:'<h5>Ingrese monto acuenta correcto</h5>',
           color:'red',
-          icon:'error'
+          icon:'error',
+          html:true,
+          position:'center',
         })
         return false;
       }
@@ -801,9 +809,11 @@ export default {
     generar(){
       if (this.model==0){
         this.$q.notify({
-          message:'Tienes que seleccionar cliente',
+          message:'<h5>Tienes que seleccionar cliente</h5>',
           color:'red',
-          icon:'error'
+          icon:'error',
+          html:true,
+          position:'center',
         })
         return false;
       }
@@ -843,9 +853,11 @@ export default {
       })
       }else{
         this.$q.notify({
-          message:'Debes seleccionar cliente',
+          message:'<h5>Debes seleccionar cliente</h5>',
           color:'red',
-          icon:'error'
+          html:true,
+          icon:'error',
+          position:'center',
         })
       }
     },

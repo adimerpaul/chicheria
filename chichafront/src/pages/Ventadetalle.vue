@@ -654,6 +654,8 @@ export default {
         this.$q.notify({
           message:err.response.data.message,
           color:'red',
+          position:'center',
+
           icon:'error'
         })
       })
@@ -733,6 +735,7 @@ export default {
         this.$q.notify({
           message:err.response.data.message.error,
           color:'red',
+          position:'center',
           icon:'error'
         })
       })
@@ -793,6 +796,8 @@ export default {
           this.$q.notify({
             message:'Venta Anulado ',
             color:'green',
+          position:'center',
+
             icon:'info'
           })})
       }).onOk(() => {
@@ -806,9 +811,11 @@ export default {
     impprestamos(){
       if (this.model==''){
         this.$q.notify({
-          message:'Tienes que seleccionar cliente',
+          message:'<h5>Tienes que seleccionar cliente</h5>',
           color:'red',
-          icon:'error'
+          position:'center',
+          icon:'error',
+          html:true
         })
         return false;
       }
@@ -989,24 +996,33 @@ export default {
     guardar(){
       if (this.model==0){
         this.$q.notify({
-          message:'Tienes que seleccionar cliente',
+          position:'center',
+          message:'<h5>Tienes que seleccionar cliente</h5>',
           color:'red',
-          icon:'error'
+          spinnerSize:'100px',
+          icon:'error',
+          html:true
+          
         })
         return false;
       }
       if (this.fecha==undefined){
         this.$q.notify({
-          message:'Tienes que seleccionar fecha',
+          message:'<h5>Tienes que seleccionar fecha</h5>',
           color:'red',
+          position:'center',
+          html:true,
           icon:'error'
         })
         return false;
       }
       if (this.acuenta>this.subtotal || this.acuenta<0){
         this.$q.notify({
-          message:'Ingrese monto acuenta correcto',
+          message:'<h5>Ingrese monto acuenta correcto</h5>',
           color:'red',
+          position:'center',
+          html:true,
+
           icon:'error'
         })
         return false;
@@ -1059,6 +1075,8 @@ export default {
         this.$q.notify({
           message:'Venta exitosa',
           color:'green',
+          position:'center',
+
           icon:'info'
         })
         this.misventas()
@@ -1093,6 +1111,8 @@ export default {
         this.$q.notify({
           message:err.response.data.message,
           color:'red',
+          position:'center',
+
           icon:'error'
         })
       })
@@ -1103,8 +1123,10 @@ export default {
     generar(){
       if (this.model==0){
         this.$q.notify({
-          message:'Tienes que seleccionar cliente',
+          message:'<h5>Tienes que seleccionar cliente</h5>',
           color:'red',
+          position:'center',
+          html:true,
           icon:'error'
         })
         return false;
@@ -1133,6 +1155,8 @@ export default {
           this.$q.notify({
             message:'Prestamo exitosa',
             color:'green',
+          position:'center',
+
             icon:'info'
           })
           this.generar()
@@ -1142,13 +1166,17 @@ export default {
           this.$q.notify({
             message:err.response.data.message,
             color:'red',
+            position:'center',
             icon:'error'
           })
         })
       }else{
         this.$q.notify({
-          message:'Debes seleccionar cliente',
+          message:'<h5>Debes seleccionar cliente</h5>',
           color:'red',
+          position:'center',
+          html:true,
+
           icon:'error'
         })
       }
