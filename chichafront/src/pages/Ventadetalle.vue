@@ -705,11 +705,11 @@ export default {
       }).then((res)=>{
         // console.log(res.data)
         // return false
-        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        /*let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(this.respuesta);
         myWindow.document.close();
         myWindow.print();
-        myWindow.close();
+        myWindow.close();*/
         myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
@@ -1062,14 +1062,14 @@ export default {
         // let myWindow = window.open("", "Imprimir", "width=200,height=100");
         // myWindow.document.write(res.data);
         // myWindow.document.close();
-        this.respuesta=res.data
-       /*  let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        //this.respuesta=res.data
+         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.focus();
         // setTimeout(function(){
           myWindow.print();
-          myWindow.close(); */
+          myWindow.close(); 
         // },500);
 
         this.$q.notify({
@@ -1087,13 +1087,13 @@ export default {
         }).onOk(()=>{
           this.modalgarantia=true
         }).onCancel(()=>{
-          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+         /* let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
           myWindow.document.write(this.respuesta);
           myWindow.document.close();
           myWindow.focus();
           // setTimeout(function(){
             myWindow.print();
-            myWindow.close();
+            myWindow.close();*/
           this.subtotal=''
           this.acuenta=0
           this.saldo=''
