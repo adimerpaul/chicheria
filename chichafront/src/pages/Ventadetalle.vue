@@ -710,7 +710,7 @@ export default {
         myWindow.document.close();
         myWindow.print();
         myWindow.close();*/
-        myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.print();
@@ -1085,6 +1085,8 @@ export default {
           title:'Garantia?',
           cancel: true,
         }).onOk(()=>{
+          this.newgarantia.cantidad=1,
+          this.newgarantia.efectivo=0,
           this.modalgarantia=true
         }).onCancel(()=>{
          /* let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
