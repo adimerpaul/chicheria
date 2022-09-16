@@ -203,8 +203,8 @@
                       </q-td>
                       <q-td key="opcion" :props="props">
                         <q-btn dense icon="cancel" color="red" v-if="props.row.estado!='ANULADO' && $store.state.login.anularventa" @click="anular(props.row)" />
+                        <template v-if="$store.state.login.reimpresion" >
                           <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" />
-                          <template v-if="$store.state.login.reimpresion" >
                         </template>
                       </q-td>
                   </q-tr>
