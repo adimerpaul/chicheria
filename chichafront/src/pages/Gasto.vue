@@ -1802,7 +1802,11 @@ xlsx(datacaja, settings) // Will download the excel file
         this.misgastos()
           this.totalcaja()
           this.totalgeneral()
-
+          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
         this.pagos=false
         this.checkgasto='CAJA'
         this.pago.monto=0

@@ -106,7 +106,15 @@ class SueldoController extends Controller
 
 
         }
-
+        $info=Sueldo::with('empleado')->find($sueldo->id);
+        $cadena="<center>$info->tipo</center>
+        <div>Empleado: ".$info->empleado['nombre']."</div>
+        <div>Fecha: ".date('d/m/Y',strtotime($info->fecha))."</div>
+        <div>Monto: $info->monto Bs.</div>
+        <div>Obs: $info->observacion </div><br><br>
+        <center>FIRMA</center>
+        ";
+        return $cadena;
 //        return $sueldo;
         return Empleado::with('sueldos')
             ->where('id',$request->empleado_id)

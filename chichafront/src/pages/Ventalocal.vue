@@ -672,6 +672,7 @@ export default {
             local:r.cliente.local,
             titular:r.cliente.titular,
             user:r.user.name,
+
           })
         })
         console.log(this.ventas)
