@@ -321,7 +321,7 @@ export default {
       montogeneral:0,
       columns:[
         {name:'ci',label:'CI',field:'ci'},
-        {name:'nombre',label:'NOMBRE',field:'nombre'},
+        {name:'nombre',label:'NOMBRE',field:'nombre',sortable:true},
         {name:'tipo',label:'TIPO',field:'tipo'},
         {name:'action',label:'OPCION',field:'action'},
       ],
