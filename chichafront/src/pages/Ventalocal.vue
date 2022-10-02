@@ -195,11 +195,12 @@
                     <q-td key="estado" :props="props">
                       <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
                     </q-td>
-                  <q-td key="user" :props="props">
-                      {{ props.row.user }}
-                    </q-td>
+
                                           <q-td key="observacion" :props="props">
                         <q-badge :color="props.row.observacion=='CANCELADO'?'positive':'negative'">{{ props.row.observacion }}</q-badge>
+                      </q-td>
+                      <q-td key="user" :props="props">
+                        {{ props.row.user }}
                       </q-td>
                       <q-td key="opcion" :props="props">
                         <q-btn dense icon="cancel" color="red" v-if="props.row.estado!='ANULADO' && $store.state.login.anularventa" @click="anular(props.row)" />

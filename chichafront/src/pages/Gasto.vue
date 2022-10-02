@@ -770,7 +770,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(5, 1, 'HISTORIAL DE INGRESOS Y GASTOS '+us.label)
         doc.text(5, 1.5,  'DE '+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY'))
         // doc.text(1, 3, 'Total')
-        doc.text(1, 3, 'Ruta/tip')
+        doc.text(1, 3, 'Tipo V')
         doc.text(3, 3, 'Tipo')
         doc.text(4.5, 3, 'Estado')
         doc.text(6.5, 3, 'Monto')
@@ -790,13 +790,15 @@ xlsx(datacaja, settings) // Will download the excel file
       // let yy=y
       let y=0
       let ventas=0
+      let ventasruta=0
       let ccpago=0
 
       this.ventas.forEach(r=>{
+        if(r.fechaentrega==null || r.fechaentrega==''){
         y+=0.5
         // console.log(r)
        doc.setFontSize(6);
-        doc.text(1, y+3, r.fechaentrega!=null&&r.fechaentrega!=''?'Ruta '+r.tipo:''+r.tipo)
+        doc.text(1, y+3, r.tipo+'-'+r.id)
         doc.setFontSize(9);
         doc.text(3, y+3, 'Cobro')
         doc.text(4.5, y+3, r.estado+'')
@@ -805,7 +807,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(8, y+3, r.cantidad!=null?r.cantidad.toString():'')
         doc.text(10, y+3, r.detalle!=null?r.detalle.toString():'')
         doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
-        doc.text(18.5, y+3, r.local!=null?r.local.toString():'')
+        doc.text(18.5, y+3, r.local!=null?r.local.toString():'')}
         if (y+3>25){
           doc.addPage();
           header()
@@ -814,6 +816,37 @@ xlsx(datacaja, settings) // Will download the excel file
       })
       y+=0.5
         doc.text(1, y+3, 'T VENTA:')
+        doc.text(3, y+3, ventas+' Bs.')
+      y+=0.5
+
+        doc.setFont(undefined,'bold')
+        doc.text(1, y+3, 'REGISTRO DE VENTAS CON RUTA')
+        doc.setFont(undefined,'normal')
+
+      this.ventas.forEach(r=>{
+        if(r.fechaentrega!=null && r.fechaentrega!=''){
+        y+=0.5
+        // console.log(r)
+       doc.setFontSize(6);
+        doc.text(1, y+3, 'Ruta-'+r.id)
+        doc.setFontSize(9);
+        doc.text(3, y+3, 'Cobro')
+        doc.text(4.5, y+3, r.estado+'')
+        doc.text(6.5, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
+        ventasruta+=parseFloat(r.acuenta!=null?r.acuenta:0)
+        doc.text(8, y+3, r.cantidad!=null?r.cantidad.toString():'')
+        doc.text(10, y+3, r.detalle!=null?r.detalle.toString():'')
+        doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
+        doc.text(18.5, y+3, r.local!=null?r.local.toString():'')}
+        if (y+3>25){
+          doc.addPage();
+          header()
+          y=0
+        }
+      })
+
+      y+=0.5
+        doc.text(1, y+3, 'TR VENTA:')
         doc.text(3, y+3, ventas+' Bs.')
       let gastos=0
       let caja=0
@@ -1664,6 +1697,7 @@ xlsx(datacaja, settings) // Will download the excel file
              if (r.estado!='ANULADO'){
               if(this.$store.state.login.gastoreporteuser){
               if(this.user.id==0){this.ventas.push({
+                id:r.id,
                 fecha:r.fecha,
                 total:r.total,
                 // tipo:r.tipo,
