@@ -798,7 +798,7 @@ xlsx(datacaja, settings) // Will download the excel file
         y+=0.5
         // console.log(r)
        doc.setFontSize(6);
-        doc.text(1, y+3, r.tipo+'-'+r.id)
+        doc.text(1, y+3, r.tipo.substring(0,1)+'-'+r.id)
         doc.setFontSize(9);
         doc.text(3, y+3, 'Cobro')
         doc.text(4.5, y+3, r.estado+'')
@@ -828,7 +828,7 @@ xlsx(datacaja, settings) // Will download the excel file
         y+=0.5
         // console.log(r)
        doc.setFontSize(6);
-        doc.text(1, y+3, 'Ruta-'+r.id)
+        doc.text(1, y+3, 'R-'+r.id)
         doc.setFontSize(9);
         doc.text(3, y+3, 'Cobro')
         doc.text(4.5, y+3, r.estado+'')
