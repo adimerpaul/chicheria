@@ -847,10 +847,10 @@ xlsx(datacaja, settings) // Will download the excel file
 
       y+=0.5
         doc.text(1, y+3, 'TR VENTA:')
-        doc.text(3, y+3, ventas+' Bs.')
+        doc.text(3, y+3, ventasruta+' Bs.')
       let gastos=0
       let caja=0
-
+      ventas=ventas+ventasruta
             y+=0.5
         doc.setFont(undefined,'bold')
         doc.text(1, y+3, '-------------------------------------------------------')
