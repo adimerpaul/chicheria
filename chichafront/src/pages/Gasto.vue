@@ -1716,6 +1716,7 @@ xlsx(datacaja, settings) // Will download the excel file
               })}
               else{
               if(this.user.id==r.user_id){this.ventas.push({
+                id:r.id,
                 fecha:r.fecha,
                 total:r.total,
                 tipo:r.tipo,
@@ -1737,6 +1738,7 @@ xlsx(datacaja, settings) // Will download the excel file
               else{
                 if(this.$store.state.login.user.id==r.user_id)
               this.ventas.push({
+                id:r.id,
                 fecha:r.fecha,
                 total:r.total,
                 tipo:r.tipo,
