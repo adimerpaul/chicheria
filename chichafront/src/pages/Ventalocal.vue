@@ -672,6 +672,7 @@ export default {
             estado:r.estado,
             local:r.cliente.local,
             titular:r.cliente.titular,
+            observacion:r.observacion,
             user:r.user.name,
 
           })
