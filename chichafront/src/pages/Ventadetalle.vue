@@ -15,6 +15,7 @@
               <div class="row">
                 <div class="col-2">
                   <q-btn @click="modalregistro=true" class="full-width full-height" color="green" icon="add_circle" size="xs" />
+                  <q-btn @click="modcliente=model;dialog_mod=true;" class="full-width full-height" color="yellow" icon="edit" size="xs" v-if="model"/>
                 </div>
                 <div class="col-10">
                   <q-select
@@ -26,7 +27,7 @@
                     :options="options"
                     @filter="filterFn"
                     @click="generar"
-                    dense
+                    
                   />
                 </div>
 
@@ -34,11 +35,11 @@
 
             </div>
             <div class="col-6 col-sm-2 q-pa-xs">
-              <q-select dense v-model="producto" outlined :options="productos" option-label="nombre" option-value="id" label="Producto" required/>
+              <q-select  v-model="producto" outlined :options="productos" option-label="nombre" option-value="id" label="Producto" required/>
             </div>
             <div class="col-6 col-sm-1 q-pa-xs">
               <q-input
-                dense
+                
                 type="number"
                 step="0.1"
                 label="precio"
@@ -48,12 +49,12 @@
             </div>
             <div class="col-4 col-sm-1 q-pa-xs">
               <!--            <q-input type="number" label="Cantidad" v-model="cantidad" outlined/>-->
-              <q-input dense label="Cantidad" type="number" step="0.1" v-model="cantidad" outlined/>
+              <q-input  label="Cantidad" type="number" step="0.5" v-model="cantidad" outlined/>
             </div>
             <div class="col-4 col-sm-2 q-pa-xs">
               <!--            <q-input type="number" label="Cantidad" v-model="cantidad" outlined/>-->
                             <q-input
-                dense
+                
                 type="text"
                 label="Observacion"
                 v-model="observacion"
@@ -78,7 +79,7 @@
               <q-badge class="full-width full-height" color="positive">Subtotal <br> {{subtotal}}</q-badge>
             </div>
             <div class="col-6 col-sm-1 q-pa-xs">
-              <q-input dense type="number" label="A cuenta" step="0.1" v-model="acuenta" outlined required/>
+              <q-input  type="number" label="A cuenta" step="0.1" v-model="acuenta" outlined required/>
             </div>
             <div class="col-6 col-sm-1 q-pa-xs">
               <!--            <q-input type="text" label="Saldo" v-model="saldo" label-color="white" :bg-color="subtotal>acuenta?'negative':'positive'" disable outlined/>-->
@@ -374,10 +375,10 @@
                 <q-input required outlined label="titular" style="text-transform: uppercase" v-model="newcliente.titular"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required outlined label="telefono" v-model="newcliente.telefono"/>
+                <q-input  outlined label="telefono" v-model="newcliente.telefono"/>
               </div>
               <div class="col-12 col-md-6 q-pa-xs">
-                <q-input required outlined label="direccion" style="text-transform: uppercase" v-model="newcliente.direccion"/>
+                <q-input  outlined label="direccion" style="text-transform: uppercase" v-model="newcliente.direccion"/>
               </div>
 
               <div class="col-12  q-pa-xs flex flex-center">
@@ -388,6 +389,61 @@
         </q-card-section>
         <q-card-section align="right" class="">
           <q-btn flat label="Cerrar" icon="delete" color="negative" v-close-popup/>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="dialog_mod">
+      <q-card>
+        <q-card-section class="bg-green-14 text-white">
+          <div class="text-h7">MODIFICAR REGISTRO CLIENTE</div>
+        </q-card-section>
+        <q-card-section class="q-pt-xs">
+          <q-form
+            @submit="onMod"
+            class="q-gutter-md"  >
+                  <q-input
+                    outlined
+                    type="text"
+                    v-model="modcliente.ci"
+                    label="Cedula Identidad"
+                    style="text-transform: uppercase"
+                  />
+                  <q-input
+                    outlined
+                    v-model="modcliente.titular"
+                    type="text"
+                    label="Nombre Completo"
+                    style="text-transform: uppercase"
+                    lazy-rules
+                    :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
+                  />
+                  <q-input
+                    outlined
+                    type="text"
+                    v-model="modcliente.telefono"
+                    label="Telefono o Celular"
+                    style="text-transform: uppercase"
+                  />
+                  <q-input
+                    type="text"
+                    outlined
+                    v-model="modcliente.direccion"
+                    label="Direccion*"
+                    style="text-transform: uppercase"
+                  />
+                  <q-input
+                    outlined
+                    v-model="modcliente.observacion"
+                    label="Observacion"
+                    type="text"
+                    style="text-transform: uppercase"
+                  />
+            <div>
+              <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
+                <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+            </div>
+          </q-form>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -507,6 +563,7 @@ export default {
   data(){
     return{
       modalregistro:false,
+      dialog_mod:false,
       fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha3:date.formatDate(new Date(),'YYYY-MM-DD'),
@@ -517,6 +574,7 @@ export default {
       newcliente:{},
       clientes:[],
       clientes2:[],
+      modcliente:{},
       cliente:'',
       productos:[],
       inventarios:[],
@@ -618,6 +676,29 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+    onMod(){
+        this.$q.loading.show();
+        this.$axios.put(process.env.API+'/cliente/'+this.modcliente.id,this.modcliente).then(res=>{
+         this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Modificado correctamente'
+        });
+        this.dialog_mod=false;
+        this.modcliente={}
+        this.misclientes()
+       }).catch(err=>{
+
+          this.$q.notify({
+            color: 'red-4',
+            textColor: 'white',
+            icon: 'error',
+            message: 'Error al Modificar'
+          });
+        })
+        this.$q.loading.hide();
+    },
     misclientes(){
       this.$axios.get(process.env.API+'/listacliente').then(res=>{
         // this.clientes=res.data
@@ -626,18 +707,10 @@ export default {
         // console.log(res.data)
         this.clientes=[]
         res.data.forEach(r=>{
-          if (r.tipocliente==2)
-            this.clientes.push({
-              label:r.ci+' '+r.titular,
-              id:r.id,
-              telefono:r.telefono,
-              direccion:r.direccion,
-              // detalles:r.detalles,
-              // nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
-              // padron:r.padron,
-              // ci:r.cliente.ci,
-              // total:r.total,
-            })
+          if (r.tipocliente==2){
+            r.label=r.ci+' '+r.titular,
+
+            this.clientes.push(r)}
         })
       })
     },

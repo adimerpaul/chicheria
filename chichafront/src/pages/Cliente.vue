@@ -163,8 +163,7 @@
         <q-card-section class="q-pt-xs">
           <q-form
             @submit="onMod"
-            class="q-gutter-md"
-          >
+            class="q-gutter-md"  >
 
                   <q-input
                     outlined
@@ -182,8 +181,6 @@
                     lazy-rules
                     :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
                   />
-
-
                   <q-input
                     outlined
                     type="text"
@@ -191,7 +188,6 @@
                     label="Telefono o Celular"
                     style="text-transform: uppercase"
                   />
-
                   <q-input
                     type="text"
                     outlined
@@ -207,8 +203,6 @@
                     style="text-transform: uppercase"
                   />
                   <div v-if="dato.tipocliente=='1'">
-
-
                   <q-input
                     outlined
                     v-model="dato.nit"
@@ -217,16 +211,12 @@
                     style="text-transform: uppercase"
                   />
                 </div>
-
-
             <div>
               <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
                 <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
             </div>
           </q-form>
         </q-card-section>
-
-
       </q-card>
     </q-dialog>
 

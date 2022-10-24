@@ -555,7 +555,7 @@
 <!--          </q-item-section>-->
 <!--        </q-item>-->
 
-        <q-item
+        <!-- <q-item
           v-if="$store.getters['login/isLoggedIn']"
           clickable
           @click="logout"
@@ -572,7 +572,7 @@
               Salir del sistema
             </q-item-label>
           </q-item-section>
-        </q-item>
+        </q-item>-->
 
 <!--        <EssentialLink-->
 <!--          v-for="link in essentialLinks"-->

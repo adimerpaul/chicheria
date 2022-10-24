@@ -517,7 +517,7 @@ export default {
         {name:'monto',label:'Monto',field:'monto'},
         {name:'glosa',label:'Glosa',field:'glosa'},
         {name:'motivo',label:'Motivo',field:'motivo'},
-        {name:'fecha',label:'Fecha',field:'fecha'},
+        {name:'fecha',label:'Fecha',field:row=>moment(row.fecha).format('DD/MM/YYYY')},
         {name:'hora',label:'Hora',field:'hora'},
         {name:'user',label:'Usuario',field:'user'},
         {name:'opcion',label:'Opcion'},
@@ -771,13 +771,14 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(5, 1.5,  'DE '+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY'))
         // doc.text(1, 3, 'Total')
         doc.text(1, 3, 'Tipo V')
-        doc.text(3, 3, 'Tipo')
-        doc.text(4.5, 3, 'Estado')
-        doc.text(6.5, 3, 'Monto')
-        doc.text(8, 3, 'Cant')
-        doc.text(10, 3, 'Producto')
-        doc.text(13.5, 3, 'Titular')
-        doc.text(18.5, 3, 'Local')
+        doc.text(2.5, 3, 'Cant')
+        doc.text(3.5, 3, 'Producto')
+        doc.text(7, 3,'Total' ) 
+        doc.text(8.5, 3, 'Monto')
+        doc.text(10, 3, 'Saldo')
+        doc.text(11.5, 3, 'Titular')
+        doc.text(15.5, 3, 'Local')
+        doc.text(19, 3, 'Estado')
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
@@ -800,14 +801,22 @@ xlsx(datacaja, settings) // Will download the excel file
        doc.setFontSize(6);
         doc.text(1, y+3, r.tipo.substring(0,1)+'-'+r.id)
         doc.setFontSize(9);
-        doc.text(3, y+3, 'Cobro')
-        doc.text(4.5, y+3, r.estado+'')
-        doc.text(6.5, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
+
+        doc.text(2.5, y+3, r.cantidad!=null?r.cantidad.toString():'')
+        doc.text(3.5, y+3, r.detalle!=null?r.detalle.toString():'')
+        doc.text(7, y+3, r.total!=null?r.total.toString():''+' Bs.')
+        doc.text(8.5, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventas+=parseFloat(r.acuenta!=null?r.acuenta:0)
-        doc.text(8, y+3, r.cantidad!=null?r.cantidad.toString():'')
-        doc.text(10, y+3, r.detalle!=null?r.detalle.toString():'')
-        doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
-        doc.text(18.5, y+3, r.local!=null?r.local.toString():'')}
+        doc.text(10, y+3, r.saldo!=null?r.saldo.toString():''+' Bs.')
+        doc.setFontSize(6);
+        doc.text(11.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
+        doc.text(15.5, y+3, r.local!=null?r.local.toString():'')
+        doc.setFontSize(9);
+        if(r.estado=='POR COBRAR')  doc.setTextColor(255,0,0);
+        doc.text(19, y+3, r.estado+'')
+        doc.setTextColor(0,0,0);
+
+      }
         if (y+3>25){
           doc.addPage();
           header()
@@ -820,6 +829,8 @@ xlsx(datacaja, settings) // Will download the excel file
       y+=0.5
 
         doc.setFont(undefined,'bold')
+        doc.text(1, y+3, '-------------------------------------------------')
+      y+=0.5
         doc.text(1, y+3, 'REGISTRO DE VENTAS CON RUTA')
         doc.setFont(undefined,'normal')
 
@@ -830,14 +841,20 @@ xlsx(datacaja, settings) // Will download the excel file
        doc.setFontSize(6);
         doc.text(1, y+3, 'R-'+r.id)
         doc.setFontSize(9);
-        doc.text(3, y+3, 'Cobro')
-        doc.text(4.5, y+3, r.estado+'')
-        doc.text(6.5, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
-        ventasruta+=parseFloat(r.acuenta!=null?r.acuenta:0)
-        doc.text(8, y+3, r.cantidad!=null?r.cantidad.toString():'')
-        doc.text(10, y+3, r.detalle!=null?r.detalle.toString():'')
-        doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
-        doc.text(18.5, y+3, r.local!=null?r.local.toString():'')}
+        doc.text(2.5, y+3, r.cantidad!=null?r.cantidad.toString():'')
+        doc.text(3.5, y+3, r.detalle!=null?r.detalle.toString():'')
+        doc.text(7, y+3, r.total!=null?r.total.toString():''+' Bs.')
+        doc.text(8.5, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
+        ventas+=parseFloat(r.acuenta!=null?r.acuenta:0)
+        doc.text(10, y+3, r.saldo!=null?r.saldo.toString():''+' Bs.')
+        doc.setFontSize(6);
+        doc.text(11.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
+        doc.text(15.5, y+3, r.local!=null?r.local.toString():'')
+        doc.setFontSize(9);
+        if(r.estado=='POR COBRAR')  doc.setTextColor(255,0,0);
+        doc.text(19, y+3, r.estado+'')
+        doc.setTextColor(0,0,0);
+      }
         if (y+3>25){
           doc.addPage();
           header()
@@ -860,13 +877,12 @@ xlsx(datacaja, settings) // Will download the excel file
       this.gastos.forEach(r=>{
         y+=0.5
         // console.log(r)
-        doc.text(3, y+3, 'Gasto')
-        doc.text(6.5, y+3, r.precio!=null?r.precio.toString():''+'Bs.')
+        doc.text(6.5, y+3, r.precio!=null?r.precio+' Bs':'0 Bs.')
         if(r.glosa=='CAJA CHICA')
         caja+=parseFloat(r.precio!=null?r.precio:0)
         else
         gastos+=parseFloat(r.precio!=null?r.precio:0)
-        doc.text(8, y+3, r.glosa+': '+r.observacion)
+        doc.text(10, y+3, r.glosa+': '+r.observacion)
         // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
         // doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
         //doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
@@ -884,15 +900,13 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
         doc.text(1, y+3, 'DETALLE DE GASTO CAJA CHICA')
-        y+=0.5
         doc.setFont(undefined,'normal')
             this.chica.forEach(r=>{
         y+=0.5
         // console.log(r)
-        doc.text(3, y+3, 'Gasto')
-        doc.text(6.5, y+3, r.monto!=null?r.monto.toString():''+'Bs.')
+        doc.text(6.5, y+3, r.monto!=null?r.monto+' Bs':'0 Bs.')
         caja+=parseFloat(r.monto!=null?r.monto:0)
-        doc.text(8, y+3, r.glosa==null?'GASTO':r.glosa+' : '+r.motivo)
+        doc.text(10, y+3, r.glosa==null?'GASTO':r.glosa+' : '+r.motivo)
         // doc.text(9, y+3, r.fecha!=null?r.fecha.toString():'')
         // doc.text(11.5, y+3, r.hora!=null?r.hora.toString():'')
         //doc.text(18.5, y+3, r.user!=null?r.user.toString():'')
@@ -923,12 +937,11 @@ xlsx(datacaja, settings) // Will download the excel file
         ventas=ventas+this.totalanulado;
               this.anulados.forEach(element => {
               y+=0.5
-        doc.text(3, y+3, 'Prestamo')
-        doc.text(6.5, y+3, element.efectivo+'')
-        doc.text(8, y+3, element.cantidad+'')
-        doc.text(10, y+3, element.inventario.nombre)
-        doc.text(13.5, y+3, element.cliente.titular)
-        doc.text(18.5, y+3, element.cliente.local)
+        doc.text(2.5, y+3, element.cantidad+'')
+        doc.text(3.5, y+3, element.inventario.nombre)
+        doc.text(7, y+3, element.efectivo+' Bs')
+        doc.text(11.5, y+3, element.cliente.titular)
+        doc.text(15.5, y+3, element.cliente.local)
                 if (y+3>25){
           doc.addPage();
           header()
@@ -957,18 +970,16 @@ xlsx(datacaja, settings) // Will download the excel file
       this.prestamoventa.forEach(r=>{
         y+=0.5
         // console.log(r)
-       doc.setFontSize(6);
         doc.text(1, y+3, '')
+        doc.text(2.5, y+3, r.cantidad+'')
+        doc.setFontSize(6);
+        doc.text(3.5, y+3, r.inventario.nombre)
        doc.setFontSize(9);
-        doc.text(6.5, y+3, r.efectivo+' Bs.')
+        doc.text(7, y+3, r.efectivo+' Bs.')
         ventas+=parseFloat(r.efectivo)
-        doc.text(3, y+3, 'Material')
-        doc.text(8, y+3, r.cantidad+'')
-       doc.setFontSize(6);
-        doc.text(10, y+3, r.inventario.nombre)
-       doc.setFontSize(9);
-        doc.text(13.5, y+3, r.cliente.titular)
-        doc.text(18.5, y+3, r.cliente.local)
+
+        doc.text(11.5, y+3, r.cliente.titular)
+        doc.text(15.5, y+3, r.cliente.local)
         if (y+3>25){
           doc.addPage();
           header()
@@ -996,16 +1007,14 @@ xlsx(datacaja, settings) // Will download the excel file
       this.rpagos.forEach(r=>{
         y+=0.5
         doc.setFontSize(6);
-        doc.text(1, y+3, r.fechaentrega!=null?'Ruta '+r.tipo:''+r.tipo)
+        doc.text(1, y+3, r.fechaentrega!=null&&r.fechaentrega!=''?'R-'+r.id:r.tipo.substring(0,1)+'-'+r.id)
         doc.setFontSize(9);
-        doc.text(3, y+3, 'Pagos')
-        doc.text(6.5, y+3, r.monto!=null?r.monto.toString():''+' Bs.')
+        doc.text(3.5, y+3, r.nombreproducto!=null?r.nombreproducto.toString():'')
+        doc.text(7, y+3, r.monto!=null?r.monto+' Bs':' 0 Bs.')
         //ventas+=r.monto;
         ccpago+=r.monto
-        doc.text(8, y+3, 'N-'+r.id)
-        doc.text(10, y+3, r.nombreproducto!=null?r.nombreproducto.toString():'')
-        doc.text(13.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
-        doc.text(18.5, y+3, r.local!=null?r.local.toString():'')
+        doc.text(11.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
+        doc.text(15.5, y+3, r.local!=null?r.local.toString():'')
         if (y+3>25){
           doc.addPage();
           header()
