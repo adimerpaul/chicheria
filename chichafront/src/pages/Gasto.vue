@@ -758,10 +758,10 @@ xlsx(datacaja, settings) // Will download the excel file
     },
     imprimirmisventasygastos(us){
       let mc=this
-          if(!this.$store.state.login.gastoreporteuser) 
+          if(!this.$store.state.login.gastoreporteuser)
 
       us.label=this.$store.state.login.user.name;
-      
+
       function header(){
         var img = new Image()
         img.src = 'logo.png'
@@ -773,7 +773,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(1, 3, 'Tipo V')
         doc.text(2.5, 3, 'Cant')
         doc.text(3.5, 3, 'Producto')
-        doc.text(7, 3,'Total' ) 
+        doc.text(7, 3,'Total' )
         doc.text(8.5, 3, 'Monto')
         doc.text(10, 3, 'Saldo')
         doc.text(11.5, 3, 'Titular')
@@ -924,6 +924,7 @@ xlsx(datacaja, settings) // Will download the excel file
       y+=0.5
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
+      let panulado=0
         doc.setFont(undefined,'bold')
         doc.text(1, y+3, 'INGRESOS DE ANULADOS PRESTAMOS')
         doc.setFont(undefined,'normal')
@@ -934,7 +935,7 @@ xlsx(datacaja, settings) // Will download the excel file
         }
 
       if(this.totalanulado>0){
-        ventas=ventas+this.totalanulado;
+        panulado=panulado+this.totalanulado;
               this.anulados.forEach(element => {
               y+=0.5
         doc.text(2.5, y+3, element.cantidad+'')
@@ -966,7 +967,7 @@ xlsx(datacaja, settings) // Will download the excel file
           header()
           y=0
         }
-
+        let matventa=0
       this.prestamoventa.forEach(r=>{
         y+=0.5
         // console.log(r)
@@ -976,7 +977,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(3.5, y+3, r.inventario.nombre)
        doc.setFontSize(9);
         doc.text(7, y+3, r.efectivo+' Bs.')
-        ventas+=parseFloat(r.efectivo)
+        matventa+=parseFloat(r.efectivo)
 
         doc.text(11.5, y+3, r.cliente.titular)
         doc.text(15.5, y+3, r.cliente.local)
@@ -1037,12 +1038,23 @@ xlsx(datacaja, settings) // Will download the excel file
           y=0
         }
 
+
       doc.setFontSize(11);
         doc.setFont(undefined,'normal')
 
-      doc.text(2, y+4, 'Total Ingreso: ')
+      doc.text(2, y+4, 'T Ing Venta: ')
         doc.setFont(undefined,'bold')
       doc.text(5.5, y+4, ventas+'Bs')
+        doc.setFont(undefined,'normal')
+
+      doc.text(2, y+5, 'T Prest A: ')
+        doc.setFont(undefined,'bold')
+      doc.text(5.5, y+5, panulado+'Bs')
+      doc.setFont(undefined,'normal')
+
+          doc.text(2, y+5.5, 'T Mat Vent: ')
+        doc.setFont(undefined,'bold')
+      doc.text(5.5, y+5.5, matventa+'Bs')
 
         doc.setFont(undefined,'normal')
       doc.text(8, y+4, 'Total gasto: ')
@@ -1066,7 +1078,7 @@ xlsx(datacaja, settings) // Will download the excel file
     },
     imprimirmisventasdetalle(us){
       let mc=this
-                if(!this.$store.state.login.gastoreporteuser) 
+                if(!this.$store.state.login.gastoreporteuser)
 
       us.label=this.$store.state.login.user.name;
 
@@ -1147,7 +1159,7 @@ xlsx(datacaja, settings) // Will download the excel file
 
     imprimirmisventaslocal(us){
       let mc=this
-                if(!this.$store.state.login.gastoreporteuser) 
+                if(!this.$store.state.login.gastoreporteuser)
 
       us.label=this.$store.state.login.user.name;
 
@@ -1228,7 +1240,7 @@ xlsx(datacaja, settings) // Will download the excel file
 
     imprimir(us){
       let mc=this
-                if(!this.$store.state.login.gastoreporteuser) 
+                if(!this.$store.state.login.gastoreporteuser)
 
       us.label=this.$store.state.login.user.name;
 
@@ -1778,7 +1790,7 @@ xlsx(datacaja, settings) // Will download the excel file
             this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
               this.rpagos=[];
               this.rpagos=res.data;
-          if(!this.$store.state.login.gastoreporteuser) 
+          if(!this.$store.state.login.gastoreporteuser)
           this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
 
             this.$axios.post(process.env.API+'/reporteventa',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
