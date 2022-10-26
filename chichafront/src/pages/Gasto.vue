@@ -774,7 +774,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(2.5, 3, 'Cant')
         doc.text(3.5, 3, 'Producto')
         doc.text(7, 3,'Total' )
-        doc.text(8.5, 3, 'Monto')
+        doc.text(8.5, 3, 'Acuenta')
         doc.text(10, 3, 'Saldo')
         doc.text(11.5, 3, 'Titular')
         doc.text(15.5, 3, 'Local')
