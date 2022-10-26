@@ -845,7 +845,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(3.5, y+3, r.detalle!=null?r.detalle.toString():'')
         doc.text(7, y+3, r.total!=null?r.total.toString():''+' Bs.')
         doc.text(8.5, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
-        ventas+=parseFloat(r.acuenta!=null?r.acuenta:0)
+        ventasruta+=parseFloat(r.acuenta!=null?r.acuenta:0)
         doc.text(10, y+3, r.saldo!=null?r.saldo.toString():''+' Bs.')
         doc.setFontSize(6);
         doc.text(11.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
