@@ -52,6 +52,7 @@ class PlanillaController extends Controller
         $planilla->bono=$request->bono;
         $planilla->restante=$request->restante;
         $planilla->total=$request->total;
+        $planilla->observacion=$request->observacion;
         $planilla->empleado_id=$request->empleado_id;
         $planilla->save();
 
@@ -86,7 +87,7 @@ class PlanillaController extends Controller
             $log->fecha=date('Y-m-d');
             $log->hora=date('H:i:s');
             $log->user_id=$request->user()->id;
-            $log->save(); 
+            $log->save();
         }
 
     }

@@ -18,6 +18,7 @@ class Planilla extends Model
         'bono',
         'restante',
         'total',
+        'observacion',
         'estado',
         'empleado_id',
     ];

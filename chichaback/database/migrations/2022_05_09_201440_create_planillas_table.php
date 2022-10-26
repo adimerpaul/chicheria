@@ -24,6 +24,7 @@ class CreatePlanillasTable extends Migration
             $table->double('bono',11,2);
             $table->double('restante',11,2);
             $table->double('total',11,2);
+            $table->string('observacion')->nullable();
             $table->string('estado')->default('CREADO');
             $table->unsignedBigInteger('empleado_id');
             $table->foreign('empleado_id')->references('id')->on('empleados');
