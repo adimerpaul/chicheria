@@ -809,7 +809,7 @@ xlsx(datacaja, settings) // Will download the excel file
         ventas+=parseFloat(r.acuenta!=null?r.acuenta:0)
         doc.text(10, y+3, r.saldo!=null?r.saldo.toString():''+' Bs.')
         doc.setFontSize(6);
-        doc.text(11.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
+        doc.text(11.5, y+3, r.titular!=null?r.titular.substring(0,20):'')
         doc.text(15.5, y+3, r.local!=null?r.local.toString():'')
         doc.setFontSize(9);
         if(r.estado=='POR COBRAR')  doc.setTextColor(255,0,0);
@@ -848,7 +848,7 @@ xlsx(datacaja, settings) // Will download the excel file
         ventasruta+=parseFloat(r.acuenta!=null?r.acuenta:0)
         doc.text(10, y+3, r.saldo!=null?r.saldo.toString():''+' Bs.')
         doc.setFontSize(6);
-        doc.text(11.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
+        doc.text(11.5, y+3, r.titular!=null?r.titular.substring(0,20):'')
         doc.text(15.5, y+3, r.local!=null?r.local.toString():'')
         doc.setFontSize(9);
         if(r.estado=='POR COBRAR')  doc.setTextColor(255,0,0);
@@ -941,8 +941,8 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(2.5, y+3, element.cantidad+'')
         doc.text(3.5, y+3, element.inventario.nombre)
         doc.text(7, y+3, element.efectivo+' Bs')
-        doc.text(11.5, y+3, element.cliente.titular)
-        doc.text(15.5, y+3, element.cliente.local)
+        doc.text(11.5, y+3, element.cliente.titular!=null?element.cliente.titular.substring(0,20):'')
+        doc.text(15.5, y+3, element.cliente.local!=null?element.cliente.local.toString():'')
                 if (y+3>25){
           doc.addPage();
           header()
@@ -978,9 +978,9 @@ xlsx(datacaja, settings) // Will download the excel file
        doc.setFontSize(9);
         doc.text(7, y+3, r.efectivo+' Bs.')
         matventa+=parseFloat(r.efectivo)
+        doc.text(11.5, y+3, r.cliente.titular!=null?r.cliente.titular.substring(0,20):'')
+        doc.text(15.5, y+3, r.cliente.local!=null?r.cliente.local.toString():'')
 
-        doc.text(11.5, y+3, r.cliente.titular)
-        doc.text(15.5, y+3, r.cliente.local)
         if (y+3>25){
           doc.addPage();
           header()
@@ -1014,7 +1014,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(7, y+3, r.monto!=null?r.monto+' Bs':' 0 Bs.')
         //ventas+=r.monto;
         ccpago+=r.monto
-        doc.text(11.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
+        doc.text(11.5, y+3, r.titular!=null?r.titular.substring(0,20):'')
         doc.text(15.5, y+3, r.local!=null?r.local.toString():'')
         if (y+3>25){
           doc.addPage();
