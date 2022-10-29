@@ -164,7 +164,7 @@
                     label="Observacion"
                     />
                     <div>
-                    <q-btn label="Registrar" type="submit" color="green"/>
+                    <q-btn label="Registrar" type="submit" color="green" :loading="loading"/>
                     <q-btn flat label="Cancelar" color="primary" v-close-popup />
                     </div>
                     </q-form>
@@ -211,6 +211,7 @@ export default {
   name: "Venta",
   data(){
     return{
+      loading:false,
       fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha3:date.formatDate(new Date(),'YYYY-MM-DD'),
@@ -531,6 +532,7 @@ export default {
   },
   methods:{
       onPago(){
+        this.loading=true
       this.$axios.post(process.env.API+'/pago',this.regpago).then(res=>{
 
           this.regpago={};
@@ -550,6 +552,7 @@ export default {
           
           this.regpago={}
           this.misventas();
+          this.loading=false
                   this.$q.notify({
           message:'Registro correcto',
           color:'green',

@@ -350,7 +350,7 @@
                   <q-input outlined label="Observacion" type="text" v-model="cchica.observacion" />
                 </div>
                 <div class="col-3 flex flex-center">
-                  <q-btn label="Registrar" type="submit" icon="send" color="info"/>
+                  <q-btn label="Registrar" type="submit" icon="send" color="info" :loading="loading"/>
                 </div>
               </div>
             </q-form>
@@ -454,6 +454,7 @@ export default {
   data(){
     return{
       filter:'',
+      loading:false,
       filtercaja:'',
       cchica:{},
       cchica2:{},
@@ -695,6 +696,7 @@ xlsx(datacaja, settings) // Will download the excel file
       {
         return false
       }
+      this.loading=true
       this.cchica.glosa_id=this.glosa.id
       //console.log(this.cchica)
       //  return false
@@ -710,6 +712,7 @@ xlsx(datacaja, settings) // Will download the excel file
         this.glosa={}
         this.misgastos()
         this.totalcaja()
+        this.loading=false
                 this.$q.notify({
           color: 'green-4',
           textColor: 'white',
