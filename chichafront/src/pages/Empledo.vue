@@ -253,6 +253,7 @@
               <div class="col-12"><q-input dense outlined label="descuento" v-model="planilla.descuento" disable /></div>
               <div class="col-12"><q-input dense outlined label="bono" v-model="planilla.bono" disable /></div>
               <div class="col-12"><q-input dense outlined label="total" v-model="planilla.total" disable /></div>
+              <div class="col-12"><q-input dense outlined label="observacion" v-model="planilla.observacion"  /></div>
               <div class="col-12">
                 <q-btn class="full-width	" type="submit" color="primary" icon="add_circle" label="crear planilla" v-if="validarplan"/>
               </div>
@@ -814,10 +815,17 @@ export default {
       doc.setFont(undefined,'normal')
       doc.text('SON: '+a.toUpperCase()+' Bs',110, 80, 'center')
       doc.setFont(undefined,'bold')
+      if(planilla.observacion!='' && planilla.observacion!=null){
+      doc.setFont(undefined,'bold')
+      doc.text('Obs: ',2, 85, 'left')
+      doc.setFont(undefined,'normal')
+      doc.text(planilla.observacion,10, 85, 'left')
+      doc.setFont(undefined,'bold')
+      }
       // // console.log(a)
-      doc.text(5, 90, '____________________________                                                                   ______________________________')
-      doc.text(10, 95, 'FIRMA EMPLEADO')
-      doc.text(150, 95, 'FIRMA RESPONSABLE')
+      doc.text(5, 95, '____________________________                                                                   ______________________________')
+      doc.text(10, 100, 'FIRMA EMPLEADO')
+      doc.text(150, 100, 'FIRMA RESPONSABLE')
       // // doc.setFont(undefined,'normal')
       // // doc.text(18, y+3.5, sumtotal+ ' Bs')
       //
@@ -1221,7 +1229,7 @@ export default {
                         totalgeneral(){
       this.$axios.post(process.env.API + "/totalgeneral").then((res) => {
         console.log(res.data.monto)
-         
+
           this.montogeneral=parseFloat( res.data.monto);
       })
       },
