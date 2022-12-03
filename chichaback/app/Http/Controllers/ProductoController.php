@@ -24,6 +24,11 @@ class ProductoController extends Controller
         //
         return Producto::where('estado','ACTIVO')->orderBy('orden','ASC')->get();
     }
+    public function listaproducto2($type)
+    {
+        //
+        return Producto::where('estado','ACTIVO')->where('tipo',$type)->orderBy('orden','ASC')->orderBy('nombre', 'ASC')->get();
+    }
 
     /**
      * Show the form for creating a new resource.

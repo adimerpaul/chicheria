@@ -39,7 +39,7 @@
         <q-item
           clickable
           active-class="my-menu-link"
-          to="/"
+          to="//"
           exact>
           <q-item-section
             avatar>
@@ -59,7 +59,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="/login"
+          to="//login"
         >
           <q-item-section
             avatar
@@ -80,7 +80,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="user"
+          to="/user"
         >
           <q-item-section
             avatar
@@ -101,7 +101,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="cliente"
+          to="/cliente"
         >
           <q-item-section
             avatar
@@ -122,7 +122,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="clientelocal"
+          to="/clientelocal"
         >
           <q-item-section
             avatar
@@ -143,7 +143,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="producto"
+          to="/producto"
         >
           <q-item-section
             avatar
@@ -165,7 +165,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="inventario"
+          to="/inventario"
         >
           <q-item-section
             avatar
@@ -181,19 +181,10 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          v-if="$store.state.login.ventadetalle"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="venta"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item v-if="$store.state.login.ventadetalle" active-class="my-menu-link" clickable exact to="/venta">
+          <q-item-section avatar>
             <q-icon name="shopping_cart" size="lg" />
           </q-item-section>
-
           <q-item-section>
             <q-item-label>Venta Detalle</q-item-label>
             <q-item-label caption>
@@ -201,12 +192,34 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item v-if="$store.state.login.ventadetalle" active-class="my-menu-link" clickable exact to="/sale/detalle">
+          <q-item-section avatar>
+            <q-icon name="shopping_cart" size="lg" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Sale</q-item-label>
+<!--            <q-item-label caption>-->
+<!--              Historial de ventas-->
+<!--            </q-item-label>-->
+          </q-item-section>
+        </q-item>
+        <q-item v-if="$store.state.login.ventadetalle" active-class="my-menu-link" clickable exact to="/sale/local">
+          <q-item-section avatar>
+            <q-icon name="shopping_cart" size="lg" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Local</q-item-label>
+            <!--            <q-item-label caption>-->
+            <!--              Historial de ventas-->
+            <!--            </q-item-label>-->
+          </q-item-section>
+        </q-item>
 
 <!--                        <q-item-->
 <!--          v-if="$store.getters['login/isLoggedIn']"-->
 <!--          clickable-->
 <!--          exact-->
-<!--          to="ventadirecta"-->
+<!--          to="/ventadirecta"-->
 <!--        >-->
 <!--          <q-item-section-->
 <!--            avatar-->
@@ -226,7 +239,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="ventalocal"
+          to="/ventalocal"
         >
           <q-item-section
             avatar
@@ -247,7 +260,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="prestamos"
+          to="/prestamos"
         >
           <q-item-section
             avatar
@@ -268,7 +281,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="prestamoslocal"
+          to="/prestamoslocal"
         >
           <q-item-section
             avatar
@@ -293,7 +306,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="cxcdetalle"
+          to="/cxcdetalle"
         >
           <q-item-section
             avatar
@@ -314,7 +327,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="cxclocal"
+          to="/cxclocal"
         >
           <q-item-section
             avatar
@@ -335,7 +348,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="cxcruta"
+          to="/cxcruta"
         >
           <q-item-section
             avatar
@@ -356,7 +369,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="historial"
+          to="/historial"
         >
           <q-item-section
             avatar
@@ -378,7 +391,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="historialruta"
+          to="/historialruta"
         >
           <q-item-section
             avatar
@@ -394,7 +407,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item v-if="$store.state.login.empleados" active-class="my-menu-link" clickable exact to="empleado">
+        <q-item v-if="$store.state.login.empleados" active-class="my-menu-link" clickable exact to="/empleado">
           <q-item-section avatar>
             <q-icon name="people" size="lg" />
           </q-item-section>
@@ -406,7 +419,7 @@
           </q-item-section>
         </q-item>
         <!--
-        <q-item v-if="$store.state.login.empleados" active-class="my-menu-link" clickable exact to="planillas">
+        <q-item v-if="$store.state.login.empleados" active-class="my-menu-link" clickable exact to="/planillas">
           <q-item-section avatar>
             <q-icon name="receipt_long" size="lg" />
           </q-item-section>
@@ -419,7 +432,7 @@
         </q-item>
 
 -->
-        <q-item v-if="$store.state.login.veralmacen" active-class="my-menu-link" clickable exact to="almacen">
+        <q-item v-if="$store.state.login.veralmacen" active-class="my-menu-link" clickable exact to="/almacen">
           <q-item-section avatar>
             <q-icon name="store" size="lg" />
           </q-item-section>
@@ -436,7 +449,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="caja"
+          to="/caja"
         >
           <q-item-section
             avatar
@@ -457,7 +470,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="cajageneral"
+          to="/cajageneral"
         >
           <q-item-section
             avatar
@@ -478,7 +491,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="gasto"
+          to="/gasto"
         >
           <q-item-section
             avatar
@@ -499,7 +512,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="reporteuser"
+          to="/reporteuser"
         >
           <q-item-section
             avatar
@@ -520,7 +533,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="contable"
+          to="/contable"
         >
           <q-item-section
             avatar
@@ -539,7 +552,7 @@
 <!--          v-if="$store.getters['login/isLoggedIn']"-->
 <!--          clickable-->
 <!--          exact-->
-<!--          to="usuario"-->
+<!--          to="/usuario"-->
 <!--        >-->
 <!--          <q-item-section-->
 <!--            avatar-->

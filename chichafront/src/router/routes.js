@@ -24,6 +24,7 @@ import Cajageneral from "pages/Cajageneral";
 import Planillas from "pages/Planillas";
 import Almacen from "pages/Almacen";
 import Contable from "pages/Contable";
+import Sale from "pages/Sale";
 // <<<<<<< HEAD
 // import User from "pages/User";
 // =======
@@ -62,6 +63,7 @@ const routes = [
       { path: 'planillas', component: Planillas,meta: {requiresAuth: true} },
       { path: 'almacen', component: Almacen,meta: {requiresAuth: true} },
       { path: 'contable', component: Contable,meta: {requiresAuth: true} },
+      { path: 'sale/:type', component: Sale,meta: {requiresAuth: true} },
 
 // <<<<<<< HEAD
 //       { path: 'user', component: User,meta: {requiresAuth: true} },

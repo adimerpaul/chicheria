@@ -32,6 +32,14 @@ class ClienteController extends Controller
     public function listacliente(){
         return Cliente::where('estado','ACTIVO')->orderBy('titular')->get();
     }
+    public function listacliente2($type){
+        if ($type=='detalle') {
+            return Cliente::whereTipocliente('2')->where('estado', 'ACTIVO')->orderBy('titular')->get();
+        }else{
+            return Cliente::whereTipocliente('1')->where('estado', 'ACTIVO')->orderBy('titular')->get();
+        }
+
+    }
     /**
      * Show the form for creating a new resource.
      *
