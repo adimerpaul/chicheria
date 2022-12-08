@@ -39,7 +39,7 @@
         <q-item
           clickable
           active-class="my-menu-link"
-          to="//"
+          to="/"
           exact>
           <q-item-section
             avatar>
@@ -59,7 +59,7 @@
           active-class="my-menu-link"
           clickable
           exact
-          to="//login"
+          to="/login"
         >
           <q-item-section
             avatar
