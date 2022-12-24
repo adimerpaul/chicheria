@@ -6,8 +6,8 @@
   </div>
   <div class="col-7">
     <div class="row">
-      <div class="col-2" v-for="p in products" :key="p.id">
-        <q-card style="height: 80px" @click="saleAdd(p)" class="no_selection">
+      <div class="col-2" v-for="p in products" :key="p.id" style="padding:5px">
+        <q-card style="height: 80px;" @click="saleAdd(p)" class="no_selection">
           <q-card-section class="row items-center q-pb-none">
             <div class="text-bold text-grey">{{p.precio}}Bs.</div>
             <q-space />
@@ -26,7 +26,7 @@
     <q-card>
       <q-card-section class="row items-center q-pb-none">
         <div class="col-2">
-          <div class="text-bold text-grey">Total: <span class="text-red">{{total}}Bs.</span> </div>
+          <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
         </div>
         <div class="col-9">
           <q-select
@@ -120,6 +120,7 @@ export default {
       clients: [],
       client: '',
       productSales:[],
+      sale:{},
       type: this.$route.params.type
     }
   },
@@ -140,7 +141,33 @@ export default {
   },
   methods: {
     saleSave(){
-
+      if(this.productSales.length==0)
+        { console.log('sin prod')
+          return false
+        
+        }
+      if(this.client.id==undefined || this.client.id=='')
+        { console.log('sin cliente')
+          return false
+        
+        }
+      if(this.monto<0 ||  this.monto>this.total || this.monto==undefined)
+        { console.log('sin mmonto')
+          return false
+        
+        }
+      console.log(this.client.id)
+      this.productSales.forEach(r=>{
+        r.subtotal=r.precio * r.cantidad
+      })
+      this.sale.tipo=this.type
+      this.sale.cliente_id=this.client.id
+      this.sale.total=this.total
+      this.sale.acuenta=this.monto
+      this.sale.saldo=this.porCobrar
+      this.sale.estado=this.porCobrar>0?'POR COBRAR':'CANCELADO'
+      this.sale.detalles=this.productSales
+      console.log(this.sale)
     },
     datosGet(type){
       this.products = []
@@ -154,7 +181,7 @@ export default {
       this.clients2 = []
       this.$api.get(`/listacliente/${type}`).then(res => {
         res.data.forEach(c => {
-          c.label=c.titular
+          c.label=c.local+' '+c.titular
           this.clients2.push(c)
           this.clients.push(c)
         })
