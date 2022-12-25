@@ -466,7 +466,7 @@ export default {
     //   // console.log(this.venta)
     //   // this.producto=res.data[0]
     // })
-    // this.responsable=this.$store.getters["login/user"].name
+    // this.responsable=this.$store.getters["login/user"].nameimpboleta
   },
   methods:{
     impruta(venta){

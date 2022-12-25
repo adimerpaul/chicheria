@@ -104,6 +104,51 @@
   <div class="col-12">
 <!--    <pre>{{clients}}</pre>-->
   </div>
+  <q-dialog v-model="modalgarantia">
+    <q-card style="width: 700px;min-width: 80vw">
+      <q-card-section ><div class="text-h6">Garantia</div></q-card-section>
+      <q-card-section class="q-pt-none">
+        <q-form @submit.prevent="agregargarantia">
+          <div class="row">
+            <div class="col-12 col-md-4 q-pa-xs">
+              <q-input required type="text"  outlined label="Cliente" v-model="client.label" disable/>
+            </div>
+            <div class="col-12 col-md-4 q-pa-xs">
+              <q-input required type="text"  outlined label="telefono" v-model="client.telefono" disable/>
+            </div>
+            <div class="col-12 col-md-4 q-pa-xs">
+              <q-input required type="text"  outlined label="direccion" v-model="client.direccion" disable/>
+            </div>
+            <div class="col-12 col-md-4 q-pa-xs">
+              <q-select required outlined label="inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
+            </div>
+            <div class="col-12 col-md-4 q-pa-xs">
+              <q-input required type="number"  outlined label="cantidad" v-model="newgarantia.cantidad"/>
+            </div>
+            <div class="col-12 col-md-4 q-pa-xs">
+              <q-input  outlined type="number" label="efectivo" v-model="newgarantia.efectivo"/>
+            </div>
+            <div class="col-12 col-md-4 q-pa-xs">
+              <q-input  outlined label="fisico" v-model="newgarantia.fisico" style="text-transform: uppercase"/>
+            </div>
+            <div class="col-12 col-md-4 q-pa-xs">
+              <q-input  outlined label="observacion" v-model="newgarantia.observacion" style="text-transform: uppercase"/>
+            </div>
+            <div class="col-12 col-md-4 q-pa-xs flex flex-center">
+              <input type="radio" value="EN PRESTAMO" v-model="newgarantia.tipo"/><b> EN PRESTAMO </b>
+              <input type="radio" value="VENTA" v-model="newgarantia.tipo"/><b> VENTA </b>
+            </div>
+            <div class="col-12  q-pa-xs flex flex-center">
+              <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Registrar"/>
+            </div>
+          </div>
+        </q-form>
+      </q-card-section>
+      <q-card-section align="right" class="">
+        <q-btn flat label="Cerrar" icon="delete" color="negative" v-close-popup/>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </div>
 </q-page>
 </template>
@@ -121,6 +166,9 @@ export default {
       client: '',
       productSales:[],
       sale:{},
+      inventarios:[],
+      inventario:{},
+      modalgarantia:false,
       type: this.$route.params.type
     }
   },
@@ -138,6 +186,11 @@ export default {
       }
     )
     this.datosGet(this.type)
+    this.$axios.get(process.env.API+'/listainventario').then(res=>{
+      this.inventarios=res.data
+      this.inventario=res.data[0]
+    })
+
   },
   methods: {
     saleSave(){
@@ -160,7 +213,7 @@ export default {
       this.productSales.forEach(r=>{
         r.subtotal=r.precio * r.cantidad
       })
-      this.sale.tipo=this.type
+      this.sale.tipo=this.type=='detalle'?'DETALLE':'LOCAL'
       this.sale.cliente_id=this.client.id
       this.sale.total=this.total
       this.sale.acuenta=this.monto
@@ -168,6 +221,38 @@ export default {
       this.sale.estado=this.porCobrar>0?'POR COBRAR':'CANCELADO'
       this.sale.detalles=this.productSales
       console.log(this.sale)
+      this.$api.post('sale',this.sale).then(res => {
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.focus();
+        // setTimeout(function(){
+          myWindow.print();
+          myWindow.close(); 
+        // },500);
+
+        this.$q.notify({
+          message:'Venta exitosa',
+          color:'green',
+          position:'center',
+
+          icon:'info'
+        })
+        this.$q.dialog({
+          message:'Deseas registrar garantia?',
+          title:'Garantia?',
+          cancel: true,
+        }).onOk(()=>{
+          this.newgarantia.cantidad=1,
+          this.newgarantia.efectivo=0,
+          this.modalgarantia=true
+        }).onCancel(()=>{
+          this.monto=0
+          this.observacion='NINGUNA'
+          this.sale={}
+          this.productSales=[]
+        })
+      })
     },
     datosGet(type){
       this.products = []

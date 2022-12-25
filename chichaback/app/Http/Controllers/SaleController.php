@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Venta;
+use App\Models\General;
+use App\Models\Detalle;
+use App\Models\Loggeneral;
 
 class SaleController extends Controller
 {
@@ -70,9 +73,53 @@ class SaleController extends Controller
         $loggeneral->user_id= $venta->user_id;
         $loggeneral->save();
 
-        return $this->impresiondetalle($venta->id);
+        return $this->impresionVenta($venta->id);
     }
 
+    public function impresionVenta($id){
+        $venta=Venta::with('user')
+        ->with('detalles')
+        ->with('cliente')
+        ->where('id',$id)
+        ->get()[0];
+         $cinit=00;
+         $total=0;
+         $cadena='
+        <style>
+        .textcnt{
+            text-align:center;
+        }
+        table{width:100%;}
+        td{vertical-align:top;}
+        .textgrd{font-size:20px}
+        </style>
+        <div class="textcnt"> CONTROL DESPACHO</div>
+        <div class="textcnt">Nro '.$venta->id.'</div>
+        <hr>
+        <div>Local: '.$venta->cliente->local.'</div>
+        <div>Nombre: '.$venta->cliente->titular.'</div>
+        <div>Fecha: '.date('d/m/Y',strtotime($venta->fecha)).'</div>
+        <hr>
+        <table>
+        <thead>
+        <tr><th>Cant</th><th>Prod</th><th>Subt</th></tr>
+        </thead>
+        <tbody>';
+        foreach ($venta->detalles as $d) {
+            $total+=floatval($d->subtotal);
+            # code...
+        $cadena.='<tr><td>'.$d->cantidad.'</td><td>'.$d->nombreproducto.'</td><td>'.$d->subtotal.'</td></tr>';
+        }
+        $cadena.='</tbody>
+        </table>
+        <div>TOTAL: <b>'.$total.' Bs</b></div>
+        <div>Usuario: <b>'.$venta->user->name.'</b></div>
+        <div>Observacion: <b>'.$venta->observacion.'</b></div>
+        <div style="color:white">-----------------</div>
+        <br>
+              ';
+              return $cadena;
+    }
     /**
      * Display the specified resource.
      *
