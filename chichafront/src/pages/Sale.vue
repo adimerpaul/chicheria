@@ -103,6 +103,12 @@
   </div>
   <div class="col-12">
 <!--    <pre>{{clients}}</pre>-->
+<div class="row">
+  <div class="col-4"><q-input  outlined v-model="fecha" label="Fecha"  dense type="date"/></div>
+  <div class="col-4"> <q-btn color="green" label="Buscar" icon="search"  dense/>
+  </div>
+  
+</div>
   </div>
   <q-dialog v-model="modalgarantia">
     <q-card style="width: 700px;min-width: 80vw">
@@ -168,6 +174,7 @@ export default {
       sale:{},
       inventarios:[],
       inventario:{},
+      newgarantia:{},
       modalgarantia:false,
       type: this.$route.params.type
     }
@@ -243,8 +250,10 @@ export default {
           title:'Garantia?',
           cancel: true,
         }).onOk(()=>{
+          this.newgarantia={}
           this.newgarantia.cantidad=1,
           this.newgarantia.efectivo=0,
+          this.newgarantia.tipo='EN PRESTAMO'
           this.modalgarantia=true
         }).onCancel(()=>{
           this.monto=0
@@ -303,7 +312,42 @@ export default {
           cantidad: 1
         })
       }
-    }
+    },
+    agregargarantia(){
+      this.$q.loading.show()
+      this.$axios.post(process.env.API+'/prestamo',{
+        inventario_id:this.inventario.id,
+        cantidad:this.newgarantia.cantidad,
+        efectivo:this.newgarantia.efectivo,
+        fisico:this.newgarantia.fisico,
+        observacion:this.newgarantia.observacion,
+        cliente_id:this.client.id,
+        tipo:this.newgarantia.tipo,
+        fecha:date.formatDate(new Date(),'YYYY-MM-DD')
+      }).then((res)=>{
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+
+        this.$q.loading.hide()
+        this.misclientes()
+        this.modalregistro=false
+        this.producto=''
+        this.cantidad=1
+        this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
+        this.modalgarantia=false
+      }).catch(err=>{
+        this.$q.loading.hide()
+        this.$q.notify({
+          message:err.response.data.message.error,
+          color:'red',
+          position:'center',
+          icon:'error'
+        })
+      })
+    },
   },
   computed: {
     total() {
