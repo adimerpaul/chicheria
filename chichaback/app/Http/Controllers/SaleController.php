@@ -20,6 +20,9 @@ class SaleController extends Controller
         //
     }
 
+    public function listVenta(Request $request){
+        return Venta::with('cliente')->with('detalles')->with('user')->where('tipo',$request->tipo)->whereDate('fecha','>=',$request->ini)->whereDate('fecha','<=',$request->fin)->get();
+    }
     /**
      * Store a newly created resource in storage.
      *

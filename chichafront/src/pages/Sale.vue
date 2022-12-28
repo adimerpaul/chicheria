@@ -104,10 +104,14 @@
   <div class="col-12">
 <!--    <pre>{{clients}}</pre>-->
 <div class="row">
-  <div class="col-4"><q-input  outlined v-model="fecha" label="Fecha"  dense type="date"/></div>
+  <div class="col-4"><q-input  outlined v-model="fecha1" label="Fecha Inicial"  dense type="date"/></div>
+  <div class="col-4"><q-input  outlined v-model="fecha2" label="Fecha Final"  dense type="date"/></div>
   <div class="col-4"> <q-btn color="green" label="Buscar" icon="search"  dense/>
   </div>
+<div class="col-12">
+  <q-table title="Ventas" :rows="ventas" :columns="columns" row-key="name" />
   
+</div>
 </div>
   </div>
   <q-dialog v-model="modalgarantia">
@@ -160,11 +164,16 @@
 </template>
 
 <script>
+
+import {date} from 'quasar'
+
 export default {
   name: `Sale`,
   data() {
     return {
       monto: 0,
+      fecha1:date.formatDate(new Date(),'YYYY-MM-DD'),
+      fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       products: [],
       product: {},
       clients2: [],
@@ -172,6 +181,7 @@ export default {
       client: '',
       productSales:[],
       sale:{},
+      ventas:[],
       inventarios:[],
       inventario:{},
       newgarantia:{},
@@ -197,9 +207,16 @@ export default {
       this.inventarios=res.data
       this.inventario=res.data[0]
     })
+    this.consultaVenta()
 
   },
   methods: {
+    consultaVenta(){
+      this.$api.post('listVenta',{tipo:this.type=='detalle'?'DETALLE':'LOCAL',ini:this.fecha1,fin:this.fecha2}).then(res => {
+        this.ventas=res.data
+      })
+
+    },
     saleSave(){
       if(this.productSales.length==0)
         { console.log('sin prod')
