@@ -212,7 +212,7 @@ export default {
   },
   methods: {
     consultaVenta(){
-      this.$api.post('listVenta',{tipo:this.type=='detalle'?'DETALLE':'LOCAL',ini:this.fecha1,fin:this.fecha2}).then(res => {
+      this.$api.post('listSale',{tipo:this.type=='detalle'?'DETALLE':'LOCAL',ini:this.fecha1,fin:this.fecha2}).then(res => {
         this.ventas=res.data
       })
 
@@ -220,16 +220,28 @@ export default {
     saleSave(){
       if(this.productSales.length==0)
         { console.log('sin prod')
+        this.$q.notify({
+          message:'Seleccione Productos',
+          color:'red',
+          position:'center',
+          icon:'error'
+        })
           return false
         
         }
       if(this.client.id==undefined || this.client.id=='')
         { console.log('sin cliente')
+        this.$q.notify({
+          message:'Debe Seleccionar Cliente',
+          color:'red',
+          position:'center',
+          icon:'error'
+        })
           return false
         
         }
       if(this.monto<0 ||  this.monto>this.total || this.monto==undefined)
-        { console.log('sin mmonto')
+        { console.log('sin monto')
           return false
         
         }
@@ -331,6 +343,10 @@ export default {
       }
     },
     agregargarantia(){
+          this.monto=0
+          this.observacion='NINGUNA'
+          this.sale={}
+          this.productSales=[]
       this.$q.loading.show()
       this.$axios.post(process.env.API+'/prestamo',{
         inventario_id:this.inventario.id,
@@ -349,16 +365,32 @@ export default {
         myWindow.close();
 
         this.$q.loading.hide()
-        this.misclientes()
-        this.modalregistro=false
         this.producto=''
         this.cantidad=1
         this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
+        this.newgarantia={}
         this.modalgarantia=false
+        this.$q.dialog({
+          message:'Deseas registrar garantia?',
+          title:'Garantia?',
+          cancel: true,
+        }).onOk(()=>{
+          this.newgarantia={}
+          this.newgarantia.cantidad=1,
+          this.newgarantia.efectivo=0,
+          this.newgarantia.tipo='EN PRESTAMO'
+          this.modalgarantia=true
+        }).onCancel(()=>{
+          this.monto=0
+          this.observacion='NINGUNA'
+          this.sale={}
+          this.productSales=[]
+        })
       }).catch(err=>{
         this.$q.loading.hide()
+        console.log(err)
         this.$q.notify({
-          message:err.response.data.message.error,
+          message:err.message.error,
           color:'red',
           position:'center',
           icon:'error'
