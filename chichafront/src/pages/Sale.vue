@@ -52,6 +52,7 @@
         <div class="col-1">
           <q-btn icon="delete_outline" dense  color="negative" @click="saleClear" />
         </div>
+      <div class="col-12"><q-input dense outlined v-model="obs" label="Observacion" /></div>
       </q-card-section>
       <q-card-section class="q-pa-none">
         <div class="text-subtitle2 flex-center flex text-center bg-primary text-white">PRODUCTOS</div>
@@ -106,12 +107,42 @@
 <div class="row">
   <div class="col-4"><q-input  outlined v-model="fecha1" label="Fecha Inicial"  dense type="date"/></div>
   <div class="col-4"><q-input  outlined v-model="fecha2" label="Fecha Final"  dense type="date"/></div>
-  <div class="col-4"> <q-btn color="green" label="Buscar" icon="search"  dense/>
+  <div class="col-4"> <q-btn color="green" label="Buscar" icon="search"  dense @click="consultaVenta"/>
   </div>
 <div class="col-12">
-  <q-table title="Ventas" :rows="ventas" :columns="columns" row-key="name" />
-  
-</div>
+  <q-table title="Ventas" :rows="ventas" :columns="columnas" row-key="name" :filter="filter">
+    <template v-slot:top-right>
+      <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+    </template>
+
+      <template v-slot:body-cell-cliente="props">
+        <q-td key="cliente" :props="props">
+          {{ props.row.cliente.local }}  {{ props.row.cliente.titular }}
+        </q-td>
+      </template>
+      <template v-slot:body-cell-user="props">
+        <q-td key="user" :props="props">
+          {{ props.row.user.name}}
+        </q-td>
+      </template>
+      <template v-slot:body-cell-opcion="props">
+          <q-td key="opcion" :props="props">
+            <q-btn-group v-if="props.row.estado!='ANULADO'" >
+              <q-btn icon="cancel" color="red" @click="anular(props.row)" size="xs" v-if="$store.state.login.anularventa"/>
+              <q-btn icon="local_shipping" color="info"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta"/>
+              <template v-if="$store.state.login.reimpresion" >
+                <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" />
+              </template>
+            </q-btn-group>
+
+        </q-td>
+      </template>
+    </q-table>
+  </div>
 </div>
   </div>
   <q-dialog v-model="modalgarantia">
@@ -175,6 +206,7 @@ export default {
       fecha1:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       products: [],
+      filter:'',
       product: {},
       clients2: [],
       clients: [],
@@ -182,11 +214,23 @@ export default {
       productSales:[],
       sale:{},
       ventas:[],
+      obs:'',
       inventarios:[],
       inventario:{},
       newgarantia:{},
       modalgarantia:false,
-      type: this.$route.params.type
+      type: this.$route.params.type,
+      columnas:[
+        {label:'opcion',name:'opcion',field:'opcion'},
+        {label:'id',name:'id',field:'id'},
+        {label:'fecha',name:'fecha',field:'fecha'},
+        {label:'cliente',name:'cliente',field:'cliente'},
+        {label:'total',name:'total',field:'total'},
+        {label:'acuenta',name:'acuenta',field:'acuenta'},
+        {label:'saldo',name:'saldo',field:'saldo'},
+        {label:'estado',name:'estado',field:'estado'},
+        {label:'user',name:'user',field:'user'},
+      ]
     }
   },
   mounted() {
@@ -256,6 +300,7 @@ export default {
       this.sale.saldo=this.porCobrar
       this.sale.estado=this.porCobrar>0?'POR COBRAR':'CANCELADO'
       this.sale.detalles=this.productSales
+      this.sale.observacion=this.obs
       console.log(this.sale)
       this.$api.post('sale',this.sale).then(res => {
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
@@ -286,7 +331,7 @@ export default {
           this.modalgarantia=true
         }).onCancel(()=>{
           this.monto=0
-          this.observacion='NINGUNA'
+          this.obs=''
           this.sale={}
           this.productSales=[]
         })
@@ -344,7 +389,7 @@ export default {
     },
     agregargarantia(){
           this.monto=0
-          this.observacion='NINGUNA'
+          this.obs=''
           this.sale={}
           this.productSales=[]
       this.$q.loading.show()
@@ -382,7 +427,7 @@ export default {
           this.modalgarantia=true
         }).onCancel(()=>{
           this.monto=0
-          this.observacion='NINGUNA'
+          this.obs=''
           this.sale={}
           this.productSales=[]
         })

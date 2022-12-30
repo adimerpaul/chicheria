@@ -96,12 +96,11 @@ class SaleController extends Controller
         td{vertical-align:top;}
         .textgrd{font-size:20px}
         </style>
-        <div class="textcnt"> CONTROL DESPACHO</div>
-        <div class="textcnt">Nro '.$venta->id.'</div>
         <hr>
         <div>Local: '.$venta->cliente->local.'</div>
         <div>Nombre: '.$venta->cliente->titular.'</div>
         <div>Fecha: '.date('d/m/Y',strtotime($venta->fecha)).'</div>
+        <div>Nro :'.$venta->id.'</div>
         <hr>
         <table>
         <thead>
@@ -116,8 +115,8 @@ class SaleController extends Controller
         $cadena.='</tbody>
         </table>
         <div>TOTAL: <b>'.$total.' Bs</b></div>
-        <div>Usuario: <b>'.$venta->user->name.'</b></div>
         <div>Observacion: <b>'.$venta->observacion.'</b></div>
+        <div>Usuario: <b>'.$venta->user->name.'</b></div>
         <div style="color:white">-----------------</div>
         <br>
               ';

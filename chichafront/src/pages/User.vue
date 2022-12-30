@@ -117,6 +117,10 @@
           <q-td key="name" :props="props">
             {{props.row.name}}
           </q-td>
+          <q-td key="estado" :props="props">
+            <q-badge :color="props.row.estado=='ACTIVO'?'green':'red'"  :label="props.row.estado" @click="cambioEstado(props.row)"/>
+            
+          </q-td>
           <!--          <q-td key="unid" :props="props">-->
           <!--            {{props.row.unid.nombre}}-->
           <!--          </q-td>-->
@@ -369,6 +373,7 @@ export default {
       uni:{},
       columns: [
         {name: "name", align: "left", label: "NOMBRE ", field: "name", sortable: true,},
+        {name: "estado", align: "left", label: "ESTADO ", field: "estado", sortable: true,},
         // {name: "celular", align: "left", label: "Celular ", field: "celular", sortable: true,},
         // {name: "carnet", align: "left", label: "Carnet ", field: "carnet", sortable: true,},
         // {name: "unid", align: "left", label: "Unidad", field: "unid", sortable: true,},
@@ -403,6 +408,12 @@ export default {
     //   // updatepermiso(permiso){
     //   //   console.log(permiso)
     //   // },
+    cambioEstado(us){
+      this.$axios.post(process.env.API+'/cambioestado',us).then(res=>{
+        this.misdatos()
+      })
+
+    },
     updatepermisos(){
       this.$axios.put(process.env.API+'/updatepermisos/'+this.dato2.id,{permisos:this.permisos2}).then(res=>{
         // console.log(res.data)

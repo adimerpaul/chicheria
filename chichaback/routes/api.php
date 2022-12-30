@@ -120,6 +120,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/valplanilla',[\App\Http\Controllers\PlanillaController::class,'valplanilla']);
     Route::post('/replanilla',[\App\Http\Controllers\PlanillaController::class,'replanilla']);
     Route::post('/consulrecuento',[\App\Http\Controllers\RecuentoController::class,'consulrecuento']);
+    Route::post('/cambioestado',[\App\Http\Controllers\UserController::class,'cambioestado']);
 
     Route::resource('/sale',\App\Http\Controllers\SaleController::class);
 

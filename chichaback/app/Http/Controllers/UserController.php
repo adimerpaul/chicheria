@@ -18,13 +18,14 @@ class UserController extends Controller
     public function listuser(){
         return User::
 //            ->with('permisos')
-            all();
+            where('estado','ACTIVO')
+            ->get();
     }
     public function login(Request $request){
         if (!Auth::attempt($request->all())){
             return response()->json(['res'=>'No existe el usuario'],400);
         }
-        if (User::where('email',$request->email)->whereDate('fechalimite','>',now())->get()->count()==0){
+        if (User::where('email',$request->email)->where('estado','ACTIVO')->whereDate('fechalimite','>',now())->get()->count()==0){
             return response()->json(['res'=>'Su usuario sobre paso el limite de ingreso'],400);
         }
 
@@ -84,12 +85,22 @@ class UserController extends Controller
     public function me(Request $request){
 //        $user=$request->user()->with('unid')->with('permisos')->firstOrFail();
 //        $user=$request->user()
-        $user=User::where('id',$request->user()->id)
+        $user=User::where('id',$request->user()->id)->where('estado','ACTIVO')
 //            ->with('unid')
             ->with('permisos')
             ->firstOrFail();
         return $user;
 
 //        return User::where('id',1)->with('unid')->get();
+    }
+
+    public function cambioestado(Request $request){
+        $user=User::find($request->id);
+        if($user->estado=='ACTIVO')
+            $user->estado='INACTIVO';
+        else
+            $user->estado='ACTIVO';
+        $user->save();
+
     }
 }
