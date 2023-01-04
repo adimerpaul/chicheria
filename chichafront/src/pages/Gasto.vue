@@ -45,6 +45,20 @@
           </div>
     </div>
     <div class="col-12">
+      <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir(user)"/>
+    </div>
+    <div class="col-12 row">
+      <div class="col-6 " >
+        <q-btn label="Imprimir mis ventas Detalle" icon="print" color="teal" style="width:100%"  @click="imprimirmisventasdetalle(user)"/>
+      </div>
+      <div class="col-6 ">
+        <q-btn label="Imprimir mis ventas Local" icon="print" color="warning" style="width:100%"  @click="imprimirmisventaslocal(user)"/>
+      </div>
+    </div>
+    <div class="col-12">
+      <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="imprimirmisventasygastos(user)"/>
+    </div>
+    <div class="col-12">
 <!--      <q-table-->
 <!--      :columns="columns"-->
 <!--      :rows="gastos"-->
@@ -253,20 +267,7 @@
 <!--          <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>-->
 <!--        </div>-->
 <!--      </div>-->
-      <div class="col-12">
-        <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir(user)"/>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          <q-btn label="Imprimir mis ventas Detalle" icon="print" color="teal" style="width:100%"  @click="imprimirmisventasdetalle(user)"/>
-        </div>
-        <div class="col-6">
-          <q-btn label="Imprimir mis ventas Local" icon="print" color="warning" style="width:100%"  @click="imprimirmisventaslocal(user)"/>
-        </div>
-      </div>
-      <div class="col-12">
-        <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="imprimirmisventasygastos(user)"/>
-      </div>
+
 
       <q-dialog v-model="pagos" full-width>
         <q-card>
