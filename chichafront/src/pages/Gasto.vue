@@ -4,8 +4,10 @@
     <div class="col-12">
       <div class="text-subtitle1 bg-red text-center text-white">CONTROL DE GASTOS</div>
     </div>
-    <div class="col-6 col-sm-3 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha1" outlined required/></div>
-    <div class="col-6 col-sm-3 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha2" outlined required/></div>
+    <div class="col-6 col-sm-2 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha1" outlined required/></div>
+    <div class="col-6 col-sm-2 q-pa-xs" v-if="rango=='RANGO'"><q-input dense type="date" label="fecha" v-model="fecha2" outlined required/></div>
+    <div class="col-6 col-sm-2 q-pa-xs"><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'"/></div>
+
     <div class="col-6 col-sm-3 q-pa-xs" v-if="$store.state.login.gastoreporteuser"><q-select dense v-model="user" :options="users" label="Usuarios" outlined /></div>
     <div class="col-6 col-sm-3 q-pa-xs flex flex-center">
       <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misgastos" />
@@ -473,6 +475,7 @@ export default {
       boolcrear:true,
       gastos:[],
       anulados:[],
+      rango:'RANGO',
       rpagos:[],
       reporteventa:[],
       prestamoventa:[],
@@ -1357,6 +1360,9 @@ xlsx(datacaja, settings) // Will download the excel file
       window.open(doc.output('bloburl'), '_blank');
     },
     misgastos(){
+      if(this.rango=='DIA'){
+        this.fecha2=this.fecha1
+      }
       this.$q.loading.show()
       this.gastos=[]
       this.chica=[]
