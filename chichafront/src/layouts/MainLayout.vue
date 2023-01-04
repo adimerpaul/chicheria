@@ -47,7 +47,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Home</q-item-label>
+            <q-item-label>HOME</q-item-label>
             <q-item-label caption>
               Pagina principal
             </q-item-label>
@@ -68,7 +68,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Login</q-item-label>
+            <q-item-label>LOGIN</q-item-label>
             <q-item-label caption>
               Ingreso al sistema
             </q-item-label>
@@ -89,7 +89,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Usuarios</q-item-label>
+            <q-item-label>USUARIOS</q-item-label>
             <q-item-label caption>
               Control de usuarios
             </q-item-label>
@@ -110,7 +110,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Clientes Detalle</q-item-label>
+            <q-item-label>CLIENTES DETALLE</q-item-label>
             <q-item-label caption>
               Control de cLientes
             </q-item-label>
@@ -131,7 +131,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Clientes Local</q-item-label>
+            <q-item-label>CLIENTES LOCAL</q-item-label>
             <q-item-label caption>
               Control de cLientes Local
             </q-item-label>
@@ -152,7 +152,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Productos</q-item-label>
+            <q-item-label>PRODUCTOS</q-item-label>
             <q-item-label caption>
               Informacion de Productos
             </q-item-label>
@@ -174,7 +174,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Inventario</q-item-label>
+            <q-item-label>INVENTARIO</q-item-label>
             <q-item-label caption>
               Informacion de Materiales
             </q-item-label>
@@ -186,7 +186,7 @@
             <q-icon name="shopping_cart" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Venta Detalle</q-item-label>
+            <q-item-label>VENTA DETALLE</q-item-label>
             <q-item-label caption>
               Historial de ventas
             </q-item-label>
@@ -197,7 +197,7 @@
             <q-icon name="shopping_cart" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Sale</q-item-label>
+            <q-item-label>SALE</q-item-label>
 <!--            <q-item-label caption>-->
 <!--              Historial de ventas-->
 <!--            </q-item-label>-->
@@ -208,7 +208,7 @@
             <q-icon name="shopping_cart" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Local</q-item-label>
+            <q-item-label>LOCAL</q-item-label>
             <!--            <q-item-label caption>-->
             <!--              Historial de ventas-->
             <!--            </q-item-label>-->
@@ -248,7 +248,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Venta Local </q-item-label>
+            <q-item-label>VENTA LOCAL </q-item-label>
             <q-item-label caption>
               Historial de ventas
             </q-item-label>
@@ -269,7 +269,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Prestamos Detalle</q-item-label>
+            <q-item-label>PRESTAMO DETALLE</q-item-label>
             <q-item-label caption>
               Historial de prestamos
             </q-item-label>
@@ -290,7 +290,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Prestamos Local</q-item-label>
+            <q-item-label>PRESTAMO LOCAL</q-item-label>
             <q-item-label caption>
               Historial de prestamos
             </q-item-label>
@@ -378,7 +378,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Historial de Venta </q-item-label>
+            <q-item-label>HISTORIAL DE VENTA </q-item-label>
             <q-item-label caption>
               Historial de venta
             </q-item-label>
@@ -400,7 +400,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Historial de Rutas </q-item-label>
+            <q-item-label>HISTORIAL DE RUTAS </q-item-label>
             <q-item-label caption>
               Historial de venta Ruta
             </q-item-label>
@@ -412,7 +412,7 @@
             <q-icon name="people" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Empleado</q-item-label>
+            <q-item-label>EMPLEADO</q-item-label>
             <q-item-label caption>
               Controlde empleados
             </q-item-label>
@@ -437,7 +437,7 @@
             <q-icon name="store" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Almacen</q-item-label>
+            <q-item-label>ALMACEN</q-item-label>
             <q-item-label caption>
               Materiales
             </q-item-label>
@@ -458,7 +458,7 @@
           </q-item-section>
 
            <q-item-section>
-            <q-item-label>Caja Chica</q-item-label>
+            <q-item-label>CAJA CHICA</q-item-label>
             <q-item-label caption>
               Efectivo de Caja
             </q-item-label>
@@ -479,7 +479,7 @@
           </q-item-section>
 
            <q-item-section>
-            <q-item-label>Caja General</q-item-label>
+            <q-item-label>CAJA GENERAL</q-item-label>
             <q-item-label caption>
               Efectivo de Caja
             </q-item-label>
@@ -500,7 +500,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Gastos</q-item-label>
+            <q-item-label>GASTOS</q-item-label>
             <q-item-label caption>
               Control de gastos
             </q-item-label>
@@ -521,7 +521,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Reporte Usuario</q-item-label>
+            <q-item-label>REPORTE USUARIOS</q-item-label>
             <q-item-label caption>
               reporte de Ventas
             </q-item-label>
@@ -542,7 +542,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Resumen contable</q-item-label>
+            <q-item-label>RESUMEN CONTABLE</q-item-label>
             <q-item-label caption>
               reporte de Ingresos y Egresos
             </q-item-label>

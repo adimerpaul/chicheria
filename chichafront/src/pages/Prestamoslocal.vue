@@ -33,10 +33,11 @@
       <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
       <q-btn label="agregar" icon="send" color="positive" type="submit" v-else/>
     </div>
-  </div>
+    <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
+      <q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/></div>
+    </div>
   </q-form>
   <div class="text-h5" v-if="tab=='cliente'">TOTAL EN CAJA: {{totalefectivo}} Bs.</div>
-  <div><q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/></div>
 <!--  {{cliente}}-->
   <q-table            title="LISTA DE PRESTAMOS LOCAL"
             :rows="listadop"
