@@ -89,6 +89,9 @@ class SaleController extends Controller
          $total=0;
          $cadena='
         <style>
+        *{
+            font-size:10px   
+        }
         .textcnt{
             text-align:center;
         }
@@ -97,28 +100,148 @@ class SaleController extends Controller
         .textgrd{font-size:20px}
         </style>
         <hr>
-        <div>Local: '.$venta->cliente->local.'</div>
-        <div>Nombre: '.$venta->cliente->titular.'</div>
-        <div>Fecha: '.date('d/m/Y',strtotime($venta->fecha)).'</div>
+        <div style="text-align: right;">'.date('d/m/Y',strtotime($venta->fecha)).'</div>';
+        if($venta->cliente->local!='' || $venta->cliente->local!=null)
+        {$cadena.='<div>Local: '.$venta->cliente->local.'</div>';}
+        $cadena.='<div>Nombre: '.$venta->cliente->titular.'</div>
         <div>Nro :'.$venta->id.'</div>
         <hr>
         <table>
         <thead>
-        <tr><th>Cant</th><th>Prod</th><th>Subt</th></tr>
+        <tr><th>Cant</th><th>Prod</th><th>Precio</th><th>Subt</th></tr>
         </thead>
         <tbody>';
         foreach ($venta->detalles as $d) {
             $total+=floatval($d->subtotal);
             # code...
-        $cadena.='<tr><td>'.$d->cantidad.'</td><td>'.$d->nombreproducto.'</td><td>'.$d->subtotal.'</td></tr>';
+        $cadena.='<tr><td>'.$d->cantidad.'</td><td>'.$d->nombreproducto.'</td><td>'.$d->precio.'</td><td>'.$d->subtotal.'</td></tr>';
         }
         $cadena.='</tbody>
         </table>
         <div>TOTAL: <b>'.$total.' Bs</b></div>
         <div>Observacion: <b>'.$venta->observacion.'</b></div>
-        <div>Usuario: <b>'.$venta->user->name.'</b></div>
+        
         <div style="color:white">-----------------</div>
         <br>
+              ';
+              return $cadena;
+    }
+    public function updateRuta(Request $request, $idventa)
+    {
+//        $venta->update($request->all());
+//        return $request;
+        $venta=Venta::find($idventa);
+        $venta->direccion=strtoupper($request->direccion);
+        $venta->fechaentrega=$request->fechaentrega;
+        $venta->turno=strtoupper($request->turno);
+        $venta->hora=strtoupper($request->hora);
+        $venta->telefono1=strtoupper($request->telefono1);
+        $venta->telefono2=strtoupper($request->telefono2);
+        $venta->direccion=strtoupper($request->direccion);
+        $venta->observacion=strtoupper($request->observacion);
+        $venta->envase=strtoupper($request->envase);
+        $venta->save();
+        return $this->impresionruta($venta->id);
+    }
+    public function impresionruta($id){
+        $venta=Venta::with('user')
+        ->with('detalle')
+        ->with('cliente')
+        ->where('id',$id)
+        ->get()[0];
+         $cinit=00;
+        $cadena='
+        <style>
+        *{text-size:12px;}
+        .textcnt{
+            text-align:center;
+        }
+
+        table{width:100%}
+        td{vertical-align:top;}
+        .textgrd{font-size:20px}
+        </style>
+        <div class="textcnt">H/R</div>
+        <div class="textcnt">Nro '.$venta->id.'</div>
+        <table><tr>
+        <td>Fecha: </td><td>'.date('d/m/Y',strtotime($venta->fecha)).'</td></tr>
+        <tr><td>Fecha entrega: </td><td><b>'.date('d/m/Y',strtotime($venta->fechaentrega)).'</b></td>
+        </tr></table>
+        <hr>
+        <table>
+        <tr><th>CANTIDAD</th><th>PRODUCTO</th></tr>';
+        foreach ($venta->detalles as $d) {
+            $cadena.='<tr><td>'.$venta->detalle->cantidad.'</td><td>'.$venta->detalle->nombreproducto.'</td></tr>';
+        }
+        $cadena.='</table>
+        <table>
+        <tr><td>Nombre: </td><td>'.$venta->cliente->titular.'</td></tr>
+        <tr><td>Tel1: </td><td>'.$venta->telefono1.'</td></tr>
+        <tr><td>Tel2: </td><td>'.$venta->telefono2.'</td></tr>
+        <tr><td>Direccion: </td><td>'.$venta->direccion.'</td></tr>
+        <tr><td>Turno: </td><td>'.$venta->turno.'</td></tr>
+        <tr><td>Hora: </td><td>'.$venta->hora.'</td></tr>
+        <tr><td>Envase: </td><td><b>'.$venta->envase.'</b></td></tr>
+        </table>
+        <hr>
+        <table>
+        <tr><td>Observacion: </td><td>'.$venta->observacion.'</td></tr>
+        <tr><td>Total: </td><td>'.$venta->total.'</td></tr>
+        <tr><td>A cuenta: </td><td>'.$venta->acuenta.'</td></tr>
+        <tr><td>Saldo: </td><td><b>'.$venta->saldo.'</b></td></tr>
+        <tr><td>Usuario: </td><td>'.$venta->user->name.'</td></tr>
+        </table>
+              ';
+              return $cadena;
+    }
+    public function impresionruta2($id){
+        $venta=Venta::with('user')
+        ->with('detalle')
+        ->with('cliente')
+        ->where('id',$id)
+        ->get()[0];
+         $cinit=00;
+        $cadena='
+        <style>
+        *{text-size:12px;}
+        .textcnt{
+            text-align:center;
+        }
+
+        table{width:100%}
+        td{vertical-align:top;}
+        .textgrd{font-size:20px}
+        </style>
+        <div class="textcnt">H/R</div>
+        <div class="textcnt">Nro '.$venta->id.'</div>
+        <table><tr>
+        <td>Fecha: </td><td>'.date('d/m/Y',strtotime($venta->fecha)).'</td></tr>
+        <tr><td>Fecha entrega: </td><td><b>'.date('d/m/Y',strtotime($venta->fechaentrega)).'</b></td>
+        </tr></table>
+        <hr>
+        <table>
+        <tr><th>CANTIDAD</th><th>PRODUCTO</th></tr>';
+        foreach ($venta->detalles as $d) {
+            $cadena.='<tr><td>'.$venta->detalle->cantidad.'</td><td>'.$venta->detalle->nombreproducto.'</td></tr>';
+        }
+        $cadena.='</table>
+        <table>
+        <tr><td>Nombre: </td><td>'.$venta->cliente->titular.'</td></tr>
+        <tr><td>Tel1: </td><td>'.$venta->telefono1.'</td></tr>
+        <tr><td>Tel2: </td><td>'.$venta->telefono2.'</td></tr>
+        <tr><td>Direccion: </td><td>'.$venta->direccion.'</td></tr>
+        <tr><td>Turno: </td><td>'.$venta->turno.'</td></tr>
+        <tr><td>Hora: </td><td>'.$venta->hora.'</td></tr>
+        <tr><td>Envase: </td><td><b>'.$venta->envase.'</b></td></tr>
+        </table>
+        <hr>
+        <table>
+        <tr><td>Observacion: </td><td>'.$venta->observacion.'</td></tr>
+        <tr><td>Total: </td><td>'.$venta->total.'</td></tr>
+        <tr><td>A cuenta: </td><td>'.$venta->acuenta.'</td></tr>
+        <tr><td>Saldo: </td><td><b>'.$venta->saldo.'</b></td></tr>
+        <tr><td>Usuario: </td><td>'.$venta->user->name.'</td></tr>
+        </table>
               ';
               return $cadena;
     }

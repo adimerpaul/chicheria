@@ -124,8 +124,10 @@
                     </td>
                     <td>{{v.user}}</td>
                     <td>
-                      <q-btn icon="segment" color="green"  @click="listpago(v)" />
-                      <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)"/>
+                      <q-btn icon="segment" color="green"  @click="listpago(v)" dense/>
+                      <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)" dense />
+                       <q-btn color="info" icon="print" dense @click="printRuta(v)"/>
+                      
                     </td>
                   </tr>
                   </tbody>
@@ -552,6 +554,17 @@ export default {
     })
   },
   methods:{
+      printRuta(venta){
+        console.log(venta)
+        this.$axios.post(process.env.API+'/impresionruta/'+venta.id).then(res=>{
+          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+        })
+
+      },
       onPago(){
       this.$axios.post(process.env.API+'/pago',this.regpago).then(res=>{
           this.regpago={};

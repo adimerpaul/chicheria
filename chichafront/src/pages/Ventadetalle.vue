@@ -495,6 +495,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    
     <q-dialog v-model="modalhojaruta">
       <q-card style="width: 700px;min-width: 80vw">
         <q-card-section ><div class="text-h6">Hoja ruta {{venta.titular }} {{venta.direccion }}</div></q-card-section>

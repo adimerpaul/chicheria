@@ -25,10 +25,23 @@
       :columns="columns"
       :rows="empleados"
       :rows-per-page-options="[50,100,0]"
+      :filter="filter"
       >
+      <template v-slot:top-right>
+        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
         <template v-slot:body-cell-tipo="props">
           <q-td :props="props" auto-width>
             <q-badge :color="props.row.tipo=='FIJO'?'green':'teal'">{{props.row.tipo}}</q-badge>
+          </q-td>
+        </template>
+        <template v-slot:body-cell-estado="props">
+          <q-td :props="props" auto-width>
+            <q-badge :color="props.row.estado=='ACTIVO'?'green':'red'" @click="cambioEstado(props.row)">{{props.row.estado}}</q-badge>
           </q-td>
         </template>
         <template v-slot:body-cell-action="props">
@@ -88,6 +101,7 @@
                 <table id="example" style="width:100%" class="cell-border">
                 <thead>
                 <tr>
+                <th>ID</th>
                 <th>EMPLEADO</th>
                 <th>ADELANTO</th>
                 <th>DESCUENTO</th>
@@ -97,6 +111,7 @@
                 </thead>
                   <tbody>
                   <tr v-for="v in salarios" :key="v.id">
+                  <td>{{v.id}}</td>
                   <td>{{v.nombre}}</td>
                   <td>{{v.adelanto}}</td>
                   <td>{{v.descuento}}</td>
@@ -301,6 +316,7 @@ export default {
     return{
       dialoggenplanilla:false,
       dialogver:false,
+      filter:'',
       pagos:false,
       checkgasto:"GASTO",
       pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
@@ -322,12 +338,13 @@ export default {
       montogeneral:0,
       columns:[
         {name:'ci',label:'CI',field:'ci'},
-        {name:'nombre',label:'NOMBRE',field:'nombre',sortable:true},
+        {name:'nombre',label:'NOMBRE',field:'nombre',sortable:true, align:'left'},
         {name:'tipo',label:'TIPO',field:'tipo'},
+        {name:'estado',label:'ESTADO',field:'estado'},
         {name:'action',label:'OPCION',field:'action'},
       ],
       columns2:[
-        {name:'fecha',label:'FECHA',field:'fecha',sortable: true},
+        {name:'fecha',label:'FECHA',field:row=>date.formatDate( row.fecha,'DD/MM/YYYY'),sortable: true},
         {name:'hora',label:'HORA',field:'hora'},
         {name:'tipo',label:'TIPO',field:'tipo',sortable: true},
         // {name:'detalle',label:'detalle',field:'detalle'},
@@ -631,6 +648,13 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+    cambioEstado(empledo){
+      this.$axios.post(process.env.API + "/estadoEmpleado",empledo).then((res) => {
+        this.missalarios()
+        this.misempleados()
+      })
+
+    },
         printRow(props){
       this.$axios.get(process.env.API + "/impade/"+props.row.id).then((res) => {
                 let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
@@ -773,16 +797,16 @@ export default {
       header()
       doc.setFontSize(10);
       doc.setFont(undefined,'bold')
-      doc.text(['CI:','Nombre:','Fecha nac:'],10,25)
+      doc.text(['CI:','Nombre:'],10,25)
       doc.setFont(undefined,'normal')
-      doc.text([this.emp.ci,this.emp.nombre,this.emp.fechanac],65,25,'center')
+      doc.text([this.emp.ci,this.emp.nombre],65,25,'center')
       doc.setFont(undefined,'bold')
-      doc.text(['Tipo:','Celular','Edad:'],130,25)
+      doc.text(['Tipo:'],130,25)
       doc.setFont(undefined,'normal')
       var nacimiento=moment(this.emp.fechanac);
       var hoy=moment();
       var anios=hoy.diff(nacimiento,"years");
-      doc.text([this.emp.tipo,this.emp.celular.toString(),anios.toString()],170,25,'center')
+      doc.text([this.emp.tipo],170,25,'center')
       doc.line(5,35,210,35)
       doc.setFont(undefined,'bold')
       doc.text('INGRESOS',45,39,'center')
@@ -806,7 +830,9 @@ export default {
       doc.text((parseInt(planilla.descuento)+parseInt(planilla.adelanto))+' Bs',205,69,'right')
       doc.line(5,70,210,70)
       doc.setFont(undefined,'bold')
+      doc.setFontSize(14);
       doc.text('Liquido pagable: '+planilla.total+' Bs',110,75,'center')
+      doc.setFontSize(9);
       let ClaseConversor = conversor.conversorNumerosALetras;
       let miConversor = new ClaseConversor();
       let a = miConversor.convertToText(parseInt(planilla.total));

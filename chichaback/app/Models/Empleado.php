@@ -16,9 +16,11 @@ class Empleado extends Model
         'salario',
         'dias',
         'tipo',
+        'estado',
     ];
     public function sueldos(){
-        return $this->hasMany(Sueldo::class);
+            
+            return $this->hasMany(Sueldo::class)->orderBy('fecha','desc');
     }
     public function planillas(){
         return $this->hasMany(Planilla::class);

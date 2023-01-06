@@ -251,7 +251,7 @@ class VentaController extends Controller
             return Venta::with('user')
                 ->with('cliente')
                 ->with('pagos')
-                ->with('detalle')
+                ->with('detalles')
                 ->whereDate('fecha','>=',$request->ini)
                 ->whereDate('fecha','<=',$request->fin)
 //                ->where('user_id',$request->id)
@@ -260,7 +260,7 @@ class VentaController extends Controller
             return Venta::with('user')
                 ->with('cliente')
                 ->with('pagos')
-                ->with('detalle')
+                ->with('detalles')
                 ->whereDate('fecha','>=',$request->ini)
                 ->whereDate('fecha','<=',$request->fin)
                 ->where('user_id',$request->id)
@@ -384,7 +384,7 @@ class VentaController extends Controller
         td{vertical-align:top;}
         .textgrd{font-size:20px}
         </style>
-        <div class="textcnt"> HOJA DE RUTA</div>
+        <div class="textcnt">H/R</div>
         <div class="textcnt">Nro '.$venta->id.'</div>
         <table><tr>
         <td>Fecha: </td><td>'.date('d/m/Y',strtotime($venta->fecha)).'</td></tr>

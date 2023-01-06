@@ -92,8 +92,6 @@
                       <th>Fecha</th>
                       <th>Local</th>
                       <th>Titular</th>
-                      <th>Cantidad</th>
-                      <th>Producto</th>
                       <th>Total</th>
                       <th>A cuenta</th>
                       <th>Saldo</th>
@@ -109,8 +107,6 @@
                       <td>{{v.fecha}}</td>
                       <td>{{v.local}}</td>
                       <td>{{v.titular}}</td>
-                      <td>{{v.cantidad}}</td>
-                      <td>{{v.producto}}</td>
                       <td>{{v.total}}</td>
                       <td>{{v.acuenta}}</td>
                       <td>{{v.saldo}}</td>
@@ -124,6 +120,7 @@
                       <td>{{v.user}}</td>
                       <td>
                         <q-btn icon="segment" color="green"  @click="listpago(v)" />
+                        <q-btn icon="shopping_cart" color="accent"  @click="venta=v; modalDialog=true;" />
 <!--                        <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)"/>-->
                       </td>
                     </tr>
@@ -131,6 +128,29 @@
                   </table>
               </div>
               </div>
+
+              <q-dialog v-model="modalDialog">
+                <q-card style="width: 700px; max-width: 80vw;">
+                <q-card-section>
+                  <div class="text-h6">DETALLE DE COMPRA</div>
+                </q-card-section>
+                <q-card-section>
+                <div><b>Obs:</b>{{venta.observacion}}</div>
+                <div>
+                  <table style="width:100%">
+                    <tr><th>PRODUCTO</th><th>CANTIDAD</th><th>PRECIO</th><th>SUBTOTAL</th></tr>
+                    <tr v-for=" d in venta.detalles " :key="d">
+                      <td>{{d.nombreproducto}}</td><td>{{d.cantidad}}</td><td>{{d.precio}}</td><td>{{d.subtotal}}</td>
+                    </tr>
+                  </table>
+                </div>
+                </q-card-section>
+                <q-card-actions align="right">
+                <q-btn flat label="OK" color="primary" v-close-popup />
+                </q-card-actions>
+                </q-card>
+              </q-dialog>
+
                 <q-dialog v-model="alert">
                 <q-card>
                     <q-card-section>
@@ -250,10 +270,12 @@ export default {
       garantia:{},
       dialog_garantia:false,
       dialog_pago:false,
+      modalDialog:false,
       cantidadprestamo:0,
       pagos:[],
       regpago:{},
       prestamo:{},
+      venta:{},
       columns:[
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'monto',label:'Monto',field:'monto'},
@@ -263,8 +285,6 @@ export default {
         {name:'fecha',label:'Fecha',field:'fecha'},
         {name:'local',label:'Local',field:'local'},
         {name:'titular',label:'Titular',field:'titular'},
-        {name:'cantidad',label:'Cantidad',field:'cantidad'},
-        {name:'producto',label:'Producto',field:'producto'},
         {name:'total',label:'Total',field:'total'},
         {name:'acuenta',label:'A cuenta',field:'acuenta'},
         {name:'saldo',label:'Saldo',field:'saldo'},
@@ -595,8 +615,8 @@ export default {
             titular:r.cliente.titular,
             user:r.user.name,
             pagos:r.pagos,
-            producto:r.detalle.nombreproducto,
-            cantidad:r.detalle.cantidad,
+            observacion:r.observacion,
+            detalles:r.detalles
           })
 
        })
