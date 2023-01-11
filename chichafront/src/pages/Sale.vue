@@ -197,8 +197,11 @@
       <q-card-section class="q-pt-none">
         <q-form @submit.prevent="actualizarventa">
           <div class="row">
+            <div class="col-12  q-pa-xs">
+              <q-input type="date" outlined label="fechaentrega" v-model="venta.fechaentrega"/>
+            </div>
             <div class="col-12 col-md-6 q-pa-xs">
-              <q-input required type="text" style="text-transform: uppercase;" outlined label="turno" v-model="venta.turno"/>
+              <q-select required :options="['MAÑANA','TARDE']"  outlined label="turno" v-model="venta.turno"/>
             </div>
             <div class="col-12 col-md-6 q-pa-xs">
               <q-input required type="text"  style="text-transform: uppercase;" outlined label="hora" v-model="venta.hora"/>
@@ -216,9 +219,7 @@
             <div class="col-12 col-md-6 q-pa-xs">
               <q-input required outlined label="envase" style="text-transform: uppercase;" v-model="venta.envase"/>
             </div>
-            <div class="col-12 col-md-6 q-pa-xs">
-              <q-input type="date" outlined label="fechaentrega" v-model="venta.fechaentrega"/>
-            </div>
+
             <div class="col-12 col-md-6 q-pa-xs">
               <q-input required outlined label="acuenta" v-model="venta.acuenta" disable/>
             </div>
