@@ -789,7 +789,7 @@ xlsx(datacaja, settings) // Will download the excel file
               cadena+="<tr><td>"+ r.tipo.substring(0,1)+'-'+r.id+"</td><td>"
               r.detalles.forEach(d => {
                   cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
-              });  
+              });
               cadena+="</td><td>"+ r.total +" Bs</td><td>"+r.acuenta+" Bs</td><td>"+ r.saldo +" Bs</td><td>"+ r.titular+"</td><td>"+ r.local+"</td><td "
         if(r.estado=='POR COBRAR')  cadena+=color1
               cadena+=">"+r.estado+"</td></tr>"
@@ -797,7 +797,7 @@ xlsx(datacaja, settings) // Will download the excel file
       }
           });
         cadena+="</table><div><b>TOTAL VENTAS:</b>"+ventas+"</div><br>\
-        <div>VENTAS VENTAS CON RUTA</div> \
+        <div>VENTAS CON RUTA</div> \
         <table>\
           <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
           this.ventas.forEach(r => {
@@ -806,7 +806,7 @@ xlsx(datacaja, settings) // Will download the excel file
               cadena+="<tr><td>"+ 'R-'+r.id+"</td><td>"
               r.detalles.forEach(d => {
                   cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
-              });  
+              });
               cadena+="</td><td>"+ r.total +" Bs</td><td>"+r.acuenta+" Bs</td><td>"+ r.saldo +" Bs</td><td>"+ r.titular+"</td><td>"+ r.local+"</td><td "
         if(r.estado=='POR COBRAR')  cadena+=color1
               cadena+=">"+r.estado+"</td></tr>"
@@ -823,8 +823,9 @@ xlsx(datacaja, settings) // Will download the excel file
         <table>\
           <tr><th>CANTIDAD</th><th>MATERIAL</th><th>EFECTIVO</th><th>TITULAR</th><th>LOCAL</th></tr>"
           this.anulados.forEach(element => {
+            element.cliente.local=element.cliente.local!=null?element.cliente.local.toString():''
             cadena+="<tr><td>"+element.cantidad+"</td><td>"+element.inventario.nombre+"</td><td>"+element.efectivo+" Bs</td>\
-              <td>"+ element.cliente.titular+"</td><td>"+element.cliente.local!=null?element.cliente.local.toString():''+"</td></tr>"
+              <td>"+ element.cliente.titular+"</td><td>"+element.cliente.local+"</td></tr>"
               });
         cadena+="</table><div><b>TOTAL ANULADO:</b>"+this.totalanulado+"</div><br>"
         }
@@ -833,7 +834,8 @@ xlsx(datacaja, settings) // Will download the excel file
 
         let matventa=0
         this.prestamoventa.forEach(r=>{
-          cadena+="<tr><td>"+r.cantidad+"</td><td>"+r.inventario.nombre+"</td><td>"+r.efectivo+" Bs.</td><td>"+r.cliente.titular!=null?r.cliente.titular:''+"</td><td>"+r.cliente.local!=null?r.cliente.local:''+"</td></tr>"
+          r.cliente.local=r.cliente.local!=null?r.cliente.local:''
+          cadena+="<tr><td>"+r.cantidad+"</td><td>"+r.inventario.nombre+"</td><td>"+r.efectivo+" Bs.</td><td>"+r.cliente.titular+"</td><td>"+r.cliente.local+"</td></tr>"
         matventa+=parseFloat(r.efectivo)
 
       })
@@ -863,7 +865,7 @@ xlsx(datacaja, settings) // Will download the excel file
         caja+=parseFloat(r.precio!=null?r.precio:0)
         else
         gastos+=parseFloat(r.precio!=null?r.precio:0)
-       
+
       })
         cadena+="</table><div><b>TOTAL GASTOS: </b>"+gastos+" Bs</div><br>"
         cadena+="<div>DETALLE DE GASTO CAJA CHICA</div>\
@@ -891,7 +893,7 @@ xlsx(datacaja, settings) // Will download the excel file
               myWindow.close();
             },500);
     },
-   
+
     imprimirmisventasygastos(us){
       let mc=this
           if(!this.$store.state.login.gastoreporteuser)
