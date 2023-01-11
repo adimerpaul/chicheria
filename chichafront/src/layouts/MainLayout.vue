@@ -180,7 +180,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-
+<!--
         <q-item v-if="$store.state.login.ventadetalle" active-class="my-menu-link" clickable exact to="/venta">
           <q-item-section avatar>
             <q-icon name="shopping_cart" size="lg" />
@@ -191,7 +191,7 @@
               Historial de ventas
             </q-item-label>
           </q-item-section>
-        </q-item>
+        </q-item>-->
         <q-item v-if="$store.state.login.ventadetalle" active-class="my-menu-link" clickable exact to="/sale/detalle">
           <q-item-section avatar>
             <q-icon name="shopping_cart" size="lg" />
@@ -234,7 +234,7 @@
 <!--            </q-item-label>-->
 <!--          </q-item-section>-->
 <!--        </q-item>-->
-        <q-item
+       <!-- <q-item
           v-if="$store.state.login.ventalocal"
           active-class="my-menu-link"
           clickable
@@ -254,7 +254,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-
+-->
         <q-item
           v-if="$store.state.login.historialprestamo"
           active-class="my-menu-link"
