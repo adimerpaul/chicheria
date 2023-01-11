@@ -90,7 +90,7 @@ class SaleController extends Controller
          $cadena='
         <style>
         *{
-            font-size:10px   
+            font-size:12px
         }
         .textcnt{
             text-align:center;
@@ -120,7 +120,7 @@ class SaleController extends Controller
         </table>
         <div>TOTAL: <b>'.$total.' Bs</b></div>
         <div>Observacion: <b>'.$venta->observacion.'</b></div>
-        
+
         <div style="color:white">-----------------</div>
         <br>
               ';
@@ -268,7 +268,7 @@ class SaleController extends Controller
             ->where('estado','<>','ANULADO')
             ->where('user_id',$request->user_id)
             ->orderBy('id','desc')
-            ->get(); 
+            ->get();
         }
     }
 

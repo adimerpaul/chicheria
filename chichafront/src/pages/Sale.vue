@@ -212,9 +212,7 @@
             <div class="col-12 col-md-6 q-pa-xs">
               <q-input  outlined label="direccion" style="text-transform: uppercase;" v-model="venta.direccion"/>
             </div>
-            <div class="col-12 col-md-6 q-pa-xs">
-              <q-input required outlined label="observacion" style="text-transform: uppercase;" v-model="venta.observacion"/>
-            </div>
+
             <div class="col-12 col-md-6 q-pa-xs">
               <q-input required outlined label="envase" style="text-transform: uppercase;" v-model="venta.envase"/>
             </div>
@@ -227,7 +225,9 @@
             <div class="col-12 col-md-6 q-pa-xs">
               <q-input required outlined label="saldo" v-model="venta.saldo" disable/>
             </div>
-
+            <div class="col-12  q-pa-xs">
+              <q-input required outlined label="observacion" style="text-transform: uppercase;" v-model="venta.observacion"/>
+            </div>
             <div class="col-12  q-pa-xs flex flex-center">
               <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Imprimir"/>
             </div>
@@ -261,7 +261,7 @@
     </q-card-actions>
     </q-card>
   </q-dialog>
-  
+
 
 </div>
 </q-page>
@@ -327,7 +327,7 @@ export default {
       this.inventarios=res.data
       this.inventario=res.data[0]
     })
-    this.consultaVenta()
+    this.consultaVenta(this.type)
 
   },
   methods: {
@@ -356,7 +356,7 @@ export default {
            sumcuenta+=v.acuenta
            sumsaldo+=v.saldo
           cadena+='<tr><td>'+v.total+'</td><td>'+v.acuenta+'</td><td>'+v.saldo+'</td><td>'+v.cliente.titular+'</td><td>'+v.user.name+'</td></tr>'
-          
+
         });
 
       cadena+='</table>\
@@ -400,7 +400,7 @@ export default {
     actualizarventa(){
       this.$q.loading.show()
       // console.log(this.venta)
-      this.$axios.put(process.env.API+'/venta/'+this.venta.id,{
+      this.$axios.put(process.env.API+'/updateRuta/'+this.venta.id,{
         turno:this.venta.turno,
         hora:this.venta.hora,
         telefono1:this.venta.telefono1,
@@ -461,8 +461,8 @@ export default {
         // console.log('I am triggered on both OK and Cancel')
       })
     },
-    consultaVenta(){
-      this.$api.post('listSale',{tipo:this.type=='detalle'?'DETALLE':'LOCAL',ini:this.fecha1,fin:this.fecha2}).then(res => {
+    consultaVenta(tipo1){
+      this.$api.post('listSale',{tipo:tipo1=='detalle'?'DETALLE':'LOCAL',ini:this.fecha1,fin:this.fecha2}).then(res => {
         res.data.forEach(r => {
           r.telefono1=r.cliente.telefono
         });
@@ -480,7 +480,7 @@ export default {
           icon:'error'
         })
           return false
-        
+
         }
       if(this.client.id==undefined || this.client.id=='')
         { console.log('sin cliente')
@@ -491,12 +491,12 @@ export default {
           icon:'error'
         })
           return false
-        
+
         }
       if(this.monto<0 ||  this.monto>this.total || this.monto==undefined)
         { console.log('sin monto')
           return false
-        
+
         }
       console.log(this.client.id)
       this.productSales.forEach(r=>{
@@ -518,7 +518,7 @@ export default {
         myWindow.focus();
         // setTimeout(function(){
           myWindow.print();
-          myWindow.close(); 
+          myWindow.close();
         // },500);
 
         this.$q.notify({
