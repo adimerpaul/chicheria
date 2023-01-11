@@ -763,7 +763,7 @@ xlsx(datacaja, settings) // Will download the excel file
         this.glosa=this.glosas[0];
       })
     },
-    impresionventagasto(us){
+    async impresionventagasto(us){
       let mc=this
           if(!this.$store.state.login.gastoreporteuser)
 
@@ -886,8 +886,10 @@ xlsx(datacaja, settings) // Will download the excel file
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(cadena);
         myWindow.document.close();
-        myWindow.print();
-        myWindow.close();
+        setTimeout(function(){
+              myWindow.print();
+              myWindow.close();
+            },500);
     },
    
     imprimirmisventasygastos(us){
