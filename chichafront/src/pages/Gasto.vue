@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="col-12">
-      <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="imprimirmisventasygastos(user)"/>
+      <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="impresionventagasto(user)"/>
     </div>
     <div class="col-12">
 <!--      <q-table-->
@@ -730,7 +730,7 @@ xlsx(datacaja, settings) // Will download the excel file
       this.$axios.post(process.env.API + "/totalcaja").then((res) => {
           this.montocajachica=res.data.monto;
       })
-      },
+    },
 
 
 
@@ -763,6 +763,133 @@ xlsx(datacaja, settings) // Will download the excel file
         this.glosa=this.glosas[0];
       })
     },
+    impresionventagasto(us){
+      let mc=this
+          if(!this.$store.state.login.gastoreporteuser)
+
+        us.label=this.$store.state.login.user.name;
+        let ventas=0
+        let ventasruta=0
+        let ccpago=0
+        let color1="style='color:red'"
+        let cadena="<style>\
+        *{font-size:10px}\
+        table{width:100%;border-collapse: collapse;}\
+        table, th, td {  border: 1px solid;}\
+        .titulo1{text-align:center; font-weight: bold;}\
+        </style>\
+        <div><img src='logo.png' style='width:150px; height:75px;'></div>\
+        <div class='titulo1'>HISTORIAL DE INGRESOS Y GASTOS DE "+us.label+" "+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY') +"</div><br>\
+        <div>VENTAS DETALLE Y LOCAL</div> \
+        <table>\
+          <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
+          this.ventas.forEach(r => {
+            ventas=ventas+r.acuenta
+            if(r.fechaentrega==null || r.fechaentrega==''){
+              cadena+="<tr><td>"+ r.tipo.substring(0,1)+'-'+r.id+"</td><td>"
+              r.detalles.forEach(d => {
+                  cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
+              });  
+              cadena+="</td><td>"+ r.total +" Bs</td><td>"+r.acuenta+" Bs</td><td>"+ r.saldo +" Bs</td><td>"+ r.titular+"</td><td>"+ r.local+"</td><td "
+        if(r.estado=='POR COBRAR')  cadena+=color1
+              cadena+=">"+r.estado+"</td></tr>"
+
+      }
+          });
+        cadena+="</table><div><b>TOTAL VENTAS:</b>"+ventas+"</div><br>\
+        <div>VENTAS VENTAS CON RUTA</div> \
+        <table>\
+          <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
+          this.ventas.forEach(r => {
+            ventasruta=ventasruta+r.acuenta
+            if(r.fechaentrega!=null && r.fechaentrega!=''){
+              cadena+="<tr><td>"+ 'R-'+r.id+"</td><td>"
+              r.detalles.forEach(d => {
+                  cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
+              });  
+              cadena+="</td><td>"+ r.total +" Bs</td><td>"+r.acuenta+" Bs</td><td>"+ r.saldo +" Bs</td><td>"+ r.titular+"</td><td>"+ r.local+"</td><td "
+        if(r.estado=='POR COBRAR')  cadena+=color1
+              cadena+=">"+r.estado+"</td></tr>"
+
+      }
+          });
+          ventas=ventas+ventasruta
+        cadena+="</table><div><b>TOTAL VENTAS RUTA:</b>"+ventasruta+"</div><br>\
+        "
+        let panulado=0
+      if(this.totalanulado>0){
+        panulado=panulado+this.totalanulado;
+        cadena+="<div>INGRESOS DE ANULADOS PRESTAMOS</div>\
+        <table>\
+          <tr><th>CANTIDAD</th><th>MATERIAL</th><th>EFECTIVO</th><th>TITULAR</th><th>LOCAL</th></tr>"
+          this.anulados.forEach(element => {
+            cadena+="<tr><td>"+element.cantidad+"</td><td>"+element.inventario.nombre+"</td><td>"+element.efectivo+" Bs</td>\
+              <td>"+ element.cliente.titular+"</td><td>"+element.cliente.local!=null?element.cliente.local.toString():''+"</td></tr>"
+              });
+        cadena+="</table><div><b>TOTAL ANULADO:</b>"+this.totalanulado+"</div><br>"
+        }
+        cadena+="<div>INGRESOS DE VENTA MATERIAL</div>\
+        <table><tr><th>CANTIDAD</th><th>MATERIAL</th><th>EFECTIVO</th><th>TITULAR</th><th>LOCAL</th></tr>"
+
+        let matventa=0
+        this.prestamoventa.forEach(r=>{
+          cadena+="<tr><td>"+r.cantidad+"</td><td>"+r.inventario.nombre+"</td><td>"+r.efectivo+" Bs.</td><td>"+r.cliente.titular!=null?r.cliente.titular:''+"</td><td>"+r.cliente.local!=null?r.cliente.local:''+"</td></tr>"
+        matventa+=parseFloat(r.efectivo)
+
+      })
+      cadena+="</table><div><b>TOTAL VENTA MATERIAL: </b> "+this.totalpresventa+" Bs</div><br>"
+
+      if(this.totalpagos>0){
+        cadena+="<div>INGRESOS DE PENDIENTES DE PAGO</div>\
+        <table><tr><th>TIPO</th><th>DETALLE</th><th>MONTO</th><th>TITULAR</th><th>LOCAL</th></tr>"
+      this.rpagos.forEach(r=>{
+        ccpago+=r.monto
+        let pendiente=r.venta.fechaentrega!=null&&r.venta.fechaentrega!=''?'R-'+r.venta.id:r.venta.tipo.substring(0,1)+'-'+r.venta.id
+        cadena+="<tr><td>"+ pendiente +"</td><td>"
+        r.venta.detalles.forEach(d => {
+          cadena+=d.cantidad+" - "+d.nombreproducto+"<br>"
+        });
+        cadena+="</td><td>"+r.monto+" Bs </td><td>"+r.venta.cliente.titular+"</td><td>"+(r.venta.cliente.local!=null?r.venta.cliente.local.toString():'')+"</td></tr>"
+      })
+      cadena+="</table><div><b>T.V. Pago: </b>"+this.totalpagos+"</div><br>"
+      }
+      cadena+="<div>DETALLE DE GASTO</div>\
+      <table><tr><th>MONTO</th><th>GLOSA</th><th>OBSERVACION</th></tr>"
+        let caja=0
+        let gastos=0
+      this.gastos.forEach(r=>{
+        cadena+="<tr><td>"+r.precio+" Bs</td><td>"+r.glosa+"</td><td>"+r.observacion+"</td></tr>"
+        if(r.glosa=='CAJA CHICA')
+        caja+=parseFloat(r.precio!=null?r.precio:0)
+        else
+        gastos+=parseFloat(r.precio!=null?r.precio:0)
+       
+      })
+        cadena+="</table><div><b>TOTAL GASTOS: </b>"+gastos+" Bs</div><br>"
+        cadena+="<div>DETALLE DE GASTO CAJA CHICA</div>\
+        <table><tr><th>MONTO</th><th>GLOSA</th><th>MOTIVO</th></tr>"
+
+        this.chica.forEach(r=>{
+        cadena+="<tr><td>"+r.monto+" Bs</td><td>"+r.glosa+"</td><td>"+r.motivo+"</td></tr>"
+        caja+=parseFloat(r.monto!=null?r.monto:0)
+      })
+      cadena+="</table><div><b>TOTAL GASTO CAJA CHICA: </b>"+ caja+" Bs</div><br>"
+      cadena+="<div><b>TOTAL PRESTAMO ANULADOS: </b>"+ panulado+" Bs</div>"
+      cadena+="<div><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
+      cadena+="<div><b>TOTAL CXC PAGOS: </b>"+ ccpago+" Bs</div>"
+      cadena+="<div><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
+      cadena+="<div><b>TOTAL SALDO: </b>"+ (ventas-gastos) +" Bs</div>"
+
+      if(this.$store.state.login.user.id==1){
+      cadena+="<div><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
+      }
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(cadena);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+    },
+   
     imprimirmisventasygastos(us){
       let mc=this
           if(!this.$store.state.login.gastoreporteuser)
@@ -809,8 +936,8 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(1, y+3, r.tipo.substring(0,1)+'-'+r.id)
         doc.setFontSize(9);
 
-        doc.text(2.5, y+3, r.cantidad!=null?r.cantidad.toString():'')
-        doc.text(3.5, y+3, r.detalle!=null?r.detalle.toString():'')
+        //doc.text(2.5, y+3, r.cantidad!=null?r.cantidad.toString():'')
+        //doc.text(3.5, y+3, r.detalle!=null?r.detalle.toString():'')
         doc.text(7, y+3, r.total!=null?r.total.toString():''+' Bs.')
         doc.text(8.5, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventas+=parseFloat(r.acuenta!=null?r.acuenta:0)
@@ -848,8 +975,8 @@ xlsx(datacaja, settings) // Will download the excel file
        doc.setFontSize(6);
         doc.text(1, y+3, 'R-'+r.id)
         doc.setFontSize(9);
-        doc.text(2.5, y+3, r.cantidad!=null?r.cantidad.toString():'')
-        doc.text(3.5, y+3, r.detalle!=null?r.detalle.toString():'')
+        //doc.text(2.5, y+3, r.cantidad!=null?r.cantidad.toString():'')
+        //doc.text(3.5, y+3, r.detalle!=null?r.detalle.toString():'')
         doc.text(7, y+3, r.total!=null?r.total.toString():''+' Bs.')
         doc.text(8.5, y+3, r.acuenta!=null?r.acuenta.toString():''+' Bs.')
         ventasruta+=parseFloat(r.acuenta!=null?r.acuenta:0)
@@ -879,6 +1006,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.setFont(undefined,'bold')
         doc.text(1, y+3, '-------------------------------------------------------')
       y+=0.5
+
         doc.text(1, y+3, 'DETALLE DE GASTO')
         doc.setFont(undefined,'normal')
       this.gastos.forEach(r=>{
@@ -1133,7 +1261,7 @@ xlsx(datacaja, settings) // Will download the excel file
         doc.text(5.5, y+3, r.total!=null?r.total.toString():'')
         doc.text(6.7, y+3, r.acuenta!=null?r.acuenta.toString():'')
         doc.text(8.2, y+3, r.saldo!=null?r.saldo.toString():'')
-        doc.text(9.5, y+3, r.producto.substring(0,12)+'')
+        //doc.text(9.5, y+3, r.producto.substring(0,12)+'')
         doc.text(12, y+3, r.estado!=null?r.estado.toString():'')
         doc.text(14, y+3, r.hora)
         doc.text(16.5, y+3, r.titular!=null?r.titular.substring(0,25):'')
@@ -1715,11 +1843,10 @@ xlsx(datacaja, settings) // Will download the excel file
           console.log(res.data)
             this.resumenplanilla=res.data[0].total==null?0:res.data[0].total
         })
-
+/*
         this.$axios.post(process.env.API+'/misventas',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
           this.$q.loading.hide()
 
-          // this.ventas=res.data
            console.log(res.data)
            console.log(this.user.id)
           this.$q.loading.hide()
@@ -1734,13 +1861,13 @@ xlsx(datacaja, settings) // Will download the excel file
                 // tipo:r.tipo,
                 acuenta:r.acuenta,
                 saldo:r.saldo,
-                producto:r.detalle.nombreproducto,
+                //producto:r.detalle.nombreproducto,//
                 estado:r.estado,
                 local:r.cliente.local,
                 titular:r.cliente.titular,
                 user:r.user.name,
-                detalle:r.detalle.nombreproducto,
-                cantidad:r.detalle.cantidad,
+                //detalle:r.detalle.nombreproducto,//
+                //cantidad:r.detalle.cantidad,//
                 fechaentrega:r.fechaentrega,
                 tipo:r.tipo,
                 hora:r.hora
@@ -1753,13 +1880,13 @@ xlsx(datacaja, settings) // Will download the excel file
                 tipo:r.tipo,
                 acuenta:r.acuenta,
                 saldo:r.saldo,
-                producto:r.detalle.nombreproducto,
+                //producto:r.detalle.nombreproducto,
                 estado:r.estado,
                 local:r.cliente.local,
                 titular:r.cliente.titular,
                 user:r.user.name,
-                detalle:r.detalle.nombreproducto,
-                cantidad:r.detalle.cantidad,
+               // detalle:r.detalle.nombreproducto,
+               // cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
                 // tipo:r.tipo,
                 hora:r.hora
@@ -1775,20 +1902,44 @@ xlsx(datacaja, settings) // Will download the excel file
                 tipo:r.tipo,
                 acuenta:r.acuenta,
                 saldo:r.saldo,
-                producto:r.detalle.nombreproducto,
+                //producto:r.detalle.nombreproducto,
                 estado:r.estado,
                 local:r.cliente.local,
                 titular:r.cliente.titular,
                 user:r.user.name,
-                detalle:r.detalle.nombreproducto,
-                cantidad:r.detalle.cantidad,
+                //detalle:r.detalle.nombreproducto,
+                //cantidad:r.detalle.cantidad,
                 fechaentrega:r.fechaentrega,
                 // tipo:r.tipo,
                 hora:r.hora
               })
               }
               }
-          })
+          })*/
+          if(!this.$store.state.login.gastoreporteuser){
+            this.user=this.users.find(r=>r.id==this.$store.state.login.user.id)
+          }
+          this.$axios.post(process.env.API+'/reportSale',{fecha1:this.fecha1,fecha2:this.fecha2,user_id:this.user.id}).then(res=>{
+          this.$q.loading.hide()
+          this.ventas=[]
+            res.data.forEach(r => {
+              this.ventas.push({
+                id:r.id,
+                fecha:r.fecha,
+                total:r.total,
+                acuenta:r.acuenta,
+                saldo:r.saldo,
+                estado:r.estado,
+                local:r.cliente.local==null?'':r.cliente.local,
+                titular:r.cliente.titular,
+                user:r.user.name,
+                fechaentrega:r.fechaentrega,
+                tipo:r.tipo,
+                hora:r.hora,
+                detalles:r.detalles
+              })
+            });
+
           console.log(this.ventas)
           if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
           this.$axios.post(process.env.API+'/misanulados',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
@@ -1798,6 +1949,7 @@ xlsx(datacaja, settings) // Will download the excel file
           if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
 
             this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
+              //console.log(res.data)
               this.rpagos=[];
               this.rpagos=res.data;
           if(!this.$store.state.login.gastoreporteuser)
@@ -1885,7 +2037,6 @@ xlsx(datacaja, settings) // Will download the excel file
     misempleados(){
       this.$q.loading.show()
       this.$axios.get(process.env.API+'/empleado').then(res=>{
-        // this.ventas=res.data
         // console.log(res.data)
         this.$q.loading.hide()
         this.empleados=[]
@@ -1894,16 +2045,7 @@ xlsx(datacaja, settings) // Will download the excel file
         });
         console.log (this.empleados)
         this.pago.empleado=this.empleados[0]
-        // res.data.forEach(r=>{
-        //   this.ventas.push({
-        //     total:r.total,
-        //     acuenta:r.acuenta,
-        //     saldo:r.saldo,
-        //     estado:r.estado,
-        //     cliente:r.cliente.local,
-        //     user:r.user.name,
-        //   })
-        // })
+
       })
     },
     agregar(){
@@ -1929,7 +2071,6 @@ xlsx(datacaja, settings) // Will download the excel file
       this.empleado.glosa_id=this.glosa.id
       if (this.boolcrear){
         this.$axios.post(process.env.API+'/gasto',this.empleado).then(res=>{
-          // this.ventas=res.data
           // console.log(res.data)
                   let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
@@ -1956,7 +2097,6 @@ xlsx(datacaja, settings) // Will download the excel file
         })
       }else{
         this.$axios.put(process.env.API+'/gasto/'+this.empleado.id,this.empleado).then(res=>{
-          // this.ventas=res.data
           // console.log(res.data)
           this.$q.loading.hide()
           // this.empleados=res.data

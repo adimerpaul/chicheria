@@ -245,6 +245,33 @@ class SaleController extends Controller
               ';
               return $cadena;
     }
+
+    public function reportSale(Request $request){
+        if($request->user_id==0){
+            return Venta::with('user')
+                ->with('cliente')
+                ->with('pagos')
+                ->with('detalles')
+                ->whereDate('fecha','>=',$request->fecha1)
+                ->whereDate('fecha','<=',$request->fecha2)
+                ->where('estado','<>','ANULADO')
+                ->orderBy('id','desc')
+                ->get();
+        }
+        else{
+            return Venta::with('user')
+            ->with('cliente')
+            ->with('pagos')
+            ->with('detalles')
+            ->whereDate('fecha','>=',$request->fecha1)
+            ->whereDate('fecha','<=',$request->fecha2)
+            ->where('estado','<>','ANULADO')
+            ->where('user_id',$request->user_id)
+            ->orderBy('id','desc')
+            ->get(); 
+        }
+    }
+
     /**
      * Display the specified resource.
      *

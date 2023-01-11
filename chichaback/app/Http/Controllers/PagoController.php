@@ -158,18 +158,21 @@ class PagoController extends Controller
     public function reportepago(Request $request){
         //if($request->user()->id==1)
         //{
-            if($request->id==0)
-            return DB::SELECT("SELECT v.id,p.fecha,v.fechaentrega,p.monto,v.tipo,d.cantidad,d.nombreproducto, c.local,c.titular
+            if($request->id==0){
+                return Pago::with('user')->with('venta')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+            /*return DB::SELECT("SELECT v.id,p.fecha,v.fechaentrega,p.monto,v.tipo, c.local,c.titular
             FROM pagos p inner join ventas v on p.venta_id=v.id inner join detalles d ON v.id=d.venta_id
             inner join clientes c on v.cliente_id=c.id
-            where date(p.fecha)>='$request->fecha1' and date(p.fecha)<='$request->fecha2'");
-            else
-            return DB::SELECT("SELECT v.id,p.fecha,v.fechaentrega,p.monto,v.tipo,d.cantidad,d.nombreproducto, c.local,c.titular
+            where date(p.fecha)>='$request->fecha1' and date(p.fecha)<='$request->fecha2'");*/
+        }
+            else{
+                return Pago::with('user')->with('venta')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->where()->get();
+            /*return DB::SELECT("SELECT v.id,p.fecha,v.fechaentrega,p.monto,v.tipo, c.local,c.titular
             FROM pagos p inner join ventas v on p.venta_id=v.id inner join detalles d ON v.id=d.venta_id
             inner join clientes c on v.cliente_id=c.id
             where p.user_id=$request->id and
-            date(p.fecha)>='$request->fecha1' and date(p.fecha)<='$request->fecha2'");
-
+            date(p.fecha)>='$request->fecha1' and date(p.fecha)<='$request->fecha2'");*/
+            }
 
         //}
         //else
