@@ -103,7 +103,7 @@
             {{porCobrar>0?'POR COBRAR':'CANCELADO'}}
           </div>
         </div>
-        <div class="col-4"><q-btn color="green" icon="check_circle" label="Guardar" @click="saleSave" /></div>
+        <div class="col-4"><q-btn color="green" icon="check_circle" label="Generar Venta" @click="saleSave" /></div>
         <div class="col-12">
           {{porCobrar}}
         </div>
@@ -200,7 +200,7 @@
 <div class="row">
   <div class="col-3"><q-input  outlined v-model="fecha1" label="Fecha Inicial"  dense type="date"/></div>
   <div class="col-3"><q-input  outlined v-model="fecha2" label="Fecha Final"  dense type="date"/></div>
-  <div class="col-3"> <q-btn color="green" label="Buscar" icon="search"  dense @click="consultaVenta"/></div>
+  <div class="col-3"> <q-btn color="green" label="BUSCAR" icon="search"  dense @click="consultaVenta(type)"/></div>
   <div class="col-3"> <q-btn color="info" label="IMPRIMIR" icon="print"  dense @click="impresion"/></div>
   </div>
 <div class="col-12">
@@ -270,8 +270,8 @@
               <q-input  outlined label="observacion" v-model="newgarantia.observacion" style="text-transform: uppercase"/>
             </div>
             <div class="col-12 col-md-4 q-pa-xs flex flex-center">
-              <input type="radio" value="EN PRESTAMO" v-model="newgarantia.tipo"/><b> EN PRESTAMO </b>
-              <input type="radio" value="VENTA" v-model="newgarantia.tipo"/><b> VENTA </b>
+              <input style="margin-right: 0.5em;font;height:35px; width:35px; "   type="radio" value="EN PRESTAMO" v-model="newgarantia.tipo"/><b> EN PRESTAMO </b>
+              <input style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "   type="radio" value="VENTA" v-model="newgarantia.tipo"/><b> VENTA </b>
             </div>
             <div class="col-12  q-pa-xs flex flex-center">
               <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Registrar"/>
@@ -389,7 +389,7 @@ export default {
       inventario:{},
       newgarantia:{},
       modalgarantia:false,
-      modalhojaruta:false,
+      modalhojaruta:true,
       modalDialog:false,
       dialog_mod:false,
       venta:{},
@@ -603,6 +603,7 @@ export default {
     },
     consultaVenta(tipo1){
       this.$api.post('listSale',{tipo:tipo1=='detalle'?'DETALLE':'LOCAL',ini:this.fecha1,fin:this.fecha2}).then(res => {
+        console.log(res.data)
         res.data.forEach(r => {
           r.telefono1=r.cliente.telefono
         });
