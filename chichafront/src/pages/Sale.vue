@@ -695,7 +695,7 @@ export default {
           this.obs=''
           this.sale={}
           this.productSales=[]
-          this.client={}
+          this.client={label:''}
         })
       })
     },
@@ -774,7 +774,7 @@ export default {
         this.$q.loading.hide()
         this.producto=''
         this.cantidad=1
-        this.client={}
+        this.client={label:''}
         //this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
         this.newgarantia={}
         this.modalgarantia=false
@@ -793,7 +793,7 @@ export default {
           this.obs=''
           this.sale={}
           this.productSales=[]
-          this.client={}
+          this.client={label:''}
 
         })
       }).catch(err=>{
