@@ -559,7 +559,7 @@ export default {
       this.clients2 = []
       this.$api.get(`/listacliente/${type}`).then(res => {
         res.data.forEach(c => {
-          c.label=c.local+' '+c.titular
+          c.label=c.ci+' '+c.local+' '+c.titular
           this.clients2.push(c)
           this.clients.push(c)
         })
