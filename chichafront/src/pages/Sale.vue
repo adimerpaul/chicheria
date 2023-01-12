@@ -771,7 +771,7 @@ export default {
         this.$q.loading.hide()
         this.producto=''
         this.cantidad=1
-        this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
+        //this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
         this.newgarantia={}
         this.modalgarantia=false
         this.$q.dialog({
