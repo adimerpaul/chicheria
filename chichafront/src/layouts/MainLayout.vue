@@ -197,7 +197,7 @@
             <q-icon name="shopping_cart" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>SALE</q-item-label>
+            <q-item-label>VENTA DETALLE</q-item-label>
 <!--            <q-item-label caption>-->
 <!--              Historial de ventas-->
 <!--            </q-item-label>-->
@@ -208,7 +208,7 @@
             <q-icon name="shopping_cart" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>LOCAL</q-item-label>
+            <q-item-label>VENTA LOCAL</q-item-label>
             <!--            <q-item-label caption>-->
             <!--              Historial de ventas-->
             <!--            </q-item-label>-->
