@@ -223,11 +223,17 @@
           {{ props.row.user.name}}
         </q-td>
       </template>
+      <template v-slot:body-cell-estado="props">
+        <q-td key="estado" :props="props">
+          <q-badge :color="props.row.estado=='POR COBRAR'?'red':'green'" :label="props.row.estado" />
+          
+        </q-td>
+      </template>
       <template v-slot:body-cell-opcion="props">
           <q-td key="opcion" :props="props">
             <q-btn-group v-if="props.row.estado!='ANULADO'" >
               <q-btn icon="cancel" color="red" @click="anular(props.row)" size="xs" v-if="$store.state.login.anularventa"/>
-              <q-btn icon="local_shipping" color="accent"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta"/>
+              <q-btn icon="local_shipping" color="accent"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta "/>
               <q-btn icon="shopping_cart" color="orange"   @click="clickcompra(props.row)" size="xs" />
               <template v-if="$store.state.login.reimpresion" >
                 <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" />
@@ -564,7 +570,7 @@ export default {
 
         this.$q.loading.hide()
         // this.misclientes()
-        this.misventas()
+        this.consultaVenta(this.type)
         // this.newcliente={}
       })
     },
@@ -585,7 +591,7 @@ export default {
       }).onOk((data) => {
       this.$axios.post(process.env.API+'/anular',{id:venta.id,observacion:data})
         .then(res=>{
-        this.misventas();
+          this.consultaVenta(this.type)
 
           this.$q.notify({
             message:'Venta Anulado ',
@@ -664,6 +670,7 @@ export default {
       this.sale.observacion=this.obs
       console.log(this.sale)
       this.$api.post('sale',this.sale).then(res => {
+        this.consultaVenta(this.type)
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
@@ -770,6 +777,8 @@ export default {
         myWindow.document.close();
         myWindow.print();
         myWindow.close();
+
+
 
         this.$q.loading.hide()
         this.producto=''

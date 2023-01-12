@@ -327,13 +327,14 @@ public function reporteventa(Request $request){
         <br>
         <br>
         <br>
-        <div class="textc">Firma</div>
-        <br>
+        <div class="textc">Firma</div>';
+        if($garantia->estado!='VENTA'){
+        $cadena.='<br>
         <br>
         <div class="textc"><b>OJO</b></div>
         <div class="leyenda"><b>* Solo se recibirá el envase si esta limpio y en buen estado<br>* Tiempo maximo de devolución 5 días, caso contrario se dará de baja<b></div>
 
-        ';
+        ';}
         return $cadena;
 
     }
