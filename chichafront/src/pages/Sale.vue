@@ -389,7 +389,7 @@ export default {
       inventario:{},
       newgarantia:{},
       modalgarantia:false,
-      modalhojaruta:true,
+      modalhojaruta:false,
       modalDialog:false,
       dialog_mod:false,
       venta:{},
