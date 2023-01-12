@@ -662,7 +662,6 @@ export default {
       this.sale.observacion=this.obs
       console.log(this.sale)
       this.$api.post('sale',this.sale).then(res => {
-        this.client={}
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
@@ -792,6 +791,8 @@ export default {
           this.obs=''
           this.sale={}
           this.productSales=[]
+          this.client={}
+
         })
       }).catch(err=>{
         this.$q.loading.hide()
