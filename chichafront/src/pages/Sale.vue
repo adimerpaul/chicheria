@@ -418,6 +418,7 @@ export default {
         }
         this.datosGet(toParams)
         this.type = toParams
+        this.consultaVenta(this.type)
       }
     )
     this.datosGet(this.type)
