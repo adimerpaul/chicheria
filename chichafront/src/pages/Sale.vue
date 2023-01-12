@@ -662,6 +662,7 @@ export default {
       this.sale.observacion=this.obs
       console.log(this.sale)
       this.$api.post('sale',this.sale).then(res => {
+        this.client={}
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
@@ -693,6 +694,7 @@ export default {
           this.obs=''
           this.sale={}
           this.productSales=[]
+          this.client={}
         })
       })
     },
@@ -771,6 +773,7 @@ export default {
         this.$q.loading.hide()
         this.producto=''
         this.cantidad=1
+        this.client={}
         //this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
         this.newgarantia={}
         this.modalgarantia=false
