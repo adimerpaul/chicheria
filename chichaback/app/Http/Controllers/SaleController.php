@@ -33,7 +33,7 @@ class SaleController extends Controller
     {
         //
         $venta= new Venta();
-        $venta->fecha=date("Y-m-d");
+        $venta->fecha=$request->fecha;
         $venta->hora=date("H:i:s");
         $venta->total=$request->total;
         $venta->tipo=$request->tipo;

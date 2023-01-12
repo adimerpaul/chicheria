@@ -652,6 +652,7 @@ export default {
         r.subtotal=r.precio * r.cantidad
       })
       this.sale.tipo=this.type=='detalle'?'DETALLE':'LOCAL'
+      this.sale.fecha=this.fecha
       this.sale.cliente_id=this.client.id
       this.sale.total=this.total
       this.sale.acuenta=this.monto
