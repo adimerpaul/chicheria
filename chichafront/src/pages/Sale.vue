@@ -25,6 +25,15 @@
   <div class="col-5">
     <q-card>
       <q-card-section class="row items-center q-pb-none">
+          <div class="col-2">
+             <q-btn color="green" icon="add_circle" v-if="type=='detalle'" @click="modalregistro=true; newcliente={}"/>
+          </div>
+          <div class="col-2">
+             <q-btn color="yellow"  icon="edit" v-if="client && type=='detalle'" @click="modcliente=client; dialog_mod=true;"/>            
+        </div>
+        <div class="col-8">
+          <q-input type="date" outlined v-model="fecha" dense label="Fecha" />        
+        </div>
         <div class="col-2">
           <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
         </div>
@@ -102,6 +111,90 @@
 
     </q-form>
   </div>
+  <q-dialog v-model="modalregistro">
+    <q-card style="width: 700px;min-width: 80vw">
+      <q-card-section ><div class="text-h6">Registro de cliente</div></q-card-section>
+      <q-card-section class="q-pt-none">
+        <q-form @submit.prevent="agregarcliente">
+          <div class="row">
+            <div class="col-12 col-md-6 q-pa-xs">
+              <q-input outlined label="ci" v-model="newcliente.ci"/>
+            </div>
+            <div class="col-12 col-md-6 q-pa-xs">
+              <q-input required outlined label="titular" style="text-transform: uppercase" v-model="newcliente.titular"/>
+            </div>
+            <div class="col-12 col-md-6 q-pa-xs">
+              <q-input  outlined label="telefono" v-model="newcliente.telefono"/>
+            </div>
+            <div class="col-12 col-md-6 q-pa-xs">
+              <q-input  outlined label="direccion" style="text-transform: uppercase" v-model="newcliente.direccion"/>
+            </div>
+
+            <div class="col-12  q-pa-xs flex flex-center">
+              <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Registrar"/>
+            </div>
+          </div>
+        </q-form>
+      </q-card-section>
+      <q-card-section align="right" class="">
+        <q-btn flat label="Cerrar" icon="delete" color="negative" v-close-popup/>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="dialog_mod">
+    <q-card>
+      <q-card-section class="bg-green-14 text-white">
+        <div class="text-h7">MODIFICAR REGISTRO CLIENTE</div>
+      </q-card-section>
+      <q-card-section class="q-pt-xs">
+        <q-form
+          @submit="onMod"
+          class="q-gutter-md"  >
+                <q-input
+                  outlined
+                  type="text"
+                  v-model="modcliente.ci"
+                  label="Cedula Identidad"
+                  style="text-transform: uppercase"
+                />
+                <q-input
+                  outlined
+                  v-model="modcliente.titular"
+                  type="text"
+                  label="Nombre Completo"
+                  style="text-transform: uppercase"
+                  lazy-rules
+                  :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
+                />
+                <q-input
+                  outlined
+                  type="text"
+                  v-model="modcliente.telefono"
+                  label="Telefono o Celular"
+                  style="text-transform: uppercase"
+                />
+                <q-input
+                  type="text"
+                  outlined
+                  v-model="modcliente.direccion"
+                  label="Direccion*"
+                  style="text-transform: uppercase"
+                />
+                <q-input
+                  outlined
+                  v-model="modcliente.observacion"
+                  label="Observacion"
+                  type="text"
+                  style="text-transform: uppercase"
+                />
+          <div>
+            <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
+              <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+          </div>
+        </q-form>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
   <div class="col-12">
 <!--    <pre>{{clients}}</pre>-->
 <div class="row">
@@ -277,9 +370,12 @@ export default {
   data() {
     return {
       monto: 0,
+      fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha1:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       products: [],
+      modalregistro:false,
+      newcliente:{},
       filter:'',
       product: {},
       clients2: [],
@@ -295,6 +391,7 @@ export default {
       modalgarantia:false,
       modalhojaruta:false,
       modalDialog:false,
+      dialog_mod:false,
       venta:{},
       type: this.$route.params.type,
       columnas:[
@@ -332,6 +429,48 @@ export default {
 
   },
   methods: {
+    onMod(){
+        this.$q.loading.show();
+        this.$axios.put(process.env.API+'/cliente/'+this.modcliente.id,this.modcliente).then(res=>{
+         this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Modificado correctamente'
+        });
+        this.dialog_mod=false;
+        this.modcliente={}
+        this.datosGet(this.type)
+       }).catch(err=>{
+
+          this.$q.notify({
+            color: 'red-4',
+            textColor: 'white',
+            icon: 'error',
+            message: 'Error al Modificar'
+          });
+        })
+        this.$q.loading.hide();
+    },
+    agregarcliente(){
+      this.$q.loading.show()
+      this.newcliente.tipocliente=2
+      this.$axios.post(process.env.API+'/agregarcliente',this.newcliente).then(()=>{
+        this.$q.loading.hide()
+        this.datosGet(this.type)
+        this.modalregistro=false
+        this.newcliente={}
+      }).catch(err=>{
+        this.$q.loading.hide()
+        this.$q.notify({
+          message:err.response.data.message,
+          color:'red',
+          position:'center',
+
+          icon:'error'
+        })
+      })
+    },
     impresion(){
       if( this.ventas.length==0){
         return false
@@ -472,6 +611,15 @@ export default {
 
     },
     saleSave(){
+      if(this.fecha=='' || this.fecha==undefined){
+        this.$q.notify({
+          message:'Ingrese la fecha',
+          color:'red',
+          position:'center',
+          icon:'error'
+        })
+          return false
+      }
       if(this.productSales.length==0)
         { console.log('sin prod')
         this.$q.notify({
