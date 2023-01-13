@@ -54,7 +54,12 @@
                 </template>
               </q-input>
             </template>
-
+            <template v-slot:body-cell-observacion="props" >
+              <q-td key="observacion" :props="props">
+                 <q-btn color="accent" icon="notes" @click="verObs(props.row)" v-if="props.row.observacion!='' && props.row.observacion!=null" dense/>
+                
+              </q-td>
+            </template>
               <template v-slot:body-cell-estado="props" >
                 <q-td key="estado" :props="props">
                   <q-badge color="negative" v-if="props.row.estado=='ANULADO'">
@@ -482,6 +487,19 @@ export default {
     this.reporte();
   },
   methods: {
+    
+    verObs(prest){
+      this.$q.dialog({
+        title: 'Observacion',
+        message: prest.observacion
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
             filterFn (val, update) {
       if (val === '') {
         update(() => {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Empleado;
+use App\Models\Sueldo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -62,9 +63,10 @@ class EmpleadoController extends Controller
      */
     public function show(Empleado $empleado)
     {
-        return Empleado::with('sueldos')
+        /*return Empleado::with('sueldos')
             ->where('id',$empleado->id)
-            ->firstOrFail();
+            ->firstOrFail();*/
+        return Sueldo::where('empleado_id',$empleado->id)->orderBy('fecha','desc')->get();
     }
 
     /**

@@ -779,8 +779,9 @@ xlsx(datacaja, settings) // Will download the excel file
         .titulo1{text-align:center; font-weight: bold;}\
         </style>\
         <div><img src='logo.png' style='width:150px; height:75px;'></div>\
-        <div class='titulo1'>HISTORIAL DE INGRESOS Y GASTOS DE "+us.label+" "+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY') +"</div><br>\
-        <div>VENTAS DETALLE Y LOCAL</div> \
+        <div class='titulo1'>HISTORIAL DE INGRESOS Y GASTOS DE "+us.label+" "+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY') +"</div><br>"
+        if(this.ventas.length>0){
+        cadena+="<div>VENTAS DETALLE Y LOCAL</div> \
         <table>\
           <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
           this.ventas.forEach(r => {
@@ -796,8 +797,8 @@ xlsx(datacaja, settings) // Will download the excel file
 
       }
           });
-        cadena+="</table><div><b>TOTAL VENTAS:</b>"+ventas+"</div><br>\
-        <div>VENTAS CON RUTA</div> \
+        cadena+="</table><div><b>TOTAL VENTAS:</b>"+ventas+"</div><br>"
+        cadena+="<div>VENTAS CON RUTA</div> \
         <table>\
           <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
           this.ventas.forEach(r => {
@@ -810,12 +811,11 @@ xlsx(datacaja, settings) // Will download the excel file
               cadena+="</td><td>"+ r.total +" Bs</td><td>"+r.acuenta+" Bs</td><td>"+ r.saldo +" Bs</td><td>"+ r.titular+"</td><td>"+ r.local+"</td><td "
         if(r.estado=='POR COBRAR')  cadena+=color1
               cadena+=">"+r.estado+"</td></tr>"
-
       }
           });
           ventas=ventas+ventasruta
         cadena+="</table><div><b>TOTAL VENTAS RUTA:</b>"+ventasruta+"</div><br>\
-        "
+        "}
         let panulado=0
       if(this.totalanulado>0){
         panulado=panulado+this.totalanulado;
@@ -829,6 +829,7 @@ xlsx(datacaja, settings) // Will download the excel file
               });
         cadena+="</table><div><b>TOTAL ANULADO:</b>"+this.totalanulado+"</div><br>"
         }
+        if(this.totalpresventa>0){
         cadena+="<div>INGRESOS DE VENTA MATERIAL</div>\
         <table><tr><th>CANTIDAD</th><th>MATERIAL</th><th>EFECTIVO</th><th>TITULAR</th><th>LOCAL</th></tr>"
 
@@ -839,7 +840,7 @@ xlsx(datacaja, settings) // Will download the excel file
         matventa+=parseFloat(r.efectivo)
 
       })
-      cadena+="</table><div><b>TOTAL VENTA MATERIAL: </b> "+this.totalpresventa+" Bs</div><br>"
+      cadena+="</table><div><b>TOTAL VENTA MATERIAL: </b> "+this.totalpresventa+" Bs</div><br>"}
 
       if(this.totalpagos>0){
         cadena+="<div>INGRESOS DE PENDIENTES DE PAGO</div>\
@@ -855,6 +856,7 @@ xlsx(datacaja, settings) // Will download the excel file
       })
       cadena+="</table><div><b>T.V. Pago: </b>"+this.totalpagos+"</div><br>"
       }
+      if(this.gastos.length>0){
       cadena+="<div>DETALLE DE GASTO</div>\
       <table><tr><th>MONTO</th><th>GLOSA</th><th>OBSERVACION</th></tr>"
         let caja=0
@@ -867,7 +869,8 @@ xlsx(datacaja, settings) // Will download the excel file
         gastos+=parseFloat(r.precio!=null?r.precio:0)
 
       })
-        cadena+="</table><div><b>TOTAL GASTOS: </b>"+gastos+" Bs</div><br>"
+        cadena+="</table><div><b>TOTAL GASTOS: </b>"+gastos+" Bs</div><br>"}
+        if(this.chica.length>0){
         cadena+="<div>DETALLE DE GASTO CAJA CHICA</div>\
         <table><tr><th>MONTO</th><th>GLOSA</th><th>MOTIVO</th></tr>"
 
@@ -875,11 +878,14 @@ xlsx(datacaja, settings) // Will download the excel file
         cadena+="<tr><td>"+r.monto+" Bs</td><td>"+r.glosa+"</td><td>"+r.motivo+"</td></tr>"
         caja+=parseFloat(r.monto!=null?r.monto:0)
       })
-      cadena+="</table><div><b>TOTAL GASTO CAJA CHICA: </b>"+ caja+" Bs</div><br>"
-      cadena+="<div><b>TOTAL PRESTAMO ANULADOS: </b>"+ panulado+" Bs</div>"
-      cadena+="<div><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
-      cadena+="<div><b>TOTAL CXC PAGOS: </b>"+ ccpago+" Bs</div>"
-      cadena+="<div><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
+      cadena+="</table><div><b>TOTAL GASTO CAJA CHICA: </b>"+ caja+" Bs</div><br>"}
+
+      
+      if(ventas>0) cadena+="<div><b>TOTAL VENTAS : </b>"+ ventas+" Bs</div>"
+      if(matventa>0) cadena+="<div><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
+      if(panulado>0) cadena+="<div><b>TOTAL PRESTAMO ANULADOS: </b>"+ panulado+" Bs</div>"
+      if(ccpago>0) cadena+="<div><b>TOTAL CXC PAGOS: </b>"+ ccpago+" Bs</div>"
+      if(gastos>0) cadena+="<div><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
       cadena+="<div><b>TOTAL SALDO: </b>"+ (ventas-gastos) +" Bs</div>"
 
       if(this.$store.state.login.user.id==1){

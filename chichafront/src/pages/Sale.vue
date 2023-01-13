@@ -547,7 +547,8 @@ export default {
     actualizarventa(){
       this.$q.loading.show()
       // console.log(this.venta)
-      this.$axios.put(process.env.API+'/updateRuta/'+this.venta.id,{
+      this.$axios.post(process.env.API+'/updateRuta',{
+        id:this.venta.id,
         turno:this.venta.turno,
         hora:this.venta.hora,
         telefono1:this.venta.telefono1,
@@ -558,7 +559,7 @@ export default {
         acuenta:this.venta.acuenta,
         saldo:this.venta.saldo,
         observacion:this.venta.observacion,
-        fechaentrega:this.venta.fechaentrega,
+        fechaentrega:this.venta.fechaentrega
       }).then(res=>{
         this.modalhojaruta=false
         // console.log(res.data)
@@ -568,6 +569,12 @@ export default {
         myWindow.print();
         myWindow.close();
 
+        let myWindow2 = window.open("", "Imprimir", "width=1000,height=1000");
+
+        myWindow2.document.write(res.data);
+        myWindow2.document.close();
+        myWindow2.print();
+        myWindow2.close();
         this.$q.loading.hide()
         // this.misclientes()
         this.consultaVenta(this.type)
@@ -671,6 +678,7 @@ export default {
       console.log(this.sale)
       this.$api.post('sale',this.sale).then(res => {
         this.consultaVenta(this.type)
+        this.saleClear()
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();

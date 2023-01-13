@@ -116,9 +116,8 @@ class SueldoController extends Controller
         ";
         return $cadena;
 //        return $sueldo;
-        return Empleado::with('sueldos')
-            ->where('id',$request->empleado_id)
-            ->firstOrFail();
+        return Sueldo::where('empleado_id',$request->empleado_id)
+            ->get();
     }
 
     public function cancelacion(Request $request){

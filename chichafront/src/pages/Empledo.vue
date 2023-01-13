@@ -207,7 +207,7 @@
       <q-dialog v-model="pagos" full-width>
         <q-card>
           <q-card-section>
-            <div class="text-h6">Historial de {{empleadohistorial.nombre}}</div>
+            <div class="text-h6">Historial de {{empleado2.nombre}}</div>
           </q-card-section>
           <q-card-section class="q-pt-none">
             <q-form @submit.prevent="agregarpago">
@@ -234,7 +234,7 @@
             title="Hitorial de pagos"
             :rows-per-page-options="[50,100,0]"
             :columns="columns2"
-            :rows="empleadohistorial.sueldos"
+            :rows="empleadohistorial"
             >
         <template v-slot:body-cell-opcion="props">
           <q-td :props="props">
@@ -283,7 +283,7 @@
         <q-card-section class="text-center text-bold q-pa-none q-ma-none">Datos {{emp.nombre}}</q-card-section>
         <q-card-section>
             <div class="row">
-            <q-table title="PLANILLAS" :rows="planillas" :columns="colplan" row-key="name" >
+            <q-table title="PLANILLAS" :rows="planillas" :columns="colplan" row-key="name"  :rows-per-page-options="[50,100,0]">
                     <template v-slot:body-cell-opcion="props">
           <q-td :props="props">
                 <q-btn dense round flat color="info"  icon="print" @click="imprimirplanilla(props.row)"></q-btn>
@@ -331,6 +331,7 @@ export default {
       validarplan:true,
       modempleado:false,
       empleado:{fechanac:'2000-01-01'},
+      empleado2:{},
       dialog_plan:false,
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -781,7 +782,8 @@ export default {
         doc.setFontSize(11);
         doc.text('CHICHERIA DOÑA NATI',110, 7, 'center')
         doc.text('BOLETA DE PAGO',110, 12, 'center')
-        doc.text('Correspondiente  '+moment(planilla.fechainicio).format('DD/MM/YYYY')+' Al '+moment(planilla.fechafin).format('DD/MM/YYYY')+' Fecha de pago: ' + (planilla.fechapago==null||planilla.fechapago==undefined||planilla.fechapago==''?'Sn':moment(planilla.fechapago).format('DD/MM/YYYY')),110, 17,'center')
+        doc.text('Correspondiente  '+moment(planilla.fechainicio).format('DD/MM/YYYY')+' Al '+moment(planilla.fechafin).format('DD/MM/YYYY'),100, 17,'center')
+        doc.text(' Fecha de pago: ' + (planilla.fechapago==null||planilla.fechapago==undefined||planilla.fechapago==''?'Sn':moment(planilla.fechapago).format('DD/MM/YYYY')),170, 17,'left')
         // doc.text('____________________________________________________________________________________________________',1, 2.5,'center')
         doc.line(5,20,210,20)
         // doc.text(2, 3, 'FECHA DE PAGO')
@@ -814,9 +816,9 @@ export default {
       doc.line(5,40,210,40)
       doc.line(110,40,110,70)
       doc.setFont(undefined,'bold')
-      doc.text(['Monto:','Bono:'],15,45)
+      doc.text(['Salario:'],15,45)
       doc.setFont(undefined,'normal')
-      doc.text([planilla.monto+' Bs',planilla.bono+' Bs'],105,45,'right')
+      doc.text([planilla.monto+' Bs'],105,45,'right')
       doc.setFont(undefined,'bold')
       doc.text(['Adelanto:','Descuento:'],115,45)
       doc.setFont(undefined,'normal')
@@ -826,7 +828,7 @@ export default {
       doc.text('Total ganado:',35,69,'center')
       doc.text('Total descuento:',140,69,'center')
       doc.setFont(undefined,'normal')
-      doc.text((parseInt(planilla.monto)+parseInt(planilla.bono))+' Bs',105,69,'right')
+      doc.text((parseInt(planilla.monto))+' Bs',105,69,'right')
       doc.text((parseInt(planilla.descuento)+parseInt(planilla.adelanto))+' Bs',205,69,'right')
       doc.line(5,70,210,70)
       doc.setFont(undefined,'bold')
@@ -845,13 +847,15 @@ export default {
       doc.setFont(undefined,'bold')
       doc.text('Obs: ',2, 85, 'left')
       doc.setFont(undefined,'normal')
-      doc.text(planilla.observacion,10, 85, 'left')
+      doc.text(planilla.observacion.substring(0,95),10, 85, 'left')
+      doc.text(planilla.observacion.substring(95,95),10, 90, 'left')
+      doc.text(planilla.observacion.substring(190,95),10, 90, 'left')
       doc.setFont(undefined,'bold')
       }
       // // console.log(a)
-      doc.text(5, 95, '____________________________                                                                   ______________________________')
-      doc.text(10, 100, 'FIRMA EMPLEADO')
-      doc.text(150, 100, 'FIRMA RESPONSABLE')
+      doc.text(5, 100, '____________________________                                                                   ______________________________')
+      doc.text(10, 105, 'FIRMA EMPLEADO')
+      doc.text(150, 105, 'FIRMA RESPONSABLE')
       // // doc.setFont(undefined,'normal')
       // // doc.text(18, y+3.5, sumtotal+ ' Bs')
       //
@@ -1262,8 +1266,8 @@ export default {
     agregarpago(){
 
       console.log(this.empleadohistorial)
-      if(this.empleadohistorial.tipo=='FIJO'){
-        if((parseFloat(this.empleadohistorial.salario)- this.totaldescuento) < parseFloat( this.pago.monto) && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='DESCUENTO'))
+      if(this.empleado2.tipo=='FIJO'){
+        if((parseFloat(this.empleado2.salario)- this.totaldescuento) < parseFloat( this.pago.monto) && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='DESCUENTO'))
         {
             this.$q.notify({
               message:'El monto excede al salario ',
@@ -1292,8 +1296,8 @@ export default {
         return false
       }
       //console.log(this.empleadohistorial);
-      this.pago.empleado_id=this.empleadohistorial.id
-      this.pago.empleado_nombre=this.empleadohistorial.nombre
+      this.pago.empleado_id=this.empleado2.id
+      this.pago.empleado_nombre=this.empleado2.nombre
       this.pago.checkbox=this.checkgasto
 
       // console.log(this.pago)
@@ -1442,12 +1446,13 @@ export default {
     },
     pagosval(index){
       // console.log('a')
-      this.pagos=true
       this.$q.loading.show()
+      this.empleado2=index
       this.$axios.get(process.env.API+'/empleado/'+index.id).then(res=>{
-        // console.log(res.data);
+         console.log(res.data);
         this.empleadohistorial=res.data
         this.$q.loading.hide()
+        this.pagos=true
       })
     }
   },
@@ -1459,7 +1464,7 @@ export default {
      },
       totaldescuento(){
         let total=0;
-      this.empleadohistorial.sueldos.forEach(element => {
+      this.empleadohistorial.forEach(element => {
         if(date.formatDate( element.fecha,'YYYY-MM') == date.formatDate(this.pago.fecha,'YYYY-MM'))
         if(element.tipo=='ADELANTO' || element.tipo=='DESCUENTO')
           total+=parseFloat(element.monto)

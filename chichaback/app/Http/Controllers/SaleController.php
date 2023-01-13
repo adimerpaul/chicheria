@@ -126,12 +126,11 @@ class SaleController extends Controller
               ';
               return $cadena;
     }
-    public function updateRuta(Request $request, $idventa)
+    public function updateRuta(Request $request)
     {
 //        $venta->update($request->all());
 //        return $request;
-        $venta=Venta::find($idventa);
-        $venta->direccion=strtoupper($request->direccion);
+        $venta=Venta::find($request->id);
         $venta->fechaentrega=$request->fechaentrega;
         $venta->turno=strtoupper($request->turno);
         $venta->hora=strtoupper($request->hora);
