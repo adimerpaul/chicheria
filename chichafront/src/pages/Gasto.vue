@@ -843,16 +843,18 @@ xlsx(datacaja, settings) // Will download the excel file
       cadena+="</table><div><b>TOTAL VENTA MATERIAL: </b> "+this.totalpresventa+" Bs</div><br>"}
 
       if(this.rpagos.length>0){
+        let pendiente=''
         cadena+="<div>INGRESOS DE PENDIENTES DE PAGO</div>\
         <table><tr><th>TIPO</th><th>DETALLE</th><th>MONTO</th><th>TITULAR</th><th>LOCAL</th></tr>"
       this.rpagos.forEach(r=>{
         ccpago+=r.monto
-        let pendiente=r.venta.fechaentrega!=null&&r.venta.fechaentrega!=''?'R-'+r.venta.id:r.venta.tipo.substring(0,1)+'-'+r.venta.id
+        pendiente=r.venta.fechaentrega!=null&&r.venta.fechaentrega!=''?'R-'+r.venta.id:r.venta.tipo.substring(0,1)+'-'+r.venta.id
+        r.venta.cliente.local=r.venta.cliente.local!=null?r.venta.cliente.local.toString():''
         cadena+="<tr><td>"+ pendiente +"</td><td>"
         r.venta.detalles.forEach(d => {
           cadena+=d.cantidad+" - "+d.nombreproducto+"<br>"
         });
-        cadena+="</td><td>"+r.monto+" Bs </td><td>"+r.venta.cliente.titular+"</td><td>"+(r.venta.cliente.local!=null?r.venta.cliente.local.toString():'')+"</td></tr>"
+        cadena+="</td><td>"+r.monto+" Bs </td><td>"+r.venta.cliente.titular+"</td><td>"+r.venta.cliente.local+"</td></tr>"
       })
       cadena+="</table><div><b>T.V. Pago: </b>"+this.totalpagos+"</div><br>"
       }
@@ -1959,7 +1961,7 @@ xlsx(datacaja, settings) // Will download the excel file
           if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
 
             this.$axios.post(process.env.API+'/reportepago',{fecha1:this.fecha1,fecha2:this.fecha2,id:this.user.id}).then(res=>{
-              //console.log(res.data)
+              console.log(res.data)
               this.rpagos=[];
               this.rpagos=res.data;
           if(!this.$store.state.login.gastoreporteuser)
