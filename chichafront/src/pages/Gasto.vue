@@ -785,8 +785,8 @@ xlsx(datacaja, settings) // Will download the excel file
         <table>\
           <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
           this.ventas.forEach(r => {
-            ventas=ventas+r.acuenta
             if(r.fechaentrega==null || r.fechaentrega==''){
+              ventas=ventas+r.acuenta
               cadena+="<tr><td>"+ r.tipo.substring(0,1)+'-'+r.id+"</td><td>"
               r.detalles.forEach(d => {
                   cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
@@ -802,8 +802,8 @@ xlsx(datacaja, settings) // Will download the excel file
         <table>\
           <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
           this.ventas.forEach(r => {
-            ventasruta=ventasruta+r.acuenta
             if(r.fechaentrega!=null && r.fechaentrega!=''){
+              ventasruta=ventasruta+r.acuenta
               cadena+="<tr><td>"+ 'R-'+r.id+"</td><td>"
               r.detalles.forEach(d => {
                   cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
