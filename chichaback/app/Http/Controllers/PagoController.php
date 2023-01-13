@@ -166,7 +166,7 @@ class PagoController extends Controller
             where date(p.fecha)>='$request->fecha1' and date(p.fecha)<='$request->fecha2'");*/
         }
             else{
-                return Pago::with('user')->with('venta')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->where()->get();
+                return Pago::with('user')->with('venta')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->where('user_id',$request->id)->get();
             /*return DB::SELECT("SELECT v.id,p.fecha,v.fechaentrega,p.monto,v.tipo, c.local,c.titular
             FROM pagos p inner join ventas v on p.venta_id=v.id inner join detalles d ON v.id=d.venta_id
             inner join clientes c on v.cliente_id=c.id
