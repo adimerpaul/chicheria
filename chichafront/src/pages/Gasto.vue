@@ -842,7 +842,7 @@ xlsx(datacaja, settings) // Will download the excel file
         })
       cadena+="</table><div><b>TOTAL VENTA MATERIAL: </b> "+this.totalpresventa+" Bs</div><br>"}
 
-      if(this.totalpagos>0){
+      if(this.rpagos.length>0){
         cadena+="<div>INGRESOS DE PENDIENTES DE PAGO</div>\
         <table><tr><th>TIPO</th><th>DETALLE</th><th>MONTO</th><th>TITULAR</th><th>LOCAL</th></tr>"
       this.rpagos.forEach(r=>{
