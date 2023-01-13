@@ -1,87 +1,23 @@
 <template>
 <q-page class="q-pa-xs">
-  <div class="row">
     <div class="col-12">
       <div class="text-subtitle1 bg-blue-9 text-center text-white">Ventas Local</div>
-    </div>
 
-    <div class="col-12">
-      <div class="row">
         <div class="col-12 col-sm-12">
-          <div class="row">
             <div class="col-12">
               <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas Local</div>
             </div>
             <q-form @submit.prevent="misventas">
-            <div class="row">
-            <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
-            <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
-            <div class="col-4 col-sm-4 q-pa-xs flex flex-center">
-              <q-btn color="info"  label="Consultar" icon="search" type="submit" />
+              <div class="row">
+              <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
+              <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
+              <div class="col-4 col-sm-4 q-pa-xs flex flex-center">
+                <q-btn color="info"  label="Consultar" icon="search" type="submit" />
 
-            </div>
+              </div>
             </div>
             </q-form>
             <div class="col-12">
-<!--              <q-table-->
-<!--                :columns="columns2"-->
-<!--                :rows="ventas"-->
-<!--                title="Historial de ventas"-->
-<!--                :filter="filter"-->
-<!--              >-->
-<!--                &lt;!&ndash;        <template v-slot:top-right>&ndash;&gt;-->
-<!--                &lt;!&ndash;          <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">&ndash;&gt;-->
-<!--                &lt;!&ndash;            <template v-slot:append>&ndash;&gt;-->
-<!--                &lt;!&ndash;              <q-icon name="search" />&ndash;&gt;-->
-<!--                &lt;!&ndash;            </template>&ndash;&gt;-->
-<!--                &lt;!&ndash;          </q-input>&ndash;&gt;-->
-<!--                &lt;!&ndash;        </template>&ndash;&gt;-->
-<!--            <template v-slot:top-right>-->
-<!--              <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">-->
-<!--                <template v-slot:append>-->
-<!--                  <q-icon name="search" />-->
-<!--                </template>-->
-<!--              </q-input>-->
-<!--            </template>-->
-<!--                <template v-slot:body="props">-->
-<!--                  <q-tr :props="props">-->
-<!--                    <q-td key="fecha" :props="props">-->
-<!--                      {{ props.row.fecha }}-->
-<!--                    </q-td>-->
-
-<!--                    <q-td key="local" :props="props">-->
-<!--                      {{ props.row.local }}-->
-<!--                    </q-td>-->
-<!--                    <q-td key="titular" :props="props">-->
-<!--                      {{ props.row.titular }}-->
-<!--                    </q-td>-->
-
-<!--                    <q-td key="total" :props="props">-->
-<!--                      {{ props.row.total }}-->
-<!--                    </q-td>-->
-<!--                    <q-td key="acuenta" :props="props">-->
-<!--                      {{ props.row.acuenta }}-->
-<!--                    </q-td>-->
-<!--                    <q-td key="saldo" :props="props">-->
-<!--                      {{ props.row.saldo }}-->
-<!--                    </q-td>-->
-<!--                    <q-td key="tipocliente" :props="props">-->
-<!--                      <q-badge color="accent" v-if="props.row.tipocliente==1">LOCAL</q-badge>-->
-<!--                      <q-badge color="teal" v-else>CLIENTE</q-badge>-->
-<!--                    </q-td>-->
-<!--                    <q-td key="estado" :props="props">-->
-<!--                      <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>-->
-<!--                    </q-td>-->
-<!--                  <q-td key="user" :props="props">-->
-<!--                      {{ props.row.user }}-->
-<!--                    </q-td>-->
-<!--                      <q-td key="opcion" :props="props">-->
-<!--                        <q-btn icon="segment" color="green"  @click="listpago(props.row)" />-->
-<!--                        <q-btn icon="monetization_on" color="amber" v-if="props.row.estado=='POR COBRAR'" @click="pago(props.row)"/>-->
-<!--                      </q-td>-->
-<!--                  </q-tr>-->
-<!--                </template>-->
-<!--              </q-table>-->
               <div class=" responsive">
                 <table id="example" style="width:100%" class="cell-border" >
                   <thead>
@@ -129,7 +65,6 @@
                   </tr>
                   </tfoot>-->
                 </table>
-              </div>
             </div>
 
                 <q-dialog v-model="alert">
@@ -198,9 +133,6 @@
             </div>
 -->
           </div>
-        </div>
-      </div>
-
 
     </div>
 

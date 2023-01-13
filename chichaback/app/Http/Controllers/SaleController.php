@@ -21,7 +21,7 @@ class SaleController extends Controller
     }
 
     public function listSale(Request $request){
-        return Venta::with('cliente')->with('detalles')->with('user')->where('tipo',$request->tipo)->whereDate('fecha','>=',$request->ini)->whereDate('fecha','<=',$request->fin)->get();
+        return Venta::with('cliente')->with('detalles')->with('user')->where('tipo',$request->tipo)->whereDate('fecha','>=',$request->ini)->whereDate('fecha','<=',$request->fin)->orderBy('id','desc')->get();
     }
     /**
      * Store a newly created resource in storage.
@@ -33,7 +33,7 @@ class SaleController extends Controller
     {
         //
         $venta= new Venta();
-        $venta->fecha=date("Y-m-d");
+        $venta->fecha=$request->fecha;
         $venta->hora=date("H:i:s");
         $venta->total=$request->total;
         $venta->tipo=$request->tipo;
@@ -90,7 +90,7 @@ class SaleController extends Controller
          $cadena='
         <style>
         *{
-            font-size:12px
+            font-size:14px
         }
         .textcnt{
             text-align:center;
@@ -108,13 +108,13 @@ class SaleController extends Controller
         <hr>
         <table>
         <thead>
-        <tr><th>Cant</th><th>Prod</th><th>Precio</th><th>Subt</th></tr>
+        <tr><th>Cant</th><th>Prod</th><th>Subt</th></tr>
         </thead>
         <tbody>';
         foreach ($venta->detalles as $d) {
             $total+=floatval($d->subtotal);
             # code...
-        $cadena.='<tr><td>'.$d->cantidad.'</td><td>'.$d->nombreproducto.'</td><td>'.$d->precio.'</td><td>'.$d->subtotal.'</td></tr>';
+        $cadena.='<tr><td>'.$d->cantidad.'</td><td>'.$d->nombreproducto.'</td><td>'.$d->subtotal.'</td></tr>';
         }
         $cadena.='</tbody>
         </table>

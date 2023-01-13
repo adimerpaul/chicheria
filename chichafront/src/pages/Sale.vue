@@ -25,6 +25,15 @@
   <div class="col-5">
     <q-card>
       <q-card-section class="row items-center q-pb-none">
+          <div class="col-2">
+             <q-btn color="green" icon="add_circle" v-if="type=='detalle'" @click="modalregistro=true; newcliente={}"/>
+          </div>
+          <div class="col-2">
+             <q-btn color="yellow"  icon="edit" v-if="client && type=='detalle'" @click="modcliente=client; dialog_mod=true;"/>            
+        </div>
+        <div class="col-8">
+          <q-input type="date" outlined v-model="fecha" dense label="Fecha" />        
+        </div>
         <div class="col-2">
           <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
         </div>
@@ -94,7 +103,7 @@
             {{porCobrar>0?'POR COBRAR':'CANCELADO'}}
           </div>
         </div>
-        <div class="col-4"><q-btn color="green" icon="check_circle" label="Guardar" @click="saleSave" /></div>
+        <div class="col-4"><q-btn color="green" icon="check_circle" label="Generar Venta" @click="saleSave" /></div>
         <div class="col-12">
           {{porCobrar}}
         </div>
@@ -102,12 +111,96 @@
 
     </q-form>
   </div>
+  <q-dialog v-model="modalregistro">
+    <q-card style="width: 700px;min-width: 80vw">
+      <q-card-section ><div class="text-h6">Registro de cliente</div></q-card-section>
+      <q-card-section class="q-pt-none">
+        <q-form @submit.prevent="agregarcliente">
+          <div class="row">
+            <div class="col-12 col-md-6 q-pa-xs">
+              <q-input outlined label="ci" v-model="newcliente.ci"/>
+            </div>
+            <div class="col-12 col-md-6 q-pa-xs">
+              <q-input required outlined label="titular" style="text-transform: uppercase" v-model="newcliente.titular"/>
+            </div>
+            <div class="col-12 col-md-6 q-pa-xs">
+              <q-input  outlined label="telefono" v-model="newcliente.telefono"/>
+            </div>
+            <div class="col-12 col-md-6 q-pa-xs">
+              <q-input  outlined label="direccion" style="text-transform: uppercase" v-model="newcliente.direccion"/>
+            </div>
+
+            <div class="col-12  q-pa-xs flex flex-center">
+              <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Registrar"/>
+            </div>
+          </div>
+        </q-form>
+      </q-card-section>
+      <q-card-section align="right" class="">
+        <q-btn flat label="Cerrar" icon="delete" color="negative" v-close-popup/>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="dialog_mod">
+    <q-card>
+      <q-card-section class="bg-green-14 text-white">
+        <div class="text-h7">MODIFICAR REGISTRO CLIENTE</div>
+      </q-card-section>
+      <q-card-section class="q-pt-xs">
+        <q-form
+          @submit="onMod"
+          class="q-gutter-md"  >
+                <q-input
+                  outlined
+                  type="text"
+                  v-model="modcliente.ci"
+                  label="Cedula Identidad"
+                  style="text-transform: uppercase"
+                />
+                <q-input
+                  outlined
+                  v-model="modcliente.titular"
+                  type="text"
+                  label="Nombre Completo"
+                  style="text-transform: uppercase"
+                  lazy-rules
+                  :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
+                />
+                <q-input
+                  outlined
+                  type="text"
+                  v-model="modcliente.telefono"
+                  label="Telefono o Celular"
+                  style="text-transform: uppercase"
+                />
+                <q-input
+                  type="text"
+                  outlined
+                  v-model="modcliente.direccion"
+                  label="Direccion*"
+                  style="text-transform: uppercase"
+                />
+                <q-input
+                  outlined
+                  v-model="modcliente.observacion"
+                  label="Observacion"
+                  type="text"
+                  style="text-transform: uppercase"
+                />
+          <div>
+            <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
+              <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+          </div>
+        </q-form>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
   <div class="col-12">
 <!--    <pre>{{clients}}</pre>-->
 <div class="row">
   <div class="col-3"><q-input  outlined v-model="fecha1" label="Fecha Inicial"  dense type="date"/></div>
   <div class="col-3"><q-input  outlined v-model="fecha2" label="Fecha Final"  dense type="date"/></div>
-  <div class="col-3"> <q-btn color="green" label="Buscar" icon="search"  dense @click="consultaVenta"/></div>
+  <div class="col-3"> <q-btn color="green" label="BUSCAR" icon="search"  dense @click="consultaVenta(type)"/></div>
   <div class="col-3"> <q-btn color="info" label="IMPRIMIR" icon="print"  dense @click="impresion"/></div>
   </div>
 <div class="col-12">
@@ -130,11 +223,17 @@
           {{ props.row.user.name}}
         </q-td>
       </template>
+      <template v-slot:body-cell-estado="props">
+        <q-td key="estado" :props="props">
+          <q-badge :color="props.row.estado=='POR COBRAR'?'red':'green'" :label="props.row.estado" />
+          
+        </q-td>
+      </template>
       <template v-slot:body-cell-opcion="props">
           <q-td key="opcion" :props="props">
             <q-btn-group v-if="props.row.estado!='ANULADO'" >
               <q-btn icon="cancel" color="red" @click="anular(props.row)" size="xs" v-if="$store.state.login.anularventa"/>
-              <q-btn icon="local_shipping" color="accent"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta"/>
+              <q-btn icon="local_shipping" color="accent"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta "/>
               <q-btn icon="shopping_cart" color="orange"   @click="clickcompra(props.row)" size="xs" />
               <template v-if="$store.state.login.reimpresion" >
                 <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" />
@@ -177,8 +276,8 @@
               <q-input  outlined label="observacion" v-model="newgarantia.observacion" style="text-transform: uppercase"/>
             </div>
             <div class="col-12 col-md-4 q-pa-xs flex flex-center">
-              <input type="radio" value="EN PRESTAMO" v-model="newgarantia.tipo"/><b> EN PRESTAMO </b>
-              <input type="radio" value="VENTA" v-model="newgarantia.tipo"/><b> VENTA </b>
+              <input style="margin-right: 0.5em;font;height:35px; width:35px; "   type="radio" value="EN PRESTAMO" v-model="newgarantia.tipo"/><b> EN PRESTAMO </b>
+              <input style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "   type="radio" value="VENTA" v-model="newgarantia.tipo"/><b> VENTA </b>
             </div>
             <div class="col-12  q-pa-xs flex flex-center">
               <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Registrar"/>
@@ -277,9 +376,12 @@ export default {
   data() {
     return {
       monto: 0,
+      fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha1:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       products: [],
+      modalregistro:false,
+      newcliente:{},
       filter:'',
       product: {},
       clients2: [],
@@ -295,6 +397,7 @@ export default {
       modalgarantia:false,
       modalhojaruta:false,
       modalDialog:false,
+      dialog_mod:false,
       venta:{},
       type: this.$route.params.type,
       columnas:[
@@ -321,6 +424,7 @@ export default {
         }
         this.datosGet(toParams)
         this.type = toParams
+        this.consultaVenta(this.type)
       }
     )
     this.datosGet(this.type)
@@ -332,6 +436,48 @@ export default {
 
   },
   methods: {
+    onMod(){
+        this.$q.loading.show();
+        this.$axios.put(process.env.API+'/cliente/'+this.modcliente.id,this.modcliente).then(res=>{
+         this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Modificado correctamente'
+        });
+        this.dialog_mod=false;
+        this.modcliente={}
+        this.datosGet(this.type)
+       }).catch(err=>{
+
+          this.$q.notify({
+            color: 'red-4',
+            textColor: 'white',
+            icon: 'error',
+            message: 'Error al Modificar'
+          });
+        })
+        this.$q.loading.hide();
+    },
+    agregarcliente(){
+      this.$q.loading.show()
+      this.newcliente.tipocliente=2
+      this.$axios.post(process.env.API+'/agregarcliente',this.newcliente).then(()=>{
+        this.$q.loading.hide()
+        this.datosGet(this.type)
+        this.modalregistro=false
+        this.newcliente={}
+      }).catch(err=>{
+        this.$q.loading.hide()
+        this.$q.notify({
+          message:err.response.data.message,
+          color:'red',
+          position:'center',
+
+          icon:'error'
+        })
+      })
+    },
     impresion(){
       if( this.ventas.length==0){
         return false
@@ -424,7 +570,7 @@ export default {
 
         this.$q.loading.hide()
         // this.misclientes()
-        this.misventas()
+        this.consultaVenta(this.type)
         // this.newcliente={}
       })
     },
@@ -445,7 +591,7 @@ export default {
       }).onOk((data) => {
       this.$axios.post(process.env.API+'/anular',{id:venta.id,observacion:data})
         .then(res=>{
-        this.misventas();
+          this.consultaVenta(this.type)
 
           this.$q.notify({
             message:'Venta Anulado ',
@@ -464,6 +610,7 @@ export default {
     },
     consultaVenta(tipo1){
       this.$api.post('listSale',{tipo:tipo1=='detalle'?'DETALLE':'LOCAL',ini:this.fecha1,fin:this.fecha2}).then(res => {
+        console.log(res.data)
         res.data.forEach(r => {
           r.telefono1=r.cliente.telefono
         });
@@ -472,6 +619,15 @@ export default {
 
     },
     saleSave(){
+      if(this.fecha=='' || this.fecha==undefined){
+        this.$q.notify({
+          message:'Ingrese la fecha',
+          color:'red',
+          position:'center',
+          icon:'error'
+        })
+          return false
+      }
       if(this.productSales.length==0)
         { console.log('sin prod')
         this.$q.notify({
@@ -504,6 +660,7 @@ export default {
         r.subtotal=r.precio * r.cantidad
       })
       this.sale.tipo=this.type=='detalle'?'DETALLE':'LOCAL'
+      this.sale.fecha=this.fecha
       this.sale.cliente_id=this.client.id
       this.sale.total=this.total
       this.sale.acuenta=this.monto
@@ -513,6 +670,7 @@ export default {
       this.sale.observacion=this.obs
       console.log(this.sale)
       this.$api.post('sale',this.sale).then(res => {
+        this.consultaVenta(this.type)
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
@@ -544,6 +702,7 @@ export default {
           this.obs=''
           this.sale={}
           this.productSales=[]
+          this.client={label:''}
         })
       })
     },
@@ -559,7 +718,7 @@ export default {
       this.clients2 = []
       this.$api.get(`/listacliente/${type}`).then(res => {
         res.data.forEach(c => {
-          c.label=c.local+' '+c.titular
+          c.label=c.ci+' '+c.local+' '+c.titular
           this.clients2.push(c)
           this.clients.push(c)
         })
@@ -619,10 +778,13 @@ export default {
         myWindow.print();
         myWindow.close();
 
+
+
         this.$q.loading.hide()
         this.producto=''
         this.cantidad=1
-        this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
+        this.client={label:''}
+        //this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
         this.newgarantia={}
         this.modalgarantia=false
         this.$q.dialog({
@@ -640,6 +802,8 @@ export default {
           this.obs=''
           this.sale={}
           this.productSales=[]
+          this.client={label:''}
+
         })
       }).catch(err=>{
         this.$q.loading.hide()

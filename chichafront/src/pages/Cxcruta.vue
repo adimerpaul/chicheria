@@ -1,26 +1,21 @@
 <template>
 <q-page class="q-pa-xs">
-  <div class="row">
     <div class="col-12">
       <div class="text-subtitle1 bg-blue-9 text-center text-white">Ventas RUTA</div>
     </div>
 
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12 col-sm-12">
-          <div class="row">
             <div class="col-12">
               <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas Ruta</div>
             </div>
             <q-form @submit.prevent="misventas">
-            <div class="row">
-            <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
-            <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
-            <div class="col-4 col-sm-4 q-pa-xs flex flex-center">
-              <q-btn color="info"  label="Consultar" icon="search" type="submit" />
+                <div class="row">
+                <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
+                <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
+                <div class="col-4 col-sm-4 q-pa-xs flex flex-center">
+                  <q-btn color="info"  label="Consultar" icon="search" type="submit" />
 
-            </div>
-            </div>
+                </div>
+              </div>
             </q-form>
             <div class="col-12">
 <!--              <q-table-->
@@ -123,7 +118,6 @@
                   </tr>
                   </tbody>
                 </table>
-              </div>
             </div>
 
                 <q-dialog v-model="alert">
@@ -189,13 +183,7 @@
                 </div>
               </q-form>
             </div>
--->
-          </div>
-        </div>
-      </div>
-
-
-    </div>
+-->pre
 
   </div>
 </q-page>
