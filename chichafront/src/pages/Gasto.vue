@@ -829,17 +829,17 @@ xlsx(datacaja, settings) // Will download the excel file
               });
         cadena+="</table><div><b>TOTAL ANULADO:</b>"+this.totalanulado+"</div><br>"
         }
+        let matventa=0
         if(this.totalpresventa>0){
         cadena+="<div>INGRESOS DE VENTA MATERIAL</div>\
         <table><tr><th>CANTIDAD</th><th>MATERIAL</th><th>EFECTIVO</th><th>TITULAR</th><th>LOCAL</th></tr>"
 
-        let matventa=0
         this.prestamoventa.forEach(r=>{
           r.cliente.local=r.cliente.local!=null?r.cliente.local:''
           cadena+="<tr><td>"+r.cantidad+"</td><td>"+r.inventario.nombre+"</td><td>"+r.efectivo+" Bs.</td><td>"+r.cliente.titular+"</td><td>"+r.cliente.local+"</td></tr>"
-        matventa+=parseFloat(r.efectivo)
+          matventa+=parseFloat(r.efectivo)
 
-      })
+        })
       cadena+="</table><div><b>TOTAL VENTA MATERIAL: </b> "+this.totalpresventa+" Bs</div><br>"}
 
       if(this.totalpagos>0){
@@ -856,11 +856,11 @@ xlsx(datacaja, settings) // Will download the excel file
       })
       cadena+="</table><div><b>T.V. Pago: </b>"+this.totalpagos+"</div><br>"
       }
+        let caja=0
+        let gastos=0
       if(this.gastos.length>0){
       cadena+="<div>DETALLE DE GASTO</div>\
       <table><tr><th>MONTO</th><th>GLOSA</th><th>OBSERVACION</th></tr>"
-        let caja=0
-        let gastos=0
       this.gastos.forEach(r=>{
         cadena+="<tr><td>"+r.precio+" Bs</td><td>"+r.glosa+"</td><td>"+r.observacion+"</td></tr>"
         if(r.glosa=='CAJA CHICA')
