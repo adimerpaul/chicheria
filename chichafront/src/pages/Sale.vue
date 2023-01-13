@@ -370,6 +370,7 @@
 <script>
 
 import {date} from 'quasar'
+import moment from 'moment'
 
 export default {
   name: `Sale`,
@@ -403,7 +404,7 @@ export default {
       columnas:[
         {label:'opcion',name:'opcion',field:'opcion'},
         {label:'id',name:'id',field:'id'},
-        {label:'fecha',name:'fecha',field:row=>date.formatDate(row.fecha,'DD/MM/YYYY')},
+        {label:'fecha',name:'fecha',field:'fecha'},
         {label:'cliente',name:'cliente',field:'cliente'},
         {label:'total',name:'total',field:'total'},
         {label:'acuenta',name:'acuenta',field:'acuenta'},
@@ -616,6 +617,8 @@ export default {
       })
     },
     consultaVenta(tipo1){
+      console.log(this.fecha1)
+      console.log(this.fecha2)
       this.$api.post('listSale',{tipo:tipo1=='detalle'?'DETALLE':'LOCAL',ini:this.fecha1,fin:this.fecha2}).then(res => {
         console.log(res.data)
         res.data.forEach(r => {
