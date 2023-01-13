@@ -300,7 +300,7 @@ export default {
       columnas:[
         {label:'opcion',name:'opcion',field:'opcion'},
         {label:'id',name:'id',field:'id'},
-        {label:'fecha',name:'fecha',field:'fecha'},
+        {label:'fecha',name:'fecha',field:row=>date.formatDate(row.fecha,'DD/MM/YYYY')},
         {label:'cliente',name:'cliente',field:'cliente'},
         {label:'total',name:'total',field:'total'},
         {label:'acuenta',name:'acuenta',field:'acuenta'},

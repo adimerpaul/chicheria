@@ -112,11 +112,7 @@
           </template>
         </q-input>
       </template>
-      <template v-slot:body="props">
-        <q-tr :props="props">
-          <q-td key="name" :props="props">
-            {{props.row.name}}
-          </q-td>
+      <template v-slot:body-cell-estado="props">
           <q-td key="estado" :props="props">
             <q-badge :color="props.row.estado=='ACTIVO'?'green':'red'"  :label="props.row.estado" @click="cambioEstado(props.row)"/>
             
@@ -133,18 +129,18 @@
 <!--          <q-td key="carnet" :props="props">-->
 <!--            {{props.row.carnet}}-->
 <!--          </q-td>-->
-          <q-td key="email" :props="props">
-            {{props.row.email}}
-          </q-td>
+      </template>
+      <template v-slot:body-cell-permisos="props">
+
           <q-td key="permisos" :props="props">
 <!--            {{props.row.permisos}}-->
             <ul>
               <li v-for="(p,i) in props.row.permisos" :key="i">{{p.nombre}}</li>
             </ul>
           </q-td>
-          <q-td key="fechalimite" :props="props">
-            {{props.row.fechalimite}}
-          </q-td>
+      </template>
+      <template v-slot:body-cell-opcion="props">
+
           <q-td key="opcion" :props="props">
             <q-btn
               dense
@@ -214,7 +210,6 @@
           <!--              icon="delete"-->
           <!--            ></q-btn>-->
           <!--          </q-td>-->
-        </q-tr>
       </template>
       <!--      <template v-slot:body-cell-opcion="props">-->
       <!--        <q-td :props="props">-->
@@ -380,7 +375,7 @@ export default {
         // {name: "codigo", align: "left", label: "Codigo", field: "codigo", sortable: true,},
         {name: "email", align: "left", label: "E-MAIL", field: "email", sortable: true,},
         {name: "permisos", align: "left", label: "PERMISOS", field: "permisos", sortable: true,},
-        {name: "fechalimite", align: "left", label: "FECHA LÍMITE", field: "fechalimite", sortable: true,},
+        {name: "fechalimite", align: "left", label: "FECHA LÍMITE", field: row=>date.formatDate(row.fechalimite  , 'DD/MM/YYYY'), sortable: true,},
         { name: "opcion", label: "OPCIÓN", field: "action", sortable: false },
       ],
       data: [],

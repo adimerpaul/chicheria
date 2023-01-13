@@ -200,7 +200,7 @@ export default {
   { name: 'titular', label: 'TITULAR', field: row=>row.cliente.titular, sortable: true },
   { name: 'telefono', label: 'TELEFONO', field: row=>row.cliente.telefono, sortable: true },
   { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true },
-  { name: 'fecha', label: 'FECHA', field: 'fecha', sortable: true },
+  { name: 'fecha', label: 'FECHA', field: row=>date.formatDate(row.fecha,'DD/MM/YYYY'), sortable: true },
   { name: 'estado', label: 'ESTADO', field: 'estado', sortable: true },
   { name: 'cantidad', label: 'CANTIDAD', field: 'cantidad', sortable: true },
   { name: 'prestado', label: 'PENDIENTE', field: 'prestado', sortable: true },

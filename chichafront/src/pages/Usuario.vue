@@ -230,7 +230,7 @@ export default {
       columns: [
         {name: "name", align: "left", label: "Nombre ", field: "name", sortable: true,},
         {name: "email", align: "left", label: "Email", field: "email", sortable: true,},
-        {name: "fechalimite", align: "left", label: "Fecha limite", field: "fechalimite", sortable: true,
+        {name: "fechalimite", align: "left", label: "Fecha limite", field: row=>date.formatDate(row.fechalimite  , 'DD/MM/YYYY'), sortable: true,
         },
 
         { name: "opcion", label: "Opcion", field: "action", sortable: false },
