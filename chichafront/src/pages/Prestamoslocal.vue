@@ -804,7 +804,6 @@ export default {
       if (confirm('seguro de eliminar?')){
         this.$axios.post(process.env.API+'/anularprestamo',p).then(res=>{
           // this.totalefectivo=res.data[0].total;
-          this.listclientes()
           this.cajaprestamo()
           this.listadoprestamo()
           console.log(res.data)
@@ -816,7 +815,6 @@ export default {
            if (confirm('seguro de ELIMINAR?')){
         this.$axios.delete(process.env.API+'/prestamo/'+p.id).then(res=>{
           // this.totalefectivo=res.data[0].total;
-          this.listclientes()
           this.cajaprestamo()
           this.listadoprestamo()
           console.log(res.data)
@@ -863,7 +861,6 @@ export default {
         this.listadoprestamo();
         this.boolmod=false
         this.$q.loading.hide();
-        this.listclientes();
         // this.cliente=this.prestamos[0]
         this.cantidad=1;
         this.cliente=this.cliente[0];
@@ -876,8 +873,8 @@ export default {
     },
     listclientes(){
       this.$q.loading.show();
-      this.prestamos=[];
       this.$axios.get(process.env.API+'/listacliente').then(res=>{
+        this.prestamos=[];
          console.log(res.data)
         res.data.forEach(r => {
             if(this.tab=='local' && r.tipocliente=='1'){
@@ -943,7 +940,6 @@ export default {
         // this.prestamos=res.data
         this.listadoprestamo();
         this.$q.loading.hide();
-        this.listclientes();
         // this.cliente=this.prestamos[0]
         this.cantidad=1;
       this.fecha=date.formatDate(new Date(),'YYYY-MM-DD')

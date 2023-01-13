@@ -225,7 +225,7 @@
       </template>
       <template v-slot:body-cell-estado="props">
         <q-td key="estado" :props="props">
-          <q-badge :color="props.row.estado=='POR COBRAR'?'red':'green'" :label="props.row.estado" />
+          <q-badge :color="props.row.estado=='POR COBRAR' || props.row.estado=='ANULADO'?'red':'green'" :label="props.row.estado" />
           
         </q-td>
       </template>

@@ -893,13 +893,13 @@ xlsx(datacaja, settings) // Will download the excel file
       if(this.$store.state.login.user.id==1){
       cadena+="<div><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
       }
-        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        let myWindow = window.open("_blank");
         myWindow.document.write(cadena);
         myWindow.document.close();
-        setTimeout(function(){
+       /* setTimeout(function(){
               myWindow.print();
               myWindow.close();
-            },500);
+            },500);*/
     },
 
     imprimirmisventasygastos(us){
