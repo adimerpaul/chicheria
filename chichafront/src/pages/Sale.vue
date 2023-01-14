@@ -411,6 +411,7 @@ export default {
         {label:'saldo',name:'saldo',field:'saldo'},
         {label:'estado',name:'estado',field:'estado'},
         {label:'user',name:'user',field:'user'},
+        {label:'observacion',name:'observacion',field:'observacion'},
       ]
     }
   },
