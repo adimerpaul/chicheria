@@ -19,6 +19,7 @@ class CreateInventariosTable extends Migration
             $table->date("fecha")->default(date('Y-m-d'));
             $table->string("nombre")->nullable();
             $table->integer("cantidad")->default(0);
+            $table->double("precio")->default(0);
             $table->string("detalle")->nullable();
             $table->string("estado")->default('ACTIVO');
 //            $table->unsignedBigInteger('producto_id')->nullable();

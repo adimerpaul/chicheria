@@ -12,6 +12,7 @@ class Inventario extends Model
         'codigo',
         'nombre',
         'cantidad',
+        'precio',
         'detalle',
         'orden',
         'estado',

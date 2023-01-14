@@ -54,6 +54,21 @@
                         type="number"
                         v-model="inventario.cantidad"
                         label="CANTIDAD"
+                        :rules="[
+                          val => val >= 0 || 'Por favor ingrese dato']"
+                      />
+
+                    </div>
+                    <div class="col-12 col-sm-2 q-pa-xs">
+                      <q-input
+                        outlined
+                        dense
+                        type="number"
+                        step="0.1"
+                        v-model="inventario.precio"
+                        label="PRECIO"
+                        :rules="[
+                          val => val >= 0 || 'Por favor ingrese dato']"
                       />
 
                     </div>
@@ -153,6 +168,7 @@
                     <th>PRESTAMO</th>
                     <th>VENTAS</th>
                     <th>SALDO</th>
+                    <th>PRECIO</th>
                     <th>OBSERVACIONES</th>
                     <th>ORDEN</th>
                     <th>ESTADO</th>
@@ -167,6 +183,7 @@
                   <td>{{v.prestamo}}</td>
                   <td>{{v.ventas}}</td>
                   <td>{{v.cantidad}}</td>
+                  <td>{{v.precio}}</td>
                   <td>{{v.detalle}}</td>
                   <td>{{v.orden}}</td>
                   <td >                  
@@ -228,6 +245,16 @@
                           val => val >= 0 || 'Por favor ingrese dato']"
                       />
 
+                      <q-input
+                      filled
+                      dense
+                      type="number"
+                      step="0.1"
+                      v-model="dato.precio"
+                      label="PRECIO"
+                                              :rules="[
+                        val => val >= 0 || 'Por favor ingrese dato']"
+                    />
                     </div>
                   <q-input
                     filled

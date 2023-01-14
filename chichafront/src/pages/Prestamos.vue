@@ -8,10 +8,10 @@
       <q-select dense use-input @filter="filterFn" v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select dense outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
+      <q-select dense outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre" @update:model-value="calcular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades"/>
+      <q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades" @update:model-value="calcular"/>
     </div>
         <div class="col-12 col-sm-3 q-pa-xs">
       <q-input dense outlined label="Fecha" v-model="fecha" type="date"/>
@@ -221,18 +221,23 @@ export default {
       this.cantidades.push(i);
     }
     // this.misprestamos()
-    this.$axios.get(process.env.API+'/inventario').then(res=>{
+    this.$axios.get(process.env.API+'/listInv').then(res=>{
       // console.log(res.data)
       this.inventarios=res.data;
       this.inventario=this.inventarios[0];
+      console.log(this.inventario)
+    this.efectivo=parseFloat(this.cantidad) * parseFloat(this.inventario.precio)
     })
       this.listclientes();
       this.cajaprestamo();
     this.listadoprestamo();
     this.reporte();
+
   },
   methods: {
-    
+    calcular(){
+      this.efectivo=parseFloat(this.cantidad) * parseFloat(this.inventario.precio)
+    },
     verObs(prest){
       this.$q.dialog({
         title: 'Observacion',
@@ -315,7 +320,7 @@ export default {
         //console.log(res.data);
         this.listadop=[];
         res.data.forEach(element => {
-          console.log(element)
+          //console.log(element)
             if(this.tab=='local' && element.cliente.tipocliente=='1')
               this.listadop.push(element);
             if(this.tab=='cliente' && element.cliente.tipocliente=='2')

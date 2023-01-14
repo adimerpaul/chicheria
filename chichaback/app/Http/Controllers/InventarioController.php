@@ -19,6 +19,12 @@ class InventarioController extends Controller
         return Inventario::with('prestamos')->orderBy('orden','asc')->get();
     }
 
+    public function listInv()
+    {
+        //
+        return Inventario::with('prestamos')->where('estado','ACTIVO')->orderBy('orden','asc')->get();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -43,6 +49,7 @@ class InventarioController extends Controller
         $inventario->codigo=strtoupper($request->codigo);
         $inventario->nombre=strtoupper($request->nombre);
         $inventario->cantidad=$request->cantidad;
+        $inventario->precio=$request->precio;
         $inventario->detalle=strtoupper($request->detalle);
         $inventario->orden=$request->orden;
         $inventario->save();
@@ -86,6 +93,7 @@ class InventarioController extends Controller
         $inventario->codigo=strtoupper($request->codigo);
         $inventario->nombre=strtoupper($request->nombre);
         $inventario->detalle=strtoupper($request->detalle);
+        $inventario->precio=$request->precio;
         $inventario->orden=$request->orden;
         $inventario->save();
 
