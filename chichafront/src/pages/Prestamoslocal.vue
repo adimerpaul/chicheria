@@ -7,10 +7,10 @@
       <q-select dense v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select dense outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
+      <q-select dense outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre" @update:model-value="calcular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades"/>
+      <q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades" @update:model-value="calcular"/>
     </div>
             <div class="col-12 col-sm-3 q-pa-xs">
       <q-input dense outlined label="Fecha" v-model="fecha" type="date"/>
@@ -487,7 +487,9 @@ export default {
     this.reporte();
   },
   methods: {
-    
+    calcular(){
+      this.efectivo=parseFloat(this.cantidad) * parseFloat(this.inventario.precio)
+    },
     verObs(prest){
       this.$q.dialog({
         title: 'Observacion',

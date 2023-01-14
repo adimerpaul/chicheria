@@ -261,10 +261,10 @@
               <q-input required type="text"  outlined label="direccion" v-model="client.direccion" disable/>
             </div>
             <div class="col-12 col-md-4 q-pa-xs">
-              <q-select required outlined label="inventario" v-model="inventario" :options="inventarios" option-label="nombre"/>
+              <q-select required outlined label="inventario" v-model="inventario" :options="inventarios" option-label="nombre" @update:model-value="calcular"/>
             </div>
             <div class="col-12 col-md-4 q-pa-xs">
-              <q-input required type="number"  outlined label="cantidad" v-model="newgarantia.cantidad"/>
+              <q-input required type="number"  outlined label="cantidad" v-model="newgarantia.cantidad" @update:model-value="calcular"/>
             </div>
             <div class="col-12 col-md-4 q-pa-xs">
               <q-input  outlined type="number" label="efectivo" v-model="newgarantia.efectivo"/>
@@ -435,9 +435,12 @@ export default {
       this.inventario=res.data[0]
     })
     this.consultaVenta(this.type)
-
+    this.calcular()
   },
   methods: {
+    calcular(){
+      this.newgarantia.efectivo=parseFloat(this.newgarantia.cantidad) * parseFloat(this.inventario.precio)
+    },
     onMod(){
         this.$q.loading.show();
         this.$axios.put(process.env.API+'/cliente/'+this.modcliente.id,this.modcliente).then(res=>{
