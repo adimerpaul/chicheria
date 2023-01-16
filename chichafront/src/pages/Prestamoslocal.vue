@@ -57,7 +57,7 @@
             <template v-slot:body-cell-observacion="props" >
               <q-td key="observacion" :props="props">
                  <q-btn color="accent" icon="notes" @click="verObs(props.row)" v-if="props.row.observacion!='' && props.row.observacion!=null" dense/>
-                
+
               </q-td>
             </template>
               <template v-slot:body-cell-estado="props" >
@@ -165,6 +165,8 @@
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
 import $ from "jquery";
+import moment from 'moment'
+
 export default {
   name: "Venta",
   data(){
@@ -205,7 +207,7 @@ export default {
   { name: 'titular', label: 'TITULAR', field: row=>row.cliente.titular, sortable: true },
   { name: 'telefono', label: 'TELEFONO', field: row=>row.cliente.telefono, sortable: true },
   { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true },
-  { name: 'fecha', label: 'FECHA', field: row=>date.formatDate(row.fecha,'DD/MM/YYYY'), sortable: true },
+  { name: 'fecha', label: 'FECHA', field:row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
   { name: 'estado', label: 'ESTADO', field: 'estado', sortable: true },
   { name: 'cantidad', label: 'CANTIDAD', field: 'cantidad', sortable: true },
   { name: 'prestado', label: 'PENDIENTE', field: 'prestado', sortable: true },
