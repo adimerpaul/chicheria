@@ -950,6 +950,7 @@ export default {
 
         this.cliente=this.cliente[0];
         this.inventario=this.inventario[0];
+        this.calcular
       })
       this.filtrarlista();
       this.cajaprestamo();

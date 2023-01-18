@@ -712,6 +712,7 @@ export default {
           this.newgarantia.cantidad=1,
           this.newgarantia.efectivo=0,
           this.newgarantia.tipo='EN PRESTAMO'
+          this.calcular
           this.modalgarantia=true
         }).onCancel(()=>{
           this.monto=0
@@ -802,6 +803,7 @@ export default {
         this.client={label:''}
         //this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
         this.newgarantia={}
+        this.calcular
         this.modalgarantia=false
         this.$q.dialog({
           message:'Deseas registrar garantia?',

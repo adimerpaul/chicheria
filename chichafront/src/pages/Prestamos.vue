@@ -458,6 +458,7 @@ export default {
         this.efectivo=0
         this.cliente=this.cliente[0];
         this.inventario=this.inventario[0];
+        this.calcular
       })
       this.filtrarlista();
       this.cajaprestamo();
