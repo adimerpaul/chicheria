@@ -1,21 +1,17 @@
 <template>
 <q-page class="q-pa-xs">
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12 col-sm-12">
-          <div class="row">
             <div class="col-12">
               <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas con Rutas</div>
             </div>
             <q-form @submit.prevent="misventas">
             <div class="row">
-            <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
-            <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
-            <div class="col-4 col-sm-4 q-pa-xs flex flex-center">
-              <q-btn color="info"  label="Consultar" icon="search" type="submit" />
+              <div class="col-3  q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
+              <div class="col-3  q-pa-xs" v-if="rango=='RANGO'"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
+              <div class="col-3" ><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'" style="width:100%"/></div>
+              <div class="col-3  q-pa-xs flex flex-center">
+                <q-btn color="info"  label="Consultar" icon="search" type="submit" style="width:100%"/>
 
-            </div>
+              </div>
             </div>
             </q-form>
             <div class="col-12">
@@ -132,7 +128,6 @@
                   </tr>
                   </tbody>
                 </table>
-              </div>
             </div>
 
                 <q-dialog v-model="alert">
@@ -199,12 +194,6 @@
               </q-form>
             </div>
 -->
-          </div>
-        </div>
-      </div>
-
-
-    </div>
 
   </div>
 </q-page>
@@ -238,6 +227,7 @@ export default {
       fecha5:date.formatDate(new Date(),'YYYY-MM-DD'),
       alert:false,
       responsable:'',
+      rango:'RANGO',
       clientes:[],
       clientes2:[],
       cliente:'',
@@ -592,6 +582,9 @@ export default {
       this.$q.loading.show()
       $('#example').DataTable().destroy();
       this.ventas=[];
+      if(rango=='DIA'){
+        this.fecha3=this.fecha2
+      }
       this.$axios.post(process.env.API+'/listadoventaruta',{ini:this.fecha2,fin:this.fecha3}).then(res=>{
         // this.ventas=res.data
         // console.log(res.data)

@@ -9,12 +9,13 @@
             </div>
             <q-form @submit.prevent="misventas">
                 <div class="row">
-                <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
-                <div class="col-4 col-sm-4 q-pa-xs"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
-                <div class="col-4 col-sm-4 q-pa-xs flex flex-center">
-                  <q-btn color="info"  label="Consultar" icon="search" type="submit" />
-
-                </div>
+                  <div class="col-3  q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required/></div>
+                  <div class="col-3  q-pa-xs" v-if="rango=='RANGO'"><q-input type="date" label="fecha" v-model="fecha3" outlined required/></div>
+                  <div class="col-3" ><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'" style="width:100%"/></div>
+                  <div class="col-3  q-pa-xs flex flex-center">
+                    <q-btn color="info"  label="Consultar" icon="search" type="submit" style="width:100%"/>
+    
+                  </div>
               </div>
             </q-form>
             <div class="col-12">
@@ -209,6 +210,7 @@ export default {
       responsable:'',
       clientes:[],
       clientes2:[],
+      rango:'RANGO',
       cliente:'',
       productos:[],
       inventarios:[],
@@ -562,6 +564,10 @@ export default {
     misventas(){
       this.$q.loading.show()
       this.ventas=[];
+      this.ventas=[];
+      if(rango=='DIA'){
+        this.fecha3=this.fecha2
+      }
          $('#example').DataTable().destroy();
       this.$axios.post(process.env.API+'/listventruta',{ini:this.fecha2,fin:this.fecha3}).then(res=>{
         // this.ventas=res.data
