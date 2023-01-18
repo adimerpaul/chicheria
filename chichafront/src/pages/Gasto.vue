@@ -882,16 +882,16 @@ xlsx(datacaja, settings) // Will download the excel file
       })
       cadena+="</table><div><b>TOTAL GASTO CAJA CHICA: </b>"+ caja+" Bs</div><br>"}
 
-      
-      if(ventas>0) cadena+="<div><b>TOTAL VENTAS : </b>"+ ventas+" Bs</div>"
-      if(matventa>0) cadena+="<div><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
-      if(panulado>0) cadena+="<div><b>TOTAL PRESTAMO ANULADOS: </b>"+ panulado+" Bs</div>"
-      if(ccpago>0) cadena+="<div><b>TOTAL CXC PAGOS: </b>"+ ccpago+" Bs</div>"
-      if(gastos>0) cadena+="<div><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
-      cadena+="<div><b>TOTAL SALDO: </b>"+ (ventas-gastos) +" Bs</div>"
+
+      if(ventas>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS : </b>"+ ventas+" Bs</div>"
+      if(matventa>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
+      if(panulado>0) cadena+="<div style='font-size:16px'><b>TOTAL PRESTAMO ANULADOS: </b>"+ panulado+" Bs</div>"
+      if(ccpago>0) cadena+="<div style='font-size:16px'><b>TOTAL CXC PAGOS: </b>"+ ccpago+" Bs</div>"
+      if(gastos>0) cadena+="<div style='font-size:16px'><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL SALDO: </b>"+ (ventas-gastos) +" Bs</div>"
 
       if(this.$store.state.login.user.id==1){
-      cadena+="<div><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
       }
         let myWindow = window.open("_blank");
         myWindow.document.write(cadena);
