@@ -100,11 +100,11 @@ class SaleController extends Controller
         .textgrd{font-size:20px}
         </style>
         <hr>
-        <div style="text-align: right;">'.date('d/m/Y',strtotime($venta->fecha)).'</div>';
+        <div style="text-align: right;">'.date('d/m/Y',strtotime($venta->fecha)).'</div>\
+        <div>Nro :'.$venta->id.'</div>';
         if($venta->cliente->local!='' || $venta->cliente->local!=null)
         {$cadena.='<div>Local: '.$venta->cliente->local.'</div>';}
         $cadena.='<div>Nombre: '.$venta->cliente->titular.'</div>
-        <div>Nro :'.$venta->id.'</div>
         <hr>
         <table>
         <thead>

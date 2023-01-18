@@ -123,7 +123,7 @@
                       <q-btn icon="segment" color="green"  @click="listpago(v)" dense/>
                       <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)" dense />
                        <q-btn color="info" icon="print" dense @click="printRuta(v)"/>
-                      
+
                     </td>
                   </tr>
                   </tbody>
@@ -582,7 +582,7 @@ export default {
       this.$q.loading.show()
       $('#example').DataTable().destroy();
       this.ventas=[];
-      if(rango=='DIA'){
+      if(this.rango=='DIA'){
         this.fecha3=this.fecha2
       }
       this.$axios.post(process.env.API+'/listadoventaruta',{ini:this.fecha2,fin:this.fecha3}).then(res=>{

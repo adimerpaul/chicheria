@@ -450,7 +450,7 @@ export default {
          console.log(res.data)
           this.regpago={};
           this.dialog_pago=false;
-          
+
           let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
           myWindow.document.write(res.data);
           myWindow.document.close();
@@ -486,7 +486,7 @@ export default {
     misventas(){
       this.$q.loading.show()
       this.ventas=[];
-      if(rango=='DIA'){
+      if(this.rango=='DIA'){
         this.fecha3=this.fecha2
       }
          $('#example').DataTable().destroy();

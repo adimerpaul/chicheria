@@ -29,10 +29,10 @@
              <q-btn color="green" icon="add_circle" v-if="type=='detalle'" @click="modalregistro=true; newcliente={}"/>
           </div>
           <div class="col-2">
-             <q-btn color="yellow"  icon="edit" v-if="client && type=='detalle'" @click="modcliente=client; dialog_mod=true;"/>            
+             <q-btn color="yellow"  icon="edit" v-if="client && type=='detalle'" @click="modcliente=client; dialog_mod=true;"/>
         </div>
         <div class="col-8">
-          <q-input type="date" outlined v-model="fecha" dense label="Fecha" />        
+          <q-input type="date" outlined v-model="fecha" dense label="Fecha" />
         </div>
         <div class="col-2">
           <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
@@ -226,7 +226,7 @@
       <template v-slot:body-cell-estado="props">
         <q-td key="estado" :props="props">
           <q-badge :color="props.row.estado=='POR COBRAR' || props.row.estado=='ANULADO'?'red':'green'" :label="props.row.estado" />
-          
+
         </q-td>
       </template>
       <template v-slot:body-cell-opcion="props">
@@ -300,7 +300,7 @@
               <q-input type="date" outlined label="fechaentrega" v-model="venta.fechaentrega"/>
             </div>
             <div class="col-12 col-md-6 q-pa-xs">
-              <q-select required :options="['MAÑANA','TARDE']"  outlined label="turno" v-model="venta.turno"/>
+              <q-select required :options="['MAÑANA','TARDE','NOCHE']"  outlined label="turno" v-model="venta.turno"/>
             </div>
             <div class="col-12 col-md-6 q-pa-xs">
               <q-input required type="text"  style="text-transform: uppercase;" outlined label="hora" v-model="venta.hora"/>

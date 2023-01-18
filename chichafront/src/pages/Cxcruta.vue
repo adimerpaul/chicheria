@@ -14,7 +14,7 @@
                   <div class="col-3" ><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'" style="width:100%"/></div>
                   <div class="col-3  q-pa-xs flex flex-center">
                     <q-btn color="info"  label="Consultar" icon="search" type="submit" style="width:100%"/>
-    
+
                   </div>
               </div>
             </q-form>
@@ -539,7 +539,7 @@ export default {
           myWindow2.document.close();
           myWindow2.print();
           myWindow2.close();
-          
+
           this.regpago={}
           this.misventas();
           this.loading=false
@@ -565,7 +565,7 @@ export default {
       this.$q.loading.show()
       this.ventas=[];
       this.ventas=[];
-      if(rango=='DIA'){
+      if(this.rango=='DIA'){
         this.fecha3=this.fecha2
       }
          $('#example').DataTable().destroy();
