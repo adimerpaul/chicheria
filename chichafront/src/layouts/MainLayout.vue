@@ -96,47 +96,10 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          v-if="$store.state.login.clientes"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/cliente"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="people" size="lg" />
-          </q-item-section>
 
-          <q-item-section>
-            <q-item-label>CLIENTES DETALLE</q-item-label>
-            <q-item-label caption>
-              Control de cLientes
-            </q-item-label>
-          </q-item-section>
-        </q-item>
 
-                <q-item
-          v-if="$store.state.login.clientes"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/clientelocal"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="contact_phone" size="lg" />
-          </q-item-section>
 
-          <q-item-section>
-            <q-item-label>CLIENTES LOCAL</q-item-label>
-            <q-item-label caption>
-              Control de cLientes Local
-            </q-item-label>
-          </q-item-section>
-        </q-item>
+
 
         <q-item
           v-if="$store.state.login.productos"
@@ -192,70 +155,46 @@
             </q-item-label>
           </q-item-section>
         </q-item>-->
-        <q-item v-if="$store.state.login.ventadetalle" active-class="my-menu-link" clickable exact to="/sale/detalle">
-          <q-item-section avatar>
-            <q-icon name="shopping_cart" size="lg" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>VENTA DETALLE</q-item-label>
-<!--            <q-item-label caption>-->
-<!--              Historial de ventas-->
-<!--            </q-item-label>-->
-          </q-item-section>
-        </q-item>
-        <q-item v-if="$store.state.login.ventadetalle" active-class="my-menu-link" clickable exact to="/sale/local">
-          <q-item-section avatar>
-            <q-icon name="shopping_cart" size="lg" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>VENTA LOCAL</q-item-label>
-            <!--            <q-item-label caption>-->
-            <!--              Historial de ventas-->
-            <!--            </q-item-label>-->
-          </q-item-section>
-        </q-item>
-
-<!--                        <q-item-->
-<!--          v-if="$store.getters['login/isLoggedIn']"-->
-<!--          clickable-->
-<!--          exact-->
-<!--          to="/ventadirecta"-->
-<!--        >-->
-<!--          <q-item-section-->
-<!--            avatar-->
-<!--          >-->
-<!--            <q-icon name="shop" />-->
-<!--          </q-item-section>-->
-
-<!--          <q-item-section>-->
-<!--            <q-item-label>Venta Local</q-item-label>-->
-<!--            <q-item-label caption>-->
-<!--              Historial de ventas-->
-<!--            </q-item-label>-->
-<!--          </q-item-section>-->
-<!--        </q-item>-->
-       <!-- <q-item
-          v-if="$store.state.login.ventalocal"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/ventalocal"
-        >
-          <q-item-section
-            avatar
+        <q-expansion-item
+        expand-separator
+        icon="people_alt"
+        label="DETALLE"
+        
+      >
+        <q-card>
+          <q-card-section>
+            <q-item
+            v-if="$store.state.login.clientes"
+            active-class="my-menu-link"
+            clickable
+            exact
+            to="/cliente"
           >
-            <q-icon name="local_shipping" size="lg" />
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label>VENTA LOCAL </q-item-label>
-            <q-item-label caption>
-              Historial de ventas
-            </q-item-label>
-          </q-item-section>
-        </q-item>
--->
-        <q-item
+            <q-item-section
+              avatar
+            >
+              <q-icon name="people" size="lg" />
+            </q-item-section>
+  
+            <q-item-section>
+              <q-item-label>CLIENTES DETALLE</q-item-label>
+              <q-item-label caption>
+                Control de cLientes
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item v-if="$store.state.login.ventadetalle" active-class="my-menu-link" clickable exact to="/sale/detalle">
+            <q-item-section avatar>
+              <q-icon name="shopping_cart" size="lg" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>VENTA DETALLE</q-item-label>
+  <!--            <q-item-label caption>-->
+  <!--              Historial de ventas-->
+  <!--            </q-item-label>-->
+            </q-item-section>
+          </q-item>
+          <q-item
           v-if="$store.state.login.historialprestamo"
           active-class="my-menu-link"
           clickable
@@ -275,8 +214,71 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-
         <q-item
+        v-if="$store.state.login.cobrardetalle"
+        active-class="my-menu-link"
+        clickable
+        exact
+        to="/cxcdetalle"
+      >
+        <q-item-section
+          avatar
+        >
+          <q-icon name="task" size="lg" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>CxC DETALLE</q-item-label>
+          <q-item-label caption>
+            Historial de ventas
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+          </q-card-section>
+          </q-card>
+      </q-expansion-item>
+
+
+        <q-expansion-item
+        expand-separator
+        icon="corporate_fare"
+        label="LOCAL"
+        
+      >
+        <q-card>
+          <q-card-section>
+            <q-item
+            v-if="$store.state.login.clientes"
+            active-class="my-menu-link"
+            clickable
+            exact
+            to="/clientelocal"
+          >
+            <q-item-section
+              avatar
+            >
+              <q-icon name="contact_phone" size="lg" />
+            </q-item-section>
+  
+            <q-item-section>
+              <q-item-label>CLIENTES LOCAL</q-item-label>
+              <q-item-label caption>
+                Control de cLientes Local
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item v-if="$store.state.login.ventadetalle" active-class="my-menu-link" clickable exact to="/sale/local">
+            <q-item-section avatar>
+              <q-icon name="shopping_cart" size="lg" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>VENTA LOCAL</q-item-label>
+              <!--            <q-item-label caption>-->
+              <!--              Historial de ventas-->
+              <!--            </q-item-label>-->
+            </q-item-section>
+          </q-item>
+          <q-item
           v-if="$store.state.login.historialprestamo"
           active-class="my-menu-link"
           clickable
@@ -296,52 +298,30 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-
-
-
-
-
         <q-item
-          v-if="$store.state.login.cobrardetalle"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/cxcdetalle"
+        v-if="$store.state.login.cobrarlocal"
+        active-class="my-menu-link"
+        clickable
+        exact
+        to="/cxclocal"
+      >
+        <q-item-section
+          avatar
         >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="task" size="lg" />
-          </q-item-section>
+          <q-icon name="task" size="lg" />
+        </q-item-section>
 
-          <q-item-section>
-            <q-item-label>CxC DETALLE</q-item-label>
-            <q-item-label caption>
-              Historial de ventas
-            </q-item-label>
-          </q-item-section>
-        </q-item>
+        <q-item-section>
+          <q-item-label>CxC LOCAL</q-item-label>
+          <q-item-label caption>
+            Historial de venta
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+          </q-card-section>
+          </q-card>
+      </q-expansion-item>
 
-        <q-item
-          v-if="$store.state.login.cobrarlocal"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/cxclocal"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="task" size="lg" />
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label>CxC LOCAL</q-item-label>
-            <q-item-label caption>
-              Historial de venta
-            </q-item-label>
-          </q-item-section>
-        </q-item>
 
         <q-item
           v-if="$store.state.login.cobrarruta"
