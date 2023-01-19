@@ -34,9 +34,9 @@
         <div class="col-8">
           <q-input type="date" outlined v-model="fecha" dense label="Fecha" />
         </div>
-<!---->        <div class="col-2">
+<!--       <div class="col-2">
           <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
-        </div>>
+        </div>--> 
         <div class="col-9">
           <q-select
             outlined
@@ -69,15 +69,16 @@
       <q-card-section class="q-pa-none">
         <div class="row items-center bg-primary text-white">
           <div class="col-2 text-center text-bold">Cantidad</div>
-          <div class="col-6 text-center text-bold">Nombre</div>
+          <div class="col-5 text-center text-bold">Nombre</div>
           <div class="col-2 text-center text-bold">Precio</div>
           <div class="col-2 text-center text-bold">Subtotal</div>
+          <div class="col-1 text-center text-bold">Op</div>
         </div>
-        <div class="row items-center" v-for="p in productSales" :key="p.id">
+        <div class="row items-center" v-for="(p,index) in productSales" :key="p.id">
           <div class="col-2 text-center text-bold">
             <q-input v-model="p.cantidad" dense type="number" step="0.25" />
           </div>
-          <div class="col-6 text-grey">{{p.nombre}}</div>
+          <div class="col-5 text-grey">{{p.nombre}}</div>
           <div class="col-2 text-right text-grey">
             <q-input v-model="p.precio" dense type="number" step="0.1">
               <template v-slot:append>
@@ -86,11 +87,16 @@
             </q-input>
           </div>
           <div class="col-2 text-right q-pr-xs text-bold">{{p.precio*p.cantidad}}Bs.</div>
+          <div class="col-1"> <q-btn color="red"  icon="delete" dense @click="delProduct(index)"/>
+          </div>
         </div>
       </q-card-section>
     </q-card>
     <q-form>
       <div class="row">
+        <div class="col-4">
+          <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
+        </div>
         <div class="col-4">
           <q-input v-model="monto" dense outlined label="Monto" type="number" step="0.1">
             <template v-slot:append>
@@ -218,6 +224,13 @@
           {{ props.row.cliente.local }}  {{ props.row.cliente.titular }}
         </q-td>
       </template>
+      <template v-slot:body-cell-observacion="props">
+        <q-td key="cliente" :props="props">
+
+           <q-btn color="purple" icon="subject"  v-if="props.row.observacion!=''" @click="verObs(props.row)"/>
+          
+        </q-td>
+      </template>
       <template v-slot:body-cell-user="props">
         <q-td key="user" :props="props">
           {{ props.row.user.name}}
@@ -233,6 +246,7 @@
           <q-td key="opcion" :props="props">
             <q-btn-group v-if="props.row.estado!='ANULADO'" >
               <q-btn icon="cancel" color="red" @click="anular(props.row)" size="xs" v-if="$store.state.login.anularventa"/>
+              <q-btn icon="local_shipping" color="indigo-3"   @click="printruta(props.row)" size="xs" v-if="props.row.fechaentrega!=null && props.row.fechaentrega!=''"/>
               <q-btn icon="local_shipping" color="accent"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta "/>
               <q-btn icon="shopping_cart" color="orange"   @click="clickcompra(props.row)" size="xs" />
               <template v-if="$store.state.login.reimpresion" >
@@ -439,6 +453,22 @@ export default {
     this.calcular()
   },
   methods: {
+    delProduct(p){
+      console.log(p)
+      this.productSales.splice(p,1);
+    },
+    verObs(vent){
+      this.$q.dialog({
+        title: 'Observacion',
+        message: vent.observacion
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
     calcular(){
       this.newgarantia.efectivo=parseFloat(this.newgarantia.cantidad) * parseFloat(this.inventario.precio)
     },
@@ -586,6 +616,14 @@ export default {
         this.consultaVenta(this.type)
         // this.newcliente={}
       })
+    },
+    printruta(ruta){
+      this.$axios.post(process.env.API+'/impresionruta/'+ruta.id).then(res=>{
+        let myWindow = window.open("_blank");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+      })
+      
     },
     clickhojaruta(venta){
       this.venta=venta

@@ -29,13 +29,17 @@
       <input type="radio" value="EN PRESTAMO" v-model="tipo" style="margin-right: 0.5em;font;height:35px; width:35px; "  /><b :style="tipo=='EN PRESTAMO'?'color:red':''"> EN PRESTAMO </b>
       <input type="radio" value="VENTA" v-model="tipo" style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "/><b :style="tipo=='VENTA'?'color:red':''"> VENTA </b>
     </div>
-    <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
-      <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
-      <q-btn label="agregar" icon="send" color="positive" type="submit" v-else/>
     </div>
-    <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
-      <q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/></div>
+    <div class="row">
+      <div class="col-6  q-pa-xs ">
+        <q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/>
+      </div>
+      <div class="col-6  q-pa-xs " style=" text-align: right;">
+        <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
+        <q-btn label="agregar" icon="send" color="positive" type="submit" v-else/>
+      </div>
     </div>
+
   </q-form>
   <div class="text-h5" v-if="tab=='cliente'">TOTAL EN CAJA: {{totalefectivo}} Bs.</div>
 <!--  {{cliente}}-->

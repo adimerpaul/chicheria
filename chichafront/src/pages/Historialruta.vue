@@ -121,9 +121,9 @@
                     <td>{{v.user}}</td>
                     <td>
                       <q-btn icon="segment" color="green"  @click="listpago(v)" dense/>
-                     <!-- <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)" dense />
-                       <q-btn color="info" icon="print" dense @click="printRuta(v)"/>
--->
+                     <!-- <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)" dense />-->
+                       <q-btn color="info" icon="print" dense @click="printRuta(v)" v-if="$store.state.login.ruta"/>
+
                     </td>
                   </tr>
                   </tbody>

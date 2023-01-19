@@ -23,6 +23,6 @@ class Empleado extends Model
             return $this->hasMany(Sueldo::class)->orderBy('fecha','desc');
     }
     public function planillas(){
-        return $this->hasMany(Planilla::class);
+        return $this->hasMany(Planilla::class)->orderBy('fechapago','desc');
     }
 }
