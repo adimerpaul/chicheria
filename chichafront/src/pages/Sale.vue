@@ -34,9 +34,9 @@
         <div class="col-8">
           <q-input type="date" outlined v-model="fecha" dense label="Fecha" />
         </div>
-        <div class="col-2">
+<!---->        <div class="col-2">
           <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
-        </div>
+        </div>>
         <div class="col-9">
           <q-select
             outlined
@@ -201,7 +201,7 @@
   <div class="col-3"><q-input  outlined v-model="fecha1" label="Fecha Inicial"  dense type="date"/></div>
   <div class="col-3"><q-input  outlined v-model="fecha2" label="Fecha Final"  dense type="date"/></div>
   <div class="col-3"> <q-btn color="green" label="BUSCAR" icon="search"  dense @click="consultaVenta(type)"/></div>
-  <div class="col-3"> <q-btn color="info" label="IMPRIMIR" icon="print"  dense @click="impresion"/></div>
+ <!-- <div class="col-3"> <q-btn color="info" label="IMPRIMIR" icon="print"  dense @click="impresion"/></div>-->
   </div>
 <div class="col-12">
   <q-table title="Ventas" :rows="ventas" :columns="columnas" row-key="name" :filter="filter">
