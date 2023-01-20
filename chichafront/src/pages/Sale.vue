@@ -36,7 +36,7 @@
         </div>
 <!--       <div class="col-2">
           <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
-        </div>--> 
+        </div>-->
         <div class="col-9">
           <q-select
             outlined
@@ -228,7 +228,7 @@
         <q-td key="cliente" :props="props">
 
            <q-btn color="purple" icon="subject"  v-if="props.row.observacion!=''" @click="verObs(props.row)"/>
-          
+
         </q-td>
       </template>
       <template v-slot:body-cell-user="props">
@@ -340,7 +340,7 @@
               <q-input required outlined label="saldo" v-model="venta.saldo" disable/>
             </div>
             <div class="col-12  q-pa-xs">
-              <q-input required outlined label="observacion" style="text-transform: uppercase;" v-model="venta.observacion"/>
+              <q-input  outlined label="observacion" style="text-transform: uppercase;" v-model="venta.observacion"/>
             </div>
             <div class="col-12  q-pa-xs flex flex-center">
               <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Imprimir"/>
@@ -623,7 +623,7 @@ export default {
         myWindow.document.write(res.data);
         myWindow.document.close();
       })
-      
+
     },
     clickhojaruta(venta){
       this.venta=venta
