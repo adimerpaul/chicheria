@@ -205,7 +205,8 @@
 <!--    <pre>{{clients}}</pre>-->
 <div class="row">
   <div class="col-3"><q-input  outlined v-model="fecha1" label="Fecha Inicial"  dense type="date"/></div>
-  <div class="col-3"><q-input  outlined v-model="fecha2" label="Fecha Final"  dense type="date"/></div>
+  <div class="col-3"><q-input  outlined v-model="fecha2" label="Fecha Final"  dense type="date" v-if="rango=='RANGO'"/></div>
+  <div class="col-3" ><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'" style="width:100%"/></div>
   <div class="col-3"> <q-btn color="green" label="BUSCAR" icon="search"  dense @click="consultaVenta(type)"/></div>
  <!-- <div class="col-3"> <q-btn color="info" label="IMPRIMIR" icon="print"  dense @click="impresion"/></div>-->
   </div>
@@ -413,6 +414,7 @@ export default {
       modalhojaruta:false,
       modalDialog:false,
       dialog_mod:false,
+      rango:'RANGO',
       venta:{},
       type: this.$route.params.type,
       columnas:[
@@ -660,8 +662,11 @@ export default {
       })
     },
     consultaVenta(tipo1){
-      console.log(this.fecha1)
-      console.log(this.fecha2)
+      //console.log(this.fecha1)
+      //console.log(this.fecha2)
+      if(this.rango=='DIA'){
+        this.fecha2=this.fecha1
+      }
       this.$api.post('listSale',{tipo:tipo1=='detalle'?'DETALLE':'LOCAL',ini:this.fecha1,fin:this.fecha2}).then(res => {
         console.log(res.data)
         res.data.forEach(r => {

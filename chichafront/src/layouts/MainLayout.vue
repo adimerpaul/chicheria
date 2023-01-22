@@ -323,7 +323,7 @@
       </q-expansion-item>
 
 
-        <q-item
+          <q-item
           v-if="$store.state.login.cobrarruta"
           active-class="my-menu-link"
           clickable
