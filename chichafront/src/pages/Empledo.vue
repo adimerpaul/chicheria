@@ -309,6 +309,8 @@ import {jsPDF} from "jspdf";
 import moment from 'moment'
 import planillas from "pages/Planillas";
 import { Console } from "console";
+import moment from 'moment'
+
 const conversor = require('conversor-numero-a-letras-es-ar');
 export default {
   name: "Venta",
@@ -345,7 +347,7 @@ export default {
         {name:'action',label:'OPCION',field:'action'},
       ],
       columns2:[
-        {name:'fecha',label:'FECHA',field:row=>date.formatDate( row.fecha,'DD/MM/YYYY'),sortable: true},
+        {name:'fecha',label:'FECHA',field:row=>moment(row.fecha).format('DD/MM/YYYY'),sortable: true},
         {name:'hora',label:'HORA',field:'hora'},
         {name:'tipo',label:'TIPO',field:'tipo',sortable: true},
         // {name:'detalle',label:'detalle',field:'detalle'},
