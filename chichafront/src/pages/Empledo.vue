@@ -309,7 +309,6 @@ import {jsPDF} from "jspdf";
 import moment from 'moment'
 import planillas from "pages/Planillas";
 import { Console } from "console";
-import moment from 'moment'
 
 const conversor = require('conversor-numero-a-letras-es-ar');
 export default {
