@@ -87,7 +87,7 @@
             </q-input>
           </div>
           <div class="col-2 text-right q-pr-xs text-bold">{{p.precio*p.cantidad}}Bs.</div>
-          <div class="col-1"> <q-btn color="red"  icon="delete" dense @click="delProduct(index)"/>
+          <div class="col-1"> <q-btn color="red"  icon="delete" dense @click="delProduct(index,p.id)"/>
           </div>
         </div>
       </q-card-section>
@@ -455,12 +455,12 @@ export default {
     this.calcular()
   },
   methods: {
-    delProduct(p){
+    delProduct(p,id){
       console.log(p)
-      find = this.products.find(ps => ps.id == p.id)
-      find.cantidad=0
-      this.productSales.splice(p,1);
 
+      this.productSales.splice(p,1);
+      find = this.products.find(ps => ps.id == id)
+      find.cantidad=0
     },
     verObs(vent){
       this.$q.dialog({
