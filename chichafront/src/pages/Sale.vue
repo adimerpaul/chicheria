@@ -458,6 +458,8 @@ export default {
     delProduct(p){
       console.log(p)
       this.productSales.splice(p,1);
+      find = this.productSales.find(ps => ps.id == p.id)
+      find.cantidad=0
     },
     verObs(vent){
       this.$q.dialog({
