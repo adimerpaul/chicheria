@@ -813,7 +813,7 @@ xlsx(datacaja, settings) // Will download the excel file
               cadena+=">"+r.estado+"</td></tr>"
       }
           });
-          ventas=ventas+ventasruta
+          //ventas=ventas+ventasruta
         cadena+="</table><div><b>TOTAL VENTAS RUTA:</b>"+ventasruta+"</div><br>\
         "}
         let panulado=0
@@ -882,13 +882,20 @@ xlsx(datacaja, settings) // Will download the excel file
       })
       cadena+="</table><div><b>TOTAL GASTO CAJA CHICA: </b>"+ caja+" Bs</div><br>"}
 
-
+      cadena+="<table><tr><td>"
       if(ventas>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS : </b>"+ ventas+" Bs</div>"
+      if(ventasruta>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS RUTA: </b>"+ ventasruta+" Bs</div>"
       if(matventa>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
       if(panulado>0) cadena+="<div style='font-size:16px'><b>TOTAL PRESTAMO ANULADOS: </b>"+ panulado+" Bs</div>"
       if(ccpago>0) cadena+="<div style='font-size:16px'><b>TOTAL CXC PAGOS: </b>"+ ccpago+" Bs</div>"
-      if(gastos>0) cadena+="<div style='font-size:16px'><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
-      cadena+="<div style='font-size:16px'><b>TOTAL SALDO: </b>"+ (ventas-gastos) +" Bs</div>"
+
+      cadena+="</td><td>"
+        if(gastos>0) cadena+="<div style='font-size:16px'><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
+      cadena+="</td><td>"
+        if(caja>0) cadena+="<div style='font-size:16px'><b>TOTAL CAJA CHICA : </b>"+ caja+" Bs</div>"
+
+      cadena+="</td></tr></table>"
+//      cadena+="<div style='font-size:16px'><b>TOTAL SALDO: </b>"+ (ventas-gastos) +" Bs</div>"
 
       if(this.$store.state.login.user.id==1){
       cadena+="<div style='font-size:16px'><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
