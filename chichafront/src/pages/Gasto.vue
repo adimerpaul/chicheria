@@ -895,7 +895,7 @@ xlsx(datacaja, settings) // Will download the excel file
         if(caja>0) cadena+="<div style='font-size:16px'><b>TOTAL CAJA CHICA : </b>"+ caja+" Bs</div>"
 
       cadena+="</td></tr></table>"
-//      cadena+="<div style='font-size:16px'><b>TOTAL SALDO: </b>"+ (ventas-gastos) +" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL SALDO: </b>"+ (ventas+ventasruta-gastos) +" Bs</div>"
 
       if(this.$store.state.login.user.id==1){
       cadena+="<div style='font-size:16px'><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
