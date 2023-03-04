@@ -420,6 +420,7 @@ class VentaController extends Controller
         $general->save();
 
         $loggeneral=Loggeneral::where('motivo','VENTA PRODUCTOS')->where('numero',$venta->id)->where('tipo','INGRESO')->first();
+        if($loggeneral!=null)
         $loggeneral->delete();
 
         $venta->estado='ANULADO';
