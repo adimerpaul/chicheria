@@ -421,7 +421,7 @@ export default {
         {label:'opcion',name:'opcion',field:'opcion'},
         {label:'id',name:'id',field:'id'},
         {label:'fecha',name:'fecha',field:row=>moment(row.fecha).format('DD/MM/YYYY')},
-        {label:'cliente',name:'cliente',field:row.cliente.local+' '+ row.cliente.titular},
+        {label:'cliente',name:'cliente',field:row=>row.cliente.local+' '+ row.cliente.titular},
         {label:'total',name:'total',field:'total'},
         {label:'acuenta',name:'acuenta',field:'acuenta'},
         {label:'saldo',name:'saldo',field:'saldo'},
