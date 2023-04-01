@@ -144,7 +144,7 @@ class SaleController extends Controller
     }
     public function impresionruta($id){
         $venta=Venta::with('user')
-        ->with('detalle')
+        ->with('detalles')
         ->with('cliente')
         ->where('id',$id)
         ->get()[0];
@@ -195,7 +195,7 @@ class SaleController extends Controller
     }
     public function impresionruta2($id){
         $venta=Venta::with('user')
-        ->with('detalle')
+        ->with('detalles')
         ->with('cliente')
         ->where('id',$id)
         ->get()[0];
