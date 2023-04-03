@@ -170,7 +170,7 @@ class SaleController extends Controller
         <table>
         <tr><th>CANTIDAD</th><th>PRODUCTO</th></tr>';
         foreach ($venta->detalles as $d) {
-            $cadena.='<tr><td>'.$venta->detalle->cantidad.'</td><td>'.$venta->detalle->nombreproducto.'</td></tr>';
+            $cadena.='<tr><td>'.$d->cantidad.'</td><td>'.$d->nombreproducto.'</td></tr>';
         }
         $cadena.='</table>
         <table>
