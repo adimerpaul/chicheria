@@ -115,7 +115,7 @@ export default {
       props: [],
       cajachica:0,
       columns: [
-        {name: "fecha", align: "left", label: "FECHA ", field: row=>row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true,},
+        {name: "fecha", align: "left", label: "FECHA ", field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true,},
         {name: "monto", align: "left", label: "MONTO", field: "monto", sortable: true,},
         {name: "motivo", align: "left", label: "MOTIVO", field: "motivo", sortable: true,},
         {name: "glosa", align: "left", label: "GLOSA", field: row=>row.glosa==null?'':row.glosa.nombre, sortable: true,},
