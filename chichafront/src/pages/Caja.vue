@@ -65,10 +65,10 @@
       </q-card>
     </q-dialog>
 
-    <q-table :filter="filter" title="Caja Chica" 
-      :rows="data" 
-      :columns="columns" 
-      row-key="name" 
+    <q-table :filter="filter" title="Caja Chica"
+      :rows="data"
+      :columns="columns"
+      row-key="name"
       :rows-per-page-options="[50,100]">
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -99,6 +99,7 @@
 
 <script>
 import { date } from 'quasar'
+import moment from 'moment'
 
 export default {
   data() {
@@ -114,7 +115,7 @@ export default {
       props: [],
       cajachica:0,
       columns: [
-        {name: "fecha", align: "left", label: "FECHA ", field: row=>date.formatDate(row.fecha,'DD/MM/YYYY'), sortable: true,},
+        {name: "fecha", align: "left", label: "FECHA ", field: row=>row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true,},
         {name: "monto", align: "left", label: "MONTO", field: "monto", sortable: true,},
         {name: "motivo", align: "left", label: "MOTIVO", field: "motivo", sortable: true,},
         {name: "glosa", align: "left", label: "GLOSA", field: row=>row.glosa==null?'':row.glosa.nombre, sortable: true,},
@@ -129,7 +130,7 @@ export default {
 
     this.misdatos();
     this.totalcaja();
-  
+
   },
   methods: {
       deleteRow(logcaja){
