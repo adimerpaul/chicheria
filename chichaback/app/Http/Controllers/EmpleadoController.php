@@ -66,7 +66,7 @@ class EmpleadoController extends Controller
         /*return Empleado::with('sueldos')
             ->where('id',$empleado->id)
             ->firstOrFail();*/
-        return Sueldo::where('empleado_id',$empleado->id)->orderBy('fecha','desc')->get();
+        return Sueldo::where('empleado_id',$empleado->id)->orderBy('fecha','desc')->orderBy('hora','desc')->get();
     }
 
     /**

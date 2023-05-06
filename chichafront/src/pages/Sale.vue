@@ -841,12 +841,9 @@ export default {
         myWindow.print();
         myWindow.close();
 
-
-
         this.$q.loading.hide()
         this.producto=''
         this.cantidad=1
-        this.client={label:''}
         //this.fecha=date.formatDate(new Date(),'YYYY-MM-DD');
         this.newgarantia={}
         this.calcular
