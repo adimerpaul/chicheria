@@ -44,7 +44,7 @@ class PagoController extends Controller
     {
         //
         $pago=new Pago;
-        $pago->fecha=date('Y-m-d');
+        $pago->fecha=$request->fecha;
         $pago->venta_id=$request->venta_id;
         $pago->user_id=$request->user()->id;
         $pago->monto=$request->monto;
@@ -64,7 +64,7 @@ class PagoController extends Controller
         $loggeneral->detalle='CXC '.$venta->tipo;
         $loggeneral->motivo='PAGO CXC';
         $loggeneral->tipo='INGRESO';
-        $loggeneral->fecha=date('Y-m-d');
+        $loggeneral->fecha=$request->fecha;
         $loggeneral->hora=date("H:i:s");
         $loggeneral->glosa_id=null;
         $loggeneral->user_id=$request->user()->id;

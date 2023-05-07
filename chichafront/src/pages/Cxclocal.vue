@@ -93,7 +93,8 @@
 
                     <q-card-section class="q-pt-none">
                     <q-form @submit.prevent="onPago" class="q-gutter-md" >
-
+                      <q-input  outlined v-model="regpago.fecha" type="date" label="Fecha"  lazy-rules
+                      :rules="[ val => val && val.length>0  || 'Ingrese la fecha']"/>
                     <q-input filled v-model="regpago.monto"
                     label="Monto"
                     hint="Efectivo"
@@ -176,7 +177,7 @@ export default {
       dialog_pago:false,
       cantidadprestamo:0,
       pagos:[],
-      regpago:{},
+      regpago:{fecha:date.formatDate(new Date(),'YYYY-MM-DD')},
       prestamo:{},
       columns:[
         {name:'fecha',label:'Fecha',field:'fecha'},
@@ -537,7 +538,7 @@ export default {
       onPago(){
         this.loading=true
       this.$axios.post(process.env.API+'/pago',this.regpago).then(res=>{
-          this.regpago={};
+          this.regpago={fecha:date.formatDate(new Date(),'YYYY-MM-DD')};
           this.dialog_pago=false;
 
           let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
@@ -551,7 +552,7 @@ export default {
           myWindow2.print();
           myWindow2.close();
 
-          this.regpago={}
+          this.regpago={fecha:date.formatDate(new Date(),'YYYY-MM-DD')}
           this.misventas();
           this.loading=false
                   this.$q.notify({
@@ -565,6 +566,7 @@ export default {
       pago(props){
           this.regpago.venta_id=props.id;
           this.regpago.saldo=props.saldo;
+          this.regpago.fecha=date.formatDate(new Date(),'YYYY-MM-DD')
         this.dialog_pago=true;
       },
     listpago(dato){
