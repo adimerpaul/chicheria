@@ -119,6 +119,7 @@ import $ from "jquery";
 
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
+import moment from 'moment'
 
 export default {
   name: "Venta",
@@ -152,7 +153,7 @@ export default {
       regpago:{fecha:date.formatDate(new Date(),'YYYY-MM-DD')},
       prestamo:{},
       columns:[
-        {name:'fecha',label:'Fecha',field:'fecha'},
+        {name:'fecha',label:'Fecha',field:row=>moment(row.fecha).format('DD/MM/YYYY')},
         {name:'monto',label:'Monto',field:'monto'},
         {name:'Observacion',label:'Observacion',field:'observacion'},
       ],
@@ -500,7 +501,7 @@ export default {
         res.data.forEach(r=>{
           this.ventas.push({
             id:r.id,
-            fecha:r.fecha,
+            fecha:moment(r.fecha).format('DD/MM/YYYY'),
             total:r.total,
             acuenta:r.acuenta,
             saldo:r.saldo,

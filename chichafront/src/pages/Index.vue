@@ -3,7 +3,7 @@
   <q-page>
   <br>
   <div class="">
-    <q-badge class="full-width text-h5 flex flex-center" color="orange" text-color="black" v-for="(r,index) in cliente" :key="index"><b>FECHA: &nbsp;</b>{{r.mes}}/{{r.dia}}  &nbsp;&nbsp;<b>LOCAL: &nbsp;</b>{{r.local}}  &nbsp;&nbsp;<b>TITULAR: &nbsp;</b>{{r.titular}} </q-badge>
+    <q-badge class="full-width text-h5 flex flex-center" color="orange" text-color="black" v-for="(r,index) in cliente" :key="index"><b>FECHA: &nbsp;</b>{{r.dia}}/{{r.mes}}  &nbsp;&nbsp;<b>LOCAL: &nbsp;</b>{{r.local}}  &nbsp;&nbsp;<b>TITULAR: &nbsp;</b>{{r.titular}}  &nbsp;&nbsp;<b>TELEFONO: &nbsp;</b>{{r.telefono}} </q-badge>
 
   </div>
   <br>

@@ -4,7 +4,37 @@
   <div class="col-12">
     <div :class="`q-pa-xs bg-${type=='detalle'?'red':'green'} text-center text-bold text-white`">{{ type=='detalle'?'VENTA POR DETALLE':'VENTA POR LOCAL' }}</div>
   </div>
+    <div class="col-1">
+      <q-btn color="green" icon="add_circle" v-if="type=='detalle'" @click="modalregistro=true; newcliente={}"/>
+   </div>
+   <div class="col-1">
+      <q-btn color="yellow"  icon="edit" v-if="client && type=='detalle'" @click="modcliente=client; dialog_mod=true;"/>
+ </div>
+ <div class="col-4">
+  <q-select
+    outlined
+    dense
+    v-model="client"
+    use-input
+    input-debounce="0"
+    label="Cliente"
+    :options="clients"
+    @filter="filterFn"
+    behavior="menu"
+  >
+    <template v-slot:no-option>
+      <q-item>
+        <q-item-section class="text-grey">
+          No results
+        </q-item-section>
+      </q-item>
+    </template>
+  </q-select>
+</div>
+    <div class="col-2"><q-input type="date" outlined v-model="fecha" dense label="Fecha" /></div>
+    <div class="col-4"><q-input dense outlined v-model="obs" label="Observacion" /></div>
   <div class="col-7">
+
     <div class="row">
       <div class="col-2" v-for="p in products" :key="p.id" style="padding:5px">
         <q-card style="height: 80px;" @click="saleAdd(p)" class="no_selection">
@@ -25,43 +55,15 @@
   <div class="col-5">
     <q-card>
       <q-card-section class="row items-center q-pb-none">
-          <div class="col-2">
-             <q-btn color="green" icon="add_circle" v-if="type=='detalle'" @click="modalregistro=true; newcliente={}"/>
-          </div>
-          <div class="col-2">
-             <q-btn color="yellow"  icon="edit" v-if="client && type=='detalle'" @click="modcliente=client; dialog_mod=true;"/>
-        </div>
-        <div class="col-8">
-          <q-input type="date" outlined v-model="fecha" dense label="Fecha" />
-        </div>
+
+
 <!--       <div class="col-2">
           <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
         </div>-->
-        <div class="col-9">
-          <q-select
-            outlined
-            dense
-            v-model="client"
-            use-input
-            input-debounce="0"
-            label="Cliente"
-            :options="clients"
-            @filter="filterFn"
-            behavior="menu"
-          >
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-grey">
-                  No results
-                </q-item-section>
-              </q-item>
-            </template>
-          </q-select>
-        </div>
+
         <div class="col-1">
           <q-btn icon="delete_outline" dense  color="negative" @click="saleClear" />
         </div>
-      <div class="col-12"><q-input dense outlined v-model="obs" label="Observacion" /></div>
       </q-card-section>
       <q-card-section class="q-pa-none">
         <div class="text-subtitle2 flex-center flex text-center bg-primary text-white">PRODUCTOS</div>
@@ -95,9 +97,6 @@
     <q-form>
       <div class="row">
         <div class="col-4">
-          <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
-        </div>
-        <div class="col-4">
           <q-input v-model="monto" dense outlined label="Monto" type="number" step="0.1">
             <template v-slot:append>
               <div class="text-subtitle1">Bs.</div>
@@ -105,11 +104,15 @@
           </q-input>
         </div>
         <div class="col-4">
+          <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
+        </div>
+
+        <div class="col-4">
           <div :class="`bg-${porCobrar>0?'red':'green'}-3 text-${porCobrar>0?'red':'green'}-8 text-bold q-ma-xs q-pa-xs`" :style="`border: 1px solid ${porCobrar>0?'red':'green'};border-radius: 5px`">
             {{porCobrar>0?'POR COBRAR':'CANCELADO'}}
           </div>
         </div>
-        <div class="col-4"><q-btn color="green" icon="check_circle" label="Generar Venta" @click="saleSave" /></div>
+        <div class="col-12" align="right"><q-btn color="green" icon="check_circle" label="Generar Venta" @click="saleSave" /></div>
         <div class="col-12">
           {{porCobrar}}
         </div>
@@ -421,7 +424,8 @@ export default {
         {label:'opcion',name:'opcion',field:'opcion'},
         {label:'id',name:'id',field:'id'},
         {label:'fecha',name:'fecha',field:row=>moment(row.fecha).format('DD/MM/YYYY')},
-        {label:'cliente',name:'cliente',field:row=>row.cliente.local+' '+ row.cliente.titular},
+        {label:'hora',name:'hora',field:'hora'},
+        {label:'cliente',name:'cliente',field:row=>row.cliente.local+' '+ row.cliente.titular,align:'left'},
         {label:'total',name:'total',field:'total'},
         {label:'acuenta',name:'acuenta',field:'acuenta'},
         {label:'saldo',name:'saldo',field:'saldo'},
@@ -750,7 +754,7 @@ export default {
           icon:'info'
         })
         this.$q.dialog({
-          message:'Deseas registrar garantia?',
+          message:'Desea registrar préstamo o venta de material?',
           title:'Garantia?',
           cancel: true,
         }).onOk(()=>{
