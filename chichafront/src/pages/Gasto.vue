@@ -798,6 +798,7 @@ xlsx(datacaja, settings) // Will download the excel file
       }
           });
         cadena+="</table><div><b>TOTAL VENTAS:</b>"+ventas+"</div><br>"
+        if(this.totalruta()){
         cadena+="<div>VENTAS CON RUTA</div> \
         <table>\
           <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
@@ -816,6 +817,7 @@ xlsx(datacaja, settings) // Will download the excel file
           //ventas=ventas+ventasruta
         cadena+="</table><div><b>TOTAL VENTAS RUTA:</b>"+ventasruta+"</div><br>\
         "}
+      }
         let panulado=0
       if(this.totalanulado>0){
         panulado=panulado+this.totalanulado;
@@ -1230,8 +1232,9 @@ xlsx(datacaja, settings) // Will download the excel file
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
+
     imprimirmisventasdetalle(us){
-      let mc=this
+      /*let mc=this
                 if(!this.$store.state.login.gastoreporteuser)
 
       us.label=this.$store.state.login.user.name;
@@ -1308,11 +1311,45 @@ xlsx(datacaja, settings) // Will download the excel file
 
 
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
-      window.open(doc.output('bloburl'), '_blank');
+      window.open(doc.output('bloburl'), '_blank');*/
+      let mc=this
+          if(!this.$store.state.login.gastoreporteuser)
+                us.label=this.$store.state.login.user.name;
+        let ventas=0
+        let color1="style='color:red'"
+        let cadena="<style>\
+        *{font-size:10px}\
+        table{width:100%;border-collapse: collapse;}\
+        table, th, td {  border: 1px solid;}\
+        .titulo1{text-align:center; font-weight: bold;}\
+        </style>\
+        <div><img src='logo.png' style='width:150px; height:75px;'></div>\
+        <div class='titulo1'>HISTORIAL VENTA DETALLE DE "+us.label+" "+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY') +"</div><br>"
+        if(this.ventas.length>0){
+        cadena+="<table>\
+          <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
+          this.ventas.forEach(r => {
+            if((r.fechaentrega==null || r.fechaentrega=='') && r.tipo=='DETALLE'){
+              ventas=ventas+r.acuenta
+              cadena+="<tr><td>"+ r.tipo.substring(0,1)+'-'+r.id+"</td><td>"
+              r.detalles.forEach(d => {
+                  cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
+              });
+              cadena+="</td><td>"+ r.total +" Bs</td><td>"+r.acuenta+" Bs</td><td>"+ r.saldo +" Bs</td><td>"+ r.titular+"</td><td>"+ r.local+"</td><td "
+        if(r.estado=='POR COBRAR')  cadena+=color1
+              cadena+=">"+r.estado+"</td></tr>"
+      }
+          });
+        cadena+="</table><div><b>TOTAL VENTAS:</b>"+ventas+"</div><br>"
+
+        let myWindow = window.open("_blank");
+        myWindow.document.write(cadena);
+        myWindow.document.close();
+        }
     },
 
     imprimirmisventaslocal(us){
-      let mc=this
+    /*  let mc=this
                 if(!this.$store.state.login.gastoreporteuser)
 
       us.label=this.$store.state.login.user.name;
@@ -1389,11 +1426,45 @@ xlsx(datacaja, settings) // Will download the excel file
 
 
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
-      window.open(doc.output('bloburl'), '_blank');
+      window.open(doc.output('bloburl'), '_blank');*/
+      let mc=this
+          if(!this.$store.state.login.gastoreporteuser)
+                us.label=this.$store.state.login.user.name;
+        let ventas=0
+        let color1="style='color:red'"
+        let cadena="<style>\
+        *{font-size:10px}\
+        table{width:100%;border-collapse: collapse;}\
+        table, th, td {  border: 1px solid;}\
+        .titulo1{text-align:center; font-weight: bold;}\
+        </style>\
+        <div><img src='logo.png' style='width:150px; height:75px;'></div>\
+        <div class='titulo1'>HISTORIAL VENTA LOCAL DE "+us.label+" "+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY') +"</div><br>"
+        if(this.ventas.length>0){
+        cadena+="<table>\
+          <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
+          this.ventas.forEach(r => {
+            if((r.fechaentrega==null || r.fechaentrega=='') && r.tipo=='LOCAL'){
+              ventas=ventas+r.acuenta
+              cadena+="<tr><td>"+ r.tipo.substring(0,1)+'-'+r.id+"</td><td>"
+              r.detalles.forEach(d => {
+                  cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
+              });
+              cadena+="</td><td>"+ r.total +" Bs</td><td>"+r.acuenta+" Bs</td><td>"+ r.saldo +" Bs</td><td>"+ r.titular+"</td><td>"+ r.local+"</td><td "
+        if(r.estado=='POR COBRAR')  cadena+=color1
+              cadena+=">"+r.estado+"</td></tr>"
+      }
+          });
+        cadena+="</table><div><b>TOTAL VENTAS:</b>"+ventas+"</div><br>"
+
+        let myWindow = window.open("_blank");
+        myWindow.document.write(cadena);
+        myWindow.document.close();
+        }
     },
 
     imprimir(us){
-      let mc=this
+ /*     let mc=this
                 if(!this.$store.state.login.gastoreporteuser)
 
       us.label=this.$store.state.login.user.name;
@@ -1504,7 +1575,57 @@ xlsx(datacaja, settings) // Will download the excel file
       // doc.text(14, y+4, 'Saldo totales: ')
       // doc.text(17, y+4, this.saldoc+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
-      window.open(doc.output('bloburl'), '_blank');
+      window.open(doc.output('bloburl'), '_blank');*/
+      let mc=this
+          if(!this.$store.state.login.gastoreporteuser)
+
+        us.label=this.$store.state.login.user.name;
+        let cadena="<style>\
+        *{font-size:10px}\
+        table{width:100%;border-collapse: collapse;}\
+        table, th, td {  border: 1px solid;}\
+        .titulo1{text-align:center; font-weight: bold;}\
+        </style>\
+        <div><img src='logo.png' style='width:150px; height:75px;'></div>\
+        <div class='titulo1'>HISTORIAL GASTOS DE "+us.label+" "+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY') +"</div><br>"
+
+        let caja=0
+        let gastos=0
+      if(this.gastos.length>0){
+      cadena+="<div>DETALLE DE GASTO</div>\
+      <table><tr><th>MONTO</th><th>GLOSA</th><th>OBSERVACION</th></tr>"
+      this.gastos.forEach(r=>{
+        cadena+="<tr><td>"+r.precio+" Bs</td><td>"+r.glosa+"</td><td>"+r.observacion+"</td></tr>"
+        if(r.glosa=='CAJA CHICA')
+        caja+=parseFloat(r.precio!=null?r.precio:0)
+        else
+        gastos+=parseFloat(r.precio!=null?r.precio:0)
+
+      })
+        cadena+="</table><div><b>TOTAL GASTOS: </b>"+gastos+" Bs</div><br>"}
+        if(this.chica.length>0){
+        cadena+="<div>DETALLE DE GASTO CAJA CHICA</div>\
+        <table><tr><th>MONTO</th><th>GLOSA</th><th>MOTIVO</th></tr>"
+
+        this.chica.forEach(r=>{
+        cadena+="<tr><td>"+r.monto+" Bs</td><td>"+r.glosa+"</td><td>"+r.motivo+"</td></tr>"
+        caja+=parseFloat(r.monto!=null?r.monto:0)
+      })
+      cadena+="</table><div><b>TOTAL GASTO CAJA CHICA: </b>"+ caja+" Bs</div><br>"}
+
+      cadena+="<table><tr><td>"
+
+      cadena+="</td><td>"
+        if(gastos>0) cadena+="<div style='font-size:16px'><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
+      cadena+="</td><td>"
+        if(caja>0) cadena+="<div style='font-size:16px'><b>TOTAL CAJA CHICA : </b>"+ caja+" Bs</div>"
+
+      cadena+="</td></tr></table>"
+
+
+        let myWindow = window.open("_blank");
+        myWindow.document.write(cadena);
+        myWindow.document.close();
     },
     misgastos(){
       if(this.rango=='DIA'){
@@ -2245,6 +2366,14 @@ xlsx(datacaja, settings) // Will download the excel file
     }
   },
   computed:{
+    totalruta(){
+        let total=0;
+      this.ventas.forEach(r => {
+            if(r.fechaentrega!=null && r.fechaentrega!=''){
+              total++
+            }})
+            return total;
+    },
           totaldescuento(){
         let total=0;
       this.pago.empleado.element.sueldos.forEach(element => {

@@ -87,13 +87,48 @@
                 </ul>
               </q-td>
             </template>
+            <template v-slot:body-cell-telefono="props" >
+              <q-td key="telfono" :props="props" >
+                 <q-btn icon="call" color="accent" @click="verTelef(props.row)" dense/>                
+              </q-td>
+            </template>
             <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
-                    <q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
+                    <!-- dropdown content goes here -->
+                    <q-btn-dropdown color="primary" label="Opcion">
+                      <q-list>
+                        <q-item clickable v-close-popup @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'">
+                          <q-item-section avatar>
+                            <q-avatar  icon="refresh" color="primary" text-color="white" />
+                          </q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="onList(props.row)" >
+                          <q-item-section avatar>
+                            <q-avatar  icon="list" color="green" text-color="white" />
+                          </q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="onMod(props.row)" v-if="props.row.estado=='EN PRESTAMO'">
+                          <q-item-section avatar>
+                            <q-avatar  icon="edit" color="yellow" text-color="white" />
+                          </q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="onEliminar(props.row)"  v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  >
+                          <q-item-section>
+                            <q-item-label  content-style="{background-color: coral;}"  >BAJA</q-item-label>
+                          </q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="ondelete(props.row)" v-if="(props.row.estado=='EN PRESTAMO' || props.row.estado=='VENTA') && $store.state.login.delprestamo">
+                          <q-item-section avatar>
+                            <q-avatar  icon="delete" color="negative" text-color="white" />
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-btn-dropdown>
+                    <!--<q-btn size="xs" @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'"  color="primary" icon="refresh"/>
                     <q-btn size="xs" @click="onList(props.row)"  color="green" icon="list"/>
                     <q-btn size="xs" @click="onMod(props.row)"  color="yellow" icon="edit" v-if="props.row.estado=='EN PRESTAMO'"/>
                     <q-btn size="xs" @click="onEliminar(props.row)" v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  color="red-12"   label="BAJA"/>
-                    <q-btn size="xs" @click="ondelete(props.row)" v-if="(props.row.estado=='EN PRESTAMO' || props.row.estado=='VENTA') && $store.state.login.delprestamo"  color="negative" icon="delete"/>
+                    <q-btn size="xs" @click="ondelete(props.row)" v-if="(props.row.estado=='EN PRESTAMO' || props.row.estado=='VENTA') && $store.state.login.delprestamo"  color="negative" icon="delete"/>-->
                 </q-td>
             </template>
 
@@ -206,9 +241,10 @@ export default {
   { name: 'motivo', label: 'Observacion', field: 'motivo' },
 ],
       colprestamo:[
-  { name: 'titular', label: 'TITULAR', field: row=>row.cliente.titular, sortable: true },
+  { name: 'opcion', label: 'OPCION', field: 'opcion' },
+  { name: 'titular', label: 'TITULAR', field: row=>row.cliente.titular, sortable: true,align:'left'},
    { name: 'telefono', label: 'TELEFONO', field: row=>row.cliente.telefono, sortable: true },
-  { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true },
+  { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true,align:'left' },
   { name: 'fecha', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
   { name: 'estado', label: 'ESTADO', field: 'estado', sortable: true },
   { name: 'cantidad', label: 'CANTIDAD', field: 'cantidad', sortable: true },
@@ -218,7 +254,6 @@ export default {
   { name: 'user', label: 'USUARIO', field: row=>row.user.name },
   { name: 'observacion', label: 'OBSERVACION', field: 'observacion' },
   { name: 'logprestamos', label: 'HISTORIAL', field: 'logprestamos' },
-  { name: 'opcion', label: 'OPCION', field: 'opcion' },
 ],
     }
   },
@@ -241,6 +276,18 @@ export default {
 
   },
   methods: {
+    verTelef(dato){
+      this.$q.dialog({
+        title: 'Telefono Cliente: '+dato.cliente.titular,
+        message: dato.cliente.telefono
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
     calcular(){
       this.efectivo=parseFloat(this.cantidad) * parseFloat(this.inventario.precio)
     },
