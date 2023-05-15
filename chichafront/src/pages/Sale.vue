@@ -395,6 +395,8 @@ export default {
   data() {
     return {
       monto: 0,
+      printboleta:'',
+      prestamolista:[],
       fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha1:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
@@ -734,16 +736,18 @@ export default {
       this.sale.detalles=this.productSales
       this.sale.observacion=this.obs
       console.log(this.sale)
+      this.printboleta=''
       this.$api.post('sale',this.sale).then(res => {
+        this.printboleta=res.data
         this.consultaVenta(this.type)
         this.saleClear()
-        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
-        myWindow.document.write(res.data);
-        myWindow.document.close();
-        myWindow.focus();
+        //let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        //myWindow.document.write(res.data);
+        //myWindow.document.close();
+        //myWindow.focus();
         // setTimeout(function(){
-          myWindow.print();
-          myWindow.close();
+          //myWindow.print();
+          //myWindow.close();
         // },500);
 
         this.$q.notify({
@@ -757,7 +761,9 @@ export default {
           message:'Desea registrar préstamo o venta de material?',
           title:'Garantia?',
           cancel: true,
+          persistent:true
         }).onOk(()=>{
+          this.prestamolista=[]
           this.newgarantia={}
           this.newgarantia.cantidad=1,
           this.newgarantia.efectivo=0,
@@ -770,6 +776,12 @@ export default {
           this.sale={}
           this.productSales=[]
           this.client={label:''}
+          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+          myWindow.document.write(this.printboleta);
+          myWindow.document.close();
+          myWindow.focus();
+          myWindow.print();
+          myWindow.close();
         })
       })
     },
@@ -839,11 +851,12 @@ export default {
         tipo:this.newgarantia.tipo,
         fecha:date.formatDate(new Date(),'YYYY-MM-DD')
       }).then((res)=>{
-        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
-        myWindow.document.write(res.data);
-        myWindow.document.close();
-        myWindow.print();
-        myWindow.close();
+        this.prestamolista.push({'cantidad':this.newgarantia.cantidad,'nombre':this.inventario.nombre,'efectivo':this.newgarantia.efectivo,'tipo':this.newgarantia.tipo})
+        //let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        //myWindow.document.write(res.data);
+        //myWindow.document.close();
+        //myWindow.print();
+        //myWindow.close();
 
         this.$q.loading.hide()
         this.producto=''
@@ -856,6 +869,7 @@ export default {
           message:'Deseas registrar garantia?',
           title:'Garantia?',
           cancel: true,
+          persistent:true
         }).onOk(()=>{
           this.newgarantia={}
           this.newgarantia.cantidad=1,
@@ -863,6 +877,21 @@ export default {
           this.newgarantia.tipo='EN PRESTAMO'
           this.modalgarantia=true
         }).onCancel(()=>{
+          this.printboleta+="<hr><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
+          this.prestamolista.forEach(p => {
+            this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
+          })
+          this.printboleta+="<hr><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
+          this.prestamolista.forEach(p => {
+            this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
+          })
+          this.printboleta+="</table></div>"
+          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+          myWindow.document.write(this.printboleta);
+          myWindow.document.close();
+          myWindow.focus();
+          myWindow.print();
+          myWindow.close();
           this.monto=0
           this.obs=''
           this.sale={}
