@@ -798,7 +798,7 @@ xlsx(datacaja, settings) // Will download the excel file
       }
           });
         cadena+="</table><div><b>TOTAL VENTAS:</b>"+ventas+"</div><br>"
-        if(this.totalruta()){
+        if(this.totalruta){
         cadena+="<div>VENTAS CON RUTA</div> \
         <table>\
           <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
