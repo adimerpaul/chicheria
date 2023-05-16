@@ -215,6 +215,7 @@ window.JSZip=jszip;
 
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
+import moment from 'moment'
 
 export default {
   name: "Venta",
@@ -593,7 +594,7 @@ export default {
         res.data.forEach(r=>{
           this.ventas.push({
             id:r.id,
-            fecha:r.fecha,
+            fecha:moment(r.fecha).format('DD/MM/YYYY'),
             total:r.total,
             acuenta:r.acuenta,
             saldo:r.saldo,

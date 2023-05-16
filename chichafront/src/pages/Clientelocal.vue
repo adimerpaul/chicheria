@@ -343,6 +343,8 @@
 <script>
 import { date } from 'quasar'
 import $ from "jquery";
+import moment from 'moment'
+
 
 export default {
   data(){
@@ -416,7 +418,7 @@ export default {
         this.clientes.titular=el.titular;
         this.clientes.tipo=el.tipo;
         this.clientes.telefono=el.telefono;
-        this.clientes.fechanac=el.fechanac;
+        this.clientes.fechanac=moment(el.fechanac).format('DD/MM/YYYY');
         this.clientes.direccion=el.direccion;
         this.clientes.legalidad=el.legalidad;
         this.clientes.categoria=el.categoria;
@@ -444,7 +446,7 @@ export default {
         this.clientes.titular=el.titular;
         this.clientes.tipo=el.tipo;
         this.clientes.telefono=el.telefono;
-        this.clientes.fechanac=el.fechanac;
+        this.clientes.fechanac=moment(el.fechanac).format('DD/MM/YYYY');
         this.clientes.direccion=el.direccion;
         this.clientes.legalidad=el.legalidad;
         this.clientes.categoria=el.categoria;
@@ -463,7 +465,7 @@ export default {
             buttons: [
               'copy', 'csv', 'excel', 'pdf', 'print'
             ],
-             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]] 
+             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
           } );
         })
       })
