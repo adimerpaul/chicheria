@@ -4,12 +4,10 @@
   <div class="col-12">
     <div :class="`q-pa-xs bg-${type=='detalle'?'red':'green'} text-center text-bold text-white`">{{ type=='detalle'?'VENTA POR DETALLE':'VENTA POR LOCAL' }}</div>
   </div>
-    <div class="col-1">
-      <q-btn color="green" icon="add_circle" v-if="type=='detalle'" @click="modalregistro=true; newcliente={}"/>
+    <div class="col-2 flex flex-center">
+      <q-btn dense color="green" icon="add_circle" v-if="type=='detalle'" @click="modalregistro=true; newcliente={}"/>
+      <q-btn dense color="yellow"  icon="edit" v-if="client && type=='detalle'" @click="modcliente=client; dialog_mod=true;"/>
    </div>
-   <div class="col-1">
-      <q-btn color="yellow"  icon="edit" v-if="client && type=='detalle'" @click="modcliente=client; dialog_mod=true;"/>
- </div>
  <div class="col-4">
   <q-select
     outlined
@@ -61,9 +59,9 @@
           <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
         </div>-->
 
-        <div class="col-1">
+       <!-- <div class="col-1">
           <q-btn icon="delete_outline" dense  color="negative" @click="saleClear" />
-        </div>
+        </div>-->
       </q-card-section>
       <q-card-section class="q-pa-none">
         <div class="text-subtitle2 flex-center flex text-center bg-primary text-white">PRODUCTOS</div>
@@ -881,7 +879,8 @@ export default {
           this.prestamolista.forEach(p => {
             this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
           })
-          this.printboleta+="<hr><div><b>Cliente </b>"+this.client.local + ' - '+this.client.titular+"</div><div><b>Fecha: </b>"+this.fecha+"</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
+          this.printboleta+="</table></div>"
+          this.printboleta+="<br><hr><div><b>Cliente </b>"+this.client.local + ' - '+this.client.titular+"</div><div><b>Fecha: </b>"+this.fecha+"</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
           this.prestamolista.forEach(p => {
             this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
           })
