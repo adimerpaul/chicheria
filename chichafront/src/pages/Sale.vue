@@ -881,11 +881,11 @@ export default {
           this.prestamolista.forEach(p => {
             this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
           })
-          this.printboleta+="<hr><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
+          this.printboleta+="<hr><div><b>Cliente </b>"+this.client.local + ' - '+this.client.titular+"</div><div><b>Fecha: </b>"+this.fecha+"</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
           this.prestamolista.forEach(p => {
             this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
           })
-          this.printboleta+="</table></div>"
+          this.printboleta+="</table></div><div class='leyenda'><b>* Solo se recibirá el envase si esta limpio y en buen estado<br>* Tiempo maximo de devolución 5 días, caso contrario se dará de baja<br>* Horarios Lun - Vier de 8:30 a 17:00<b></div>"
           let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
           myWindow.document.write(this.printboleta);
           myWindow.document.close();

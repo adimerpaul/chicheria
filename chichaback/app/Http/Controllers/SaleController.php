@@ -98,6 +98,8 @@ class SaleController extends Controller
         table{width:100%;}
         td{vertical-align:top;}
         .textgrd{font-size:20px}
+        .leyenda{text-align:justify;
+            size-font 6px;}
         </style>
         <hr>
         <div style="text-align: right;">'.date('d/m/Y',strtotime($venta->fecha)).'</div>
