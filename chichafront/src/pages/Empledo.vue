@@ -101,7 +101,6 @@
                 <table id="example" style="width:100%" class="cell-border">
                 <thead>
                 <tr>
-                <th>ID</th>
                 <th>EMPLEADO</th>
                 <th>ADELANTO</th>
                 <th>DESCUENTO</th>
@@ -111,7 +110,6 @@
                 </thead>
                   <tbody>
                   <tr v-for="v in salarios" :key="v.id">
-                  <td>{{v.id}}</td>
                   <td>{{v.nombre}}</td>
                   <td>{{v.adelanto}}</td>
                   <td>{{v.descuento}}</td>
@@ -351,6 +349,7 @@ export default {
         {name:'tipo',label:'TIPO',field:'tipo',sortable: true},
         // {name:'detalle',label:'detalle',field:'detalle'},
         {name:'monto',label:'MONTO',field:'monto', sortable: true},
+        {name:'user',label:'USUARIO',field:row=>row.user.name, sortable: true},
         {name:'opcion',label:'OPCION',field:'opcion'},
       ],
       columns3:[
@@ -366,9 +365,9 @@ export default {
       ],
             colplan:[
         {name:'opcion',label:'opcion',field:'opcion'},
-        {name:'Fecha',label:'Fecha In',field:'fechainicio'},
-        {name:'Fecha',label:'Fecha Fin',field:'fechafin'},
-        {name:'Fecha',label:'Fecha pago',field:'fechapago'},
+        {name:'Fecha',label:'Fecha In',field:row=>moment(row.fechainicio).format('DD/MM/YYYY')},
+        {name:'Fecha',label:'Fecha Fin',field:row=>moment(row.fechafin).format('DD/MM/YYYY')},
+        {name:'Fecha',label:'Fecha pago',field:row=>moment(row.fechapago).format('DD/MM/YYYY')},
         {name:'salario',label:'Sueldo',field:'monto'},
         {name:'adelanto',label:'Adelanto',field:'adelanto'},
         {name:'descuento',label:'Descuento',field:'descuento'},
@@ -697,7 +696,13 @@ export default {
 
     },
     delsueldo(sueldo){
-      this.$axios.delete(process.env.API+'/sueldo/'+sueldo.id).then(res=>{
+      this.$q.dialog({
+        title: 'Confirmar',
+        message: 'Esta Seguro de Eliminar?',
+        cancel: true,
+        persistent: false
+      }).onOk(() => {
+        this.$axios.delete(process.env.API+'/sueldo/'+sueldo.id).then(res=>{
           this.$q.notify({
             message:'Eliminado',
             icon:'info',
@@ -706,7 +711,13 @@ export default {
           this.pagos=false
           this.misempleados()
       })
-
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
     },
     genplanilla(plan){
         this.dialoggenplanilla=true
@@ -1234,7 +1245,7 @@ export default {
                 "removeTitle": "Remover Estado",
                 "renameTitle": "Cambiar Nombre Estado"
               }
-            },dom: 'Blfrtip',
+            },dom: 'Blfrtip',"ordering": false,
             buttons: [
               'copy', 'csv', 'excel', 'pdf', 'print'
             ],
@@ -1305,9 +1316,16 @@ export default {
       // return false
 
       this.$axios.post(process.env.API+'/sueldo',this.pago).then(res=>{
-        this.empleadohistorial=res.data
+        //this.empleadohistorial=res.data
+
         this.pago={fecha:date.formatDate( Date.now(),'YYYY-MM-DD')}
         this.totalgeneral()
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+        this.pagos=false
       })
     },
     misempleados(){

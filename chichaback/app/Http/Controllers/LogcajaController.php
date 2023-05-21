@@ -28,8 +28,10 @@ class LogcajaController extends Controller
         //return $request;
         //if($request->user()->id==1)
         //{
-            if($request->user_id==0) return Logcaja::with('glosa')->with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
-            else return Logcaja::with('glosa')->with('user')->where('user_id',$request->user_id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+            if($request->user_id==0) 
+            return Logcaja::with('glosa')->with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('fecha','desc')->orderBy('id','desc')->get();
+            else 
+            return Logcaja::with('glosa')->with('user')->where('user_id',$request->user_id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('fecha','desc')->orderBy('id','desc')->get();
         //}
         //else
         //return Logcaja::with('glosa')->with('user')->where('user_id',$request->user()->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();

@@ -473,7 +473,7 @@ export default {
       glosa:{},
       glosas:[],
       chica:[],
-      checkgasto:'CAJA',
+      checkgasto:'GASTO',
       dialogaddglosa:false,
       pagos:false,
       cajachica:false,
@@ -1662,7 +1662,7 @@ xlsx(datacaja, settings) // Will download the excel file
             observacion:r.observacion,
             glosa:r.glosa.nombre,
             precio:r.precio,
-            fecha:r.fecha,
+            fecha:moment(r.fecha).format('DD-MM-YYYY'),
             hora:r.hora,
             user:r.user.name
           })

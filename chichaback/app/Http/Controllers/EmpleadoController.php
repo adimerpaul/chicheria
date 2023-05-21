@@ -37,7 +37,7 @@ class EmpleadoController extends Controller
         (SELECT SUM(monto) FROM sueldos WHERE empleado_id=e.id AND tipo='EXTRA' AND  date(fecha) >= '".$request->fecha1."' AND date(fecha)<= '".$request->fecha2."') as extra
         FROM empleados e
         where e.estado='ACTIVO'
-        order by e.id desc
+        order by e.nombre asc
         ");
         //(SELECT GROUP_CONCAT(observacion SEPARATOR ' <br> ') FROM sueldos WHERE empleado_id=e.id AND tipo='PAGO' AND date(fecha) >= '".$request->fecha1."' AND date(fecha)<= '".$request->fecha2."') as obs
         //
@@ -66,7 +66,7 @@ class EmpleadoController extends Controller
         /*return Empleado::with('sueldos')
             ->where('id',$empleado->id)
             ->firstOrFail();*/
-        return Sueldo::where('empleado_id',$empleado->id)->orderBy('fecha','desc')->orderBy('hora','desc')->get();
+        return Sueldo::with('user')->where('empleado_id',$empleado->id)->orderBy('fecha','desc')->orderBy('hora','desc')->get();
     }
 
     /**

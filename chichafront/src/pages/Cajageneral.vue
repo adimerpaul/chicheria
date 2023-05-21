@@ -97,7 +97,7 @@
               color="red"
               @click="deleteRow(props.row)"
               icon="delete"
-              v-if="r.tipo=='AGREGAR' || r.tipo=='RETIRAR'"
+              v-if="$store.state.login.user.id==1"
             ></q-btn>
       <td>
       </td>

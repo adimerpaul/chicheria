@@ -22,4 +22,8 @@ class Sueldo extends Model
     public function empleado(){
         return $this->belongsTo(Empleado::class);
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

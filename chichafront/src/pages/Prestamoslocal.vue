@@ -236,7 +236,7 @@ export default {
 
       pagination: { rowsPerPage: 20 },
       colum:[
-  { name: 'fecha', align: 'center', label: 'fecha', field: 'fecha', sortable: true },
+  { name: 'fecha', align: 'center', label: 'fecha', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
   { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
   { name: 'motivo', label: 'Observacion', field: 'motivo' },
 ],

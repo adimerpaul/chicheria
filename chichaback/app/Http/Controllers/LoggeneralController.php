@@ -31,7 +31,7 @@ class LoggeneralController extends Controller
 
     public function listgeneral(Request $request){
         //return $request;
-        return Loggeneral::with('glosa')->with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
+        return Loggeneral::with('glosa')->with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('fecha','desc')->orderBy('id','desc')->get();
 
     }
 
@@ -116,7 +116,7 @@ class LoggeneralController extends Controller
         $caja=General::find(1);
         $loggeneral=Loggeneral::find($id);
 
-        if($loggeneral->tipo=='EGRESO' || $loggeneral->tipo=='RETIRAR'){
+        if($loggeneral->tipo=='EGRESO' || $loggeneral->tipo=='RETIRAR' || $loggeneral->tipo=='GASTO'){
             $caja->monto=floatval($caja->monto) + floatval($loggeneral->monto);
             $caja->save();
 
