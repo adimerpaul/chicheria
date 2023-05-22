@@ -473,7 +473,7 @@ export default {
       glosa:{},
       glosas:[],
       chica:[],
-      checkgasto:'GASTO',
+      checkgasto:'CAJA',
       dialogaddglosa:false,
       pagos:false,
       cajachica:false,
