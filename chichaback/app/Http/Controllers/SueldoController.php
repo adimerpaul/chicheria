@@ -98,7 +98,7 @@ class SueldoController extends Controller
             $loggeneral->tipo='EGRESO';
             $loggeneral->fecha=$gasto->fecha;
             $loggeneral->hora=date("H:i:s");
-            $loggeneral->glosa_id=$glosa->id;
+            //$loggeneral->glosa_id=$glosa->id;
             $loggeneral->user_id=$request->user()->id;
             $loggeneral->save();
 
