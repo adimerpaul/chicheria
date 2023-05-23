@@ -42,7 +42,8 @@
         </div>
       </q-form>
                 <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
-            <q-btn icon="send" label="Adelanto" type="button" color="teal" @click="pagos=true"/>
+                  <div class="col-4"><q-select dense outlined label="Empleado" v-model="empleadopago" :options="empleados"/></div>
+            <q-btn icon="send" label="Adelanto" type="button" color="teal" @click="cargarPagos"/>
             <q-btn icon="price_change" label="Caja Chica" type="button" color="accent" @click="cajachica=true"/>
           </div>
     </div>
@@ -283,14 +284,12 @@
       <q-dialog v-model="pagos" full-width>
         <q-card>
           <q-card-section>
-            <div class="text-h6">Historial de {{pago.empleado.element.nombre}}</div>
+            <div class="text-h6">Historial de {{empleadopago.nombre}}</div>
           </q-card-section>
           <q-card-section class="q-pt-none">
             <q-form @submit.prevent="agregarpago">
               <div class="row">
-                <div class="col-4">
-                  <q-select outlined label="Empleado" v-model="pago.empleado" :options="empleados"/>
-                </div>
+
                 <div class="col-3">
                   <q-input outlined label="Monto" type="number" step="0.01" v-model="pago.monto" required/>
                 </div>
@@ -317,7 +316,7 @@
             title="Hitorial de pagos"
             :rows-per-page-options="[50,100,0]"
             :columns="columns2"
-            :rows="pago.empleado.element.sueldos"
+            :rows="listpagos"
             >
         <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
@@ -485,6 +484,7 @@ export default {
       gastos:[],
       anulados:[],
       rango:'RANGO',
+      empleadopago:{},
       rpagos:[],
       reporteventa:[],
       prestamoventa:[],
@@ -492,6 +492,7 @@ export default {
       user:{},
       gl:[],
       filterglosa:[],
+      listpagos:[],
       pageTotal:'',
       tot:'',
       resumenplanilla:0,
@@ -575,6 +576,14 @@ export default {
   },
 
   methods:{
+    cargarPagos(){
+      console.log(this.empleadopago)
+      this.$axios.get(process.env.API + "/empleado/"+this.empleadopago.id).then((res) => {
+        console.log(res.data)
+        this.listpagos=res.data
+        this.pagos=true
+      })
+    },
     modificarcjchica(){
       if(this.glosa.id==undefined)
       {
@@ -2413,8 +2422,8 @@ xlsx(datacaja, settings) // Will download the excel file
       })
     },
     agregarpago(){
-      if(this.empleadohistorial.tipo=='FIJO'){
-            if((parseFloat(this.pago.empleado.element.salario)- this.totaldescuento) < parseFloat( this.pago.monto) && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='DESCUENTO'))
+      if(this.empleadopago.tipo=='FIJO'){
+            if((parseFloat(this.empleadopago.salario) - this.totaldescuento) < parseFloat( this.pago.monto) && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='DESCUENTO'))
           {
               this.$q.notify({
                 message:'El monto excede al salario ',
@@ -2427,8 +2436,8 @@ xlsx(datacaja, settings) // Will download the excel file
 
       // console.log('a');
       //this.pago.fecha=date.formatDate( Date.now(),'YYYY-MM-DD');
-      this.pago.empleado_id=this.pago.empleado.element.id
-      this.pago.empleado_nombre=this.pago.empleado.label;
+      this.pago.empleado_id=this.empleadopago.id
+      this.pago.empleado_nombre=this.empleadopago.label;
       this.pago.checkbox=this.checkgasto
       if(this.checkgasto=='GASTO' && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='EXTRA') && this.pago.monto > this.montogeneral){
                       this.$q.notify({
@@ -2454,15 +2463,17 @@ xlsx(datacaja, settings) // Will download the excel file
         //console.log(res.data)
         //return false
         //this.empleadohistorial=res.data
-        this.misempleados()
+        //this.misempleados()
+
+          let myWindow = window.open("", "Imprimir", "width=1000,height=1000")
+        myWindow.document.write(res.data)
+        myWindow.document.close()
+        myWindow.print()
+        myWindow.close()
+        this.pagosval()
         this.misgastos()
           this.totalcaja()
           this.totalgeneral()
-          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
-        myWindow.document.write(res.data);
-        myWindow.document.close();
-        myWindow.print();
-        myWindow.close();
         this.pagos=false
         this.checkgasto='CAJA'
         this.pago.monto=0
@@ -2473,15 +2484,16 @@ xlsx(datacaja, settings) // Will download the excel file
     },
     misempleados(){
       this.$q.loading.show()
-      this.$axios.get(process.env.API+'/empleado').then(res=>{
+      this.$axios.get(process.env.API+'/listEmpleado').then(res=>{
         // console.log(res.data)
         this.$q.loading.hide()
         this.empleados=[]
         res.data.forEach(element => {
-          this.empleados.push({element,label:element.nombre})
+          element.label=element.nombre
+          this.empleados.push(element)
         });
         console.log (this.empleados)
-        this.pago.empleado=this.empleados[0]
+        this.empleadopago=this.empleados[0]
 
       })
     },
@@ -2651,13 +2663,13 @@ xlsx(datacaja, settings) // Will download the excel file
       //   })
       // })
     },
-    pagosval(index){
+    pagosval(){
       // console.log('a')
-      this.pagos=true
+      //this.pagos=true
       this.$q.loading.show()
-      this.$axios.get(process.env.API+'/empleado/'+index.id).then(res=>{
+      this.$axios.get(process.env.API+'/empleado/'+this.empleadopago.id).then(res=>{
         // console.log(res.data);
-        this.empleadohistorial=res.data
+        this.listpagos=res.data
         this.$q.loading.hide()
       })
     }
@@ -2673,7 +2685,7 @@ xlsx(datacaja, settings) // Will download the excel file
     },
           totaldescuento(){
         let total=0;
-      this.pago.empleado.element.sueldos.forEach(element => {
+      this.listpagos.forEach(element => {
         if(date.formatDate( element.fecha,'YYYY-MM') == date.formatDate( this.pago.fecha,'YYYY-MM'))
         if(element.tipo=='ADELANTO' || element.tipo=='DESCUENTO')
           total+=parseFloat(element.monto)

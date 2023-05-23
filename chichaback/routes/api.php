@@ -126,7 +126,8 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/impresionVenta/{id}',[\App\Http\Controllers\SaleController::class,'impresionVenta']);
     Route::post('/updateRuta',[\App\Http\Controllers\SaleController::class,'updateRuta']);
     Route::post('/impresionruta/{id}',[\App\Http\Controllers\SaleController::class,'impresionruta']);
-    Route::post('/reportSale',[\App\Http\Controllers\SaleController::class,'reportSale']);
+    Route::post('/reportSale',[\App\Http\Controllers\SaleController::class,'reportSale']); 
+    Route::get('/listEmpleado',[\App\Http\Controllers\EmpleadoController::class,'listEmpleado']); 
 
 
     Route::resource('/sale',\App\Http\Controllers\SaleController::class);
