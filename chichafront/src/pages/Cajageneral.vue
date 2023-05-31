@@ -150,6 +150,8 @@
 <script>
 import { date } from 'quasar'
 import {jsPDF} from "jspdf";
+import moment from 'moment'
+
 import $ from "jquery";
 export default {
   data() {
@@ -167,7 +169,7 @@ export default {
       tot:'',
       cajageneral:0,
       columns: [
-        {name: "fecha", align: "left", label: "FECHA ", field: "fecha", sortable: true,},
+        {name: "fecha", align: "left", label: "FECHA ", field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true,},
         {name: "monto", align: "left", label: "MONTO", field: "monto", sortable: true,},
         {name: "detalle", align: "left", label: "DETALLE", field: "detalle", sortable: true,},
         {name: "motivo", align: "left", label: "MOTIVO", field: "motivo", sortable: true,},
@@ -222,6 +224,9 @@ export default {
       this.$axios.post(process.env.API + "/listgeneral",{fecha1:this.fecha1,fecha2:this.fecha2}).then((res) => {
       $('#example').DataTable().destroy()
          console.log(res.data)
+         res.data.forEach(r => {
+            r.fecha=moment(r.fecha).format('DD/MM/YYYY')
+         });
         this.data = res.data;
         this.totalcaja();
         this.$nextTick(()=>{

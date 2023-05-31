@@ -59,7 +59,7 @@ class PlanillaController extends Controller
         if($request->tpago=='GASTO'){
 
         $general=General::find(1);
-        $general->monto=$general->monto - $request->precio;
+        $general->monto=floatval($general->monto) - floatval($planilla->total);
         $general->save();
 
         $loggeneral= new Loggeneral;
