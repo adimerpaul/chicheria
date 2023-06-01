@@ -54,8 +54,8 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/misventas',[\App\Http\Controllers\VentaController::class,'misventas']);
     Route::post('/listventa',[\App\Http\Controllers\VentaController::class,'listventa']);
 
-    Route::post('/listSale',[\App\Http\Controllers\SaleController::class,'listSale']); 
-    Route::get('/listInv',[\App\Http\Controllers\InventarioController::class,'listInv']); 
+    Route::post('/listSale',[\App\Http\Controllers\SaleController::class,'listSale']);
+    Route::get('/listInv',[\App\Http\Controllers\InventarioController::class,'listInv']);
 
     Route::post('/listventdetalle',[\App\Http\Controllers\VentaController::class,'listventdetalle']);
     Route::post('/listventlocal',[\App\Http\Controllers\VentaController::class,'listventlocal']);
@@ -89,6 +89,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
 
     Route::resource('/empleado',\App\Http\Controllers\EmpleadoController::class);
     Route::resource('/compra',\App\Http\Controllers\CompraController::class);
+    Route::post('/compra2',[\App\Http\Controllers\CompraController::class,'compra2']);
     Route::post('/missueldos',[\App\Http\Controllers\EmpleadoController::class,'missueldos']);
     Route::resource('/sueldo',\App\Http\Controllers\SueldoController::class);
     Route::get('/impade/{id}',[\App\Http\Controllers\SueldoController::class,'impade']);
@@ -126,8 +127,8 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/impresionVenta/{id}',[\App\Http\Controllers\SaleController::class,'impresionVenta']);
     Route::post('/updateRuta',[\App\Http\Controllers\SaleController::class,'updateRuta']);
     Route::post('/impresionruta/{id}',[\App\Http\Controllers\SaleController::class,'impresionruta']);
-    Route::post('/reportSale',[\App\Http\Controllers\SaleController::class,'reportSale']); 
-    Route::get('/listEmpleado',[\App\Http\Controllers\EmpleadoController::class,'listEmpleado']); 
+    Route::post('/reportSale',[\App\Http\Controllers\SaleController::class,'reportSale']);
+    Route::get('/listEmpleado',[\App\Http\Controllers\EmpleadoController::class,'listEmpleado']);
 
 
     Route::resource('/sale',\App\Http\Controllers\SaleController::class);
