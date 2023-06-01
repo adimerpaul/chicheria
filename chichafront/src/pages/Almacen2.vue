@@ -10,57 +10,119 @@
       <div class="col-4 flex flex-center">
         <q-btn @click="compraAdd" v-if="$store.state.login.editalmacen" :loading="loading" label="Ingreso de Material Prima" color="cyan-7" no-caps icon="add_circle_outline"/>
       </div>
-    </div>
-    <div class="col-12">
-      <q-table
-        dense
-        title="Lista de Materiales"
-        :rows="materials"
-        :columns="materialColumns"
-        :loading="loading"
-        :rows-per-page-options="[10, 25, 50]"
-        :filter="almacenFilter"
-        row-class="cursor-pointer"
-      >
-        <template v-slot:top-right>
-          <q-input outlined dense v-model="almacenFilter" debounce="300" placeholder="Buscar...">
-            <template v-slot:append>
-              <q-icon name="search" class="cursor-pointer"/>
-            </template>
-          </q-input>
-        </template>
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props" auto-width>
-            <q-btn-dropdown icon="more_vert" no-caps dense color="primary" label="Opciones">
-              <q-list>
-                <q-item clickable v-close-popup @click="materialEdit(props.row)">
-                  <q-item-section>Editar</q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup @click="materialDelete(props.row)">
-                  <q-item-section>Eliminar</q-item-section>
-                </q-item>
-              </q-list>
-            </q-btn-dropdown>
-          </q-td>
-        </template>
-        <template v-slot:body-cell-stock="props" >
-          <q-td :props="props">
-            <q-linear-progress size="18px" rounded :value="calcular(props.row.stock,props.row.min)" :color="calcular(props.row.stock,props.row.min)<1?'red-7':'green-7'" class="full-width">
-              <div class="absolute-full flex flex-center">
-                <q-badge color="white" :text-color="calcular(props.row.stock,props.row.min)<1?'red-7':'green-7'" :label="props.row.stock" />
-              </div>
-            </q-linear-progress>
-          </q-td>
-        </template>
-      </q-table>
-    </div>
-    <div class="col-12">
+      <div class="col-12">
+        <q-table
+          dense
+          title="Lista de Materiales"
+          :rows="materials"
+          :columns="materialColumns"
+          :loading="loading"
+          :rows-per-page-options="[10, 25, 50]"
+          :filter="almacenFilter"
+          row-class="cursor-pointer"
+        >
+          <template v-slot:top-right>
+            <q-input outlined dense v-model="almacenFilter" debounce="300" placeholder="Buscar...">
+              <template v-slot:append>
+                <q-icon name="search" class="cursor-pointer"/>
+              </template>
+            </q-input>
+          </template>
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props" auto-width>
+              <q-btn-dropdown icon="more_vert" no-caps dense color="primary" label="Opciones">
+                <q-list>
+                  <q-item clickable v-close-popup @click="materialEdit(props.row)">
+                    <q-item-section>Editar</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup @click="materialDelete(props.row)">
+                    <q-item-section>Eliminar</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup @click="reporte(props.row)">
+                    <q-item-section>Reporte</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-stock="props" >
+            <q-td :props="props">
+              <q-linear-progress size="18px" rounded :value="calcular(props.row.stock,props.row.min)" :color="calcular(props.row.stock,props.row.min)<1?'red-7':'green-7'" class="full-width">
+                <div class="absolute-full flex flex-center">
+                  <q-badge color="white" :text-color="calcular(props.row.stock,props.row.min)<1?'red-7':'green-7'" :label="props.row.stock" />
+                </div>
+              </q-linear-progress>
+            </q-td>
+          </template>
+        </q-table>
+      </div>
       <div class="col-4"><q-input dense outlined v-model="fecha3" label="Fecha Ini" type="date"/></div>
       <div class="col-4"><q-input dense outlined v-model="fecha4" label="Fecha fin" type="date"/></div>
-<!--      <div class="col-4"><q-select dense outlined v-model="material3" :options="materiales" label="Material" /></div>-->
-      <div class="col-4"> <q-btn color="info" label="Consultar"  @click="consultmaterial"/>
+      <!--      <div class="col-4"><q-select dense outlined v-model="material3" :options="materiales" label="Material" /></div>-->
+      <div class="col-4 flex flex-center"> <q-btn color="info" label="Consultar"  @click="consultmaterial" no-caps/></div>
+      <div class="col-12">
+        <q-table
+          dense
+          :rows-per-page-options="[10,20,50,100,0]"
+          title="LISTA DE COMPRAS "
+          :rows="comptodo"
+          :columns="colcompra"
+          :filter="filter"
+          row-key="name">
+
+          <template v-slot:body-cell-estado="props" >
+            <q-td key="estado" :props="props" >
+              <q-badge :color="props.row.estado=='POR PAGAR'?'red':'green'"  >{{props.row.estado}}</q-badge>
+            </q-td>
+          </template>
+          <template v-slot:top-right>
+            <q-input outlined dense v-model="filter" debounce="300" placeholder="Buscar...">
+              <template v-slot:append>
+                <q-icon name="search" class="cursor-pointer"/>
+              </template>
+            </q-input>
+          </template>
+          <template v-slot:body-cell-opcion="props" >
+            <q-td key="opcion" :props="props" >
+              <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.pagoalmacen && props.row.deuda>0" @click="pagarcompra(props.row)"/>
+              <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.editalmacen && props.row.logcompras.length>0" @click="listpago(props.row)"/>
+              <!--<q-btn dense round flat color="teal" icon="edit" v-if="$store.state.login.editalmacen" @click="modcompra(props.row)"/>-->
+              <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen" @click="delcompra(props.row)"/>
+            </q-td>
+          </template>
+
+        </q-table>
+      </div>
+      <div class="col-12">
+        <q-table
+          dense
+          :rows-per-page-options="[10,20,50,100,0]"
+          title="LISTA DE RETIROS "
+          :rows="recutodo"
+          :columns="colrecuento"
+          :filter="filter"
+          row-key="name">
+          <template v-slot:top-right>
+            <q-input outlined dense v-model="filter" debounce="300" placeholder="Buscar...">
+              <template v-slot:append>
+                <q-icon name="search" class="cursor-pointer"/>
+              </template>
+            </q-input>
+          </template>
+          <template v-slot:body-cell-opcion="props" >
+            <q-td key="opcion" :props="props" >
+              <q-btn dense round flat color="accent" icon="edit" v-if="$store.state.login.editalmacen" @click="modrecuento(props.row)"/>
+              <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen" @click="delrecuento(props.row)"/>
+            </q-td>
+          </template>
+
+        </q-table>
       </div>
     </div>
+
+<!--    <div class="col-12">-->
+
+<!--    </div>-->
     <q-dialog v-model="providerDialog">
       <q-card style="width: 700px; max-width: 90vw;">
         <q-card-section class="q-pb-none row items-center">
@@ -140,10 +202,10 @@
             <div class="col-6">
               <q-select dense outlined v-model="provider" :options="providers" label="Proveedor" option-label="razon" option-value="id" />
             </div>
-            <div class="col-3"><q-input dense outlined type="text" v-model="compra.cantidad" label="Cantidad"/></div>
-<!--            <div class="col-2"><q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo U" /></div>-->
-<!--            <div class="col-2 flex-center flex text-bold">Subtotal: {{subTotalNumber(compra.costo,compra.cantidad)}}</div>-->
-            <div class="col-3"><q-input dense outlined  type="text" v-model="compra.lote"  label="Lote"  /></div>
+            <div class="col-2"><q-input dense outlined type="text" v-model="compra.cantidad" label="Cantidad"/></div>
+            <div class="col-2"><q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo U" /></div>
+            <div class="col-1 flex-center flex text-bold text-center">Subtotal: {{subTotalNumber(compra.costo,compra.cantidad)}}</div>
+            <div class="col-1"><q-input dense outlined  type="text" v-model="compra.lote"  label="Lote"  /></div>
             <div class="col-3"><q-input dense outlined  type="date" v-model="compra.fechaven"  label="Fecha Vencimiento"  /></div>
             <div class="col-3"><q-input dense outlined  type="text"  v-model="compra.observacion" label="Observacion" /></div>
             <div class="col-12 text-right">
@@ -156,8 +218,8 @@
                               <th class="text-left" >NRO</th>
                               <th class="text-left">MATERIAL</th>
                               <th class="text-center">CANTIDAD</th>
-<!--                              <th>COSTO</th>-->
-<!--                              <th>SUBTOTAL</th>-->
+                              <th>COSTO</th>
+                              <th>SUBTOTAL</th>
                               <th class="text-center">LOTE</th>
                               <th class="text-left">FEC VEN</th>
                               <th class="text-left">OBS</th>
@@ -169,8 +231,8 @@
                               <td class="text-left">{{index + 1}}</td>
                               <td class="text-left">{{d.material}}</td>
                               <td class="text-center">{{d.cantidad}}</td>
-<!--                              <td>{{d.costo}}</td>-->
-<!--                              <td>{{d.subtotal}}</td>-->
+                              <td>{{d.costo}}</td>
+                              <td>{{d.subtotal}}</td>
                               <td class="text-center">{{d.lote}}</td>
                               <td class="text-left">{{d.fechaven}}</td>
                               <td class="text-left">{{d.observacion}}</td>
@@ -191,16 +253,98 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="dialoglistpagos" >
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-table title="pagos" :rows="pagos" :columns="colpagos" row-key="name" />
+<!--          <pre>{{pagos}}</pre>-->
+
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="dialogpagar">
+      <q-card style="width: 700px; max-width: 90vw;">
+        <q-card-section class="bg-green-14 text-white">
+          <div class="text-h7 text-bold text-center">PAGAR POR LA COMPRA</div>
+        </q-card-section>
+        <q-card-section class="q-pt-xs">
+          <q-form @submit="regpago" class="q-gutter-md" >
+            <div class="row">
+              <div class="col-5">
+                <q-input dense outlined v-model="compra2.provider.razon" readonly label="proveedor"/>
+              </div>
+              <div class="col-5">
+                <q-input dense outlined v-model="compra2.material.nombre" readonly label="material"/>
+              </div>
+              <div class="col-2">
+                <q-input dense outlined v-model="compra2.lote" readonly label="lote"/>
+              </div>
+              <div class="col-4">
+                <q-input dense outlined v-model="compra2.cantidad" readonly label="cantidad"/>
+              </div>
+              <div class="col-4">
+                <q-input dense outlined v-model="compra2.costo" readonly label="costo"/>
+              </div>
+              <div class="col-4">
+                <q-input dense outlined v-model="compra2.subtotal" readonly label="subtotal"/>
+              </div>
+              <div class="col-6">
+                <q-input dense outlined type="text" v-model="pago.monto" label="Monto" step="0.01"
+                         lazy-rules
+                         :rules="[ val => val && val > 0 && val <=compra2.deuda || 'ingrese otro monto']"
+                />
+              </div>
+              <div class="col-6">
+                <q-input dense outlined type="text" v-model="pago.observacion" label="Observacion"/>
+              </div>
+            </div>
+            <div class="col-12">
+              <q-btn label="Registrar" type="submit" color="positive" icon="add_circle"/>
+              <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+            </div>
+<!--            <pre>{{compra2}}</pre>-->
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="dialog_reporte" >
+      <q-card>
+        <q-card-section class="bg-cyan-14 text-white">
+          <div class="text-h7">GENERAR REPORTE</div>
+        </q-card-section>
+        <q-card-section class="row items-center">
+          <q-input dense type="date" outlined v-model="fecha1" label="Fecha Inicio" />
+          <q-input dense type="date" outlined v-model="fecha2" label="Fecha Fin" />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="GENERAR" color="deep-orange" @click="genreporte"/>
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
 import {date} from "quasar";
+import moment from "moment/moment";
+import {jsPDF} from "jspdf";
 
 export default {
   data () {
     return {
       providers: [],
       provider: {},
+      dialogpagar: false,
+      dialog_reporte: false,
+      filter: '',
+      pago:{},
+      pagos:[],
+      compra2:{},
       providerOptions: 'create',
       providerDialog: false,
       loading: false,
@@ -210,6 +354,8 @@ export default {
       dialog_add: false,
       fecha3:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha4:date.formatDate( Date.now(),'YYYY-MM-DD'),
+      fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
+      fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
       unidades: ['Kilogramos', 'Litros', 'Unidad', 'Metros', 'Metros Cuadrados', 'Metros Cubicos', 'Caja', 'Bolsa', 'Paquete', 'Otro'],
       materialDialog: false,
       compra: {
@@ -219,6 +365,38 @@ export default {
         fechaven: '',
         observacion: ''
       },
+      comptodo:[],
+      colrecuento : [
+
+        { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
+        { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+        { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
+        { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
+        { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
+      ],
+      colcompra : [
+
+        { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
+        { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
+        { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+        { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
+        { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
+        { name: 'costo', align: 'center', label: 'COSTO', field: 'costo', sortable: true },
+        { name: 'subtotal', align: 'center', label: 'SUBTOTAL', field: 'subtotal', sortable: true },
+        { name: 'deuda', align: 'center', label: 'DEUDA', field: 'deuda', sortable: true },
+        { name: 'lote', align: 'center', label: 'LOTE', field: 'lote', sortable: true },
+        { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: 'fechaven', sortable: true },
+        { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
+        { name: 'provider', align: 'center', label: 'PROVEEDOR', field: row=>row.provider.razon, sortable: true },
+        { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
+      ],
+      colpagos : [
+
+        { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+        { name: 'monto', align: 'center', label: 'MONTO', field: 'monto', sortable: true },
+        { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
+      ],
+      recutodo:[],
       compras: [],
       materialOptions: 'create',
       materialColumns: [
@@ -227,14 +405,170 @@ export default {
         { name: 'min', label: 'Minimo', align: 'center', field: 'min' },
         { name: 'stock', label: 'Stock', align: 'center', field: 'stock' },
         { name: 'actions', label: 'Acciones', align: 'center', field: 'actions' }
-      ]
+      ],
+      dialoglistpagos:false,
     }
   },
   created() {
     this.providersGet()
     this.materialsGet()
+    this.consultmaterial()
   },
   methods: {
+    reporte(props){
+      this.material2=props
+      this.dialog_reporte=true
+    },
+    genreporte(){
+      console.log(date.formatDate(new Date(),'DD/MM/YYYY HH:mm:ss'))
+      this.$axios.post(process.env.API+'/repalmacen',{id:this.material2.id,fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+        console.log(res.data)
+        let mc=this
+
+        function header(){
+          var img = new Image()
+          img.src = 'logo.png'
+          doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+          doc.setFont(undefined,'bold')
+          doc.text(5, 1, 'INVENTARIO MATERIAL : ' + mc.material2.nombre)
+          doc.text(5, 1.5,  'DE '+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY'))
+          doc.text(1, 3, 'TIPO')
+          doc.text(2.5, 3, 'PROVEEDOR')
+          doc.text(5, 3, 'MATERIAL')
+          doc.text(7, 3, 'FECHA')
+          doc.text(9.5, 3, 'COSTO')
+          doc.text(11, 3, 'CANTIDAD')
+          doc.text(13, 3, 'FECHA VEN')
+          doc.text(15, 3, 'OBSERVACION')
+          doc.setFont(undefined,'normal')
+        }
+        var doc = new jsPDF('p','cm','letter')
+        // console.log(dat);
+        doc.setFont("courier");
+        doc.setFontSize(9);
+        // var x=0,y=
+        header()
+        // let xx=x
+        // let yy=y
+        let y=0
+        res.data.forEach(r=>{
+          y+=0.5
+          doc.text(1, y+3, r.tipo)
+          doc.text(2.5, y+3, r.razon)
+          doc.text(5, y+3, r.nombre)
+          doc.text(7, y+3, date.formatDate(new Date(r.fecha),'DD/MM/YYYY'))
+          doc.text(9.5, y+3, r.costo==null?'':r.costo+'')
+          doc.text(11, y+3, r.cantidad+'')
+          doc.text(13, y+3, r.fechaven==null?'':r.fechaven)
+          doc.text(15, y+3, r.observacion==null?'':r.observacion)
+          if (y+3>25){
+            doc.addPage();
+            header()
+            y=0
+          }
+        })
+        window.open(doc.output('bloburl'), '_blank');
+      })
+
+    },
+    regpago(){
+      if(this.$store.state.login.user.id==1){this.checkgasto='GASTO'}
+      else{this.checkgasto='CAJA'}
+      if(this.montogeneral<this.pago.monto && this.checkgasto=='GASTO'){
+        this.$q.notify({
+          color: 'red',
+          icon: 'info',
+          message: 'No ay suficiente en Cja General '
+        });
+        return false
+      }
+
+      if(this.montocaja<this.pago.monto && this.checkgasto=='CAJA'){
+        this.$q.notify({
+          color: 'red',
+          icon: 'info',
+          message: 'No ay suficiente en Cja Chica '
+        });
+        return false
+      }
+      this.pago.compra_id=this.compra2.id
+      this.pago.checktipo=this.checkgasto
+      this.$axios.post(process.env.API + "/logcompra",this.pago).then((res) => {
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+        this.dialogpagar=false
+        this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'info',
+          message: 'registrado '
+        });
+        this.checkgasto='CAJA'
+        this.consultmaterial()
+      })
+    },
+    onReg(){
+      this.$axios.post(process.env.API+'/provider',this.proveedor).then(res=>{
+        this.dialog_prov=false
+        this.misproveedores()
+        this.provider={}
+      })
+
+    },
+    listpago(compra){
+      this.pagos=compra.logcompras
+      this.dialoglistpagos=true
+    },
+    delcompra(compra){
+      //console.log(compra)
+      this.$q.dialog({
+        title: 'ADVERTENCIA',
+        message: 'Esta seguro de eliminar registro?',
+        cancel: true,
+        persistent: false
+      }).onOk(() => {
+        // console.log('>>>> OK')
+        this.$axios.delete(process.env.API+'/compra/'+compra.id).then(res=>{
+          this.materialsGet()
+          this.consultmaterial()
+          this.$q.notify({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'info',
+            message: 'Eliminado '
+          });
+        })
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+
+    },
+    pagarcompra(compra){
+      this.compra2=compra
+      this.pago={}
+      if(this.$store.state.login.user.id==1){this.checkgasto='GASTO'}
+      else{this.checkgasto='CAJA'}
+
+      this.dialogpagar=true
+
+    },
+    consultmaterial(){
+      this.$axios.post(process.env.API+'/consultar2',{fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
+        // console.log(res.data)
+        this.comptodo=res.data
+      })
+
+      this.$axios.post(process.env.API+'/consulrecuento2',{fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
+        this.recutodo=res.data
+      })
+    },
     subTotalNumber(costo,cantidad){
       if(costo==undefined || costo=='' || costo==0) return 0
       if(cantidad==undefined || cantidad=='' || cantidad==0) return 0
@@ -259,7 +593,7 @@ export default {
       if(this.compra.observacion==undefined || this.compra.observacion=='') this.compra.observacion=''
       if(this.compra.lote==undefined || this.compra.lote=='') this.compra.lote=''
       this.compra.material_id=this.material.id
-      this.compra.subtotal=parseFloat(this.compra.cantidad)
+      this.compra.subtotal=parseFloat(this.compra.cantidad) * parseFloat(this.compra.costo)
       this.compra.material=this.material.nombre
       this.compra.provider_id=this.provider.id
       this.compras.push(this.compra)

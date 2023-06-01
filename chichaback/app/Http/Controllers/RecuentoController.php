@@ -35,6 +35,15 @@ class RecuentoController extends Controller
         return Recuento::with('material')->where('material_id',$request->material_id)
         ->whereDate('fecha','>=',$request->fecha1)->where('fecha','<=',$request->fecha2)->get();
     }
+    public function consulrecuento2(Request $request)
+    {
+        //
+        return Recuento::with('material')
+//            ->where('material_id',$request->material_id)
+            ->whereDate('fecha','>=',$request->fecha1)
+            ->where('fecha','<=',$request->fecha2)
+            ->get();
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -47,7 +56,7 @@ class RecuentoController extends Controller
         $material=Material::find($request->material_id);
         $material->stock=$material->stock - $request->cantidad;
         $material->save();
-        
+
         $recuento=new Recuento;
         $recuento->fecha=date('Y-m-d');
         $recuento->hora=date('H:i:s');
@@ -93,7 +102,7 @@ class RecuentoController extends Controller
         $recuento=Recuento::find($request->id);
         $material=Material::find($recuento->material_id);
         if($recuento->cantidad != $request->cantidad){
-            $material->stock=$material->stock + $recuento->cantidad - $request->cantidad; 
+            $material->stock=$material->stock + $recuento->cantidad - $request->cantidad;
             $material->save();
         }
         $recuento->cantidad=$request->cantidad;

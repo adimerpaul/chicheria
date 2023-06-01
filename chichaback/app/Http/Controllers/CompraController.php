@@ -136,6 +136,16 @@ class CompraController extends Controller
         return Compra::with('material')->with('provider')->with('logcompras')->where('material_id',$request->material_id)
         ->whereDate('fecha','>=',$request->fecha1)->where('fecha','<=',$request->fecha2)->get();
     }
+    public function consultar2(Request $request)
+    {
+        //
+        return Compra::with('material')
+            ->with('provider')
+            ->with('logcompras')
+//            ->where('material_id',$request->material_id)
+            ->whereDate('fecha','>=',$request->fecha1)
+            ->where('fecha','<=',$request->fecha2)->get();
+    }
 
     /**
      * Show the form for editing the specified resource.
