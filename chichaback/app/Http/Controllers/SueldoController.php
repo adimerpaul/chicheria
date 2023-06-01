@@ -159,13 +159,14 @@ class SueldoController extends Controller
         //
     }
 
-    public function impade($id){
+    public function impade($id,Request $request){
         $info=Sueldo::with('empleado')->find($id);
         $cadena="<center>$info->tipo</center>
-        <div>Empleado: ".$info->empleado['nombre']."</div>
-        <div>Fecha: ".date('d/m/Y',strtotime($info->fecha))."</div>
-        <div>Monto: $info->monto Bs.</div>
-        <div>Obs: $info->observacion </div><br><br>
+        <div><b>Empleado:</b> ".$info->empleado['nombre']."</div>
+        <div><b>Fecha:</b> ".date('d/m/Y',strtotime($info->fecha))."</div>
+        <div><b>Monto:</b> $info->monto Bs.</div>
+        <div><b>Obs:</b> $info->observacion </div>
+        <div><b>Usuario:</b> ".$request->user()->name."</div><br><br>
         <center>FIRMA</center>
         ";
         return $cadena;
