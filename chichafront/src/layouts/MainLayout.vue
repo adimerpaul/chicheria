@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header >
       <q-toolbar>
         <q-btn
           flat
@@ -159,7 +159,7 @@
         expand-separator
         icon="people_alt"
         label="DETALLE"
-        
+
       >
         <q-card>
           <q-card-section>
@@ -175,7 +175,7 @@
             >
               <q-icon name="people" size="lg" />
             </q-item-section>
-  
+
             <q-item-section>
               <q-item-label>CLIENTES DETALLE</q-item-label>
               <q-item-label caption>
@@ -243,7 +243,7 @@
         expand-separator
         icon="corporate_fare"
         label="LOCAL"
-        
+
       >
         <q-card>
           <q-card-section>
@@ -259,7 +259,7 @@
             >
               <q-icon name="contact_phone" size="lg" />
             </q-item-section>
-  
+
             <q-item-section>
               <q-item-label>CLIENTES LOCAL</q-item-label>
               <q-item-label caption>
@@ -418,6 +418,17 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>ALMACEN</q-item-label>
+            <q-item-label caption>
+              Materiales
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item v-if="$store.state.login.veralmacen" active-class="my-menu-link" clickable exact to="/almacen2">
+          <q-item-section avatar>
+            <q-icon name="o_store" size="lg" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Almacen v2</q-item-label>
             <q-item-label caption>
               Materiales
             </q-item-label>
@@ -667,5 +678,5 @@ export default defineComponent({
 <style lang="sass">
 .my-menu-link
   color: white
-  background: #4a148c
+  background: #9C27B0
 </style>
