@@ -501,7 +501,7 @@ export default {
         res.data.forEach(r=>{
           this.ventas.push({
             id:r.id,
-            fecha:moment(r.fecha).format('DD/MM/YYYY'),
+            fecha:r.fecha,
             total:r.total,
             acuenta:r.acuenta,
             saldo:r.saldo,
