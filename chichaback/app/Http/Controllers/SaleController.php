@@ -107,6 +107,7 @@ class SaleController extends Controller
         if($venta->cliente->local!='' || $venta->cliente->local!=null)
         {$cadena.='<div>Local: '.$venta->cliente->local.'</div>';}
         $cadena.='<div>Nombre: '.$venta->cliente->titular.'</div>
+        <div>Usuario: '.$venta->user->name.'</div>
         <hr>
         <table>
         <thead>
