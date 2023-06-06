@@ -4,11 +4,11 @@
   <div class="col-12">
     <div :class="`q-pa-xs bg-${type=='detalle'?'red':'green'} text-center text-bold text-white`">{{ type=='detalle'?'VENTA POR DETALLE':'VENTA POR LOCAL' }}</div>
   </div>
-    <div class="col-2 flex flex-center">
+    <div class="col-1 flex flex-center">
       <q-btn dense color="green" icon="add_circle" v-if="type=='detalle'" @click="modalregistro=true; newcliente={}"/>
       <q-btn dense color="yellow"  icon="edit" v-if="client && type=='detalle'" @click="modcliente=client; dialog_mod=true;"/>
    </div>
- <div class="col-4">
+ <div class="col-5">
   <q-select
     outlined
     dense
@@ -880,7 +880,7 @@ export default {
             this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
           })
           this.printboleta+="</table></div>"
-          this.printboleta+="<br><hr><div><b>Cliente </b>"+this.client.local + ' - '+this.client.titular+"</div><div><b>Fecha: </b>"+this.fecha+"</div><div><b>Usuario: </b>"+this.$store.state.login.user.name+"</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
+          this.printboleta+="<br><hr><div><b>Cliente </b>"+this.client.local + ' - '+this.client.titular+"</div><div><b>Fecha: </b>"+this.fecha+"</div><div><b>Usuario: </b>"+this.$store.state.login.user.name +"</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
           this.prestamolista.forEach(p => {
             this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
           })
