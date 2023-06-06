@@ -67,7 +67,7 @@
             :rows="rows"
             :columns="columns"
             :filter="filter"
-
+            :rows-per-page-options="[0]"
             row-key="name">
             <template v-slot:top-right>
               <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
@@ -420,7 +420,15 @@ export default {
         });
         this.dialog_del=false;
         this.listado();
+        }).catch((error)=>
+        {
+          this.$q.notify({
+          color: 'red-4',
+          icon: 'info',
+          message: error
+        });
         })
+
         this.$q.loading.hide();
     },
             onAdd(){

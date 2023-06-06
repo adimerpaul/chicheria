@@ -105,7 +105,7 @@
                     <td>{{v.titular}}</td>
                     <td>{{v.total}}</td>
                     <td>{{v.acuenta}}</td>
-                    <td>{{v.saldo}}</td>
+                    <td style="font-weight:bold; font-size:16px">{{v.saldo}}</td>
                     <td>
                       <q-badge color="accent" v-if="v.tipocliente==1">LOCAL</q-badge>
                       <q-badge color="teal" v-else>CLIENTE</q-badge>
@@ -845,7 +845,7 @@ export default {
             buttons: [
               'copy', 'csv', 'excel', 'pdf', 'print'
             ],
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+            "lengthMenu": [[-1,10, 25, 50], [ "All",10, 25, 50]]
           } );
         })
       })
