@@ -95,7 +95,7 @@
               round
               flat
               color="red"
-              @click="deleteRow(props.row)"
+              @click="deleteRow(r)"
               icon="delete"
               v-if="$store.state.login.user.id==1"
             ></q-btn>
