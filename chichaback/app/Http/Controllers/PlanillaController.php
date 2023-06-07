@@ -66,7 +66,7 @@ class PlanillaController extends Controller
         $loggeneral->numero=$planilla->id;
         $loggeneral->monto= $planilla->total;
         $loggeneral->detalle='SALARIO';
-        $loggeneral->motivo='';
+        $loggeneral->motivo='PAGO SALARIO '.$planilla->id;
         $loggeneral->tipo='EGRESO';
         $loggeneral->fecha=$planilla->fechapago;
         $loggeneral->hora=date("H:i:s");
