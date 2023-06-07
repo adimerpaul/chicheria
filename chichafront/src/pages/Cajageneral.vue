@@ -190,6 +190,7 @@ export default {
   },
   methods: {
       deleteRow(logcaja){
+        console.log(logcaja)
       this.$q.dialog({
         title: 'Confirmar',
         message: 'Esta seguro de eliminar',
