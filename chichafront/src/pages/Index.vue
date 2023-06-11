@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
 
-export default {
+
+export default{
   data() {
     return {
     name: 'PageIndex',
