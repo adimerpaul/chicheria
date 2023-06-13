@@ -42,22 +42,25 @@
 
         <div class="col-12">
           <div class=" responsive">
-                <q-table dense title="Ingresos" :rows="ingreso" :columns="columns" row-key="name" />
-                <q-table dense title="Egresos" :rows="egreso" :columns="columns2" row-key="name" />
-                <q-table dense title="Caja Chica" :rows="cchica" :columns="columns3" row-key="name" />
+                <q-table dense title="Ingresos" :rows="ingreso" :columns="columns" row-key="name"    :rows-per-page-options="[0,50,100]"/>
+                <q-table dense title="Egresos" :rows="egreso" :columns="columns2" row-key="name"       :rows-per-page-options="[0,50,100]"/>
+                <q-table dense title="Caja Chica" :rows="cchica" :columns="columns3" row-key="name"       :rows-per-page-options="[0,50,100]"/>
           </div>
         </div>
 
             <div class="col-12">
               <q-form>
                 <div class="row">
-                  <div class="col-4 q-pa-md">
+                  <div class="col-3 q-pa-md">
                     <q-input type="text" label="Ingreso total" label-color="positive"  v-model="totalingreso"  outlined/>
                   </div>
-                  <div class="col-4 q-pa-md">
+                  <div class="col-3 q-pa-md">
                     <q-input type="text" label="Egreso Total" label-color="info"  v-model="totalegreso"  outlined/>
                   </div>
-                  <div class="col-4 q-pa-md">
+                  <div class="col-3 q-pa-md">
+                    <q-input type="text" label="Caja Chica Total" label-color="info"  v-model="totalchica"  outlined/>
+                  </div>
+                  <div class="col-3 q-pa-md">
                     <q-input type="text" label="Balance" label-color="teal"  outlined v-model="balance"/>
                   </div>
                 </div>
@@ -192,7 +195,7 @@ export default {
           console.log(res.data)
           //let t=res.data[0]
           res.data.forEach(r => {
-            this.cchica.push({detalle:'CJA CHICA: '+r.glosa,total:r.total,egreso:r.total,ingreso:0})})
+            this.cchica.push({detalle:r.glosa,total:r.total,egreso:r.total,ingreso:0})})
 
 
          // console.log(this.egreso)
@@ -326,9 +329,16 @@ computed:{
       })
       return total
     },
-
+    totalchica(){
+      let total=0;
+      this.cchica.forEach(r=>{
+        total+= parseFloat(r.total)
+      })
+      return total
+    },
+    
     balance(){
-      var total=this.totalingreso - this.totalegreso
+      var total=this.totalingreso - this.totalegreso - this.totalchica
       return total;
       //return this.totalingreso() - this.totalegreso()
     }

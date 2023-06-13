@@ -541,6 +541,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.$store.state.login.user)
 
     $('#example').DataTable( )
     $('#example2').DataTable( )

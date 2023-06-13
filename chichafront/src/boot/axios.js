@@ -13,7 +13,7 @@ const api = axios.create({ baseURL: process.env.API })
 export default boot(({ app, router, store }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
-  app.config.globalProperties.$axios = axios.create({ baseURL: process.env.API })
+  app.config.globalProperties.$axios = axios
   app.config.globalProperties.$api = api
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
   //       so you won't necessarily have to import axios in each vue file
@@ -28,9 +28,15 @@ export default boot(({ app, router, store }) => {
       // store.state.user=res.data;
       // store().commit('login/auth_success', {token:token,user:res.data})
       store.commit('login/auth_success',{token:token,user:res.data})
+    }).catch(err=>{
+      // console.error('aas')
+      store.commit('login/salir')
+      localStorage.removeItem('tokenchi')
+
     })
   }
 
+  app.config.globalProperties.$api = api
 
   // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
   //       so you can easily perform requests against your app's API
