@@ -83,6 +83,7 @@
                     <thead>
                     <tr>
 <!--                      <th>Nro</th>-->
+                      <th class="hidden">FechaOrd</th>
                       <th>Fecha</th>
                       <th>Local</th>
                       <th>Titular</th>
@@ -98,6 +99,7 @@
                     <tbody>
                     <tr v-for="v in ventas" :key="v.id">
 <!--                      <td>{{v.id}}</td>-->
+                      <td class="hidden">{{v.fechaord}}</td>
                       <td>{{v.fecha}}</td>
                       <td>{{v.local}}</td>
                       <td>{{v.titular}}</td>
@@ -598,6 +600,7 @@ export default {
 
           this.ventas.push({
             id:r.id,
+            fechaord:r.fecha,
             fecha:moment(r.fecha).format('DD/MM/YYYY'),
             total:r.total,
             acuenta:r.acuenta,

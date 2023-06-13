@@ -4,6 +4,7 @@
   <div class="col-12">
     <div :class="`q-pa-xs bg-${type=='detalle'?'red':'green'} text-center text-bold text-white`">{{ type=='detalle'?'VENTA POR DETALLE':'VENTA POR LOCAL' }}</div>
   </div>
+    <div class="col-2"><q-input type="date" outlined v-model="fecha" dense label="Fecha" /></div>
     <div class="col-1 flex flex-center">
       <q-btn dense color="green" icon="add_circle" v-if="type=='detalle'" @click="modalregistro=true; newcliente={}"/>
       <q-btn dense color="yellow"  icon="edit" v-if="client && type=='detalle'" @click="modcliente=client; dialog_mod=true;"/>
@@ -29,7 +30,6 @@
     </template>
   </q-select>
 </div>
-    <div class="col-2"><q-input type="date" outlined v-model="fecha" dense label="Fecha" /></div>
     <div class="col-4"><q-input dense outlined v-model="obs" label="Observacion" /></div>
   <div class="col-7">
 
