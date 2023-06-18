@@ -520,7 +520,7 @@
         </q-item>
 
         <q-item
-          v-if="$store.state.login.reportes"
+          v-if="$store.state.login.resumencontable"
           active-class="my-menu-link"
           clickable
           exact

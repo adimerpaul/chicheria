@@ -34,5 +34,7 @@ export default function () {
     pagoalmacen:false,
     cajageneral:false,
     gastoreporteuser:false,
+    reportepago:false,
+    resumencontable:false,
   }
 }

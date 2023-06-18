@@ -317,7 +317,7 @@
             :rows-per-page-options="[50,100,0]"
             :columns="columns2"
             :rows="listpagos"
-            >
+            v-if="$store.state.login.reportepago">
         <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
                 <q-btn dense round flat color="teal" @click="printRow(props)" icon="print"></q-btn>

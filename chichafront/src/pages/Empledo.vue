@@ -233,6 +233,7 @@
             :rows-per-page-options="[50,100,0]"
             :columns="columns2"
             :rows="empleadohistorial"
+            v-if="$store.state.login.reportepago"
             >
         <template v-slot:body-cell-opcion="props">
           <q-td :props="props">

@@ -102,10 +102,10 @@
           </q-input>
         </div>
         <div class="col-3">
-          <div class="text-bold text-grey">Total: <span class="text-red text-h5">{{total}}Bs.</span> </div>
+          <div class="text-bold text-grey">Total: <span class="text-black text-h5">{{total}}Bs.</span> </div>
         </div>
         <div class="col-3">
-          <div class="text-bold text-grey">Saldo: <span class="text-red text-h5">{{porCobrar}}Bs.</span> </div>
+          <div class="text-bold text-grey">Saldo: <span :class="porCobrar>0?'text-red':'text-green' +' text-h5'">{{porCobrar}}Bs.</span> </div>
         </div>
         <div class="col-3">
           <div :class="`bg-${porCobrar>0?'red':'green'}-3 text-${porCobrar>0?'red':'green'}-8 text-bold q-ma-xs q-pa-xs`" :style="`border: 1px solid ${porCobrar>0?'red':'green'};border-radius: 5px`">

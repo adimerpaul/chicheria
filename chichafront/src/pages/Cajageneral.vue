@@ -68,6 +68,7 @@
     <table id="example" class="display">
     <thead>
       <tr>
+      <th class="hidden">Orden</th>
       <th>Fecha</th>
       <th>Monto</th>
       <th>Detalle</th>
@@ -79,6 +80,7 @@
     </thead>
     <tbody>
     <tr v-for="r in data " :key="r">
+      <td class="hidden">{{r.fechaord}}</td>
       <td>{{r.fecha}}</td>
       <td>{{r.monto}}</td>
       <td>{{r.detalle}}</td>
@@ -226,6 +228,7 @@ export default {
       $('#example').DataTable().destroy()
          console.log(res.data)
          res.data.forEach(r => {
+            r.fechaord=r.fecha
             r.fecha=moment(r.fecha).format('DD/MM/YYYY')
          });
         this.data = res.data;

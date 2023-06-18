@@ -40,6 +40,8 @@ export function auth_success(state, data){
   state.pagoalmacen=data.user.permisos.find(p=>p.id===29)!=undefined
   state.cajageneral=data.user.permisos.find(p=>p.id===30)!=undefined
   state.gastoreporteuser=data.user.permisos.find(p=>p.id===31)!=undefined
+  state.reportepago=data.user.permisos.find(p=>p.id===32)!=undefined
+  state.resumencontable=data.user.permisos.find(p=>p.id===33)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -78,4 +80,6 @@ export function salir(state){
   state.pagoalmacen=false
   state.cajageneral=false
   state.gastoreporteuser=false
+  state.reportepago=false
+  state.resumencontable=false
 }
