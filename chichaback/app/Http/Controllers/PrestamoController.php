@@ -269,16 +269,16 @@ public function reporteventa(Request $request){
     }
 
     public function misanulados(Request $request){
-        if($request->user()->id==1)
-        {
-            if($request->id==0)
+        //if($request->user()->id==1)
+        //{
+            if($request->id==0){
             return Prestamo::with('cliente')->with('inventario')
             ->where('estado','ANULADO')
             ->where('efectivo','>',0)
             ->whereDate('updated_at','>=',$request->fecha1)
             ->whereDate('updated_at','<=',$request->fecha2)
-            ->get();
-            else
+            ->get();}
+            else{
             return Prestamo::with('cliente')->with('inventario')
             ->where('estado','ANULADO')
             ->where('efectivo','>',0)
@@ -287,7 +287,7 @@ public function reporteventa(Request $request){
             ->whereDate('updated_at','<=',$request->fecha2)
             ->get();
         }
-        else
+        /*else
         return Prestamo::with('cliente')->with('inventario')
         ->where('estado','ANULADO')
         ->where('efectivo','>',0)
@@ -295,7 +295,7 @@ public function reporteventa(Request $request){
         ->whereDate('updated_at','>=',$request->fecha1)
         ->whereDate('updated_at','<=',$request->fecha2)
         ->get();
-
+*/
         /*return Prestamo::with('cliente')
 
             ->where('estado','ANULADO')
@@ -333,7 +333,7 @@ public function reporteventa(Request $request){
         $cadena.='<br>
         <br>
         <div class="textc"><b>OJO</b></div>
-        <div class="leyenda"><b>* Solo se recibirá el envase si esta limpio y en buen estado<br>* Tiempo maximo de devolución 5 días, caso contrario se dará de baja<b></div>
+        <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* HORARIO DE DEVOLUCION DE GARANTIA DE LUNES - DOMINGO, EXCEPTO EL DIA MIERCOLES DE 8:30 AM A 16:30 PM<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJA</b></div>
 
         ';}
         return $cadena;

@@ -917,9 +917,10 @@ xlsx(datacaja, settings) // Will download the excel file
         if(caja>0) cadena+="<div style='font-size:16px'><b>TOTAL CAJA CHICA : </b>"+ caja+" Bs</div>"
 
       cadena+="</td></tr></table>"
-      cadena+="<div style='font-size:16px'><b>TOTAL SALDO: </b>"+ (ventas+ventasruta+matventa+ccpago-gastos) +" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL VENTA-GASTO: </b>"+ (ventas+ventasruta+matventa-gastos) +" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL GANANCIA: </b>"+ (ventas+ventasruta+matventa-gastos+ccpago) +" Bs</div>"
 
-      if(this.$store.state.login.user.id==1){
+      if(this.$store.state.login.user.id==1 && this.resumenplanilla>0){
       cadena+="<div style='font-size:16px'><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
       }
         let myWindow = window.open("_blank");

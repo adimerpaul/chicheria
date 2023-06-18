@@ -37,7 +37,7 @@
         <div class="q-pa-none">
           <q-table
             dense
-            :rows-per-page-options="[10,20,50,100,0]"
+            :rows-per-page-options="[0,10,20,50,100]"
             title="LISTA DE MATERIALES "
             :rows="materiales"
             :columns="columns"
@@ -81,7 +81,7 @@
         <div class="q-pa-none">
           <q-table
             dense
-            :rows-per-page-options="[10,20,50,100,0]"
+            :rows-per-page-options="[0,10,20,50,100]"
             title="LISTA DE COMPRAS "
             :rows="comptodo"
             :columns="colcompra"
@@ -110,7 +110,7 @@
         <div class="q-pa-none">
           <q-table
             dense
-            :rows-per-page-options="[10,20,50,100,0]"
+            :rows-per-page-options="[0,10,20,50,100]"
             title="LISTA DE RETIROS "
             :rows="recutodo"
             :columns="colrecuento"

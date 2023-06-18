@@ -24,7 +24,7 @@
       <q-table
       :columns="columns"
       :rows="empleados"
-      :rows-per-page-options="[50,100,0]"
+      :rows-per-page-options="[0,50,100]"
       :filter="filter"
       >
       <template v-slot:top-right>
@@ -230,7 +230,7 @@
             </q-form>
             <q-table
             title="Hitorial de pagos"
-            :rows-per-page-options="[50,100,0]"
+            :rows-per-page-options="[0,50,100]"
             :columns="columns2"
             :rows="empleadohistorial"
             v-if="$store.state.login.reportepago"
@@ -282,7 +282,7 @@
         <q-card-section class="text-center text-bold q-pa-none q-ma-none">Datos {{emp.nombre}}</q-card-section>
         <q-card-section>
             <div class="row">
-            <q-table title="PLANILLAS" :rows="planillas" :columns="colplan" row-key="name"  :rows-per-page-options="[50,100,0]">
+            <q-table title="PLANILLAS" :rows="planillas" :columns="colplan" row-key="name"  :rows-per-page-options="[0,50,100]">
                     <template v-slot:body-cell-opcion="props">
           <q-td :props="props">
                 <q-btn dense round flat color="info"  icon="print" @click="imprimirplanilla(props.row)"></q-btn>
@@ -624,7 +624,7 @@ export default {
       buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print'
       ],
-               "lengthMenu": [[50,100, -1], [50,100, "All"]]
+               "lengthMenu": [[-1,50,100], ["All",50,100]]
     } );
     this.missalarios()
     this.misempleados()
@@ -1250,7 +1250,7 @@ export default {
             buttons: [
               'copy', 'csv', 'excel', 'pdf', 'print'
             ],
-            "lengthMenu": [[50,100, -1], [50,100, "All"]]
+            "lengthMenu": [[-1,50,100], ["All",50,100]]
           } );
         })
         this.$q.loading.hide()
