@@ -128,8 +128,8 @@ class PrestamoController extends Controller
     }
 
 public function reporteventa(Request $request){
-    if($request->user()->id==1)
-    {
+    //if($request->user()->id==1)
+    //{
         if($request->id==0)
         return Prestamo::with('cliente')->with('inventario')->
         whereDate('fecha','>=',$request->fecha1)
@@ -143,7 +143,7 @@ public function reporteventa(Request $request){
         ->where('estado','VENTA')
         ->where('user_id',$request->id)
         ->get();
-    }
+    /*}
     else
 
 
@@ -152,7 +152,7 @@ public function reporteventa(Request $request){
         ->whereDate('fecha','<=',$request->fecha2)
         ->where('estado','VENTA')
         ->where('user_id',$request->user()->id)
-        ->get();
+        ->get();*/
     }
 
     public function show(Prestamo $prestamo)
