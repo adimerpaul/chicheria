@@ -63,8 +63,9 @@ class RecuentoController extends Controller
         $recuento->cantidad=$request->cantidad;
         $recuento->observacion=$request->observacion;
         $recuento->material_id=$request->material_id;
-        $recuento->user_id=$request->user_id;
+        $recuento->user_id=Request()->user()->id;
         $recuento->save();
+
     }
 
     /**

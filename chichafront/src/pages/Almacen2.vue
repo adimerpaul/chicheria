@@ -17,8 +17,9 @@
           :rows="materials"
           :columns="materialColumns"
           :loading="loading"
-          :rows-per-page-options="[10, 25, 50]"
+          :rows-per-page-options="[0]"
           :filter="almacenFilter"
+          flat
           row-class="cursor-pointer"
         >
           <template v-slot:top-right>
@@ -63,11 +64,12 @@
       <div class="col-12">
         <q-table
           dense
-          :rows-per-page-options="[10,20,50,100,0]"
+          :rows-per-page-options="[0]"
           title="LISTA DE COMPRAS "
           :rows="comptodo"
           :columns="colcompra"
           :filter="filter"
+          flat
           row-key="name">
 
           <template v-slot:body-cell-estado="props" >
@@ -84,10 +86,19 @@
           </template>
           <template v-slot:body-cell-opcion="props" >
             <q-td key="opcion" :props="props" >
-              <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.pagoalmacen && props.row.deuda>0" @click="pagarcompra(props.row)"/>
-              <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.editalmacen && props.row.logcompras.length>0" @click="listpago(props.row)"/>
-              <!--<q-btn dense round flat color="teal" icon="edit" v-if="$store.state.login.editalmacen" @click="modcompra(props.row)"/>-->
-              <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen" @click="delcompra(props.row)"/>
+              <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.pagoalmacen && props.row.deuda>0" @click="pagarcompra(props.row)">
+                <q-tooltip>Realizar Pago</q-tooltip>
+              </q-btn>
+              <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.editalmacen && props.row.logcompras.length>0" @click="listpago(props.row)">
+                <q-tooltip>Ver Pagos</q-tooltip>
+              </q-btn>
+              <q-btn dense round flat color="teal" icon="o_download" v-if="$store.state.login.editalmacen" @click="retirarRow(props.row)">
+                <q-tooltip>Realizar retiro</q-tooltip>
+              </q-btn>
+
+              <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen" @click="delcompra(props.row)">
+                <q-tooltip>Eliminar</q-tooltip>
+              </q-btn>
             </q-td>
           </template>
 
@@ -96,11 +107,12 @@
       <div class="col-12">
         <q-table
           dense
-          :rows-per-page-options="[10,20,50,100,0]"
+          :rows-per-page-options="[0]"
           title="LISTA DE RETIROS "
           :rows="recutodo"
           :columns="colrecuento"
           :filter="filter"
+          flat
           row-key="name">
           <template v-slot:top-right>
             <q-input outlined dense v-model="filter" debounce="300" placeholder="Buscar...">
@@ -256,7 +268,7 @@
     <q-dialog v-model="dialoglistpagos" >
       <q-card>
         <q-card-section class="row items-center">
-          <q-table title="pagos" :rows="pagos" :columns="colpagos" row-key="name" />
+          <q-table title="pagos" :rows="pagos" :columns="colpagos" row-key="name" flat :rows-per-page-options="[0]"/>
 <!--          <pre>{{pagos}}</pre>-->
 
         </q-card-section>
@@ -327,6 +339,41 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="dialog_remove">
+      <q-card style="width: 350px; max-width: 90vw;">
+        <q-card-section class="bg-green-8 text-white text-bold">
+          <div class="text-h7">RETIRAR MATERIAL </div>
+          <div class="text-h7">Material: {{material2.nombre}}</div>
+        </q-card-section>
+        <q-card-section class="q-pt-xs">
+          <q-form             @submit="onRegRecuento2"             class="q-gutter-md"          >
+            <q-input outlined type="text" v-model="recuento.cantidad" label="Cantidad"/>
+            <q-input outlined  type="text"  v-model="recuento.observacion" label="Observacion" />
+            <div>
+              <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
+              <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="dialog_modret">
+      <q-card>
+        <q-card-section class="bg-green-14 text-white">
+          <div class="text-h7">Modificar Retiro material : {{recuento2.material.nombre}}</div>
+        </q-card-section>
+        <q-card-section class="q-pt-xs">
+          <q-form             @submit="updateretiro"             class="q-gutter-md"          >
+            <q-input outlined type="text" v-model="recuento2.cantidad" label="Cantidad"/>
+            <q-input outlined  type="text"  v-model="recuento2.observacion" label="Observacion" />
+            <div>
+              <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
+              <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
@@ -337,12 +384,16 @@ import {jsPDF} from "jspdf";
 export default {
   data () {
     return {
+      dialog_modret:false,
+      dialog_remove: false,
       providers: [],
       provider: {},
       dialogpagar: false,
       dialog_reporte: false,
       filter: '',
       pago:{},
+      recuento:{},
+      recuento2:{},
       pagos:[],
       compra2:{},
       providerOptions: 'create',
@@ -398,13 +449,14 @@ export default {
       ],
       recutodo:[],
       compras: [],
+      material2: {},
       materialOptions: 'create',
       materialColumns: [
-        { name: 'nombre', label: 'Material', align: 'left', field: 'nombre' },
-        { name: 'unid', label: 'Unidad', align: 'left', field: 'unid' },
-        { name: 'min', label: 'Minimo', align: 'center', field: 'min' },
-        { name: 'stock', label: 'Stock', align: 'center', field: 'stock' },
-        { name: 'actions', label: 'Acciones', align: 'center', field: 'actions' }
+        { name: 'nombre', label: 'Material', align: 'left', field: 'nombre', sortable: true },
+        { name: 'unid', label: 'Unidad', align: 'left', field: 'unid', sortable: true },
+        { name: 'min', label: 'Minimo', align: 'center', field: 'min', sortable: true },
+        { name: 'stock', label: 'Stock', align: 'center', field: 'stock', sortable: true },
+        { name: 'actions', label: 'Acciones', align: 'center', field: 'actions', sortable: true }
       ],
       dialoglistpagos:false,
     }
@@ -412,16 +464,93 @@ export default {
   created() {
     this.providersGet()
     this.materialsGet()
+    this.fecha3=this.principioMesYmd()
     this.consultmaterial()
   },
   methods: {
+    delrecuento(recuento){
+      //console.log(recuento)
+      this.$q.dialog({
+        title: 'ADVERTENCIA',
+        message: 'Esta seguro de eliminar registro?',
+        cancel: true,
+        persistent: false
+      }).onOk(() => {
+        // console.log('>>>> OK')
+        this.$axios.delete(process.env.API+'/recuento/'+recuento.id).then(res=>{
+          this.materialsGet()
+          this.consultmaterial()
+          this.$q.notify({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'info',
+            message: 'Eliminado ',
+            position: 'top'
+          });
+        })
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+
+    },
+    modrecuento(recuento){
+      this.recuento2=recuento;
+      this.dialog_modret=true
+
+    },
+    updateretiro(){
+      this.$axios.put(process.env.API+'/recuento/'+this.recuento2.id,this.recuento2).then(res=>{
+        this.materialsGet()
+        this.consultmaterial()
+        this.dialog_modret=false
+        this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'info',
+          message: 'modificado ',
+          position: 'top'
+        });
+      })
+
+    },
+    onRegRecuento2(){
+      if(this.material2.stock<this.recuento.cantidad){
+        this.$q.notify({
+          color: 'negative',
+          textColor: 'white',
+          icon: 'report_problem',
+          message: 'No se puede retirar mas de lo que hay en stock',
+          position: 'top'
+        })
+        return false
+      }
+      this.recuento.material_id=this.material2.id
+      this.recuento.tipo='RETIRAR'
+      this.recuento.user_id=this.$store.getters["login/user"].id
+      this.$api.post(process.env.API+'/recuento',this.recuento).then(res=>{
+        this.recuento={}
+        this.dialog_remove=false
+        this.materialsGet()
+      })
+    },
+    principioMesYmd(){
+      let date = moment().startOf('month').format('YYYY-MM-DD')
+      return date
+    },
     reporte(props){
       this.material2=props
+      this.recuento.material_id=props.id
+      this.recuento.cantidad=''
+      this.recuento.observacion=''
       this.dialog_reporte=true
     },
     genreporte(){
       console.log(date.formatDate(new Date(),'DD/MM/YYYY HH:mm:ss'))
-      this.$axios.post(process.env.API+'/repalmacen',{id:this.material2.id,fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+      this.$api.post(process.env.API+'/repalmacen',{id:this.material2.id,fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
         console.log(res.data)
         let mc=this
 
@@ -493,7 +622,7 @@ export default {
       }
       this.pago.compra_id=this.compra2.id
       this.pago.checktipo=this.checkgasto
-      this.$axios.post(process.env.API + "/logcompra",this.pago).then((res) => {
+      this.$api.post(process.env.API + "/logcompra",this.pago).then((res) => {
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
@@ -511,7 +640,7 @@ export default {
       })
     },
     onReg(){
-      this.$axios.post(process.env.API+'/provider',this.proveedor).then(res=>{
+      this.$api.post(process.env.API+'/provider',this.proveedor).then(res=>{
         this.dialog_prov=false
         this.misproveedores()
         this.provider={}
@@ -522,6 +651,11 @@ export default {
       this.pagos=compra.logcompras
       this.dialoglistpagos=true
     },
+    retirarRow(props) {
+      console.log(props.material)
+      this.material2=props.material
+      this.dialog_remove=true
+    },
     delcompra(compra){
       //console.log(compra)
       this.$q.dialog({
@@ -531,7 +665,7 @@ export default {
         persistent: false
       }).onOk(() => {
         // console.log('>>>> OK')
-        this.$axios.delete(process.env.API+'/compra/'+compra.id).then(res=>{
+        this.$api.delete(process.env.API+'/compra/'+compra.id).then(res=>{
           this.materialsGet()
           this.consultmaterial()
           this.$q.notify({
@@ -560,12 +694,12 @@ export default {
 
     },
     consultmaterial(){
-      this.$axios.post(process.env.API+'/consultar2',{fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
+      this.$api.post(process.env.API+'/consultar2',{fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
         // console.log(res.data)
         this.comptodo=res.data
       })
 
-      this.$axios.post(process.env.API+'/consulrecuento2',{fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
+      this.$api.post(process.env.API+'/consulrecuento2',{fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
         this.recutodo=res.data
       })
     },
@@ -630,7 +764,7 @@ export default {
         return false
       }
       this.loading=true
-      this.$axios.post(process.env.API+'/compra2',{
+      this.$api.post(process.env.API+'/compra2',{
         // provider_id:this.proveedor.id,
         user_id:this.$store.getters["login/user"].id,
         compras:this.compras}).then(res=>{
@@ -642,7 +776,7 @@ export default {
 
     },
     totalgeneral(){
-      this.$axios.post(process.env.API + "/totalgeneral").then((res) => {
+      this.$api.post(process.env.API + "/totalgeneral").then((res) => {
         this.montogeneral=parseFloat( res.data.monto);
       })
     },
@@ -678,7 +812,7 @@ export default {
       this.providerOptions = 'create'
     },
     providersGet() {
-      this.$axios.get('provider').then(res => {
+      this.$api.get('provider').then(res => {
           this.providers = res.data
       }).catch(e => {
         console.log(e)
@@ -686,7 +820,7 @@ export default {
     },
     providerCreate() {
       this.loading = true
-      this.$axios.post('provider', this.provider).then(res => {
+      this.$api.post('provider', this.provider).then(res => {
         this.providerDialog = false
         this.providersGet()
       }).catch(e => {
@@ -697,7 +831,7 @@ export default {
     },
     materialUpdate() {
       this.loading = true
-      this.$axios.put('material/' + this.material.id, this.material).then(res => {
+      this.$api.put('material/' + this.material.id, this.material).then(res => {
         this.materialDialog = false
         this.materialsGet()
       }).catch(e => {
@@ -708,7 +842,7 @@ export default {
     },
     materialCreate() {
       this.loading = true
-      this.$axios.post('material', this.material).then(res => {
+      this.$api.post('material', this.material).then(res => {
         this.materialDialog = false
         this.materialsGet()
       }).catch(e => {
@@ -730,7 +864,7 @@ export default {
         persistent: true
       }).onOk(() => {
         this.loading = true
-        this.$axios.delete('material/' + material.id).then(res => {
+        this.$api.delete('material/' + material.id).then(res => {
           this.materialsGet()
         }).catch(e => {
           console.log(e)
@@ -741,7 +875,7 @@ export default {
     },
     materialsGet() {
       this.loading = true
-      this.$axios.get('material').then(res => {
+      this.$api.get('material').then(res => {
           this.materials = res.data
         console.log(this.materials)
       }).catch(e => {
