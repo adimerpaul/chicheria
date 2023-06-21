@@ -112,7 +112,7 @@
             {{porCobrar>0?'POR COBRAR':'CANCELADO'}}
           </div>
         </div>
-        <div class="col-12" align="right"><q-btn color="green" icon="check_circle" label="Generar Venta" @click="saleSave" /></div>
+        <div class="col-12" align="center"><q-btn color="green" icon="check_circle" label="Generar Venta" @click="saleSave" /></div>
         <div class="col-12">
         </div>
       </div>
@@ -241,7 +241,7 @@
   <div class="col-3"><q-input  outlined v-model="fecha1" label="Fecha Inicial"  dense type="date"/></div>
   <div class="col-3"><q-input  outlined v-model="fecha2" label="Fecha Final"  dense type="date" v-if="rango=='RANGO'"/></div>
   <div class="col-1" ><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'" style="width:100%"/></div>
-  <div class="col-3"> <q-btn color="green" label="CONSULTAR" icon="search"  dense @click="consultaVenta(type)"/></div>
+  <div class="col-3"> <q-btn color="info" label="CONSULTAR" icon="search"  dense @click="consultaVenta(type)"/></div>
  <!-- <div class="col-3"> <q-btn color="info" label="IMPRIMIR" icon="print"  dense @click="impresion"/></div>-->
   </div>
 <div class="col-12">
