@@ -42,7 +42,7 @@
 
         <div class="col-12">
           <div class=" responsive">
-            <table id="example1" class="display">
+           <!-- <table id="example1" class="display">
               <thead>
                 <tr>
                 <th>DETALLE</th>
@@ -83,10 +83,10 @@
                   <td>{{r.total}}</td>
                 </tr>
               </tbody>
-             </table>
-              <!--  <q-table dense title="Ingresos" :rows="ingreso" :columns="columns" row-key="name"    :rows-per-page-options="[0,50,100]"/>
+             </table>-->
+              <q-table dense title="Ingresos" :rows="ingreso" :columns="columns" row-key="name"    :rows-per-page-options="[0,50,100]"/>
                 <q-table dense title="Egresos" :rows="egreso" :columns="columns2" row-key="name"       :rows-per-page-options="[0,50,100]"/>
-                <q-table dense title="Caja Chica" :rows="cchica" :columns="columns3" row-key="name"       :rows-per-page-options="[0,50,100]"/>-->
+                <q-table dense title="Caja Chica" :rows="cchica" :columns="columns3" row-key="name"       :rows-per-page-options="[0,50,100]"/>
           </div>
         </div>
 
@@ -189,9 +189,9 @@ export default {
       this.ingreso=[]
       this.egreso=[]
       this.cchica=[]
-          $('#example1').DataTable().destroy();
-          $('#example2').DataTable().destroy();
-          $('#example3').DataTable().destroy();
+    //      $('#example1').DataTable().destroy();
+    //      $('#example2').DataTable().destroy();
+    //      $('#example3').DataTable().destroy();
       this.$axios.post(process.env.API+'/repventa',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
         //console.log(res.data)
         //return false
@@ -214,7 +214,7 @@ export default {
         if(r.total!=null && r.total!=undefined)
           this.ingreso.push({detalle:'Prest/mat '+r.estado,total:r.total,ingreso:r.total,egreso:0})
         })
-        this.$nextTick(()=>{
+        /*this.$nextTick(()=>{
           $('#example1').DataTable( {
                        "language":{
               "processing": "Procesando...",
@@ -460,7 +460,7 @@ export default {
             },
                       dom: 'Blfrtip',
              lengthMenu: [[-1,20, 50, 100], [ "All",20, 50, 100]],
-          } )})
+          } )})*/
       })
 
     this.$axios.post(process.env.API+'/repgastos',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
@@ -498,7 +498,7 @@ export default {
          // console.log(this.egreso)
 
         })
-        this.$nextTick(()=>{
+      /* this.$nextTick(()=>{
           $('#example1').DataTable( {
                        "language":{
               "processing": "Procesando...",
@@ -1238,7 +1238,7 @@ export default {
             },
                       dom: 'Blfrtip',
              lengthMenu: [[-1,20, 50, 100], [ "All",20, 50, 100]],
-          } )})
+          } )})*/
     },
 
     impresion(){

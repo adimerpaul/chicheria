@@ -6,8 +6,8 @@
   </div>
     <div class="col-2"><q-input type="date" outlined v-model="fecha" dense label="Fecha" /></div>
     <div class="col-1 flex flex-center">
-      <q-btn dense color="green" icon="add_circle" v-if="type=='detalle'" @click="modalregistro=true; newcliente={}"/>
-      <q-btn dense color="yellow"  icon="edit" v-if="client && type=='detalle'" @click="modcliente=client; dialog_mod=true;"/>
+      <q-btn dense color="green" icon="add_circle"  @click="modalregistro=true; newcliente={}"/>
+      <q-btn dense color="yellow"  icon="edit" v-if="client " @click="modcliente=client; dialog_mod=true;"/>
    </div>
  <div class="col-5">
   <q-select
@@ -137,10 +137,33 @@
             <div class="col-12 col-md-6 q-pa-xs">
               <q-input  outlined label="direccion" style="text-transform: uppercase" v-model="newcliente.direccion"/>
             </div>
-
+            <template v-if="type=='local'">
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input  outlined label="Local" v-model="newcliente.local"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input  outlined label="Fecha Nac" type="date" v-model="newcliente.fechanac"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-select outlined v-model="newcliente.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-select outlined v-model="newcliente.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad" />
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-select outlined v-model="newcliente.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input  outlined label="Razon Social"  v-model="newcliente.razon"/>
+              </div>
+              <div class="col-12 col-md-6 q-pa-xs">
+                <q-input  outlined label="NIT"  v-model="newcliente.nit"/>
+              </div>
+            </template>
             <div class="col-12  q-pa-xs flex flex-center">
               <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Registrar"/>
             </div>
+
           </div>
         </q-form>
       </q-card-section>
@@ -196,6 +219,15 @@
                   style="text-transform: uppercase"
                 />
           <div>
+            <template v-if="type=='local'">
+                <q-input  outlined label="Local" v-model="modcliente.local"/>
+                <q-input  outlined label="Fecha Nac" type="date" v-model="modcliente.fechanac"/>
+                <q-select outlined v-model="modcliente.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo" />
+                <q-select outlined v-model="modcliente.legalidad" :options="['CON LICENCIA','SIN LICENCIA']" label="Legalidad" />
+                <q-select outlined v-model="modcliente.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']" label="Categoria" />
+                <q-input  outlined label="Razon Social"  v-model="modcliente.razon"/>
+                <q-input  outlined label="NIT"  v-model="modcliente.nit"/>
+            </template>
             <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
               <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
           </div>
@@ -208,12 +240,12 @@
 <div class="row">
   <div class="col-3"><q-input  outlined v-model="fecha1" label="Fecha Inicial"  dense type="date"/></div>
   <div class="col-3"><q-input  outlined v-model="fecha2" label="Fecha Final"  dense type="date" v-if="rango=='RANGO'"/></div>
-  <div class="col-3" ><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'" style="width:100%"/></div>
-  <div class="col-3"> <q-btn color="green" label="BUSCAR" icon="search"  dense @click="consultaVenta(type)"/></div>
+  <div class="col-1" ><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'" style="width:100%"/></div>
+  <div class="col-3"> <q-btn color="green" label="CONSULTAR" icon="search"  dense @click="consultaVenta(type)"/></div>
  <!-- <div class="col-3"> <q-btn color="info" label="IMPRIMIR" icon="print"  dense @click="impresion"/></div>-->
   </div>
 <div class="col-12">
-  <q-table title="Ventas" :rows="ventas" :columns="columnas" row-key="name" :filter="filter">
+  <q-table title="Ventas" :rows="ventas" :columns="columnas" row-key="name" :filter="filter" :rows-per-page-options="[0,20,50,100]">
     <template v-slot:top-right>
       <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
         <template v-slot:append>
@@ -401,7 +433,7 @@ export default {
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       products: [],
       modalregistro:false,
-      newcliente:{},
+      newcliente:{fechanac:'2000-01-01'},
       filter:'',
       product: {},
       clients2: [],
@@ -508,7 +540,17 @@ export default {
     agregarcliente(){
       this.$q.loading.show()
       this.newcliente.tipocliente=2
+      if (this.type=='local'){
+        this.newcliente.tipocliente=1}
+      else
+          this.newcliente.fechanac=null
       this.$axios.post(process.env.API+'/agregarcliente',this.newcliente).then(()=>{
+        this.$q.notify({
+          message:'Cliente Registrado',
+          color:'green',
+          position:'top',
+          icon:'info'
+        })
         this.$q.loading.hide()
         this.datosGet(this.type)
         this.modalregistro=false
@@ -518,7 +560,7 @@ export default {
         this.$q.notify({
           message:err.response.data.message,
           color:'red',
-          position:'center',
+          position:'top',
 
           icon:'error'
         })
@@ -657,7 +699,7 @@ export default {
           this.$q.notify({
             message:'Venta Anulado ',
             color:'green',
-          position:'center',
+          position:'top',
 
             icon:'info'
           })})
@@ -689,7 +731,7 @@ export default {
         this.$q.notify({
           message:'Ingrese la fecha',
           color:'red',
-          position:'center',
+          position:'top',
           icon:'error'
         })
           return false
@@ -699,7 +741,7 @@ export default {
         this.$q.notify({
           message:'Seleccione Productos',
           color:'red',
-          position:'center',
+          position:'top',
           icon:'error'
         })
           return false
@@ -710,7 +752,7 @@ export default {
         this.$q.notify({
           message:'Debe Seleccionar Cliente',
           color:'red',
-          position:'center',
+          position:'top',
           icon:'error'
         })
           return false
@@ -718,6 +760,12 @@ export default {
         }
       if(this.monto<0 ||  this.monto>this.total || this.monto==undefined)
         { console.log('sin monto')
+        this.$q.notify({
+          message:'Verifique el monto',
+          color:'red',
+          position:'top',
+          icon:'error'
+        })
           return false
 
         }

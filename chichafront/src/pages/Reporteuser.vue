@@ -10,10 +10,11 @@
                   >
                 <div class="row">
                     <div class="col-3">
-                        <q-select v-model="usuario" outlined :options="usuarios" option-label="name" option-value="id" label="Usuarios" required/>
+                        <q-select dense v-model="usuario" outlined :options="usuarios" option-label="name" option-value="id" label="Usuarios" required/>
                     </div>
                 <div class="col-2">
                   <q-input
+                  dense
                     outlined
                     type="date"
                     v-model="fecha"
@@ -23,14 +24,17 @@
                   </div>
                   <div class="col-2">
                   <q-input
+                  dense
                     outlined
                     type="date"
                     v-model="fecha2"
                     label="Fecha fin"
                     required
                     :rules="[ val => val>=fecha || 'Fecha debe ser mayor o igual']"
+                    v-if="rango=='RANGO'"
                   />
                   </div>
+                  <div class="col-3" ><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'" style="width:100%"/></div>
 
                   <div class="col-2 flex flex-center">
                     <q-btn label="Generar" type="submit" color="primary" icon="send" />
@@ -190,6 +194,7 @@ export default {
       filter:'',
       usuario:'',
       ventas:[],
+      rango:'RANGO',
       deudas:[],
       regpago:{},
       pagos:{},
@@ -549,7 +554,9 @@ export default {
             this.$q.loading.show()
             // console.log(this.usuario)
             // $('#example').DataTable().destroy();
-
+            if(this.rango=='DIA'){
+        this.fecha2=this.fecha
+      }
             this.$axios.post(process.env.API+'/listadoventa',{ini:this.fecha,fin:this.fecha2,id:this.usuario.id}).then(res=>{
                 console.log(res.data);
               this.$q.loading.hide()

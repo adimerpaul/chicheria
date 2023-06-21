@@ -58,6 +58,11 @@
                 </template>
               </q-input>
             </template>
+            <template v-slot:body-cell-prestado="props" >
+              <q-td key="prestado" :props="props" style="font-size:20px; font-weight: bold;">
+                 {{props.row.prestado }}
+              </q-td>
+            </template>
             <template v-slot:body-cell-observacion="props" >
               <q-td key="observacion" :props="props">
                  <q-btn color="accent" icon="notes" @click="verObs(props.row)" v-if="props.row.observacion!='' && props.row.observacion!=null" dense/>
