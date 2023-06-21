@@ -323,7 +323,7 @@
             </q-form>
           </div>
           <div class="col-12">
-            <q-table :rows="logplanillas" title="Historial de planillas" :columns="columslogplanillas">
+            <q-table :rows="logplanillas" title="Historial de planillas" :columns="columslogplanillas" :rows-per-page-options="[0]">
               <template v-slot:body-cell-tipo="props">
                 <q-td :props="props">
                   <q-badge :color="props.row.tipo=='ADELANTO'?'negative':props.row.tipo=='DESCUENTO'?'negative':props.row.tipo=='BONO'?'positive':''">{{props.row.tipo}}</q-badge>

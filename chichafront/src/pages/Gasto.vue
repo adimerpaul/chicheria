@@ -1944,7 +1944,7 @@ xlsx(datacaja, settings) // Will download the excel file
             },
                       dom: 'Blfrtip',
             // pageLength: 5,
-             lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "All"]],
+             lengthMenu: [[-1,20, 50, 100], ["All",20, 50, 100]],
             // buttons: [
             //   'copy', 'csv', 'excel', 'pdf', 'print'
             // ],
@@ -2227,7 +2227,7 @@ xlsx(datacaja, settings) // Will download the excel file
             },
                       dom: 'Blfrtip',
             // pageLength: 5,
-             lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "All"]],
+             lengthMenu: [[-1,20, 50, 100], [ "All",20, 50, 100]],
             // buttons: [
             //   'copy', 'csv', 'excel', 'pdf', 'print'
             // ],

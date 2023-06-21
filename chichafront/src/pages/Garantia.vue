@@ -29,6 +29,7 @@
       <q-table
       :columns="columns"
       :rows="detalles"
+      :rows-per-page-options="[0,50,100]"
       >
         <template v-slot:body-cell-action="props">
           <q-td :props="props">
@@ -67,6 +68,7 @@
         :rows="garantias"
         title="Historial de Garantia"
         :filter="filter"
+      :rows-per-page-options="[0,50,100]"
         
       >
         <template v-slot:top-right>

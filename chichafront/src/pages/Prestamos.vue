@@ -49,6 +49,7 @@
             :columns="colprestamo"
             :filter="filter"
             :pagination="pagination"
+            :rows-per-page-options="[0,20,50,100]"
             row-key="name">
 
           <template v-slot:top-right>
@@ -195,6 +196,7 @@
       :rows="listado"
       :columns="colum"
       row-key="name"
+      :rows-per-page-options="[0]"
     />
         </q-card-section>
 

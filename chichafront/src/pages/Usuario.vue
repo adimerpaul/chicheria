@@ -71,7 +71,7 @@
       :rows="data" 
       :columns="columns" 
       row-key="name" 
-      :rows-per-page-options="[50,100]">
+      :rows-per-page-options="[0,50,100]">
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
