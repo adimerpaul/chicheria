@@ -6,7 +6,7 @@
   </div>
     <div class="col-2"><q-input type="date" outlined v-model="fecha" dense label="Fecha" /></div>
     <div class="col-1 flex flex-center">
-      <q-btn dense color="green" icon="add_circle"  @click="modalregistro=true; newcliente={}"/>
+      <q-btn dense color="green" icon="add_circle"  @click="modalregistro=true; newcliente={fechanac:'2000-01-01'}"/>
       <q-btn dense color="yellow"  icon="edit" v-if="client " @click="modcliente=client; dialog_mod=true;"/>
    </div>
  <div class="col-5">
@@ -105,7 +105,7 @@
           <div class="text-bold text-grey">Total: <span class="text-black text-h5">{{total}}Bs.</span> </div>
         </div>
         <div class="col-3">
-          <div class="text-bold text-grey">Saldo: <span :class="porCobrar>0?'text-red':'text-green' +' text-h5'">{{porCobrar}}Bs.</span> </div>
+          <div class="text-bold text-grey">Saldo: <span :class="porCobrar>0?'text-red text-h5':'text-green text-h5'">{{porCobrar}}Bs.</span> </div>
         </div>
         <div class="col-3">
           <div :class="`bg-${porCobrar>0?'red':'green'}-3 text-${porCobrar>0?'red':'green'}-8 text-bold q-ma-xs q-pa-xs`" :style="`border: 1px solid ${porCobrar>0?'red':'green'};border-radius: 5px`">
@@ -554,7 +554,7 @@ export default {
         this.$q.loading.hide()
         this.datosGet(this.type)
         this.modalregistro=false
-        this.newcliente={}
+        this.newcliente={fechanac:'2000-01-01'}
       }).catch(err=>{
         this.$q.loading.hide()
         this.$q.notify({
