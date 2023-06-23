@@ -800,7 +800,7 @@ export default {
         this.$q.notify({
           message:'Venta exitosa',
           color:'green',
-          position:'center',
+          position:'top',
 
           icon:'info'
         })
@@ -953,7 +953,7 @@ export default {
         this.$q.notify({
           message:err.message.error,
           color:'red',
-          position:'center',
+          position:'top',
           icon:'error'
         })
       })

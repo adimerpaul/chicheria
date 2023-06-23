@@ -11,7 +11,7 @@ export function login({commit}, user) {
         const user = resp.data.user
         localStorage.setItem('tokenchi', token)
         axios.defaults.headers.common['Authorization'] = 'Bearer '+token
-   //     api.defaults.headers.common['Authorization'] = 'Bearer '+token
+        api.defaults.headers.common['Authorization'] = 'Bearer '+token
         commit('auth_success', {token, user})
         resolve(resp)
       })
