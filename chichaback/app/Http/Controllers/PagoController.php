@@ -150,9 +150,31 @@ class PagoController extends Controller
      * @param  \App\Models\Pagos  $pagos
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pago $pagos)
+    public function destroy($id)
     {
         //
+        $pago=Pago::find($id);
+        //$pago->save();
+
+        $venta=Venta::find($pago->venta_id);
+        $venta->saldo=$venta->saldo + $pago->monto;
+
+        $general=General::find(1);
+        $general->monto=$general->monto -  $pago->monto;
+        $general->save();
+
+        $loggeneral= Loggeneral::where('numero',$venta->id)
+        ->where('detalle','CXC '.$venta->tipo)
+        ->where('motivo','PAGO CXC')
+        ->where('tipo','INGRESO')
+        ->first();
+        $loggeneral->delete();
+
+        $venta->estado='POR COBRAR';
+        $pago->delete();
+        $venta->save();
+
+
     }
 
     public function reportepago(Request $request){
