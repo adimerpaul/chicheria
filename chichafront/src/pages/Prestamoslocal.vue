@@ -1,5 +1,8 @@
 <template>
 <q-page class="q-pa-xs">
+  <div class="col-12">
+    <div class="text-subtitle1 bg-blue-9 text-center text-white">PRESTAMOS LOCAL</div>
+  </div>
   <q-form @submit.prevent="agregar">
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
@@ -195,7 +198,13 @@
       :columns="colum"
       row-key="name"
       :rows-per-page-options="[0]"
-    />
+    >
+    <template v-slot:body-cell-op="props" >
+      <q-td key="op" :props="props">
+         <q-btn color="red" icon="delete" dense @click="delDevuelto(props.row)"  />        
+      </q-td>
+    </template>
+    </q-table>
         </q-card-section>
 
 
@@ -204,7 +213,7 @@
 
 </q-page>
 </template>
--
+
 <script>
 import {date} from 'quasar'
 import { jsPDF } from "jspdf";
@@ -242,6 +251,7 @@ export default {
 
       pagination: { rowsPerPage: 20 },
       colum:[
+  { name: 'op', label: 'OP', field: 'op', sortable: true },
   { name: 'fecha', align: 'center', label: 'fecha', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
   { name: 'cantidad', label: 'cantidad', field: 'cantidad', sortable: true },
   { name: 'motivo', label: 'Observacion', field: 'motivo' },
@@ -532,6 +542,34 @@ export default {
     this.reporte();
   },
   methods: {
+    delDevuelto(devol){
+      this.$q.dialog({
+        title: 'Eliminar',
+        message: 'Esta seguro de Eliminar Devolucion'
+      }).onOk(() => {
+        this.$axios.delete(process.env.API+'/logprestamo/'+devol.id).then(res=>{
+          this.dialog_list=false
+          this.$axios.get(process.env.API+'/inventario').then(res=>{
+      // console.log(res.data)
+      this.inventarios=res.data;  
+        this.inventario=this.inventarios[0];
+      })
+        this.listclientes();
+        this.cajaprestamo();
+      this.listadoprestamo();
+      this.reporte();
+          this.$q.notify({
+          message: 'Eliminado',
+          color: 'red',
+          icon:'info'
+        })
+})
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
     verTelef(dato){
       this.$q.dialog({
         title: 'Telefono Cliente: '+dato.cliente.titular,

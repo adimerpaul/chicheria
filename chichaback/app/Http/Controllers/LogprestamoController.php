@@ -124,8 +124,20 @@ class LogprestamoController extends Controller
      * @param  \App\Models\Logprestamo  $logprestamo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Logprestamo $logprestamo)
+    public function destroy($id)
     {
         //
+        $logpres= Logprestamo::find($id);
+
+        $prestamo=Prestamo::find($logpres->prestamo_id);
+        $prestamo->prestado = $prestamo->prestado + $logpres->cantidad;
+        $prestamo->estado='EN PRESTAMO';
+        $prestamo->save();
+
+        $inv=Inventario::find($prestamo->inventario_id);
+        $inv->cantidad= $inv->cantidad - $logpres->cantidad;
+        $inv->save();
+
+        $logpres->delete();
     }
 }

@@ -1,11 +1,11 @@
 <template>
 <q-page class="q-pa-xs">
     <div class="col-12">
-      <div class="text-subtitle1 bg-blue-9 text-center text-white">Ventas Local</div>
+      <div class="text-subtitle1 bg-blue-9 text-center text-white">HISTORIAL CUENTAS POR COBRAR LOCAL</div>
 
         <div class="col-12 col-sm-12">
             <div class="col-12">
-              <div class="text-subtitle1 bg-info text-center text-white">Historial de ventas Local</div>
+              <!--<div class="text-subtitle1 bg-info text-center text-white">Historial de ventas Local</div>-->
             </div>
             <q-form @submit.prevent="misventas">
               <div class="row">

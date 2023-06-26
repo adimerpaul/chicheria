@@ -74,87 +74,6 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-
-        <q-item
-          v-if="$store.state.login.usuarios"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/user"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="engineering" size="lg" />
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label>USUARIOS</q-item-label>
-            <q-item-label caption>
-              Control de usuarios
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-
-
-
-
-
-
-        <q-item
-          v-if="$store.state.login.productos"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/producto"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="sports_bar" size="lg" />
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label>PRODUCTOS</q-item-label>
-            <q-item-label caption>
-              Informacion de Productos
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-
-
-        <q-item
-          v-if="$store.state.login.inventario"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/inventario"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="list" size="lg" />
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label>INVENTARIO</q-item-label>
-            <q-item-label caption>
-              Informacion de Materiales
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-<!--
-        <q-item v-if="$store.state.login.ventadetalle" active-class="my-menu-link" clickable exact to="/venta">
-          <q-item-section avatar>
-            <q-icon name="shopping_cart" size="lg" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>VENTA DETALLE</q-item-label>
-            <q-item-label caption>
-              Historial de ventas
-            </q-item-label>
-          </q-item-section>
-        </q-item>-->
         <q-item
         clickable
         @click="detalleShowing = !detalleShowing"
@@ -328,6 +247,7 @@
 <!--          </q-card-section>-->
 <!--          </q-card>-->
       </q-item>
+      
         <q-item
           clickable
           @click="detalleShowing2 = !detalleShowing2"
@@ -508,6 +428,87 @@
 <!--          </q-card-section>-->
 <!--          </q-card>-->
 <!--      </q-expansion-item>-->
+        <q-item
+          v-if="$store.state.login.usuarios"
+          active-class="my-menu-link"
+          clickable
+          exact
+          to="/user"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="engineering" size="lg" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>USUARIOS</q-item-label>
+            <q-item-label caption>
+              Control de usuarios
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+
+
+
+
+
+        <q-item
+          v-if="$store.state.login.productos"
+          active-class="my-menu-link"
+          clickable
+          exact
+          to="/producto"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="sports_bar" size="lg" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>PRODUCTOS</q-item-label>
+            <q-item-label caption>
+              Informacion de Productos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+
+        <q-item
+          v-if="$store.state.login.inventario"
+          active-class="my-menu-link"
+          clickable
+          exact
+          to="/inventario"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="list" size="lg" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>INVENTARIO</q-item-label>
+            <q-item-label caption>
+              Informacion de Materiales
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+<!--
+        <q-item v-if="$store.state.login.ventadetalle" active-class="my-menu-link" clickable exact to="/venta">
+          <q-item-section avatar>
+            <q-icon name="shopping_cart" size="lg" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>VENTA DETALLE</q-item-label>
+            <q-item-label caption>
+              Historial de ventas
+            </q-item-label>
+          </q-item-section>
+        </q-item>-->
+
 
 
           <q-item
