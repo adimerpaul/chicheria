@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Logcaja;
+use App\Models\Loggeneral;
 use App\Models\Caja;
+use App\Models\General;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,14 +30,14 @@ class LogcajaController extends Controller
         //return $request;
         //if($request->user()->id==1)
         //{
-            if($request->user_id==0) 
+            if($request->user_id==0)
             return Logcaja::with('glosa')->with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('fecha','desc')->orderBy('id','desc')->get();
-            else 
+            else
             return Logcaja::with('glosa')->with('user')->where('user_id',$request->user_id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('fecha','desc')->orderBy('id','desc')->get();
         //}
         //else
         //return Logcaja::with('glosa')->with('user')->where('user_id',$request->user()->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->get();
-       
+
     }
 
     public function totalcaja(){
@@ -67,13 +69,37 @@ class LogcajaController extends Controller
         $log->save();
         $caja=Caja::find(1);
 
-        if($request->tipo=='RETIRA')
+        $general=General::find(1);
+        $loggeneral=new Loggeneral ;
+        $loggeneral->numero=0;
+        $loggeneral->detalle='';
+        $loggeneral->monto=$request->monto;
+        $loggeneral->motivo=$request->motivo +' TRANSACCION CCHICA';
+        if($request->tipo=='RETIRA'){
+            $loggeneral->tipo='AGREGAR';
+        }
+        else{
+            $loggeneral->tipo='RETIRAR';
+        }
+        $loggeneral->fecha=date('Y-m-d');
+        $loggeneral->hora=date('H:i:s');
+        $loggeneral->glosa_id=null;
+        $loggeneral->user_id=$request->user()->id;
+        $loggeneral->save();
+
+        if($request->tipo=='RETIRA'){
             $caja->monto=floatval($caja->monto) - floatval($request->monto);
-            
-        else
-            $caja->monto=floatval($caja->monto) + floatval($request->monto);
-        
             $caja->save();
+            $general->monto=floatval($general->monto) + floatval($request->monto);
+            $general->save();
+        }
+        else{
+            $caja->monto=floatval($caja->monto) + floatval($request->monto);
+            $caja->save();
+            $general->monto=floatval($general->monto) - floatval($request->monto);
+            $general->save();
+
+        }
     }
 
     /**
@@ -113,7 +139,7 @@ class LogcajaController extends Controller
 
         $caja=Caja::find(1);
         $caja->monto = floatval($caja->monto) + floatval($log->monto) - floatval($request->monto);
-        
+
         $log->monto=$request->monto;
         $log->motivo=$request->motivo;
         $log->glosa_id=$request->glosa_id;
@@ -138,13 +164,13 @@ class LogcajaController extends Controller
             $caja=Caja::find(1);
             $caja->monto=floatval($caja->monto) + floatval($logcaja->monto);
             $caja->save();
-        
+
         }
         if($logcaja->tipo=='AGREGA'){
             $caja=Caja::find(1);
             $caja->monto=floatval($caja->monto) - floatval($logcaja->monto);
             $caja->save();
-        
+
         }
         $logcaja->delete();
 
