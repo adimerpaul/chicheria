@@ -36,5 +36,6 @@ export default function () {
     gastoreporteuser:false,
     reportepago:false,
     resumencontable:false,
+    delpago:false,
   }
 }

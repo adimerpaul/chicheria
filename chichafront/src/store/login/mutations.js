@@ -42,6 +42,7 @@ export function auth_success(state, data){
   state.gastoreporteuser=data.user.permisos.find(p=>p.id===31)!=undefined
   state.reportepago=data.user.permisos.find(p=>p.id===32)!=undefined
   state.resumencontable=data.user.permisos.find(p=>p.id===33)!=undefined
+  state.delpago=data.user.permisos.find(p=>p.id===34)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -82,4 +83,5 @@ export function salir(state){
   state.gastoreporteuser=false
   state.reportepago=false
   state.resumencontable=false
+  state.delpago=false
 }

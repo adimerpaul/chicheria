@@ -77,8 +77,13 @@
                     </q-card-section>
 
                     <q-card-section class="q-pt-none">
-                    <q-table title="Pagos" :rows="pagos" :columns="columns" row-key="name" />
-
+                    <q-table title="Pagos" :rows="pagos" :columns="columns" row-key="name" >
+                    <template v-slot:body-cell-op="props" v-if="$store.state.login.delpago">
+                      <q-td key="op" :props="props">
+                         <q-btn color="red" icon="delete" dense @click="delPago(props.row)"  />        
+                      </q-td>
+                    </template>
+                  </q-table>
                     </q-card-section>
 
                     <q-card-actions align="right">
@@ -183,6 +188,7 @@ export default {
       regpago:{fecha:date.formatDate(new Date(),'YYYY-MM-DD')},
       prestamo:{},
       columns:[
+        {name:'op',label:'OP',field:'op'},
         {name:'fecha',label:'Fecha',field:row=>moment(row.fecha).format('DD/MM/YYYY')},
         {name:'monto',label:'Monto',field:'monto'},
         {name:'Observacion',label:'Observacion',field:'observacion'},
@@ -538,6 +544,27 @@ export default {
     })
   },
   methods:{
+    delPago(pago){
+        this.$q.dialog({
+        title: 'Eliminar',
+        message: 'Esta seguro de Eliminar Pago'
+      }).onOk(() => {
+        this.$axios.delete(process.env.API+'/pago/'+pago.id).then(res=>{
+          this.alert=false;
+          this.misventas()
+      // console.log(res.data)
+          this.$q.notify({
+          message: 'Eliminado',
+          color: 'red',
+          icon:'info'
+        })
+})
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+      },
       onPago(){
         this.loading=true
       this.$axios.post(process.env.API+'/pago',this.regpago).then(res=>{

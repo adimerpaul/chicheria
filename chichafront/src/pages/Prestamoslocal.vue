@@ -199,7 +199,7 @@
       row-key="name"
       :rows-per-page-options="[0]"
     >
-    <template v-slot:body-cell-op="props" >
+    <template v-slot:body-cell-op="props" v-if="$store.state.login.delpago">
       <q-td key="op" :props="props">
          <q-btn color="red" icon="delete" dense @click="delDevuelto(props.row)"  />        
       </q-td>
