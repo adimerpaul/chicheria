@@ -43,6 +43,7 @@ export function auth_success(state, data){
   state.reportepago=data.user.permisos.find(p=>p.id===32)!=undefined
   state.resumencontable=data.user.permisos.find(p=>p.id===33)!=undefined
   state.delpago=data.user.permisos.find(p=>p.id===34)!=undefined
+  state.preciounitario=data.user.permisos.find(p=>p.id===35)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'

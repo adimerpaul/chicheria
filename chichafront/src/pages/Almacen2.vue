@@ -84,6 +84,16 @@
               </template>
             </q-input>
           </template>
+          <template v-slot:body-cell-costo="props">
+            <q-td :props="props">
+              <q-badge v-if="$store.state.login.preciounitario" :color="props.row.deuda>0?'red':'green'"  >{{props.row.costo}}</q-badge>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-subtotal="props">
+            <q-td :props="props">
+              <q-badge v-if="$store.state.login.preciounitario" :color="props.row.deuda>0?'red':'green'"  >{{props.row.subtotal}}</q-badge>
+            </q-td>
+          </template>
           <template v-slot:body-cell-opcion="props" >
             <q-td key="opcion" :props="props" >
               <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.pagoalmacen && props.row.deuda>0" @click="pagarcompra(props.row)">
@@ -95,7 +105,9 @@
               <q-btn dense round flat color="teal" icon="o_download" v-if="$store.state.login.editalmacen" @click="retirarRow(props.row)">
                 <q-tooltip>Realizar retiro</q-tooltip>
               </q-btn>
-
+              <q-btn dense round flat color="yellow-9" icon="o_edit" v-if="$store.state.login.editalmacen" @click="editcompra(props.row)">
+                <q-tooltip>Editar</q-tooltip>
+              </q-btn>
               <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen" @click="delcompra(props.row)">
                 <q-tooltip>Eliminar</q-tooltip>
               </q-btn>
@@ -182,6 +194,9 @@
               <div class="col-12">
                 <q-input outlined dense v-model="material.nombre" label="Nombre" lazy-rules :rules="[val => !!val || 'Campo requerido']"/>
               </div>
+              <div class="col-12">
+                <q-input outlined dense v-model="material.nombre" label="Nombre" lazy-rules :rules="[val => !!val || 'Campo requerido']"/>
+              </div>
               <div class="col-6">
                 <q-select outlined dense v-model="material.unid" label="Unidad" :options="unidades" lazy-rules :rules="[val => !!val || 'Campo requerido']"/>
               </div>
@@ -215,23 +230,30 @@
               <q-select dense outlined v-model="provider" :options="providers" label="Proveedor" option-label="razon" option-value="id" />
             </div>
             <div class="col-2"><q-input dense outlined type="text" v-model="compra.cantidad" label="Cantidad"/></div>
-            <div class="col-2"><q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo U" /></div>
-            <div class="col-1 flex-center flex text-bold text-center">Subtotal: {{subTotalNumber(compra.costo,compra.cantidad)}}</div>
+            <div class="col-2">
+              <q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo U" v-if="$store.state.login.preciounitario" />
+            </div>
+            <div class="col-1 flex-center flex text-bold text-center" v-if="$store.state.login.preciounitario">
+              Subtotal: {{subTotalNumber(compra.costo,compra.cantidad)}}
+            </div>
             <div class="col-1"><q-input dense outlined  type="text" v-model="compra.lote"  label="Lote"  /></div>
             <div class="col-3"><q-input dense outlined  type="date" v-model="compra.fechaven"  label="Fecha Vencimiento"  /></div>
             <div class="col-3"><q-input dense outlined  type="text"  v-model="compra.observacion" label="Observacion" /></div>
             <div class="col-12 text-right">
-              <q-btn label="Añadir" no-caps  color="green" icon="add_circle" @click="agregarcompra"/>
+              <q-btn label="Añadir" no-caps  color="green" icon="add_circle" @click="agregarcompra" v-if="compraOptions === 'create'"/>
             </div>
-            <div class="col-12">
+<!--            <div class="col-12">-->
+<!--              <pre>{{compra}}</pre>-->
+<!--            </div>-->
+            <div class="col-12" v-if="compraOptions === 'create'">
                             <q-markup-table>
                             <thead>
                             <tr>
                               <th class="text-left" >NRO</th>
                               <th class="text-left">MATERIAL</th>
                               <th class="text-center">CANTIDAD</th>
-                              <th>COSTO</th>
-                              <th>SUBTOTAL</th>
+                              <th v-if="$store.state.login.preciounitario">COSTO</th>
+                              <th v-if="$store.state.login.preciounitario">SUBTOTAL</th>
                               <th class="text-center">LOTE</th>
                               <th class="text-left">FEC VEN</th>
                               <th class="text-left">OBS</th>
@@ -391,6 +413,7 @@ export default {
       dialogpagar: false,
       dialog_reporte: false,
       filter: '',
+      compraOptions: 'create',
       pago:{},
       recuento:{},
       recuento2:{},
@@ -426,7 +449,6 @@ export default {
         { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
       ],
       colcompra : [
-
         { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
         { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
         { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
@@ -600,6 +622,15 @@ export default {
       })
 
     },
+    editcompra(compra){
+      // console.log(compra)
+      this.dialog_add = true
+      this.compra=compra
+      this.material=compra.material
+      this.provider=compra.provider
+      this.compraOptions = 'edit'
+
+    },
     regpago(){
       if(this.$store.state.login.user.id==1){this.checkgasto='GASTO'}
       else{this.checkgasto='CAJA'}
@@ -740,39 +771,52 @@ export default {
       }
     },
     regcompra(){
-      if(this.compras.length==0){
-        this.$q.notify({
-          color: 'red-4',
-          textColor: 'white',
-          icon: 'info',
-          message: 'Debe registrar '
+      if (this.compraOptions=='create'){
+        if(this.compras.length==0){
+          this.$q.notify({
+            color: 'red-4',
+            textColor: 'white',
+            icon: 'info',
+            message: 'Debe registrar '
+          });
+          return false
+        }
+        this.totalgeneral();
+        this.totalcompra=0
+        this.compras.forEach(r => {
+          this.totalcompra+=r.subtotal
         });
-        return false
+        if(parseFloat(this.montogeneral) < parseFloat(this.totalcompra)){
+          this.$q.notify({
+            color: 'red-4',
+            textColor: 'white',
+            icon: 'info',
+            message: 'No puede exeder monto'
+          });
+          return false
+        }
+        this.loading=true
+        this.$api.post(process.env.API+'/compra2',{
+          // provider_id:this.proveedor.id,
+          user_id:this.$store.getters["login/user"].id,
+          compras:this.compras}).then(res=>{
+          //console.log(res.data)
+          this.dialog_add=false
+          this.materialsGet();
+          this.loading=false
+        })
+        ///////al modificar
+      }else{
+        this.loading=true
+        this.compra.material_id=this.material.id
+        this.compra.provider_id=this.provider.id
+        this.$api.post(process.env.API+'/compraModificar',this.compra).then(res=>{
+          this.dialog_add=false
+          this.materialsGet();
+          this.consultmaterial()
+          this.loading=false
+        })
       }
-      this.totalgeneral();
-      this.totalcompra=0
-      this.compras.forEach(r => {
-        this.totalcompra+=r.subtotal
-      });
-      if(parseFloat(this.montogeneral) < parseFloat(this.totalcompra)){
-        this.$q.notify({
-          color: 'red-4',
-          textColor: 'white',
-          icon: 'info',
-          message: 'No puede exeder monto'
-        });
-        return false
-      }
-      this.loading=true
-      this.$api.post(process.env.API+'/compra2',{
-        // provider_id:this.proveedor.id,
-        user_id:this.$store.getters["login/user"].id,
-        compras:this.compras}).then(res=>{
-        //console.log(res.data)
-        this.dialog_add=false
-        this.materialsGet();
-        this.loading=false
-      })
 
     },
     totalgeneral(){
@@ -789,6 +833,7 @@ export default {
       }
     },
     compraAdd() {
+      this.compraOptions = 'create'
       this.dialog_add = true
       this.compras=[]
       this.compra={

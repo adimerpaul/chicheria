@@ -37,5 +37,6 @@ export default function () {
     reportepago:false,
     resumencontable:false,
     delpago:false,
+    preciounitario:false,
   }
 }

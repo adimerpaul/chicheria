@@ -92,9 +92,9 @@ class CompraController extends Controller
             $compra->fecha=date('Y-m-d');
             $compra->hora=date('H:i:s');
             $compra->cantidad=$r['cantidad'];
-            $compra->costo=$r['costo'];
-            $compra->subtotal=$r['subtotal'];
-            $compra->deuda=$r['subtotal'];
+            $compra->costo=$r['costo']==null?0:$r['costo'];
+            $compra->subtotal=$r['subtotal']==null?0:$r['subtotal'];
+            $compra->deuda=$r['subtotal']==null?0:$r['subtotal'];
             $compra->fechaven=$r['fechaven'];
             $compra->observacion=$r['observacion'];
             $compra->lote=$r['lote'];
@@ -144,7 +144,9 @@ class CompraController extends Controller
             ->with('logcompras')
 //            ->where('material_id',$request->material_id)
             ->whereDate('fecha','>=',$request->fecha1)
-            ->where('fecha','<=',$request->fecha2)->get();
+            ->where('fecha','<=',$request->fecha2)
+            ->orderBy('id','desc')
+            ->get();
     }
 
     /**
@@ -156,6 +158,20 @@ class CompraController extends Controller
     public function edit(Compra $compra)
     {
         //
+    }
+    public function compraModificar(Request $request){
+        $compra=Compra::find($request->id);
+        $compra->cantidad=$request->cantidad;
+        $compra->costo=$request->costo;
+        $compra->subtotal=$request->costo*$request->cantidad;
+        $compra->deuda=$request->costo*$request->cantidad;
+        $compra->fechaven=$request->fechaven;
+        $compra->observacion=$request->observacion;
+        $compra->lote=$request->lote;
+        $compra->material_id=$request->material_id;
+        $compra->provider_id=$request->provider_id;
+        $compra->user_id=$request->user()->id;
+        $compra->save();
     }
 
     /**
@@ -171,11 +187,9 @@ class CompraController extends Controller
         $compra=Compra::find($request->id);
         $material=Material::find($request->material_id);
         if($compra->cantidad != $request->cantidad){
-        $material->stock=$material->stock - $compra->cantidad + $request->cantidad;
-        $material->save();
-
-
-    }
+            $material->stock=$material->stock - $compra->cantidad + $request->cantidad;
+            $material->save();
+        }
         /*$general=General::find(1);
         $general->monto=$general->monto +  $compra->subtotal - $request->subtotal;
         $general->save();
