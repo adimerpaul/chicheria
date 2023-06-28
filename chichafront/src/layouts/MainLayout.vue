@@ -92,6 +92,7 @@
               round
               dense
               icon="keyboard_arrow_down"
+              @click="detalleShowing = !detalleShowing"
             >
               <q-menu v-model="detalleShowing">
                 <q-list style="min-width: 100px">
@@ -247,7 +248,7 @@
 <!--          </q-card-section>-->
 <!--          </q-card>-->
       </q-item>
-      
+
         <q-item
           clickable
           @click="detalleShowing2 = !detalleShowing2"
@@ -266,6 +267,7 @@
               flat
               round
               dense
+              @click="detalleShowing2 = !detalleShowing2"
               icon="keyboard_arrow_down"
             >
               <q-menu v-model="detalleShowing2">
@@ -509,28 +511,113 @@
           </q-item-section>
         </q-item>-->
 
-
-
-          <q-item
-          v-if="$store.state.login.cobrarruta"
-          active-class="my-menu-link"
+        <q-item
           clickable
-          exact
-          to="/cxcruta"
+          @click="detalleShowing4 = !detalleShowing4"
         >
-          <q-item-section
-            avatar
-          >
+          <q-item-section avatar>
             <q-icon name="task" size="lg" />
           </q-item-section>
-
           <q-item-section>
-            <q-item-label>CxC RUTA</q-item-label>
+            <q-item-label>Rutas</q-item-label>
             <q-item-label caption>
-              Historial de venta
+
             </q-item-label>
           </q-item-section>
+          <q-item-section side>
+            <q-btn
+              flat
+              round
+              dense
+              @click="detalleShowing4 = !detalleShowing4"
+              icon="keyboard_arrow_down"
+            >
+              <q-menu v-model="detalleShowing4">
+              <q-item
+                v-if="$store.state.login.cobrarruta"
+                active-class="my-menu-link"
+                clickable
+                exact
+                to="/cxcruta"
+              >
+                <q-item-section
+                  avatar
+                >
+                  <q-icon name="task" size="lg" />
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label>CxC RUTA</q-item-label>
+                  <q-item-label caption>
+                    Historial de venta
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item
+                v-if="$store.state.login.historialventa"
+                active-class="my-menu-link"
+                clickable
+                exact
+                to="/historialruta"
+              >
+                <q-item-section
+                  avatar
+                >
+                  <q-icon name="task" size="lg" />
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label>HISTORIAL DE RUTAS </q-item-label>
+                  <q-item-label caption>
+                    Historial de venta Ruta
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              </q-menu>
+            </q-btn>
+          </q-item-section>
         </q-item>
+
+<!--        <q-item-->
+<!--          v-if="$store.state.login.cobrarruta"-->
+<!--          active-class="my-menu-link"-->
+<!--          clickable-->
+<!--          exact-->
+<!--          to="/cxcruta"-->
+<!--        >-->
+<!--          <q-item-section-->
+<!--            avatar-->
+<!--          >-->
+<!--            <q-icon name="task" size="lg" />-->
+<!--          </q-item-section>-->
+
+<!--          <q-item-section>-->
+<!--            <q-item-label>CxC RUTA</q-item-label>-->
+<!--            <q-item-label caption>-->
+<!--              Historial de venta-->
+<!--            </q-item-label>-->
+<!--          </q-item-section>-->
+<!--        </q-item>-->
+<!--        <q-item-->
+<!--          v-if="$store.state.login.historialventa"-->
+<!--          active-class="my-menu-link"-->
+<!--          clickable-->
+<!--          exact-->
+<!--          to="/historialruta"-->
+<!--        >-->
+<!--          <q-item-section-->
+<!--            avatar-->
+<!--          >-->
+<!--            <q-icon name="task" size="lg" />-->
+<!--          </q-item-section>-->
+
+<!--          <q-item-section>-->
+<!--            <q-item-label>HISTORIAL DE RUTAS </q-item-label>-->
+<!--            <q-item-label caption>-->
+<!--              Historial de venta Ruta-->
+<!--            </q-item-label>-->
+<!--          </q-item-section>-->
+<!--        </q-item>-->
 
         <q-item
           v-if="$store.state.login.historialventa"
@@ -554,26 +641,7 @@
         </q-item>
 
 
-        <q-item
-          v-if="$store.state.login.historialventa"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/historialruta"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="task" size="lg" />
-          </q-item-section>
 
-          <q-item-section>
-            <q-item-label>HISTORIAL DE RUTAS </q-item-label>
-            <q-item-label caption>
-              Historial de venta Ruta
-            </q-item-label>
-          </q-item-section>
-        </q-item>
 
         <q-item v-if="$store.state.login.empleados" active-class="my-menu-link" clickable exact to="/empleado">
           <q-item-section avatar>
@@ -600,17 +668,17 @@
         </q-item>
 
 -->
-        <q-item v-if="$store.state.login.veralmacen" active-class="my-menu-link" clickable exact to="/almacen">
-          <q-item-section avatar>
-            <q-icon name="store" size="lg" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>ALMACEN</q-item-label>
-            <q-item-label caption>
-              Materiales
-            </q-item-label>
-          </q-item-section>
-        </q-item>
+<!--        <q-item v-if="$store.state.login.veralmacen" active-class="my-menu-link" clickable exact to="/almacen">-->
+<!--          <q-item-section avatar>-->
+<!--            <q-icon name="store" size="lg" />-->
+<!--          </q-item-section>-->
+<!--          <q-item-section>-->
+<!--            <q-item-label>ALMACEN</q-item-label>-->
+<!--            <q-item-label caption>-->
+<!--              Materiales-->
+<!--            </q-item-label>-->
+<!--          </q-item-section>-->
+<!--        </q-item>-->
         <q-item v-if="$store.state.login.veralmacen" active-class="my-menu-link" clickable exact to="/almacen2">
           <q-item-section avatar>
             <q-icon name="o_store" size="lg" />
@@ -623,47 +691,115 @@
           </q-item-section>
         </q-item>
 
+
         <q-item
-          v-if="$store.state.login.cajachica"
-          active-class="my-menu-link"
           clickable
-          exact
-          to="/caja"
+          @click="detalleShowing3 = !detalleShowing3"
         >
-          <q-item-section
-            avatar
-          >
+          <q-item-section avatar>
             <q-icon name="point_of_sale" size="lg" />
           </q-item-section>
-
-           <q-item-section>
-            <q-item-label>CAJA CHICA</q-item-label>
+          <q-item-section>
+            <q-item-label>Caja</q-item-label>
             <q-item-label caption>
-              Efectivo de Caja
+
             </q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-btn
+              flat
+              round
+              dense
+              @click="detalleShowing3 = !detalleShowing3"
+              icon="keyboard_arrow_down"
+            >
+              <q-menu v-model="detalleShowing3">
+                <q-item
+                  v-if="$store.state.login.cajachica"
+                  active-class="my-menu-link"
+                  clickable
+                  exact
+                  to="/caja"
+                >
+                  <q-item-section
+                    avatar
+                  >
+                    <q-icon name="point_of_sale" size="lg" />
+                  </q-item-section>
+
+                   <q-item-section>
+                    <q-item-label>CAJA CHICA</q-item-label>
+                    <q-item-label caption>
+                      Efectivo de Caja
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item
+                  v-if="$store.state.login.cajageneral"
+                  active-class="my-menu-link"
+                  clickable
+                  exact
+                  to="/cajageneral"
+                >
+                  <q-item-section
+                    avatar
+                  >
+                    <q-icon name="point_of_sale" size="lg" />
+                  </q-item-section>
+
+                   <q-item-section>
+                    <q-item-label>CAJA GENERAL</q-item-label>
+                    <q-item-label caption>
+                      Efectivo de Caja
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-menu>
+            </q-btn>
           </q-item-section>
         </q-item>
 
-        <q-item
-          v-if="$store.state.login.cajageneral"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/cajageneral"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="point_of_sale" size="lg" />
-          </q-item-section>
+<!--        <q-item-->
+<!--          v-if="$store.state.login.cajachica"-->
+<!--          active-class="my-menu-link"-->
+<!--          clickable-->
+<!--          exact-->
+<!--          to="/caja"-->
+<!--        >-->
+<!--          <q-item-section-->
+<!--            avatar-->
+<!--          >-->
+<!--            <q-icon name="point_of_sale" size="lg" />-->
+<!--          </q-item-section>-->
 
-           <q-item-section>
-            <q-item-label>CAJA GENERAL</q-item-label>
-            <q-item-label caption>
-              Efectivo de Caja
-            </q-item-label>
-          </q-item-section>
-        </q-item>
+<!--           <q-item-section>-->
+<!--            <q-item-label>CAJA CHICA</q-item-label>-->
+<!--            <q-item-label caption>-->
+<!--              Efectivo de Caja-->
+<!--            </q-item-label>-->
+<!--          </q-item-section>-->
+<!--        </q-item>-->
+
+<!--        <q-item-->
+<!--          v-if="$store.state.login.cajageneral"-->
+<!--          active-class="my-menu-link"-->
+<!--          clickable-->
+<!--          exact-->
+<!--          to="/cajageneral"-->
+<!--        >-->
+<!--          <q-item-section-->
+<!--            avatar-->
+<!--          >-->
+<!--            <q-icon name="point_of_sale" size="lg" />-->
+<!--          </q-item-section>-->
+
+<!--           <q-item-section>-->
+<!--            <q-item-label>CAJA GENERAL</q-item-label>-->
+<!--            <q-item-label caption>-->
+<!--              Efectivo de Caja-->
+<!--            </q-item-label>-->
+<!--          </q-item-section>-->
+<!--        </q-item>-->
 
         <q-item
           v-if="$store.state.login.gastos"
@@ -845,6 +981,8 @@ export default defineComponent({
       leftDrawerOpen,
       detalleShowing: ref(false),
       detalleShowing2: ref(false),
+      detalleShowing3: ref(false),
+      detalleShowing4: ref(false),
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
