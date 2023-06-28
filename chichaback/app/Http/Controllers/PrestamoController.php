@@ -107,7 +107,7 @@ class PrestamoController extends Controller
         $prestamo->user_id=$request->user()->id;
             $prestamo->fecha=date('Y-m-d');
             $prestamo->estado='ANULADO';
-        if($prestamo->efectivo>0 && $prestamo->efectivo!=null){
+        if($prestamo->efectivo>0 && $prestamo->efectivo!=null && $prestamo->tipo!='VENTA'){
             $general=General::find(1);
             $general->monto=$general->monto + $prestamo->efectivo;
             $general->save();
@@ -124,6 +124,23 @@ class PrestamoController extends Controller
             $loggeneral->user_id= $request->user()->id;
             $loggeneral->save();
         }
+        if($request->tipo=='VENTA'){
+            $general=General::find(1);
+            $general->monto=$general->monto -  $prestamo->efectivo;
+            $general->save();
+
+            $loggeneral= new Loggeneral;
+            $loggeneral->numero=$prestamo->id;
+            $loggeneral->monto= $prestamo->efectivo;
+            $loggeneral->detalle='PRESTAMO/VENTA/ANULADO';
+            $loggeneral->motivo='VENTA INVENTARIO';
+            $loggeneral->tipo='RETIRAR';
+            $loggeneral->fecha=$prestamo->fecha;
+            $loggeneral->hora=date("H:i:s");
+            $loggeneral->glosa_id=null;
+            $loggeneral->user_id= $prestamo->user_id;
+            $loggeneral->save();
+         }
         return $prestamo->save();
     }
 
