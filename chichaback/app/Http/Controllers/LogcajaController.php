@@ -73,8 +73,8 @@ class LogcajaController extends Controller
         $loggeneral=new Loggeneral ;
         $loggeneral->numero=0;
         $loggeneral->detalle='';
-        //$loggeneral->monto=$request->monto;
-        $loggeneral->motivo=$request->motivo +' TRANSACCION CCHICA';
+        $loggeneral->monto=$request->monto;
+        $loggeneral->motivo=$request->motivo .' TRANSACCION CCHICA';
         if($request->tipo=='RETIRA'){
             $loggeneral->tipo='AGREGAR';
         }
