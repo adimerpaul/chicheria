@@ -35,24 +35,27 @@
         >
           Opciones del menu
         </q-item-label>
-
         <q-item
-          clickable
+          v-if="$store.state.login.usuarios"
           active-class="my-menu-link"
-          to="/"
-          exact>
+          clickable
+          exact
+          to="/user"
+        >
           <q-item-section
-            avatar>
-            <q-icon name="home" size="lg" />
+            avatar
+          >
+            <q-icon name="engineering" size="lg" />
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>HOME</q-item-label>
+            <q-item-label>USUARIOS</q-item-label>
             <q-item-label caption>
-              Pagina principal
+              Control de usuarios
             </q-item-label>
           </q-item-section>
         </q-item>
+
 
         <q-item
           v-if="!$store.getters['login/isLoggedIn']"
@@ -257,7 +260,7 @@
             <q-icon name="task" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Local</q-item-label>
+            <q-item-label>LOCAL</q-item-label>
             <q-item-label caption>
 
             </q-item-label>
@@ -346,6 +349,26 @@
             </q-btn>
           </q-item-section>
         </q-item>
+        <q-item
+          v-if="$store.state.login.gastos"
+          active-class="my-menu-link"
+          clickable
+          exact
+          to="/gasto"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="paid" size="lg" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>RESUMEN DE GASTOS Y VENTAS</q-item-label>
+            <q-item-label caption>
+              Control de gastos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
 
 
 <!--        <q-expansion-item-->
@@ -430,26 +453,6 @@
 <!--          </q-card-section>-->
 <!--          </q-card>-->
 <!--      </q-expansion-item>-->
-        <q-item
-          v-if="$store.state.login.usuarios"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/user"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="engineering" size="lg" />
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label>USUARIOS</q-item-label>
-            <q-item-label caption>
-              Control de usuarios
-            </q-item-label>
-          </q-item-section>
-        </q-item>
 
 
 
@@ -519,7 +522,7 @@
             <q-icon name="task" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Rutas</q-item-label>
+            <q-item-label>RUTAS</q-item-label>
             <q-item-label caption>
 
             </q-item-label>
@@ -684,7 +687,7 @@
             <q-icon name="o_store" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Almacen v2</q-item-label>
+            <q-item-label>Almacen</q-item-label>
             <q-item-label caption>
               Materiales
             </q-item-label>
@@ -700,7 +703,7 @@
             <q-icon name="point_of_sale" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Caja</q-item-label>
+            <q-item-label>CAJAS</q-item-label>
             <q-item-label caption>
 
             </q-item-label>
@@ -801,26 +804,7 @@
 <!--          </q-item-section>-->
 <!--        </q-item>-->
 
-        <q-item
-          v-if="$store.state.login.gastos"
-          active-class="my-menu-link"
-          clickable
-          exact
-          to="/gasto"
-        >
-          <q-item-section
-            avatar
-          >
-            <q-icon name="paid" size="lg" />
-          </q-item-section>
 
-          <q-item-section>
-            <q-item-label>GASTOS</q-item-label>
-            <q-item-label caption>
-              Control de gastos
-            </q-item-label>
-          </q-item-section>
-        </q-item>
 
         <q-item
           v-if="$store.state.login.reportes"
@@ -860,6 +844,23 @@
             <q-item-label>RESUMEN CONTABLE</q-item-label>
             <q-item-label caption>
               reporte de Ingresos y Egresos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          active-class="my-menu-link"
+          to="/"
+          exact>
+          <q-item-section
+            avatar>
+            <q-icon name="home" size="lg" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>HOME</q-item-label>
+            <q-item-label caption>
+              Pagina principal
             </q-item-label>
           </q-item-section>
         </q-item>
