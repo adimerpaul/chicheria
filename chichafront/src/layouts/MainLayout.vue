@@ -687,7 +687,7 @@
             <q-icon name="o_store" size="lg" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Almacen</q-item-label>
+            <q-item-label>ALMACEN</q-item-label>
             <q-item-label caption>
               Materiales
             </q-item-label>
