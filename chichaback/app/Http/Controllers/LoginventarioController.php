@@ -19,7 +19,7 @@ class LoginventarioController extends Controller
     }
 
     public function listlog(Request $request){
-        return Loginventario::where('inventario_id',$request->id)->get();
+        return Loginventario::where('inventario_id',$request->id)->orderBy('id','desc')->get();
     } 
 
     /**
