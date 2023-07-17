@@ -622,7 +622,7 @@ export default {
         }
       },dom: 'Blfrtip',
       buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
+         'excel', 'pdf'
       ],
                "lengthMenu": [[-1,50,100], ["All",50,100]]
     } );
@@ -1248,7 +1248,7 @@ export default {
               }
             },dom: 'Blfrtip',"ordering": false,
             buttons: [
-              'copy', 'csv', 'excel', 'pdf', 'print'
+               'excel', 'pdf'
             ],
             "lengthMenu": [[-1,50,100], ["All",50,100]]
           } );

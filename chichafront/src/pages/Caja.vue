@@ -77,6 +77,19 @@
           </template>
         </q-input>
       </template>
+      <template v-slot:body-cell-motivo="props">
+        <q-td key="motivo" :props="props">
+          <q-btn
+            dense
+            round
+            flat
+            color="accent"
+            @click="viewRow(props.row)"
+            icon="list"
+          ></q-btn>
+        </q-td>
+
+    </template>
       <template v-slot:body-cell-opcion="props">
           <q-td key="opcion" :props="props">
             <q-btn
@@ -172,7 +185,18 @@ export default {
         this.$q.loading.hide();
       });
     },
-
+    viewRow(dato){
+      this.$q.dialog({
+        title: 'MOTIVO ',
+        message: dato.motivo
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
 
     onSubmit() {
         if(this.dato.tipo=='RETIRA' && parseFloat(this.dato.monto) > parseFloat(this.cajachica.monto))

@@ -457,7 +457,7 @@ export default {
         {label:'opcion',name:'opcion',field:'opcion'},
         {label:'id',name:'id',field:'id'},
         {label:'fecha',name:'fecha',field:row=>moment(row.fecha).format('DD/MM/YYYY')},
-        {label:'hora',name:'hora',field:'hora'},
+        {label:'hora',name:'hora',field:row=>moment(row.created_at).format('HH:mm')},
         {label:'cliente',name:'cliente',field:row=>row.cliente.local+' '+ row.cliente.titular,align:'left'},
         {label:'total',name:'total',field:'total'},
         {label:'acuenta',name:'acuenta',field:'acuenta'},

@@ -474,7 +474,7 @@ export default {
       },
       dom: 'Blfrtip',
       buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
+         'excel', 'pdf'
       ],
       "lengthMenu": [[-1,10, 25, 50], [ "All",10, 25, 50]],
       // buttons: [
@@ -943,7 +943,7 @@ export default {
             },
             dom: 'Blfrtip',
             buttons: [
-              'copy', 'csv', 'excel', 'pdf', 'print'
+               'excel', 'pdf'
             ],
       "lengthMenu": [[-1,10, 25, 50], [ "All",10, 25, 50]],
             // buttons: [

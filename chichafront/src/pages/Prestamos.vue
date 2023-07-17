@@ -62,7 +62,7 @@
               </q-input>
             </template>
             <template v-slot:body-cell-prestado="props" >
-              <q-td key="prestado" :props="props" style="font-size:20px; font-weight: bold;">
+              <q-td key="prestado" :props="props"  :style="props.row.prestado>0?'color:green;font-size:20px; font-weight: bold;':'color:red;font-size:20px; font-weight: bold;'">
                  {{props.row.prestado }}
               </q-td>
             </template>
@@ -96,7 +96,12 @@
             </template>
             <template v-slot:body-cell-telefono="props" >
               <q-td key="telfono" :props="props" >
-                 <q-btn icon="call" color="accent" @click="verTelef(props.row)" dense/>                
+                 <q-btn icon="call" color="accent" @click="verTelef(props.row)" dense v-if="props.row.telefono!=''"/>                
+              </q-td>
+            </template>
+            <template v-slot:body-cell-fisico="props" >
+              <q-td key="fisico" :props="props" >
+                 <q-btn icon="list" color="accent" @click="verFisico(props.row)" dense v-if="props.row.fisico!=''"/>                
               </q-td>
             </template>
             <template v-slot:body-cell-opcion="props" >
@@ -324,6 +329,18 @@ export default {
       this.$q.dialog({
         title: 'Telefono Cliente: '+dato.cliente.titular,
         message: dato.cliente.telefono
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
+    verFisico(dato){
+      this.$q.dialog({
+        title: ' Cliente: '+dato.cliente.titular,
+        message: dato.cliente.Fisico
       }).onOk(() => {
         // console.log('OK')
       }).onCancel(() => {

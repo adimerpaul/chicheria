@@ -427,7 +427,7 @@ class VentaController extends Controller
         $venta->total=0;
         $venta->acuenta=0;
         $venta->saldo=0;
-        $venta->observacion=$request->observacion;
+        $venta->observacion=$venta->observacion.' ' .$request->observacion;
         return $venta->save();
 
     }

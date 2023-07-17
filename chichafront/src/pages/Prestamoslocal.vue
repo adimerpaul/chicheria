@@ -34,8 +34,8 @@
     </div>
     </div>
     <div class="row">
-      <div class="col-6  q-pa-xs ">
-        <q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/>
+      <div class="col-6  q-pa-xs hidden">
+        <q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir" />
       </div>
       <div class="col-6  q-pa-xs " style=" text-align: right;">
         <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
@@ -62,7 +62,7 @@
               </q-input>
             </template>
             <template v-slot:body-cell-prestado="props" >
-              <q-td key="prestado" :props="props" style="font-size:20px; font-weight: bold;">
+              <q-td key="prestado" :props="props" :style="props.row.prestado>0?'color:green;font-size:20px; font-weight: bold;':'color:red;font-size:20px; font-weight: bold;'">
                  {{props.row.prestado }}
               </q-td>
             </template>
@@ -98,6 +98,11 @@
             <template v-slot:body-cell-telefono="props" >
               <q-td key="telfono" :props="props" >
                  <q-btn icon="call" color="accent" @click="verTelef(props.row)" dense/>                
+              </q-td>
+            </template>
+            <template v-slot:body-cell-fisico="props" >
+              <q-td key="fisico" :props="props" >
+                 <q-btn icon="list" color="accent" @click="verFisico(props.row)" dense v-if="props.row.fisico!=''"/>                
               </q-td>
             </template>
             <template v-slot:body-cell-opcion="props" >
@@ -518,9 +523,9 @@ export default {
         }
       },dom: 'Blfrtip',
       buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
+         'excel', 'pdf'
       ],
-      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+      "lengthMenu": [[-1,10, 25, 50], ["All",10, 25, 50]]
     } );
 
 
@@ -574,6 +579,18 @@ export default {
       this.$q.dialog({
         title: 'Telefono Cliente: '+dato.cliente.titular,
         message: dato.cliente.telefono
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
+    verFisico(dato){
+      this.$q.dialog({
+        title: ' Cliente: '+dato.cliente.titular,
+        message: dato.cliente.Fisico
       }).onOk(() => {
         // console.log('OK')
       }).onCancel(() => {
@@ -869,9 +886,9 @@ export default {
               }
             },dom: 'Blfrtip',
             buttons: [
-              'copy', 'csv', 'excel', 'pdf', 'print'
+               'excel', 'pdf'
             ],
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+            "lengthMenu": [[-1,10, 25, 50], ["All",10, 25, 50]]
           } );
         })
 
