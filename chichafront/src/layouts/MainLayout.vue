@@ -77,9 +77,11 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+
         <q-item
         clickable
         @click="detalleShowing = !detalleShowing"
+        v-if="$store.state.login.clientes || $store.state.login.ventadetalle || $store.state.login.historialprestamo || $store.state.login.cobrardetalle"
       >
           <q-item-section avatar>
             <q-icon name="people_alt" size="lg" />
@@ -255,6 +257,7 @@
         <q-item
           clickable
           @click="detalleShowing2 = !detalleShowing2"
+          v-if="$store.state.login.clientes || $store.state.login.ventadetalle || $store.state.login.historialprestamo || $store.state.login.cobrarlocal"
         >
           <q-item-section avatar>
             <q-icon name="task" size="lg" />
@@ -517,6 +520,7 @@
         <q-item
           clickable
           @click="detalleShowing4 = !detalleShowing4"
+          v-if="$store.state.login.cobrarruta || $store.state.login.historialventa"
         >
           <q-item-section avatar>
             <q-icon name="task" size="lg" />
@@ -698,6 +702,7 @@
         <q-item
           clickable
           @click="detalleShowing3 = !detalleShowing3"
+          v-if="$store.state.login.cajachica || $store.state.login.cajageneral"
         >
           <q-item-section avatar>
             <q-icon name="point_of_sale" size="lg" />

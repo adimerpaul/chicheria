@@ -514,12 +514,13 @@ export default {
         {name:'action',label:'Action',field:'action'},
       ],
       columns2:[
+        {name:'opcion',label:'Opcion',field:'opcion'},
         {name:'fecha',label:'Fecha',field:'fecha',sortable: true },
         {name:'hora',label:'Hora',field:'hora'},
         {name:'tipo',label:'Tipo',field:'tipo',sortable: true },
         // {name:'detalle',label:'detalle',field:'detalle'},
         {name:'monto',label:'Monto',field:'monto'},
-        {name:'opcion',label:'Opcion',field:'opcion'},
+        {name:'observacion',label:'observacion',field:'observacion'},
       ],
       columns3:[
         {name:'nombre',label:'Empleado',field:'nombre'},
@@ -920,11 +921,11 @@ xlsx(datacaja, settings) // Will download the excel file
 
       cadena+="</td></tr></table>"
       cadena+="<div style='font-size:16px'><b>TOTAL TOTAL VENTA-GASTO: </b>"+ (ventas+ventasruta+matventa-gastos) +" Bs</div>"
-      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL GANANCIA: </b>"+ (ventas+ventasruta+matventa-gastos+ccpago) +" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL GENERAL: </b>"+ (ventas+ventasruta+matventa-gastos+ccpago) +" Bs</div>"
 
-      if(this.$store.state.login.user.id==1 && this.resumenplanilla>0){
+      /*if(this.$store.state.login.user.id==1 && this.resumenplanilla>0){
       cadena+="<div style='font-size:16px'><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
-      }
+      }*/
         let myWindow = window.open("_blank");
         myWindow.document.write(cadena);
         myWindow.document.close();

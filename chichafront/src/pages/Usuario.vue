@@ -259,8 +259,14 @@ export default {
       //   console.log(permiso)
       // },
     updatepermisos(){
-
-      this.$axios.put(process.env.API+'/updatepermisos/'+this.dato2.id,{permisos:this.permisos2}).then(res=>{
+      $q.dialog({
+        title: 'Esta Seguro de Cambiar Permisos',
+        message: 'Se modificara los permisos',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        // console.log('>>>> OK')
+        this.$axios.put(process.env.API+'/updatepermisos/'+this.dato2.id,{permisos:this.permisos2}).then(res=>{
         console.log(res.data)
         this.modelpermiso=false
         this.misdatos()
@@ -271,6 +277,14 @@ export default {
           color:'red'
         })
       })
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+
     },
     mispermisos(i){
       // console.log(i.row)

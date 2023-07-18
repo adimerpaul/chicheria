@@ -345,13 +345,13 @@ export default {
         {name:'action',label:'OPCION',field:'action'},
       ],
       columns2:[
+        {name:'opcion',label:'OPCION',field:'opcion'},
         {name:'fecha',label:'FECHA',field:row=>moment(row.fecha).format('DD/MM/YYYY'),sortable: true},
         {name:'hora',label:'HORA',field:'hora'},
         {name:'tipo',label:'TIPO',field:'tipo',sortable: true},
-        // {name:'detalle',label:'detalle',field:'detalle'},
         {name:'monto',label:'MONTO',field:'monto', sortable: true},
         {name:'user',label:'USUARIO',field:row=>row.user.name, sortable: true},
-        {name:'opcion',label:'OPCION',field:'opcion'},
+        {name:'observacion',label:'observacion',field:'observacion'},
       ],
       columns3:[
         {name:'nombre',label:'Empleado',field:'nombre'},
@@ -778,6 +778,7 @@ export default {
         })
         this.imprimirplanilla(this.planilla )
         this.dialoggenplanilla=false
+        this.planilla={}
           this.misempleados()
           this.totalgeneral()
       })
