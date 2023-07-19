@@ -792,7 +792,11 @@ xlsx(datacaja, settings) // Will download the excel file
 
         us.label=this.$store.state.login.user.name;
         let ventas=0
+        let vtotal=0
+        let vsaldo=0
         let ventasruta=0
+        let vrtotal=0
+        let vrsaldo=0
         let ccpago=0
         let color1="style='color:red'"
         let cadena="<style>\
@@ -810,6 +814,8 @@ xlsx(datacaja, settings) // Will download the excel file
           this.ventas.forEach(r => {
             if(r.fechaentrega==null || r.fechaentrega==''){
               ventas=ventas+r.acuenta
+               vtotal=vtotal+r.total
+               vsaldo=vsaldo+r.saldo
               cadena+="<tr><td>"+ r.tipo.substring(0,1)+'-'+r.id+"</td><td>"
               r.detalles.forEach(d => {
                   cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
@@ -820,7 +826,7 @@ xlsx(datacaja, settings) // Will download the excel file
 
       }
           });
-        cadena+="</table><div><b>TOTAL VENTAS:</b>"+ventas+"</div><br>"
+        cadena+="</table><div><b>TOTAL VENTAS:</b>"+vtotal+"</div><br>"
         if(this.totalruta){
         cadena+="<div>VENTAS CON RUTA</div> \
         <table>\
@@ -828,6 +834,8 @@ xlsx(datacaja, settings) // Will download the excel file
           this.ventas.forEach(r => {
             if(r.fechaentrega!=null && r.fechaentrega!=''){
               ventasruta=ventasruta+r.acuenta
+              vrtotal=vrtotal+r.total
+              vrsaldo=vrsaldo+r.saldo
               cadena+="<tr><td>"+ 'R-'+r.id+"</td><td>"
               r.detalles.forEach(d => {
                   cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
@@ -838,7 +846,7 @@ xlsx(datacaja, settings) // Will download the excel file
       }
           });
           //ventas=ventas+ventasruta
-        cadena+="</table><div><b>TOTAL VENTAS RUTA:</b>"+ventasruta+"</div><br>\
+        cadena+="</table><div><b>TOTAL VENTAS RUTA:</b>"+vrtotal+"</div><br>\
         "}
       }
         let panulado=0
@@ -908,20 +916,21 @@ xlsx(datacaja, settings) // Will download the excel file
       cadena+="</table><div><b>TOTAL GASTO CAJA CHICA: </b>"+ caja+" Bs</div><br>"}
 
       cadena+="<table><tr><td>"
-      if(ventas>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS : </b>"+ ventas+" Bs</div>"
-      if(ventasruta>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS RUTA: </b>"+ ventasruta+" Bs</div>"
+      if(vtotal>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS : </b>"+ vtotal+" Bs</div>"
+      if(vrtotal>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS RUTA: </b>"+ vrtotal+" Bs</div>"
       if(matventa>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
       if(panulado>0) cadena+="<div style='font-size:16px'><b>TOTAL PRESTAMO ANULADOS: </b>"+ panulado+" Bs</div>"
       if(ccpago>0) cadena+="<div style='font-size:16px'><b>TOTAL CXC PAGOS: </b>"+ ccpago+" Bs</div>"
 
       cadena+="</td><td>"
+        if(vsaldo>0 || vrsaldo>0) cadena+="<div style='font-size:16px'><b>TOTAL SALDO : </b>"+ (vsaldo + vrsaldo)+" Bs</div>"
         if(gastos>0) cadena+="<div style='font-size:16px'><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
       cadena+="</td><td>"
         if(caja>0) cadena+="<div style='font-size:16px'><b>TOTAL CAJA CHICA : </b>"+ caja+" Bs</div>"
 
       cadena+="</td></tr></table>"
-      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL VENTA-GASTO: </b>"+ (ventas+ventasruta+matventa-gastos) +" Bs</div>"
-      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL GENERAL: </b>"+ (ventas+ventasruta+matventa-gastos+ccpago) +" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL VENTA-GASTO: </b>"+ (vtotal + vrtotal - vsaldo - vrsaldo + matventa-gastos) +" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL GENERAL: </b>"+ (vtotal+vrtotal-vsaldo - vrsaldo+matventa-gastos+ccpago) +" Bs</div>"
 
       /*if(this.$store.state.login.user.id==1 && this.resumenplanilla>0){
       cadena+="<div style='font-size:16px'><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
