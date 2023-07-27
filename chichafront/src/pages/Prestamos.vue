@@ -96,12 +96,12 @@
             </template>
             <template v-slot:body-cell-telefono="props" >
               <q-td key="telfono" :props="props" >
-                 <q-btn icon="call" color="accent" @click="verTelef(props.row)" dense v-if="props.row.telefono!=''"/>                
+                 <q-btn icon="call" color="accent" @click="verTelef(props.row)" dense v-if="props.row.telefono!=''"/>
               </q-td>
             </template>
             <template v-slot:body-cell-fisico="props" >
               <q-td key="fisico" :props="props" >
-                 <q-btn icon="list" color="accent" @click="verFisico(props.row)" dense v-if="props.row.fisico!=''"/>                
+                 <q-btn icon="list" color="accent" @click="verFisico(props.row)" dense v-if="props.row.fisico!=''"/>
               </q-td>
             </template>
             <template v-slot:body-cell-opcion="props" >
@@ -207,7 +207,7 @@
     >
     <template v-slot:body-cell-op="props" v-if="$store.state.login.delpago">
       <q-td key="op" :props="props">
-         <q-btn color="red" icon="delete" dense @click="delDevuelto(props.row)"  />        
+         <q-btn color="red" icon="delete" dense @click="delDevuelto(props.row)"  />
       </q-td>
     </template>
         </q-table>
@@ -305,7 +305,7 @@ export default {
           this.dialog_list=false
           this.$axios.get(process.env.API+'/listInv').then(res=>{
       // console.log(res.data)
-      this.inventarios=res.data;  
+      this.inventarios=res.data;
         this.inventario=this.inventarios[0];
     this.efectivo=parseFloat(this.cantidad) * parseFloat(this.inventario.precio)
       })
@@ -340,7 +340,7 @@ export default {
     verFisico(dato){
       this.$q.dialog({
         title: ' Cliente: '+dato.cliente.titular,
-        message: dato.cliente.Fisico
+        message: dato.fisico
       }).onOk(() => {
         // console.log('OK')
       }).onCancel(() => {
