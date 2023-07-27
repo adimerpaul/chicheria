@@ -44,6 +44,8 @@ export function auth_success(state, data){
   state.resumencontable=data.user.permisos.find(p=>p.id===33)!=undefined
   state.delpago=data.user.permisos.find(p=>p.id===34)!=undefined
   state.preciounitario=data.user.permisos.find(p=>p.id===35)!=undefined
+  state.ingresoMaterial=data.user.permisos.find(p=>p.id===36)!=undefined
+  state.egresoMaterial=data.user.permisos.find(p=>p.id===37)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -85,4 +87,7 @@ export function salir(state){
   state.reportepago=false
   state.resumencontable=false
   state.delpago=false
+  state.preciounitario=false
+  state.ingresoMaterial=false
+  state.egresoMaterial=false
 }

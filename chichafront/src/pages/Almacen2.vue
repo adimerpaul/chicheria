@@ -2,13 +2,13 @@
   <q-page class="q-pa-xs">
     <div class="row">
       <div class="col-4 flex flex-center">
-        <q-btn @click="providerAdd" v-if="$store.state.login.editalmacen" :loading="loading" label="Registro de Provedor" color="blue-7" no-caps icon="o_assignment_ind"/>
+        <q-btn @click="providerList" v-if="$store.state.login.editalmacen" :loading="loading" label="Lista de Provedor" color="blue-7" no-caps icon="o_assignment_ind"/>
       </div>
       <div class="col-4 flex flex-center">
         <q-btn @click="materialAdd" :loading="loading" label="Registro de Materia Prima" color="green-7" no-caps icon="o_shopping_bag"/>
       </div>
       <div class="col-4 flex flex-center">
-        <q-btn @click="compraAdd" v-if="$store.state.login.editalmacen" :loading="loading" label="Ingreso de Material Prima" color="cyan-7" no-caps icon="add_circle_outline"/>
+        <q-btn @click="compraAdd" v-if="$store.state.login.ingresoMaterial" :loading="loading" label="Ingreso de Material Prima" color="cyan-7" no-caps icon="add_circle_outline"/>
       </div>
       <div class="col-12">
         <q-table
@@ -102,7 +102,7 @@
               <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.editalmacen && props.row.logcompras.length>0" @click="listpago(props.row)">
                 <q-tooltip>Ver Pagos</q-tooltip>
               </q-btn>
-              <q-btn dense round flat color="teal" icon="o_download" v-if="$store.state.login.editalmacen" @click="retirarRow(props.row)">
+              <q-btn dense round flat color="teal" icon="o_download" v-if="$store.state.login.egresoMaterial" @click="retirarRow(props.row)">
                 <q-tooltip>Realizar retiro</q-tooltip>
               </q-btn>
               <q-btn dense round flat color="yellow-9" icon="o_edit" v-if="$store.state.login.editalmacen" @click="editcompra(props.row)">
@@ -150,17 +150,20 @@
     <q-dialog v-model="providerDialog">
       <q-card style="width: 700px; max-width: 90vw;">
         <q-card-section class="q-pb-none row items-center">
-          <div class="text-h6">{{providerOptions === 'create' ? 'Registro de Provedor' : 'Editar Provedor'}}</div>
+          <div class="text-h6">{{providerOptions === 'create' ? 'Registro de Provedor' : providerOptions === 'list' ? 'Lista de Provedores' : 'Editar Provedor'}}</div>
           <q-space/>
           <q-btn flat round dense icon="close" v-close-popup/>
         </q-card-section>
         <q-card-section>
-          <q-form @submit="providerOptions === 'create' ? providerCreate() : providerUpdate()">
+          <q-form v-if="providerOptions=='create' || providerOptions=='edit'" @submit="providerOptions === 'create' ? providerCreate() : providerUpdate()">
             <div class="row">
-              <div class="col-8">
-                <q-input outlined dense v-model="provider.razon" label="Nombre o Razón Social" lazy-rules :rules="[val => !!val || 'Campo requerido']"/>
+              <div class="col-5">
+                <q-input outlined dense v-model="provider.nombre" label="Nombre" lazy-rules :rules="[val => !!val || 'Campo requerido']"/>
               </div>
               <div class="col-4">
+                <q-input outlined dense v-model="provider.razon" label="Razón Social" lazy-rules :rules="[val => !!val || 'Campo requerido']"/>
+              </div>
+              <div class="col-3">
                 <q-input outlined dense v-model="provider.nit" label="CI/NIT" hint="" />
               </div>
               <div class="col-12">
@@ -174,10 +177,26 @@
               </div>
             </div>
             <q-card-section class="row justify-end">
-              <q-btn :loading="loading" color="red" no-caps icon="o_delete" label="Cancelar" dense v-close-popup/>
-              <q-btn :loading="loading" color="green" no-caps icon="o_save" label="Guardar" dense type="submit"/>
+              <q-btn :loading="loading" color="red" no-caps icon="o_delete" label="Cancelar" dense @click="providerOptions = 'list'"/>
+              <q-btn :loading="loading" no-caps icon="o_save"  dense type="submit" :label="providerOptions === 'create' ? 'Guardar' : 'Actualizar'" :color="providerOptions === 'create' ? 'green' : 'yellow-7'"/>
             </q-card-section>
           </q-form>
+          <q-table :loading="loading" :rows-per-page-options="[0]" dense :rows="providers" v-if="providerOptions === 'list'" :columns="providerColumns" row-key="name">
+            <template v-slot:top-right>
+              <q-btn color="green" icon="add_circle_outline" label="Nuevo" no-caps @click="providerOptions = 'create'; provider = {}"/>
+              <q-input outlined dense v-model="filter" debounce="300" placeholder="Buscar...">
+                <template v-slot:append>
+                  <q-icon name="search" class="cursor-pointer"/>
+                </template>
+              </q-input>
+            </template>
+            <template v-slot:body-cell-actions="props" >
+              <q-td key="opcion" :props="props" >
+                <q-btn dense round flat color="accent" icon="edit" @click="providerOptions = 'edit'; provider = props.row"/>
+                <q-btn dense round flat color="red"  icon="delete" @click="delprovider(props.row)"/>
+              </q-td>
+            </template>
+          </q-table>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -406,6 +425,14 @@ import {jsPDF} from "jspdf";
 export default {
   data () {
     return {
+      providerColumns: [
+        { name: 'razon', label: 'Razon Social', field: 'razon', align: 'left', sortable: true },
+        { name: 'nit', label: 'NIT', field: 'nit', align: 'left', sortable: true },
+        { name: 'telefono', label: 'Telefono', field: 'telefono', align: 'left', sortable: true },
+        { name: 'direccion', label: 'Direccion', field: 'direccion', align: 'left', sortable: true },
+        { name: 'email', label: 'Email', field: 'email', align: 'left', sortable: true },
+        { name: 'actions', label: 'Acciones', field: 'actions', align: 'center' }
+      ],
       dialog_modret:false,
       dialog_remove: false,
       providers: [],
@@ -851,6 +878,10 @@ export default {
       this.materialDialog = true
       this.materialOptions = 'create'
     },
+    providerList() {
+      this.providerDialog = true
+      this.providerOptions = 'list'
+    },
     providerAdd() {
       this.provider = {}
       this.providerDialog = true
@@ -861,17 +892,30 @@ export default {
           this.providers = res.data
       }).catch(e => {
         console.log(e)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    providerUpdate() {
+      this.loading = true
+      this.$api.put('provider/' + this.provider.id, this.provider).then(res => {
+        this.providerOptions = 'list'
+        this.providersGet()
+      }).catch(e => {
+        console.log(e)
+      }).finally(() => {
+        // this.loading = false
       })
     },
     providerCreate() {
       this.loading = true
       this.$api.post('provider', this.provider).then(res => {
-        this.providerDialog = false
+        this.providerOptions = 'list'
         this.providersGet()
       }).catch(e => {
         console.log(e)
       }).finally(() => {
-        this.loading = false
+        // this.loading = false
       })
     },
     materialUpdate() {
@@ -883,6 +927,29 @@ export default {
         console.log(e)
       }).finally(() => {
         this.loading = false
+      })
+    },
+    delprovider(provider) {
+      this.$q.dialog({
+        title: 'Confirmar',
+        message: '¿Desea eliminar el proveedor?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.loading = true
+        this.$api.delete('provider/' + provider.id).then(res => {
+          this.providersGet()
+        }).catch(e => {
+          this.$q.notify({
+            color: 'red',
+            textColor: 'white',
+            icon: 'warning',
+            message: 'No se puede eliminar el proveedor, tiene registros asociados',
+            position: 'top'
+          })
+        }).finally(() => {
+          this.loading = false
+        })
       })
     },
     materialCreate() {

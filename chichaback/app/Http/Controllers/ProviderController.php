@@ -39,13 +39,14 @@ class ProviderController extends Controller
         //
         $provider=new Provider;
         $provider->razon=strtoupper($request->razon);
+        $provider->nombre=strtoupper($request->nombre);
         $provider->nit=$request->nit;
         $provider->direccion=$request->direccion;
         $provider->email=$request->email;
         $provider->telefono=$request->telefono;
         $provider->estado='ACTIVO';
         $provider->save();
-        
+
     }
 
     /**
@@ -82,6 +83,7 @@ class ProviderController extends Controller
         //
         $provider=Provider::find($request->id);
         $provider->razon=strtoupper($request->razon);
+        $provider->nombre=strtoupper($request->nombre);
         $provider->nit=$request->nit;
         $provider->direccion=$request->direccion;
         $provider->email=$request->email;
