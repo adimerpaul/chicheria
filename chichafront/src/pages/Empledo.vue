@@ -229,7 +229,7 @@
               </div>
             </q-form>
             <q-table
-            title="Hitorial de pagos"
+            title="Historial de pagos"
             :rows-per-page-options="[0,50,100]"
             :columns="columns2"
             :rows="empleadohistorial"
@@ -242,6 +242,18 @@
 
           </q-td>
         </template>
+              <template v-slot:body-cell-tipo="props">
+                <q-td :props="props">
+                  <q-badge :color="props.row.tipo=='DESCUENTO'||props.row.tipo=='ANULADO'?'red':'green'" text-color="white">
+                    {{ props.row.tipo }}
+                  </q-badge>
+                </q-td>
+              </template>
+              <template v-slot:body-cell-observacion="props">
+                <q-td :props="props">
+                  <q-input dense outlined v-model="props.row.observacion" type="textarea"/>
+                </q-td>
+              </template>
             </q-table>
           </q-card-section>
           <q-card-actions align="right" class="bg-white text-teal">
@@ -699,13 +711,21 @@ export default {
     delsueldo(sueldo){
       this.$q.dialog({
         title: 'Confirmar',
-        message: 'Esta Seguro de Eliminar?',
+        message: 'Esta Seguro anular este pago?',
+        prompt: {
+          model: '',
+          type: 'text' // optional
+        },
         cancel: true,
         persistent: false
-      }).onOk(() => {
-        this.$axios.delete(process.env.API+'/sueldo/'+sueldo.id).then(res=>{
+      }).onOk((data) => {
+        this.$axios.delete(process.env.API+'/sueldo/'+sueldo.id,{
+          params:{
+            motivo:data
+          }
+        }).then(res=>{
           this.$q.notify({
-            message:'Eliminado',
+            message:'Anulado',
             icon:'info',
             color:'green'
           })

@@ -104,7 +104,7 @@
       </q-card>
     </q-dialog>
 
-    <q-table :filter="filter" title="REGISTRO DE USUARIOS" :rows="data" :columns="columns" row-key="name" :rows-per-page-options="[0,50,100]">
+    <q-table dense :filter="filter" title="REGISTRO DE USUARIOS" :rows="data" :columns="columns" row-key="name" :rows-per-page-options="[0,50,100]">
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
@@ -115,7 +115,7 @@
       <template v-slot:body-cell-estado="props">
           <q-td key="estado" :props="props">
             <q-badge :color="props.row.estado=='ACTIVO'?'green':'red'"  :label="props.row.estado" @click="cambioEstado(props.row)"/>
-            
+
           </q-td>
           <!--          <q-td key="unid" :props="props">-->
           <!--            {{props.row.unid.nombre}}-->
@@ -142,38 +142,18 @@
       <template v-slot:body-cell-opcion="props">
 
           <q-td key="opcion" :props="props">
-            <q-btn
-              dense
-              round
-              flat
-              color="yellow"
-              @click="editRow(props)"
-              icon="edit"
-            />
-            <q-btn
-              dense
-              round
-              flat
-              color="positive"
-              @click="cambiopass(props)"
-              icon="vpn_key"
-            />
-            <q-btn
-              dense
-              round
-              flat
-              color="green-10"
-              @click="mispermisos(props)"
-              icon="post_add"
-            />
-            <q-btn
-              dense
-              round
-              flat
-              color="red"
-              @click="deleteRow(props)"
-              icon="delete"
-            ></q-btn>
+            <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit">
+              <q-tooltip>Editar</q-tooltip>
+            </q-btn>
+            <q-btn dense round flat color="positive" @click="cambiopass(props)" icon="vpn_key">
+              <q-tooltip>Cambiar contraseña</q-tooltip>
+            </q-btn>
+            <q-btn dense round flat color="green-10" @click="mispermisos(props)" icon="post_add">
+              <q-tooltip>Permisos</q-tooltip>
+            </q-btn>
+            <q-btn dense round flat color="red" @click="deleteRow(props)" icon="o_delete">
+              <q-tooltip>Eliminar</q-tooltip>
+            </q-btn>
           </q-td>
 
           <!--          <q-td key="opcion" :props="props">-->
@@ -326,17 +306,20 @@
     </q-dialog>
     <q-dialog v-model="modelpermiso">
       <q-card style="width: 700px;max-width: 80vw">
-        <q-card-section class="bg-info">
+        <q-card-section class="bg-info q-py-none">
           <div class="text-h7 text-white"><q-icon name="folder"/> PERMISOS DE ACCESO</div>
         </q-card-section>
         <q-card-section>
           <q-form @submit.prevent="updatepermisos">
-            <!--          v-on:click.native="updatepermiso(permiso)"-->
-            <q-checkbox style="width: 100%"  v-for="(permiso,index) in permisos2" :key="index" :label="permiso.nombre" v-model="permiso.estado" />
-            <!--          <q-form>-->
-            <!--&lt;!&ndash;            <q-checkbox v-model="permisos" />&ndash;&gt;-->
-            <!--          </q-form>-->
-            <q-btn  type="submit" color="info" icon="send" label="Actualizar"></q-btn>
+            <div class="row" v-for="(permiso,index) in permisos2" :key="index">
+              <div class="col-6">
+                <q-checkbox dense  :label="`${index+1} ${permiso.nombre}`" v-model="permiso.estado" />
+              </div>
+               <div class="col-6">
+                 {{permiso.descripcion}}
+               </div>
+            </div>
+            <q-btn dense class="full-width" no-caps  type="submit" color="info" icon="send" label="Actualizar"></q-btn>
           </q-form>
         </q-card-section>
       </q-card>
@@ -394,8 +377,8 @@ export default {
       // console.log(res.data)
       // this.permisos=res.data
       res.data.forEach(r=>{
-        this.permisos.push({id:r.id,nombre:r.nombre,estado:false})
-        this.permisos2.push({id:r.id,nombre:r.nombre,estado:false})
+        this.permisos.push({id:r.id,nombre:r.nombre,estado:false,descripcion:r.descripcion})
+        this.permisos2.push({id:r.id,nombre:r.nombre,estado:false,descripcion:r.descripcion})
       })
     })
   },

@@ -55,14 +55,14 @@
             row-key="name">
 
           <template v-slot:top-right>
-              <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
+              <q-input borderless dense outlined debounce="300" v-model="filter" placeholder="Buscar">
                 <template v-slot:append>
                   <q-icon name="search" />
                 </template>
               </q-input>
             </template>
             <template v-slot:body-cell-prestado="props" >
-              <q-td key="prestado" :props="props" :style="props.row.prestado>0?'color:green;font-size:20px; font-weight: bold;':'color:red;font-size:20px; font-weight: bold;'">
+              <q-td key="prestado" :props="props" :style="props.row.prestado>0?'color:red;font-size:20px; font-weight: bold;':'color:green;font-size:20px; font-weight: bold;'">
                  {{props.row.prestado }}
               </q-td>
             </template>
@@ -74,7 +74,7 @@
             </template>
               <template v-slot:body-cell-estado="props" >
                 <q-td key="estado" :props="props">
-                  <q-badge color="negative" v-if="props.row.estado=='ANULADO'">
+                  <q-badge color="negative" v-if="props.row.estado=='BAJA'">
                     {{ props.row.estado }}
                   </q-badge>
                   <q-badge color="amber" v-if="props.row.estado=='DEVUELTO'">
@@ -107,31 +107,47 @@
             </template>
             <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
-                  <q-btn-dropdown color="primary" label="Opcion">
+                  <q-btn-dropdown color="primary" label="Opcion" no-caps dense>
                     <q-list>
                       <q-item clickable v-close-popup @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'">
                         <q-item-section avatar>
                           <q-avatar  icon="refresh" color="primary" text-color="white" />
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Devolver</q-item-label>
                         </q-item-section>
                       </q-item>
                       <q-item clickable v-close-popup @click="onList(props.row)" >
                         <q-item-section avatar>
                           <q-avatar  icon="list" color="green" text-color="white" />
                         </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Listar</q-item-label>
+                        </q-item-section>
                       </q-item>
                       <q-item clickable v-close-popup @click="onMod(props.row)" v-if="props.row.estado=='EN PRESTAMO'">
                         <q-item-section avatar>
                           <q-avatar  icon="edit" color="yellow" text-color="white" />
                         </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Modificar</q-item-label>
+                        </q-item-section>
                       </q-item>
                       <q-item clickable v-close-popup @click="onEliminar(props.row)"  v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  >
+                        <q-item-section avatar>
+<!--                          <q-item-label  content-style="{background-color: coral;}"  >BAJA</q-item-label>-->
+                          <q-avatar  icon="stop" color="negative" text-color="white" />
+                        </q-item-section>
                         <q-item-section>
-                          <q-item-label  content-style="{background-color: coral;}"  >BAJA</q-item-label>
+                          <q-item-label>Dar Baja</q-item-label>
                         </q-item-section>
                       </q-item>
                       <q-item clickable v-close-popup @click="ondelete(props.row)" v-if="(props.row.estado=='EN PRESTAMO' || props.row.estado=='VENTA') && $store.state.login.delprestamo">
                         <q-item-section avatar>
                           <q-avatar  icon="delete" color="negative" text-color="white" />
+                        </q-item-section>
+                        <q-item-section>
+                          <q-item-label>Eliminar</q-item-label>
                         </q-item-section>
                       </q-item>
                     </q-list>
@@ -901,6 +917,8 @@ export default {
         console.log(res.data);
         this.listadop=[];
         res.data.forEach(element => {
+            if(element.estado=='ANULADO')
+              element.estado='BAJA';
             if(this.tab=='local' && element.cliente.tipocliente=='1')
               this.listadop.push(element);
             if(this.tab=='cliente' && element.cliente.tipocliente=='2')
@@ -915,14 +933,23 @@ export default {
       this.dialog_dev=true;
     },
     onEliminar(p){
-      if (confirm('seguro de eliminar?')){
+      this.$q.dialog({
+          title: 'Eliminar',
+          message: 'Seguro de eliminar?',
+          cancel: true,
+          persistent: true
+        }).onOk(() => {
         this.$axios.post(process.env.API+'/anularprestamo',p).then(res=>{
           // this.totalefectivo=res.data[0].total;
           this.cajaprestamo()
           this.listadoprestamo()
           console.log(res.data)
         })
-      }
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
 
     },
         ondelete(p){

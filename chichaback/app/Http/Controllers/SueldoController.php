@@ -202,9 +202,33 @@ class SueldoController extends Controller
      * @param  \App\Models\Sueldo  $sueldo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sueldo $sueldo)
+    public function destroy(Sueldo $sueldo,Request $request)
     {
-        $sueldo->delete();
-        return 1;
+        $empleado=Empleado::find($sueldo->empleado_id);
+        if ($sueldo->tipo=='ADELANTO' || $sueldo->tipo=='EXTRA'){
+            $gasto=Gasto::where('observacion',$sueldo->observacion.' '.$empleado->nombre)
+                ->where('glosa',$sueldo->tipo)
+                ->first();
+            $gasto->delete();
+            $loggeneral=new Loggeneral();
+            $loggeneral->numero=$sueldo->id;
+            $loggeneral->monto=$sueldo->monto;
+            $loggeneral->detalle='GASTO';
+            $loggeneral->motivo=$sueldo->observacion.', '.$request->motivo;
+            $loggeneral->tipo='INGRESO';
+            $loggeneral->fecha=date('Y-m-d');
+            $loggeneral->hora=date('H:i:s');
+            $loggeneral->glosa_id=null;
+            $loggeneral->user_id=$request->user()->id;
+            $loggeneral->save();
+
+            $general=General::find(1);
+            $general->monto=$general->monto + $sueldo->monto;
+            $general->save();
+
+        }
+        $sueldo->update(['monto'=>0,'tipo'=>'ANULADO','observacion'=>$sueldo->observacion.', '.$request->motivo]);
+//        $sueldo->delete();
+//        return 1;
     }
 }

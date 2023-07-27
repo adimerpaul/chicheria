@@ -912,7 +912,13 @@ export default {
         this.$api.delete('material/' + material.id).then(res => {
           this.materialsGet()
         }).catch(e => {
-          console.log(e)
+          this.$q.notify({
+            color: 'red',
+            textColor: 'white',
+            icon: 'info',
+            message: 'No se puede eliminar el material, ya que esta siendo utilizado',
+            position: 'top'
+          });
         }).finally(() => {
           this.loading = false
         })
