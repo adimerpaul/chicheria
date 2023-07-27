@@ -1957,9 +1957,9 @@ xlsx(datacaja, settings) // Will download the excel file
                       dom: 'Blfrtip',
             // pageLength: 5,
              lengthMenu: [[-1,20, 50, 100], ["All",20, 50, 100]],
-            // buttons: [
-            //   'copy', 'csv', 'excel', 'pdf', 'print'
-            // ],
+            buttons: [
+               'excel', 'pdf'
+             ],
             "footerCallback": function ( row, data, start, end, display ) {
               var api = this.api(), data;
 
@@ -2240,9 +2240,9 @@ xlsx(datacaja, settings) // Will download the excel file
                       dom: 'Blfrtip',
             // pageLength: 5,
              lengthMenu: [[-1,20, 50, 100], [ "All",20, 50, 100]],
-            // buttons: [
-            //   'copy', 'csv', 'excel', 'pdf', 'print'
-            // ],
+            buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+             ],
             "footerCallback": function ( row, data, start, end, display ) {
               var api = this.api(), data;
 
