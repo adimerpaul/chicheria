@@ -305,17 +305,23 @@
       </q-card>
     </q-dialog>
     <q-dialog v-model="modelpermiso">
-      <q-card style="width: 700px;max-width: 80vw">
+      <q-card style="width: 850px;max-width: 80vw">
         <q-card-section class="bg-info q-py-none">
           <div class="text-h7 text-white"><q-icon name="folder"/> PERMISOS DE ACCESO</div>
         </q-card-section>
         <q-card-section>
           <q-form @submit.prevent="updatepermisos">
             <div class="row" v-for="(permiso,index) in permisos2" :key="index">
-              <div class="col-6">
-                <q-checkbox dense  :label="`${index+1} ${permiso.nombre}`" v-model="permiso.estado" />
+              <div class="col-1">
+                <q-btn-group>
+                  <q-btn icon="expand_less" size="10px" outline dense round color="green" @click="orden(permiso,'Aumentar')"/>
+                  <q-btn icon="expand_more" size="10px" outline dense round color="red" @click="orden(permiso,'Reducir')"/>
+                </q-btn-group>
               </div>
-               <div class="col-6">
+              <div class="col-4 text-subtitle2">
+                <q-checkbox dense  :label="`${permiso.id} ${permiso.nombre}`" v-model="permiso.estado" />
+              </div>
+               <div class="col-6 text-caption">
                  {{permiso.descripcion}}
                </div>
             </div>
@@ -373,16 +379,30 @@ export default {
     //   // console.log(res.data)
     //   this.unidades=res.data
     // })
-    this.$axios.get(process.env.API+'/permiso').then(res=>{
-      // console.log(res.data)
-      // this.permisos=res.data
-      res.data.forEach(r=>{
-        this.permisos.push({id:r.id,nombre:r.nombre,estado:false,descripcion:r.descripcion})
-        this.permisos2.push({id:r.id,nombre:r.nombre,estado:false,descripcion:r.descripcion})
-      })
-    })
+    this.permisosGet();
   },
   methods: {
+    permisosGet() {
+      this.permisos=[]
+      this.permisos2=[]
+      this.$axios.get(process.env.API+'/permiso').then(res=>{
+        // console.log(res.data)
+        // this.permisos=res.data
+        res.data.forEach(r=>{
+          this.permisos.push({id:r.id,nombre:r.nombre,estado:false,descripcion:r.descripcion})
+          this.permisos2.push({id:r.id,nombre:r.nombre,estado:false,descripcion:r.descripcion})
+        })
+      })
+    },
+    orden(permiso,accion){
+      console.log(permiso)
+      this.$axios.post(process.env.API+'/orden',{
+        permiso_id: permiso.id,
+        accion:accion
+      }).then(res=>{
+        this.permisosGet()
+      })
+    },
     //   // updatepermiso(permiso){
     //   //   console.log(permiso)
     //   // },
