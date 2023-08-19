@@ -918,19 +918,21 @@ xlsx(datacaja, settings) // Will download the excel file
       cadena+="<table><tr><td>"
       if(vtotal>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS : </b>"+ vtotal+" Bs</div>"
       if(vrtotal>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS RUTA: </b>"+ vrtotal+" Bs</div>"
+      if((ventas + ventasruta)>0) cadena+="<div style='font-size:16px'><b>TOTAL A CUENTA: </b>"+ (ventas + ventasruta)+" Bs</div>"
+      if((vsaldo + vrsaldo)>0) cadena+="<div style='font-size:16px'><b>TOTAL SALDO: </b>"+ (vsaldo + vrsaldo)+" Bs</div>"
       if(matventa>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
       if(panulado>0) cadena+="<div style='font-size:16px'><b>TOTAL PRESTAMO ANULADOS: </b>"+ panulado+" Bs</div>"
       if(ccpago>0) cadena+="<div style='font-size:16px'><b>TOTAL CXC PAGOS: </b>"+ ccpago+" Bs</div>"
 
       cadena+="</td><td>"
-        if(vsaldo>0 || vrsaldo>0) cadena+="<div style='font-size:16px'><b>TOTAL SALDO : </b>"+ (vsaldo + vrsaldo)+" Bs</div>"
+        if((vsaldo + vrsaldo)>0) cadena+="<div style='font-size:16px'><b>TOTAL SALDO : </b>"+ (vsaldo + vrsaldo)+" Bs</div>"
         if(gastos>0) cadena+="<div style='font-size:16px'><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
       cadena+="</td><td>"
         if(caja>0) cadena+="<div style='font-size:16px'><b>TOTAL CAJA CHICA : </b>"+ caja+" Bs</div>"
 
       cadena+="</td></tr></table>"
-      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL VENTA-GASTO: </b>"+ ( ventas + ventasruta + matventa - gastos) +" Bs</div>"
-      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL GENERAL: </b>"+ ( ventas + ventasruta + matventa - gastos + ccpago) +" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL VENTA-GASTO: </b>"+ ( ventas + ventasruta - gastos) +" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL TOTAL GENERAL: </b>"+ ( ventas + ventasruta + matventa  + ccpago - gastos) +" Bs</div>"
 
       /*if(this.$store.state.login.user.id==1 && this.resumenplanilla>0){
       cadena+="<div style='font-size:16px'><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
