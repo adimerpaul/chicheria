@@ -29,6 +29,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::put('/pass/{user}',[\App\Http\Controllers\UserController::class,'pass']);
     Route::put('/updatepermisos/{user}',[\App\Http\Controllers\UserController::class,'updatepermisos']);
     Route::resource('/permiso',\App\Http\Controllers\PermisoController::class);
+    Route::post('/orden',[\App\Http\Controllers\PermisoController::class,'orden']);
     Route::resource('/producto',\App\Http\Controllers\ProductoController::class);
     Route::resource('/venta',\App\Http\Controllers\VentaController::class);
     Route::resource('/garantia',\App\Http\Controllers\GarantiaController::class);

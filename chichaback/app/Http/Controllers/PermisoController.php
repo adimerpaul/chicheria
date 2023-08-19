@@ -26,6 +26,28 @@ class PermisoController extends Controller
     {
         //
     }
+    public function orden(Request $request){
+        $permiso = Permiso::find($request->permiso_id);
+        error_log("permiso: " . json_encode($permiso));
+        if ($request->accion == 'Aumentar') {
+            $permisoArriba = Permiso::whereOrden($permiso->orden - 1)->first();
+            error_log("permisoArriba: " . json_encode($permisoArriba));
+            if ($permisoArriba) {
+                $permisoArriba->orden = $permisoArriba->orden + 1;
+                $permisoArriba->save();
+                $permiso->orden = $permiso->orden - 1;
+                $permiso->save();
+            }
+        } else if ($request->accion == 'Disminuir') {
+            $permisoAbajo = Permiso::whereOrden($permiso->orden + 1)->first();
+            if ($permisoAbajo) {
+                $permisoAbajo->orden = $permisoAbajo->orden - 1;
+                $permisoAbajo->save();
+                $permiso->orden = $permiso->orden + 1;
+                $permiso->save();
+            }
+        }
+    }
 
     /**
      * Store a newly created resource in storage.
