@@ -172,6 +172,41 @@
       </q-card-section>
     </q-card>
   </q-dialog>
+
+  <q-dialog v-model="dialogGarantia" persistent >
+  <q-card>
+  <q-card-section>
+
+  <div class="text-h6">Garantia?</div>
+    </q-card-section>
+      <q-card-section>
+        Desea registrar préstamo o venta de material?
+      </q-card-section>
+      <q-card-actions align="center">
+          <q-btn flat label="FINALIZAR" color="accent"  @click="garantiaFin"/>
+        <q-btn flat label="OK" color="green"  @click="garantiaOk"/>
+        <q-btn flat label="CANCELAR" color="red"  @click="garantiaCancel"/>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+  
+  <q-dialog v-model="dialogGarantia2" persistent >
+    <q-card>
+    <q-card-section>
+  
+    <div class="text-h6">Garantia?</div>
+      </q-card-section>
+        <q-card-section>
+          Desea registrar préstamo o venta de material?
+        </q-card-section>
+        <q-card-actions align="center">
+            <q-btn flat label="FINALIZAR" color="accent"  @click="garantiaFin2"/>
+          <q-btn flat label="OK" color="green"  @click="garantiaOk2"/>
+          <q-btn flat label="CANCELAR" color="red"  @click="garantiaCancel2"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   <q-dialog v-model="dialog_mod">
     <q-card>
       <q-card-section class="bg-green-14 text-white">
@@ -294,7 +329,7 @@
     </q-table>
   </div>
   </div>
-  <q-dialog v-model="modalgarantia">
+  <q-dialog v-model="modalgarantia" persistent>
     <q-card style="width: 700px;min-width: 80vw">
       <q-card-section ><div class="text-h6">Garantia</div></q-card-section>
       <q-card-section class="q-pt-none">
@@ -334,9 +369,9 @@
           </div>
         </q-form>
       </q-card-section>
-      <q-card-section align="right" class="">
+     <!-- <q-card-section align="right" class="">
         <q-btn flat label="Cerrar" icon="delete" color="negative" v-close-popup/>
-      </q-card-section>
+      </q-card-section>-->
     </q-card>
   </q-dialog>
   <q-dialog v-model="modalhojaruta">
@@ -426,6 +461,8 @@ export default {
   data() {
     return {
       monto: 0,
+      dialogGarantia:false,
+      dialogGarantia2:false,
       printboleta:'',
       prestamolista:[],
       fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
@@ -804,7 +841,8 @@ export default {
 
           icon:'info'
         })
-        this.$q.dialog({
+        this.dialogGarantia=true
+ /*       this.$q.dialog({
           message:'Desea registrar préstamo o venta de material?',
           title:'Garantia?',
           cancel: true,
@@ -829,8 +867,41 @@ export default {
           myWindow.focus();
           myWindow.print();
           myWindow.close();
-        })
+        })*/
       })
+    },
+    garantiaOk(){
+      this.prestamolista=[]
+          this.newgarantia={}
+          this.newgarantia.cantidad=1,
+          this.newgarantia.efectivo=0,
+          this.newgarantia.tipo='EN PRESTAMO'
+          this.dialogGarantia=false
+          this.calcular
+          this.modalgarantia=true
+    },
+    garantiaFin(){
+      this.monto=0
+          this.obs=''
+          this.sale={}
+          this.productSales=[]
+          this.client={label:''}
+          this.dialogGarantia=false
+        
+    },
+    garantiaCancel(){
+          this.dialogGarantia=false
+      this.monto=0
+          this.obs=''
+          this.sale={}
+          this.productSales=[]
+          this.client={label:''}
+          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+          myWindow.document.write(this.printboleta);
+          myWindow.document.close();
+          myWindow.focus();
+          myWindow.print();
+          myWindow.close();
     },
     datosGet(type){
       this.products = []
@@ -912,7 +983,8 @@ export default {
         this.newgarantia={}
         this.calcular
         this.modalgarantia=false
-        this.$q.dialog({
+        this.dialogGarantia2=true
+        /*this.$q.dialog({
           message:'Deseas registrar garantia?',
           title:'Garantia?',
           cancel: true,
@@ -946,7 +1018,7 @@ export default {
           this.productSales=[]
           this.client={label:''}
 
-        })
+        })*/
       }).catch(err=>{
         this.$q.loading.hide()
         console.log(err)
@@ -958,6 +1030,48 @@ export default {
         })
       })
     },
+    garantiaOk2(){
+      this.dialogGarantia2=false
+
+      this.newgarantia={}
+          this.newgarantia.cantidad=1,
+          this.newgarantia.efectivo=0,
+          this.newgarantia.tipo='EN PRESTAMO'
+          this.modalgarantia=true
+        },
+    garantiaCancel2(){
+          this.dialogGarantia2=false
+
+          this.printboleta+="<hr><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
+          this.prestamolista.forEach(p => {
+            this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
+          })
+          this.printboleta+="</table></div>"
+          this.printboleta+="<br><hr><div><b>Cliente </b>"+this.client.local + ' - '+this.client.titular+"</div><div><b>Fecha: </b>"+this.fecha+"</div><div><b>Usuario: </b>"+this.$store.state.login.user.name +"</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
+          this.prestamolista.forEach(p => {
+            this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
+          })
+          this.printboleta+="</table></div><div class='leyenda'><b>* SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS, CASO CONTRARIO SE DARA DE BAJA <br>* HORARIOS LUN - VIER DE 8:30 A 17:00<b></div>"
+          let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+          myWindow.document.write(this.printboleta);
+          myWindow.document.close();
+          myWindow.focus();
+          myWindow.print();
+          myWindow.close();
+          this.monto=0
+          this.obs=''
+          this.sale={}
+          this.productSales=[]
+          this.client={label:''}
+    },
+    garantiaFin2(){
+        this.dialogGarantia2=false
+          this.monto=0
+          this.obs=''
+          this.sale={}
+          this.productSales=[]
+          this.client={label:''}
+    }
   },
   computed: {
     total() {
