@@ -549,7 +549,6 @@ export default {
     $('#example').DataTable( )
     $('#example2').DataTable( )
 
-    this.misglosa()
     // this.misempleados()
     // console.log(this.$store.state.login)
     // this.$axios.get(process.env.API+'/cliente').then(res=>{
@@ -570,10 +569,11 @@ export default {
     //   this.responsable=res.data.name
     // })
     // this.responsable=this.$store.getters["login/user"].name
-    this.listadog();
-    this.misempleados();
-    this.totalcaja();
-    this.totalgeneral();
+    this.misglosa()
+    this.listadog()
+    this.misempleados()
+    this.totalcaja()
+    this.totalgeneral()
         this.misuser()
         if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
     this.misgastos()

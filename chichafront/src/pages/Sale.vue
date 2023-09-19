@@ -484,7 +484,7 @@ export default {
       inventarios:[],
       inventario:{},
       newgarantia:{},
-      modalgarantia:true,
+      modalgarantia:false,
       modalhojaruta:false,
       modalDialog:false,
       dialog_mod:false,

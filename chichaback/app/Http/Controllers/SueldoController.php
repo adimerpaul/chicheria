@@ -204,6 +204,7 @@ class SueldoController extends Controller
      */
     public function destroy(Sueldo $sueldo,Request $request)
     {
+        $sueldo=Sueldo::find($sueldo->id);
         $empleado=Empleado::find($sueldo->empleado_id);
         if ($sueldo->tipo=='ADELANTO' || $sueldo->tipo=='EXTRA'){
             $gasto=Gasto::where('observacion',$sueldo->observacion.' '.$empleado->nombre)
