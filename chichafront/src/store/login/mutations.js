@@ -50,6 +50,7 @@ export function auth_success(state, data){
   state.registroProveedor=data.user.permisos.find(p=>p.id===39)!=undefined
   state.registroProducto=data.user.permisos.find(p=>p.id===40)!=undefined
   state.almacenCostoSubtotal=data.user.permisos.find(p=>p.id===41)!=undefined
+  state.almacenCrearMateriaPrima= data.user.permisos.find(p=>p.id===42)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -98,4 +99,5 @@ export function salir(state){
   state.registroProveedor=false
   state.registroProducto=false
   state.almacenCostoSubtotal=false
+  state.almacenCrearMateriaPrima= false
 }

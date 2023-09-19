@@ -5,7 +5,7 @@
         <q-btn @click="providerList" v-if="$store.state.login.editalmacen" :loading="loading" label="Registro de Provedor" color="blue-7" no-caps icon="o_assignment_ind"/>
       </div>
       <div class="col-4 flex flex-center">
-        <q-btn @click="materialAdd" :loading="loading" label="Materia Prima" color="green-7" no-caps icon="o_shopping_bag"/>
+        <q-btn @click="materialAdd" v-if="$store.state.login.almacenCrearMateriaPrima" :loading="loading" label="Materia Prima" color="green-7" no-caps icon="o_shopping_bag"/>
       </div>
       <div class="col-4 flex flex-center">
         <q-btn @click="compraAdd" v-if="$store.state.login.ingresoMaterial" :loading="loading" label="Ingreso de Material Prima" color="cyan-7" no-caps icon="add_circle_outline"/>
@@ -46,6 +46,10 @@
               </q-btn-dropdown>
             </q-td>
           </template>
+<!--          <template v-slot:body-cell-estado="props">-->
+<!--            <q-td :props="props" auto-width>-->
+<!--            </q-td>-->
+<!--          </template>-->
           <template v-slot:body-cell-stock="props" >
             <q-td :props="props">
               <q-linear-progress size="18px" rounded :value="calcular(props.row.stock,props.row.min)" :color="calcular(props.row.stock,props.row.min)<1?'red-7':'green-7'" class="full-width">
@@ -74,7 +78,9 @@
 
           <template v-slot:body-cell-estado="props" >
             <q-td key="estado" :props="props" >
-              <q-badge :color="props.row.estado=='POR PAGAR'?'red':'green'"  >{{props.row.estado}}</q-badge>
+              <template v-if="$store.state.login.almacenCostoSubtotal">
+                <q-badge :color="props.row.estado=='POR PAGAR'?'red':'green'"  >{{props.row.estado}}</q-badge>
+              </template>
             </q-td>
           </template>
           <template v-slot:top-right>
@@ -86,12 +92,16 @@
           </template>
           <template v-slot:body-cell-costo="props">
             <q-td :props="props">
+              <template v-if="$store.state.login.almacenCostoSubtotal">
               <q-badge v-if="$store.state.login.preciounitario" :color="props.row.deuda>0?'red':'green'"  >{{props.row.costo}}</q-badge>
+              </template>
             </q-td>
           </template>
           <template v-slot:body-cell-subtotal="props">
             <q-td :props="props">
+              <template v-if="$store.state.login.almacenCostoSubtotal">
               <q-badge v-if="$store.state.login.preciounitario" :color="props.row.deuda>0?'red':'green'"  >{{props.row.subtotal}}</q-badge>
+              </template>
             </q-td>
           </template>
           <template v-slot:body-cell-opcion="props" >
@@ -213,9 +223,9 @@
               <div class="col-12">
                 <q-input outlined dense v-model="material.nombre" label="Nombre" lazy-rules :rules="[val => !!val || 'Campo requerido']"/>
               </div>
-              <div class="col-12">
-                <q-input outlined dense v-model="material.nombre" label="Nombre" lazy-rules :rules="[val => !!val || 'Campo requerido']"/>
-              </div>
+<!--              <div class="col-12">-->
+<!--                <q-input outlined dense v-model="material.nombre" label="Nombre" lazy-rules :rules="[val => !!val || 'Campo requerido']"/>-->
+<!--              </div>-->
               <div class="col-6">
                 <q-select outlined dense v-model="material.unid" label="Unidad" :options="unidades" lazy-rules :rules="[val => !!val || 'Campo requerido']"/>
               </div>
@@ -482,7 +492,7 @@ export default {
       ],
       colcompra : [
         { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
-        { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
+        { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado', sortable: true },
         { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
         { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
         { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },

@@ -42,5 +42,6 @@ export default function () {
     registroProveedor:false,
     registroProducto:false,
     almacenCostoSubtotal:false,
+    almacenCrearMateriaPrima: false,
   }
 }
