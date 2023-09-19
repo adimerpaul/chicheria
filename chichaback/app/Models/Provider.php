@@ -10,6 +10,7 @@ class Provider extends Model
     use HasFactory;
     protected $fillable=[
         'razon',
+        'nombre',
         'nit',
         'direccion',
         'email',

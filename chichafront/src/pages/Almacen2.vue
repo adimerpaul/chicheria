@@ -2,7 +2,7 @@
   <q-page class="q-pa-xs">
     <div class="row">
       <div class="col-4 flex flex-center">
-        <q-btn @click="providerList" v-if="$store.state.login.editalmacen" :loading="loading" label="Lista de Provedor" color="blue-7" no-caps icon="o_assignment_ind"/>
+        <q-btn @click="providerList" v-if="$store.state.login.editalmacen" :loading="loading" label="Registro de Provedor" color="blue-7" no-caps icon="o_assignment_ind"/>
       </div>
       <div class="col-4 flex flex-center">
         <q-btn @click="materialAdd" :loading="loading" label="Registro de Materia Prima" color="green-7" no-caps icon="o_shopping_bag"/>
@@ -427,6 +427,7 @@ export default {
     return {
       providerColumns: [
         { name: 'razon', label: 'Razon Social', field: 'razon', align: 'left', sortable: true },
+        { name: 'nombre', label: 'Nombre', field: 'nombre', align: 'left', sortable: true },
         { name: 'nit', label: 'NIT', field: 'nit', align: 'left', sortable: true },
         { name: 'telefono', label: 'Telefono', field: 'telefono', align: 'left', sortable: true },
         { name: 'direccion', label: 'Direccion', field: 'direccion', align: 'left', sortable: true },
