@@ -189,11 +189,11 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
-  
+
   <q-dialog v-model="dialogGarantia2" persistent >
     <q-card>
     <q-card-section>
-  
+
     <div class="text-h6">Garantia?</div>
       </q-card-section>
         <q-card-section>
@@ -363,8 +363,9 @@
               <input style="margin-right: 0.5em;font;height:35px; width:35px; "   type="radio" value="EN PRESTAMO" v-model="newgarantia.tipo"/><b> EN PRESTAMO </b>
               <input style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "   type="radio" value="VENTA" v-model="newgarantia.tipo"/><b> VENTA </b>
             </div>
-            <div class="col-12  q-pa-xs flex flex-center">
-              <q-btn type="submit" class="full-width" color="primary" icon="add_circle" label="Registrar"/>
+            <div class="col-12  q-pa-xs flex flex-center ">
+              <div class="col-6"><q-btn  type="submit"  color="primary" icon="add_circle" label="Registrar"/></div>
+              <div class="col-6"><q-btn  color="red" icon="cancel" label="Cancelar" @click="cancelarGarantia"/></div>
             </div>
           </div>
         </q-form>
@@ -483,7 +484,7 @@ export default {
       inventarios:[],
       inventario:{},
       newgarantia:{},
-      modalgarantia:false,
+      modalgarantia:true,
       modalhojaruta:false,
       modalDialog:false,
       dialog_mod:false,
@@ -529,6 +530,14 @@ export default {
     this.calcular()
   },
   methods: {
+    cancelarGarantia(){
+      this.modalgarantia=false
+      this.monto=0
+      this.obs=''
+      this.sale={}
+      this.productSales=[]
+      this.client={label:''}
+    },
     delProduct(p,id){
       console.log(p)
 
@@ -887,7 +896,7 @@ export default {
           this.productSales=[]
           this.client={label:''}
           this.dialogGarantia=false
-        
+
     },
     garantiaCancel(){
           this.dialogGarantia=false
