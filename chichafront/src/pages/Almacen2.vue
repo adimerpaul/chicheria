@@ -109,7 +109,7 @@
               <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.pagoalmacen && props.row.deuda>0" @click="pagarcompra(props.row)">
                 <q-tooltip>Realizar Pago</q-tooltip>
               </q-btn>
-              <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.editalmacen && props.row.logcompras.length>0" @click="listpago(props.row)">
+              <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.almacenHistorial && props.row.logcompras.length>0" @click="listpago(props.row)">
                 <q-tooltip>Ver Pagos</q-tooltip>
               </q-btn>
               <q-btn dense round flat color="teal" icon="o_download" v-if="$store.state.login.egresoMaterial" @click="retirarRow(props.row)">
