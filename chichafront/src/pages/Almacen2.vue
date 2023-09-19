@@ -5,7 +5,7 @@
         <q-btn @click="providerList" v-if="$store.state.login.editalmacen" :loading="loading" label="Registro de Provedor" color="blue-7" no-caps icon="o_assignment_ind"/>
       </div>
       <div class="col-4 flex flex-center">
-        <q-btn @click="materialAdd" :loading="loading" label="Registro de Materia Prima" color="green-7" no-caps icon="o_shopping_bag"/>
+        <q-btn @click="materialAdd" :loading="loading" label="Materia Prima" color="green-7" no-caps icon="o_shopping_bag"/>
       </div>
       <div class="col-4 flex flex-center">
         <q-btn @click="compraAdd" v-if="$store.state.login.ingresoMaterial" :loading="loading" label="Ingreso de Material Prima" color="cyan-7" no-caps icon="add_circle_outline"/>
@@ -250,10 +250,14 @@
             </div>
             <div class="col-2"><q-input dense outlined type="text" v-model="compra.cantidad" label="Cantidad"/></div>
             <div class="col-2">
-              <q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo U" v-if="$store.state.login.preciounitario" />
+              <template v-if="$store.state.login.almacenCostoSubtotal">
+                <q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo U" v-if="$store.state.login.preciounitario" />
+              </template>
             </div>
             <div class="col-1 flex-center flex text-bold text-center" v-if="$store.state.login.preciounitario">
-              Subtotal: {{subTotalNumber(compra.costo,compra.cantidad)}}
+              <template v-if="$store.state.login.almacenCostoSubtotal">
+                Subtotal: {{subTotalNumber(compra.costo,compra.cantidad)}}
+              </template>
             </div>
             <div class="col-1"><q-input dense outlined  type="text" v-model="compra.lote"  label="Lote"  /></div>
             <div class="col-3"><q-input dense outlined  type="date" v-model="compra.fechaven"  label="Fecha Vencimiento"  /></div>
@@ -514,7 +518,7 @@ export default {
   created() {
     this.providersGet()
     this.materialsGet()
-    this.fecha3=this.principioMesYmd()
+    // this.fecha3=this.principioMesYmd()
     this.consultmaterial()
   },
   methods: {

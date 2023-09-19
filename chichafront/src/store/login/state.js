@@ -38,5 +38,9 @@ export default function () {
     resumencontable:false,
     delpago:false,
     preciounitario:false,
+    registroMateriaPrima:false,
+    registroProveedor:false,
+    registroProducto:false,
+    almacenCostoSubtotal:false,
   }
 }

@@ -46,6 +46,10 @@ export function auth_success(state, data){
   state.preciounitario=data.user.permisos.find(p=>p.id===35)!=undefined
   state.ingresoMaterial=data.user.permisos.find(p=>p.id===36)!=undefined
   state.egresoMaterial=data.user.permisos.find(p=>p.id===37)!=undefined
+  state.registroMateriaPrima=data.user.permisos.find(p=>p.id===38)!=undefined
+  state.registroProveedor=data.user.permisos.find(p=>p.id===39)!=undefined
+  state.registroProducto=data.user.permisos.find(p=>p.id===40)!=undefined
+  state.almacenCostoSubtotal=data.user.permisos.find(p=>p.id===41)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -90,4 +94,8 @@ export function salir(state){
   state.preciounitario=false
   state.ingresoMaterial=false
   state.egresoMaterial=false
+  state.registroMateriaPrima=false
+  state.registroProveedor=false
+  state.registroProducto=false
+  state.almacenCostoSubtotal=false
 }

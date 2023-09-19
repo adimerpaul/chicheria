@@ -138,8 +138,16 @@
               <div class="row">
               <div class="col-12"><q-select dense outlined v-model="material" :options="materiales" label="Material" /></div>
               <div class="col-2"><q-input dense outlined type="text" v-model="compra.cantidad" label="Cantidad"/></div>
-              <div class="col-2"><q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo U" /></div>
-              <div class="col-2">Subtotal: {{compra.costo * compra.cantidad}}</div>
+              <div class="col-2">
+                <template v-if="$store.state.login.almacenCostoSubtotal">
+                  <q-input dense outlined type="number" step="0.01" v-model="compra.costo" label="Costo U" />
+                </template>
+              </div>
+              <div class="col-2">
+                <template v-if="$store.state.login.almacenCostoSubtotal">
+                  Subtotal: {{compra.costo * compra.cantidad}}
+                </template>
+              </div>
               <div class="col-3"><q-input dense outlined  type="text" v-model="compra.lote"  label="Lote"  /></div>
               <div class="col-3"><q-input dense outlined  type="date" v-model="compra.fechaven"  label="Fecha Vencimiento"  /></div>
               <div class="col-3"><q-input dense outlined  type="text"  v-model="compra.observacion" label="Observacion" /></div>
