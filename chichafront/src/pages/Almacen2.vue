@@ -5,7 +5,7 @@
         <q-btn @click="providerList" v-if="$store.state.login.editalmacen" :loading="loading" label="Registro de Provedor" color="blue-7" no-caps icon="o_assignment_ind"/>
       </div>
       <div class="col-4 flex flex-center">
-        <q-btn @click="materialAdd" v-if="$store.state.login.almacenCrearMateriaPrima" :loading="loading" label="Materia Prima" color="green-7" no-caps icon="o_shopping_bag"/>
+        <q-btn @click="materialAdd" v-if="$store.state.login.almacenCrearMateriaPrima" :loading="loading" label="Registro de materia prima" color="green-7" no-caps icon="o_shopping_bag"/>
       </div>
       <div class="col-4 flex flex-center">
         <q-btn @click="compraAdd" v-if="$store.state.login.ingresoMaterial" :loading="loading" label="Ingreso de Material Prima" color="cyan-7" no-caps icon="add_circle_outline"/>
@@ -213,7 +213,7 @@
     <q-dialog v-model="materialDialog">
       <q-card style="width: 500px; max-width: 90vw;">
         <q-card-section class="q-pb-none row items-center">
-          <div class="text-h6">{{materialOptions === 'create' ? 'Registro de ' : 'Editar '}} Material</div>
+          <div class="text-h6">{{materialOptions === 'create' ? 'Registro de ' : 'Editar '}} de materia prima</div>
           <q-space/>
           <q-btn flat round dense icon="close" v-close-popup/>
         </q-card-section>
