@@ -207,6 +207,9 @@
           <q-card-section>
             <div class="text-h6">Historial de {{empleado2.nombre}}</div>
           </q-card-section>
+          <q-card-actions align="right" class="bg-white text-teal">
+            <q-btn flat label="OK" v-close-popup />
+          </q-card-actions>
           <q-card-section class="q-pt-none">
             <q-form @submit.prevent="agregarpago">
               <div class="row">
@@ -256,9 +259,7 @@
               </template>
             </q-table>
           </q-card-section>
-          <q-card-actions align="right" class="bg-white text-teal">
-            <q-btn flat label="OK" v-close-popup />
-          </q-card-actions>
+
         </q-card>
       </q-dialog>
     </div>
