@@ -599,10 +599,10 @@ export default {
       this.dialog_reporte=true
     },
     genreporte(){
-      console.log(date.formatDate(new Date(),'DD/MM/YYYY HH:mm:ss'))
+      //console.log(date.formatDate(new Date(),'DD/MM/YYYY HH:mm:ss'))
       this.$api.post(process.env.API+'/repalmacen',{id:this.material2.id,fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
-        console.log(res.data)
         let mc=this
+       /*console.log(res.data)
 
         function header(){
           var img = new Image()
@@ -645,8 +645,24 @@ export default {
             header()
             y=0
           }
+        })*/
+        let cadena="<style>\
+        *{font-size:10px}\
+        table{width:100%;border-collapse: collapse;}\
+        table, th, td {  border: 1px solid;}\
+        .titulo1{text-align:center; font-weight: bold;}\
+        </style>\
+        <div><img src='logo.png' style='width:150px; height:75px;'></div>\
+        <div class='titulo1'>INVENTARIO MATERIAL :  "+ mc.material2.nombre +"<br>DE "+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY')+"</div><br>\
+        <table>\
+        <tr><th>TIPO</th><th>PROVEEDOR</th><th>MATERIAL</th><th>FECHA</th><th>COSTO</th><th>CANTIDAD</th><th>FECHA VEN</th><th>OBSERVACION</th></tr>"
+        res.data.forEach(r=>{
+          cadena+="<tr><td>"+r.tipo+"</td><td>"+ r.razon+"</td><td>"+r.nombre+"</td><td>"+moment(r.fecha).format('DD/MM/YYYY')+"</td><td>"+r.costo+"</td><td>"+r.cantidad+"</td><td>"+r.fechaven+"</td><td>"+r.observacion+"</td></tr>"
         })
-        window.open(doc.output('bloburl'), '_blank');
+        //window.open(doc.output('bloburl'), '_blank');
+        let myWindow = window.open("_blank");
+        myWindow.document.write(cadena);
+        myWindow.document.close();
       })
 
     },
