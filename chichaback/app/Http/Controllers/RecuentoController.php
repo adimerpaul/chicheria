@@ -66,6 +66,10 @@ class RecuentoController extends Controller
         $recuento->user_id=Request()->user()->id;
         $recuento->save();
 
+        $material = Material::find($request->material_id);
+        $material->stock = $material->stock - $request->cantidad;
+        $material->save();
+
     }
 
     /**

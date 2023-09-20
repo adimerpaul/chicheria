@@ -104,12 +104,19 @@
               </template>
             </q-td>
           </template>
+          <template v-slot:body-cell-deuda="props">
+            <q-td :props="props">
+              <template v-if="$store.state.login.almacenCostoSubtotal">
+                {{props.row.deuda}}
+              </template>
+            </q-td>
+          </template>
           <template v-slot:body-cell-opcion="props" >
             <q-td key="opcion" :props="props" >
               <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.pagoalmacen && props.row.deuda>0" @click="pagarcompra(props.row)">
                 <q-tooltip>Realizar Pago</q-tooltip>
               </q-btn>
-              <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.almacenHistorial && props.row.logcompras.length>0" @click="listpago(props.row)">
+              <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.almacenHistorialPago && props.row.logcompras.length>0" @click="listpago(props.row)">
                 <q-tooltip>Ver Pagos</q-tooltip>
               </q-btn>
               <q-btn dense round flat color="teal" icon="o_download" v-if="$store.state.login.egresoMaterial" @click="retirarRow(props.row)">

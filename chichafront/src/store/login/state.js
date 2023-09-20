@@ -43,6 +43,6 @@ export default function () {
     registroProducto:false,
     almacenCostoSubtotal:false,
     almacenCrearMateriaPrima: false,
-    almacenHistorial:false,
+    almacenHistorialPago:false,
   }
 }
