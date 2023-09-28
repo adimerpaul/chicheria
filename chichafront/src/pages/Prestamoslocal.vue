@@ -13,8 +13,7 @@
       <q-select dense outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre" @update:model-value="calcular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
-      <!--<q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades" @update:model-value="calcular"/>-->
-      <q-input dense outlined label="Cantidad" v-model="cantidad" type="number" @update:model-value="calcular" :rules="[val => val>0 || 'Ingrese valor']"/> 
+      <q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades" @update:model-value="calcular"/>
     </div>
             <div class="col-12 col-sm-3 q-pa-xs">
       <q-input dense outlined label="Fecha" v-model="fecha" type="date"/>
@@ -595,8 +594,7 @@ export default {
     verTelef(dato){
       this.$q.dialog({
         title: 'Telefono Cliente: '+dato.cliente.titular,
-        message: '<h6>'+dato.cliente.telefono+'</h6>',
-        html: true
+        message: dato.cliente.telefono
       }).onOk(() => {
         // console.log('OK')
       }).onCancel(() => {
