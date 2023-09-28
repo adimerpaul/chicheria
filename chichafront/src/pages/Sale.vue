@@ -185,7 +185,7 @@
       <q-card-actions align="center">
           <q-btn flat label="FINALIZAR" color="accent"  @click="garantiaFin"/>
         <q-btn flat label="OK" color="green"  @click="garantiaOk"/>
-        <q-btn flat label="CANCELAR" color="red"  @click="garantiaCancel"/>
+        <q-btn flat label="IMPRIMIR" color="red"  @click="garantiaCancel"/>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -202,7 +202,7 @@
         <q-card-actions align="center">
             <q-btn flat label="FINALIZAR" color="accent"  @click="garantiaFin2"/>
           <q-btn flat label="OK" color="green"  @click="garantiaOk2"/>
-          <q-btn flat label="CANCELAR" color="red"  @click="garantiaCancel2"/>
+          <q-btn flat label="IMPRIMIR" color="red"  @click="garantiaCancel2"/>
         </q-card-actions>
       </q-card>
     </q-dialog>
