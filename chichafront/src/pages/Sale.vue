@@ -1060,7 +1060,7 @@ export default {
           this.prestamolista.forEach(p => {
             this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
           })
-          this.printboleta+="</table></div><div class='leyenda'><b>* SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS, CASO CONTRARIO SE DARA DE BAJA <br>* HORARIOS LUN - VIER DE 8:30 A 17:00<b></div>"
+          this.printboleta+="</table></div><div class='leyenda'><b>* SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS, CASO CONTRARIO SE DARA DE BAJA <br>* HORARIO DE DEVOLUCION DE GARANTIA DE LUNES - DOMINGO, EXCEPTO EL DIA MIERCOLES DE 8:30 AM A 17:00 PM<b></div>"
           let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
           myWindow.document.write(this.printboleta);
           myWindow.document.close();
