@@ -96,8 +96,8 @@ class LogprestamoController extends Controller
         <tr><td><b>Cliente:</b></td><td>$cliente->local  $cliente->titular</td></tr>
         <tr><td><b>Item:</b></td><td> $inv->nombre</td></tr>
         <tr><td><b>Cantidad:</b></td><td>$devol->cantidad</td></tr>
-        <tr><td><b>Efectivo:</b></td><td>$devol->prestamo['efectivo']</td></tr>
-        <tr><td><b>Fisico:</b></td><td>$devol->prestamo['fisico']</td></tr>
+        <tr><td><b>Efectivo:</b></td><td>".$devol->prestamo->efectivo."</td></tr>
+        <tr><td><b>Fisico:</b></td><td>".$devol->prestamo->fisico."</td></tr>
         <tr><td><b>Usuario:</b></td><td>".$devol->user['name']."</td></tr>
         </table>
         <br>

@@ -74,7 +74,7 @@
             </template>
             <template v-slot:body-cell-estado="props" >
               <q-td key="estado" :props="props">
-                <q-badge color="negative" v-if="props.row.estado=='ANULADO'">
+                <q-badge color="negative" v-if="props.row.estado=='ANULADO'" >
                   {{ props.row.estado }}
                 </q-badge>
                 <q-badge color="amber" v-if="props.row.estado=='DEVUELTO'">
@@ -110,27 +110,32 @@
                     <!-- dropdown content goes here -->
                     <q-btn-dropdown color="primary" label="Opcion">
                       <q-list>
-                        <q-item clickable v-close-popup @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'">
+                        <q-item clickable v-close-popup @click="onPrint(props.row)" v-if="props.row.estado=='EN PRESTAMO' || props.row.estado=='DEVUELTO'" dense>
+                          <q-item-section avatar>
+                            <q-avatar  icon="print" color="info" text-color="white" />
+                          </q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'" dense>
                           <q-item-section avatar>
                             <q-avatar  icon="refresh" color="primary" text-color="white" />
                           </q-item-section>
                         </q-item>
-                        <q-item clickable v-close-popup @click="onList(props.row)" >
+                        <q-item clickable v-close-popup @click="onList(props.row)" dense>
                           <q-item-section avatar>
                             <q-avatar  icon="list" color="green" text-color="white" />
                           </q-item-section>
                         </q-item>
-                        <q-item clickable v-close-popup @click="onMod(props.row)" v-if="props.row.estado=='EN PRESTAMO'">
+                        <q-item clickable v-close-popup @click="onMod(props.row)" v-if="props.row.estado=='EN PRESTAMO'" dense>
                           <q-item-section avatar>
                             <q-avatar  icon="edit" color="yellow" text-color="white" />
                           </q-item-section>
                         </q-item>
-                        <q-item clickable v-close-popup @click="onEliminar(props.row)"  v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  >
+                        <q-item clickable v-close-popup @click="onEliminar(props.row)"  v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  dense>
                           <q-item-section>
                             <q-item-label  content-style="{background-color: coral;}"  >BAJA</q-item-label>
                           </q-item-section>
                         </q-item>
-                        <q-item clickable v-close-popup @click="ondelete(props.row)" v-if="(props.row.estado=='EN PRESTAMO' || props.row.estado=='VENTA') && $store.state.login.delprestamo">
+                        <q-item clickable v-close-popup @click="ondelete(props.row)" v-if="(props.row.estado=='EN PRESTAMO' || props.row.estado=='VENTA') && $store.state.login.delprestamo" dense>
                           <q-item-section avatar>
                             <q-avatar  icon="delete" color="negative" text-color="white" />
                           </q-item-section>
@@ -208,6 +213,7 @@
     >
     <template v-slot:body-cell-op="props" v-if="$store.state.login.delpago">
       <q-td key="op" :props="props">
+         <q-btn color="info" icon="print" dense @click="printDevuelto(props.row)"  />
          <q-btn color="red" icon="delete" dense @click="delDevuelto(props.row)"  />
       </q-td>
     </template>
@@ -297,6 +303,26 @@ export default {
 
   },
   methods: {
+    onPrint(prest){
+      this.$axios.post(process.env.API+'/impresion/'+prest.id).then(res=>{
+        // console.log(res.data)
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+      })
+    },
+    printDevuelto(devuelto){
+      this.$axios.post(process.env.API+'/impdevolucion/'+devuelto.id).then(res=>{
+        // console.log(res.data)
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+      })
+    },
     delDevuelto(devol){
       this.$q.dialog({
         title: 'Eliminar',

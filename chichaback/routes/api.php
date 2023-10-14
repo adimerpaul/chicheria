@@ -136,5 +136,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
 
 
     Route::resource('/sale',\App\Http\Controllers\SaleController::class);
+    Route::post('/impdevolucion/{id}',[\App\Http\Controllers\LogprestamoController::class,'impdevolucion']);
+    Route::post('/impresion/{id}',[\App\Http\Controllers\PrestamoController::class,'impresion']);
 
 });

@@ -304,11 +304,11 @@
                 <div class="col-3">
                   <q-input outlined label="Fecha" type="date" v-model="pago.fecha" />
                 </div>
-                <div class="col-3" v-if="$store.state.login.user.id==1">
+               <!-- <div class="col-3" v-if="$store.state.login.user.id==1">
                   <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
                   <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
 
-                </div>
+                </div>-->
                 <div class="col-3 flex flex-center">
                   <q-btn label="Agregar" type="submit" icon="send" color="info"/>
                 </div>

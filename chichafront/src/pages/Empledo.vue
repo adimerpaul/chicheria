@@ -712,7 +712,7 @@ export default {
     delsueldo(sueldo){
       this.$q.dialog({
         title: 'Confirmar',
-        message: 'Esta Seguro anular este pago?',
+        message: 'Ingrese el motivo por el cual esta eliminando?',
         prompt: {
           model: '',
           type: 'text' // optional
