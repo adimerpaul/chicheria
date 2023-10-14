@@ -84,6 +84,29 @@ class LogprestamoController extends Controller
 
     }
 
+    public function impdevolucion($id){
+        $devol=Logprestamo::where('id',$id)->with('prestamo')->with('user')->first();
+        $cliente=Cliente::find($devol->prestamo->cliente['id']);
+        $inv=Inventario::find($devol->prestamo->inventario['id']);
+
+        $cadena="
+        <table>
+
+        <tr><td><b>Fecha:</b></td><td>".date('d/m/Y',strtotime($devol->fecha))."</td></tr>
+        <tr><td><b>Cliente:</b></td><td>$cliente->local  $cliente->titular</td></tr>
+        <tr><td><b>Item:</b></td><td> $inv->nombre</td></tr>
+        <tr><td><b>Cantidad:</b></td><td>$devol->cantidad</td></tr>
+        <tr><td><b>Efectivo:</b></td><td>$devol->prestamo['efectivo']</td></tr>
+        <tr><td><b>Fisico:</b></td><td>$devol->prestamo['fisico']</td></tr>
+        <tr><td><b>Usuario:</b></td><td>".$devol->user['name']."</td></tr>
+        </table>
+        <br>
+        <br>
+        <div style='text-align:center'>FIRMA</div>
+
+        ";
+        return $cadena;
+    }
     /**
      * Display the specified resource.
      *

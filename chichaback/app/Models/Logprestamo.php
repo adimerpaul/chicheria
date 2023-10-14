@@ -17,6 +17,11 @@ class Logprestamo extends Model
     ];
     protected $hidden = ["created_at", "updated_at"];
     public function prestamo(){
-        return $this->belongsTo(Prestamo::class);
+        return $this->belongsTo(Prestamo::class)->with('cliente')->with('inventario');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+
     }
 }
