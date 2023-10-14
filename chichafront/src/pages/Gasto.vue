@@ -810,7 +810,7 @@ xlsx(datacaja, settings) // Will download the excel file
         if(this.ventas.length>0){
         cadena+="<div>VENTAS DETALLE Y LOCAL</div> \
         <table>\
-          <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
+          <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>LOCAL</th><th>TITULAR</th><th>ESTADO</th></tr>"
           this.ventas.forEach(r => {
             if(r.fechaentrega==null || r.fechaentrega==''){
               ventas=ventas+r.acuenta
@@ -820,7 +820,7 @@ xlsx(datacaja, settings) // Will download the excel file
               r.detalles.forEach(d => {
                   cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
               });
-              cadena+="</td><td>"+ r.total +" Bs</td><td>"+r.acuenta+" Bs</td><td>"+ r.saldo +" Bs</td><td>"+ r.titular+"</td><td>"+ r.local+"</td><td "
+              cadena+="</td><td>"+ r.total +" Bs</td><td>"+r.acuenta+" Bs</td><td>"+ r.saldo +" Bs</td><td>"+ r.local+"</td><td>"+ r.titular+"</td><td "
         if(r.estado=='POR COBRAR')  cadena+=color1
               cadena+=">"+r.estado+"</td></tr>"
 
@@ -830,7 +830,7 @@ xlsx(datacaja, settings) // Will download the excel file
         if(this.totalruta){
         cadena+="<div>VENTAS CON RUTA</div> \
         <table>\
-          <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>TITULAR</th><th>LOCAL</th><th>ESTADO</th></tr>"
+          <tr><th>TIPO</th><th>DETALLE</th><th>TOTAL</th><th>ACUENTA</th><th>SALDO</th><th>LOCAL</th><th>TITULAR</th><th>ESTADO</th></tr>"
           this.ventas.forEach(r => {
             if(r.fechaentrega!=null && r.fechaentrega!=''){
               ventasruta=ventasruta+r.acuenta
@@ -840,7 +840,7 @@ xlsx(datacaja, settings) // Will download the excel file
               r.detalles.forEach(d => {
                   cadena+=" "+d.cantidad+" - "+d.nombreproducto+"<br>"
               });
-              cadena+="</td><td>"+ r.total +" Bs</td><td>"+r.acuenta+" Bs</td><td>"+ r.saldo +" Bs</td><td>"+ r.titular+"</td><td>"+ r.local+"</td><td "
+              cadena+="</td><td>"+ r.total +" Bs</td><td>"+r.acuenta+" Bs</td><td>"+ r.saldo +" Bs</td><td>"+ r.local+"</td><td>"+ r.titular+"</td><td "
         if(r.estado=='POR COBRAR')  cadena+=color1
               cadena+=">"+r.estado+"</td></tr>"
       }
@@ -854,22 +854,22 @@ xlsx(datacaja, settings) // Will download the excel file
         panulado=panulado+this.totalanulado;
         cadena+="<div>INGRESOS DE ANULADOS PRESTAMOS</div>\
         <table>\
-          <tr><th>CANTIDAD</th><th>MATERIAL</th><th>EFECTIVO</th><th>TITULAR</th><th>LOCAL</th></tr>"
+          <tr><th>CANTIDAD</th><th>MATERIAL</th><th>EFECTIVO</th><th>LOCAL</th><th>TITULAR</th></tr>"
           this.anulados.forEach(element => {
             element.cliente.local=element.cliente.local!=null?element.cliente.local.toString():''
             cadena+="<tr><td>"+element.cantidad+"</td><td>"+element.inventario.nombre+"</td><td>"+element.efectivo+" Bs</td>\
-              <td>"+ element.cliente.titular+"</td><td>"+element.cliente.local+"</td></tr>"
+              <td>"+element.cliente.local+"</td><td>"+ element.cliente.titular+"</td></tr>"
               });
         cadena+="</table><div><b>TOTAL ANULADO:</b>"+this.totalanulado+"</div><br>"
         }
         let matventa=0
         if(this.totalpresventa>0){
         cadena+="<div>INGRESOS DE VENTA MATERIAL</div>\
-        <table><tr><th>CANTIDAD</th><th>MATERIAL</th><th>EFECTIVO</th><th>TITULAR</th><th>LOCAL</th></tr>"
+        <table><tr><th>CANTIDAD</th><th>MATERIAL</th><th>EFECTIVO</th><th>LOCAL</th><th>TITULAR</th></tr>"
 
         this.prestamoventa.forEach(r=>{
           r.cliente.local=r.cliente.local!=null?r.cliente.local:''
-          cadena+="<tr><td>"+r.cantidad+"</td><td>"+r.inventario.nombre+"</td><td>"+r.efectivo+" Bs.</td><td>"+r.cliente.titular+"</td><td>"+r.cliente.local+"</td></tr>"
+          cadena+="<tr><td>"+r.cantidad+"</td><td>"+r.inventario.nombre+"</td><td>"+r.efectivo+" Bs.</td><td>"+r.cliente.local+"</td><td>"+r.cliente.titular+"</td></tr>"
           matventa+=parseFloat(r.efectivo)
 
         })
@@ -878,7 +878,7 @@ xlsx(datacaja, settings) // Will download the excel file
       if(this.rpagos.length>0){
         let pendiente=''
         cadena+="<div>INGRESOS DE PENDIENTES DE PAGO</div>\
-        <table><tr><th>TIPO</th><th>DETALLE</th><th>MONTO</th><th>TITULAR</th><th>LOCAL</th></tr>"
+        <table><tr><th>TIPO</th><th>DETALLE</th><th>MONTO</th><th>LOCAL</th><th>TITULAR</th></tr>"
       this.rpagos.forEach(r=>{
         ccpago+=r.monto
         pendiente=r.venta.fechaentrega!=null&&r.venta.fechaentrega!=''?'R-'+r.venta.id:r.venta.tipo.substring(0,1)+'-'+r.venta.id
@@ -887,7 +887,7 @@ xlsx(datacaja, settings) // Will download the excel file
         r.venta.detalles.forEach(d => {
           cadena+=d.cantidad+" - "+d.nombreproducto+"<br>"
         });
-        cadena+="</td><td>"+r.monto+" Bs </td><td>"+r.venta.cliente.titular+"</td><td>"+r.venta.cliente.local+"</td></tr>"
+        cadena+="</td><td>"+r.monto+" Bs </td><td>"+r.venta.cliente.local+"</td><td>"+r.venta.cliente.titular+"</td></tr>"
       })
       cadena+="</table><div><b>T.V. Pago: </b>"+this.totalpagos+"</div><br>"
       }
