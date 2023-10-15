@@ -53,6 +53,10 @@ class SueldoController extends Controller
         $sueldo->empleado_id=$request->empleado_id;
         $sueldo->observacion=$request->observacion;
         $sueldo->user_id=$request->user()->id;
+        if($request->checkbox=='CAJA')
+            $sueldo->caja='CHICA';
+        else 
+            $sueldo->caja='GENERAL';
         $sueldo->save();
 
         if($request->checkbox=='CAJA'){
@@ -206,27 +210,45 @@ class SueldoController extends Controller
     {
         $sueldo=Sueldo::find($sueldo->id);
         $empleado=Empleado::find($sueldo->empleado_id);
-        if ($sueldo->tipo=='ADELANTO' || $sueldo->tipo=='EXTRA'){
-            $gasto=Gasto::where('observacion',$sueldo->observacion.' '.$empleado->nombre)
-                ->where('glosa',$sueldo->tipo)
-                ->first();
-            $gasto->delete();
-            $loggeneral=new Loggeneral();
-            $loggeneral->numero=$sueldo->id;
-            $loggeneral->monto=$sueldo->monto;
-            $loggeneral->detalle='GASTO';
-            $loggeneral->motivo=$sueldo->observacion.', '.$request->motivo;
-            $loggeneral->tipo='INGRESO';
-            $loggeneral->fecha=date('Y-m-d');
-            $loggeneral->hora=date('H:i:s');
-            $loggeneral->glosa_id=null;
-            $loggeneral->user_id=$request->user()->id;
-            $loggeneral->save();
+        if($sueldo->caja=='GENERAL'){
+            if ($sueldo->tipo=='ADELANTO' || $sueldo->tipo=='EXTRA'){
+                $gasto=Gasto::where('observacion',$sueldo->observacion.' '.$empleado->nombre)
+                    ->where('glosa',$sueldo->tipo)
+                    ->first();
+                $gasto->delete();
+                $loggeneral=new Loggeneral();
+                $loggeneral->numero=$sueldo->id;
+                $loggeneral->monto=$sueldo->monto;
+                $loggeneral->detalle='GASTO';
+                $loggeneral->motivo=$sueldo->observacion.', '.$request->motivo;
+                $loggeneral->tipo='INGRESO';
+                $loggeneral->fecha=date('Y-m-d');
+                $loggeneral->hora=date('H:i:s');
+                $loggeneral->glosa_id=null;
+                $loggeneral->user_id=$request->user()->id;
+                $loggeneral->save();
 
-            $general=General::find(1);
-            $general->monto=$general->monto + $sueldo->monto;
-            $general->save();
+                $general=General::find(1);
+                $general->monto=$general->monto + $sueldo->monto;
+                $general->save();
 
+            }
+        }
+        else {
+            # code...
+            $caja=Caja::find(1);
+            $caja->monto= floatval($caja->monto) + floatval($sueldo->monto);
+            $caja->save();
+
+            $log=new Logcaja ();
+            $log->monto=$request->monto;
+            $log->motivo=$sueldo->observacion.'; '.$request->motivo;
+            $log->tipo='AGREGA';
+            $log->glosa_id=null;
+            $log->fecha=date('Y-m-d');
+            $log->hora=date('H:i:s');
+            $log->user_id=$request->user()->id;
+            $log->save();
         }
         $sueldo->update(['monto'=>0,'tipo'=>'ANULADO','observacion'=>$sueldo->observacion.', '.$request->motivo]);
 //        $sueldo->delete();

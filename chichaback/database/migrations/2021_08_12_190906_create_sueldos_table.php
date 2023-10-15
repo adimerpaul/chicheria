@@ -19,6 +19,7 @@ class CreateSueldosTable extends Migration
             $table->time('hora');
             $table->double('monto',11,2);
             $table->string('tipo')->default('')->nullable();
+            $table->string('caja')->default('')->nullable();
             $table->string('observacion')->default('')->nullable();
             $table->unsignedBigInteger('empleado_id');
             $table->foreign('empleado_id')->references('id')->on('empleados');

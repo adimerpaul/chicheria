@@ -160,7 +160,14 @@ class CompraController extends Controller
         //
     }
     public function compraModificar(Request $request){
+
         $compra=Compra::find($request->id);
+        if($compra->cantidad <> $request->cantidad){
+        $material=Material::find($request->material_id);
+        $material->stock=$material->stock - $compra->cantidad + $request->cantidad;
+        $material->save();
+    }
+
         $compra->cantidad=$request->cantidad;
         $compra->costo=$request->costo;
         $compra->subtotal=$request->costo*$request->cantidad;
