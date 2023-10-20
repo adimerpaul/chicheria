@@ -24,6 +24,8 @@ class CreateRecuentosTable extends Migration
             $table->string('observacion')->nullable();
             $table->unsignedBigInteger('material_id');
             $table->foreign('material_id')->references('id')->on('materials');
+            $table->unsignedBigInteger('compra_id');
+            $table->foreign('compra_id')->references('id')->on('compras');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

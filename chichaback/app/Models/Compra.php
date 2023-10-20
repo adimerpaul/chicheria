@@ -29,6 +29,10 @@ class Compra extends Model
         return $this->belongsTo(Material::class);
     }
 
+    public function recuentos(){
+        return $this->hasMany(Recuento::class);
+    }
+
     public function provider(){
         return $this->belongsTo(Provider::class);
     }

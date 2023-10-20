@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Recuento;
 use App\Models\Material;
+use App\Models\Compra;
 use Illuminate\Http\Request;
 
 class RecuentoController extends Controller
@@ -53,6 +54,8 @@ class RecuentoController extends Controller
     public function store(Request $request)
     {
         //
+        $compra = Compra::find($request->compra_id);
+        if(($compra->cantidad - $compra->retiro) >= $request->cantidad){
         $material=Material::find($request->material_id);
         $material->stock=$material->stock - $request->cantidad;
         $material->save();
@@ -63,12 +66,13 @@ class RecuentoController extends Controller
         $recuento->cantidad=$request->cantidad;
         $recuento->observacion=$request->observacion;
         $recuento->material_id=$request->material_id;
+        $recuento->compra_id=$request->compra_id;
         $recuento->user_id=Request()->user()->id;
         $recuento->save();
 
-        $material = Material::find($request->material_id);
-        $material->stock = $material->stock - $request->cantidad;
-        $material->save();
+        $compra->retiro = $compra->retiro + $request->cantidad;
+        $compra->save();
+        }
 
     }
 

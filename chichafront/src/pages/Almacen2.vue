@@ -113,19 +113,22 @@
           </template>
           <template v-slot:body-cell-opcion="props" >
             <q-td key="opcion" :props="props" >
-              <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.pagoalmacen && props.row.deuda>0" @click="pagarcompra(props.row)">
+              <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.pagoalmacen && props.row.deuda<props.row.subtotal" @click="pagarcompra(props.row)">
                 <q-tooltip>Realizar Pago</q-tooltip>
               </q-btn>
               <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.almacenHistorialPago && props.row.logcompras.length>0" @click="listpago(props.row)">
                 <q-tooltip>Ver Pagos</q-tooltip>
               </q-btn>
-              <q-btn dense round flat color="teal" icon="o_download" v-if="$store.state.login.egresoMaterial" @click="retirarRow(props.row)">
+              <q-btn dense round flat color="teal" icon="o_download" v-if="$store.state.login.egresoMaterial && props.row.retiro<props.row.cantidad" @click="retirarRow(props.row)">
                 <q-tooltip>Realizar retiro</q-tooltip>
               </q-btn>
-              <q-btn dense round flat color="yellow-9" icon="o_edit" v-if="$store.state.login.editalmacen" @click="editcompra(props.row)">
+              <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.egresoMaterial && props.row.recuentos.length>0" @click="listrecuento(props.row)">
+                <q-tooltip>Ver Retiros</q-tooltip>
+              </q-btn>
+              <q-btn dense round flat color="yellow-9" icon="o_edit" v-if="$store.state.login.editalmacen && props.row.estado=='POR PAGAR'" @click="editcompra(props.row)">
                 <q-tooltip>Editar</q-tooltip>
               </q-btn>
-              <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen" @click="delcompra(props.row)">
+              <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen && props.row.estado=='POR PAGAR'" @click="delcompra(props.row)">
                 <q-tooltip>Eliminar</q-tooltip>
               </q-btn>
             </q-td>
@@ -133,6 +136,7 @@
 
         </q-table>
       </div>
+      <!--
       <div class="col-12">
         <q-table
           dense
@@ -158,7 +162,7 @@
           </template>
 
         </q-table>
-      </div>
+      </div>-->
     </div>
 
 <!--    <div class="col-12">-->
@@ -340,6 +344,18 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="dialoglistretiros" >
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-table title="RETIROS" :rows="retiros" :columns="colretiros" row-key="name" flat :rows-per-page-options="[0]"/>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <q-dialog v-model="dialogpagar">
       <q-card style="width: 700px; max-width: 90vw;">
         <q-card-section class="bg-green-14 text-white">
@@ -442,6 +458,7 @@
 import {date} from "quasar";
 import moment from "moment/moment";
 import {jsPDF} from "jspdf";
+import { Console } from 'console';
 
 export default {
   data () {
@@ -488,6 +505,7 @@ export default {
         fechaven: '',
         observacion: ''
       },
+      comp:{},
       comptodo:[],
       colrecuento : [
 
@@ -503,9 +521,10 @@ export default {
         { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
         { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
         { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
+        { name: 'retiro', align: 'center', label: 'RETIRADO', field: 'retiro', sortable: true },
         { name: 'costo', align: 'center', label: 'COSTO', field: 'costo', sortable: true },
         { name: 'subtotal', align: 'center', label: 'SUBTOTAL', field: 'subtotal', sortable: true },
-        { name: 'deuda', align: 'center', label: 'DEUDA', field: 'deuda', sortable: true },
+        { name: 'deuda', align: 'center', label: 'PAGO', field: 'deuda', sortable: true },
         { name: 'lote', align: 'center', label: 'LOTE', field: 'lote', sortable: true },
         { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: 'fechaven', sortable: true },
         { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
@@ -518,8 +537,15 @@ export default {
         { name: 'monto', align: 'center', label: 'MONTO', field: 'monto', sortable: true },
         { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
       ],
+      colretiros : [
+
+      { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+      { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
+      { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
+      ],
       recutodo:[],
       compras: [],
+      retiros:[],
       material2: {},
       materialOptions: 'create',
       materialColumns: [
@@ -530,6 +556,7 @@ export default {
         { name: 'actions', label: 'Acciones', align: 'center', field: 'actions', sortable: true }
       ],
       dialoglistpagos:false,
+      dialoglistretiros:false,
     }
   },
   created() {
@@ -589,23 +616,26 @@ export default {
 
     },
     onRegRecuento2(){
-      if(this.material2.stock<this.recuento.cantidad){
+      if((this.comp.cantidad - this.comp.retiro) < this.recuento.cantidad){
         this.$q.notify({
           color: 'negative',
           textColor: 'white',
           icon: 'report_problem',
-          message: 'No se puede retirar mas de lo que hay en stock',
+          message: 'No se puede retirar mas de lo que hay en registro',
           position: 'top'
         })
         return false
       }
       this.recuento.material_id=this.material2.id
+      this.recuento.compra_id=this.comp.id
       this.recuento.tipo='RETIRAR'
       this.recuento.user_id=this.$store.getters["login/user"].id
+      console.log(this.recuento)
       this.$api.post(process.env.API+'/recuento',this.recuento).then(res=>{
         this.recuento={}
         this.dialog_remove=false
         this.materialsGet()
+        this.consultmaterial()
       })
     },
     principioMesYmd(){
@@ -747,9 +777,14 @@ export default {
       this.pagos=compra.logcompras
       this.dialoglistpagos=true
     },
+    listrecuento(compra){
+      this.retiros=compra.recuentos
+      this.dialoglistretiros=true
+    },
     retirarRow(props) {
       console.log(props.material)
       this.material2=props.material
+      this.comp=props
       this.dialog_remove=true
     },
     delcompra(compra){
@@ -872,6 +907,24 @@ export default {
         })
         ///////al modificar
       }else{
+        if(parseFloat(this.compra.cantidad) < parseFloat(this.compra.retiro)){
+          this.$q.notify({
+            color: 'red-4',
+            textColor: 'white',
+            icon: 'info',
+            message: 'la cantidad No puede ser menor al retiro'
+          })
+          return false
+        }
+        if((parseFloat(this.compra.cantidad) * parseFloat(this.compra.costo)) < parseFloat(this.compra.deuda)){
+          this.$q.notify({
+            color: 'red-4',
+            textColor: 'white',
+            icon: 'info',
+            message: 'la subtotal No puede ser menor a lo pagado'
+          })
+          return false
+        }
         this.loading=true
         this.compra.material_id=this.material.id
         this.compra.provider_id=this.provider.id

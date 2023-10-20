@@ -51,7 +51,7 @@ class CompraController extends Controller
         $compra->cantidad=$r['cantidad'];
         $compra->costo=$r['costo'];
         $compra->subtotal=$r['subtotal'];
-        $compra->deuda=$r['subtotal'];
+        $compra->deuda=0;
         $compra->fechaven=$r['fechaven'];
         $compra->observacion=$r['observacion'];
         $compra->lote=$r['lote'];
@@ -94,7 +94,7 @@ class CompraController extends Controller
             $compra->cantidad=$r['cantidad'];
             $compra->costo=$r['costo']==null?0:$r['costo'];
             $compra->subtotal=$r['subtotal']==null?0:$r['subtotal'];
-            $compra->deuda=$r['subtotal']==null?0:$r['subtotal'];
+            $compra->deuda=0;
             $compra->fechaven=$r['fechaven'];
             $compra->observacion=$r['observacion'];
             $compra->lote=$r['lote'];
@@ -133,7 +133,7 @@ class CompraController extends Controller
     public function consultar(Request $request)
     {
         //
-        return Compra::with('material')->with('provider')->with('logcompras')->where('material_id',$request->material_id)
+        return Compra::with('material')->with('provider')->with('logcompras')->with('recuentos')->where('material_id',$request->material_id)
         ->whereDate('fecha','>=',$request->fecha1)->where('fecha','<=',$request->fecha2)->get();
     }
     public function consultar2(Request $request)
@@ -141,6 +141,7 @@ class CompraController extends Controller
         //
         return Compra::with('material')
             ->with('provider')
+            ->with('recuentos')
             ->with('logcompras')
 //            ->where('material_id',$request->material_id)
             ->whereDate('fecha','>=',$request->fecha1)
@@ -171,7 +172,6 @@ class CompraController extends Controller
         $compra->cantidad=$request->cantidad;
         $compra->costo=$request->costo;
         $compra->subtotal=$request->costo*$request->cantidad;
-        $compra->deuda=$request->costo*$request->cantidad;
         $compra->fechaven=$request->fechaven;
         $compra->observacion=$request->observacion;
         $compra->lote=$request->lote;
