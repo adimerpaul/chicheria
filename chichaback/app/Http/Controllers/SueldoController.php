@@ -236,19 +236,22 @@ class SueldoController extends Controller
         }
         else {
             # code...
+            if ($sueldo->tipo=='ADELANTO' || $sueldo->tipo=='EXTRA'){
+
             $caja=Caja::find(1);
             $caja->monto= floatval($caja->monto) + floatval($sueldo->monto);
             $caja->save();
 
             $log=new Logcaja ();
             $log->monto=$sueldo->monto;
-            $log->motivo=$sueldo->observacion.'; '.$request->motivo;
+            $log->motivo=$sueldo->observacion.', '.$request->motivo;
             $log->tipo='AGREGA';
             $log->glosa_id=null;
             $log->fecha=date('Y-m-d');
             $log->hora=date('H:i:s');
             $log->user_id=$request->user()->id;
             $log->save();
+        }
         }
         $sueldo->update(['monto'=>0,'tipo'=>'ANULADO','observacion'=>$sueldo->observacion.', '.$request->motivo]);
 //        $sueldo->delete();
