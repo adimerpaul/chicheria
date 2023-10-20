@@ -241,7 +241,7 @@ class SueldoController extends Controller
             $caja->save();
 
             $log=new Logcaja ();
-            $log->monto=$request->monto;
+            $log->monto=$sueldo->monto;
             $log->motivo=$sueldo->observacion.'; '.$request->motivo;
             $log->tipo='AGREGA';
             $log->glosa_id=null;

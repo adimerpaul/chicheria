@@ -18,6 +18,7 @@ class CreateComprasTable extends Migration
             $table->date('fecha');
             $table->time('hora');
             $table->integer('cantidad');
+            $table->integer('retiro')->default(0);
             $table->double('costo')->nullable();
             $table->double('subtotal')->nullable();
             $table->double('deuda')->nullable();

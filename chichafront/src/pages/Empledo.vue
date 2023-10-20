@@ -225,7 +225,10 @@
                 <div class="col-4">
                   <q-input outlined dense type="text" label="observacion" v-model="pago.observacion" />
                 </div>
-
+                <div class="col-3" v-if="$store.state.login.user.id==1">
+                  <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
+                  <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
+                </div>
                 <div class="col-2 flex flex-center">
                   <q-btn  class="full-with" label="Agregar" type="submit" icon="send" color="info"/>
                 </div>
