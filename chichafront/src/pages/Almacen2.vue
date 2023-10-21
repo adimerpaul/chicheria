@@ -772,6 +772,7 @@ export default {
           message: 'registrado '
         });
         this.checkgasto='CAJA'
+        this.dialogpagar=false
         this.consultmaterial()
       })
     },
