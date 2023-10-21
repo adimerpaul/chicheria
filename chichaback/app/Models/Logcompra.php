@@ -11,6 +11,7 @@ class Logcompra extends Model
     protected $fillable=[
         'fecha',
         'monto',
+        'caja',
         'observacion',
         'compra_id',
         'user_id',

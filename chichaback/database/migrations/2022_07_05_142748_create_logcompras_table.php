@@ -17,6 +17,7 @@ class CreateLogcomprasTable extends Migration
             $table->id();
             $table->date('fecha');
             $table->double('monto',11,2);
+            $table->string('caja')->nullable();
             $table->string('observacion')->nullable();
             $table->unsignedBigInteger('compra_id');
             $table->foreign('compra_id')->references('id')->on('compras');

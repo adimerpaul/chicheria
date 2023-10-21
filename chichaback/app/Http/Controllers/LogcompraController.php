@@ -49,6 +49,10 @@ class LogcompraController extends Controller
         $logcompra->compra_id=$request->compra_id;
         $logcompra->user_id=$request->user()->id;
         $logcompra->monto=$request->monto;
+        if($request->checktipo=='GASTO')
+            $logcompra->caja='GENERAL';
+        else
+            $logcompra->caja='CHICA';
         $logcompra->observacion=$request->observacion;
         $logcompra->save();
 
@@ -162,8 +166,49 @@ class LogcompraController extends Controller
      * @param  \App\Models\Logcompra  $logcompra
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Logcompra $logcompra)
+    public function anularLogcompra(Request $request )
     {
         //
+
+        $logcompra=Logcompra::find($request->id);
+        $compra=Compra::find($logcompra->compra_id);
+
+        $compra->deuda=$compra->deuda - $logcompra->monto;
+        $compra->estado='POR PAGAR';
+        $compra->save();
+
+        if($logcompra->caja=='GENERAL'){
+        $general=General::find(1);
+        $general->monto=$general->monto + $logcompra->monto;
+        $general->save();
+
+        $loggeneral= new Loggeneral;
+        $loggeneral->numero=$compra->id;
+        $loggeneral->monto= $logcompra->monto;
+        $loggeneral->detalle='MATERIAL ALMACEN :' . $logcompra->observacion;
+        $loggeneral->motivo='PAGO COMPRA ANULADO';
+        $loggeneral->tipo='INGRESO';
+        $loggeneral->fecha=date('Y-m-d');
+        $loggeneral->hora=date("H:i:s");
+        $loggeneral->glosa_id=null;
+        $loggeneral->user_id=$request->user()->id;
+        $loggeneral->save();
+        }
+        else{
+        $caja=Caja::find(1);
+        $caja->monto= floatval($caja->monto) + floatval($logcompra->monto);
+        $caja->save();
+
+        $log=new Logcaja ;
+        $log->monto=$logcompra->monto;
+        $log->motivo='Almacen Pago '.$compra->id.' : '.$logcompra->observacion;
+        $log->tipo='AGREGA';
+        $log->fecha=date('Y-m-d');
+        $log->hora=date('H:i:s');
+        $log->glosa_id=null;
+        $log->user_id=$request->user()->id;
+        $log->save();
+        }
+        $logcompra->delete();
     }
 }

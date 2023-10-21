@@ -13,6 +13,7 @@ class Compra extends Model
         'hora',
         'costo',
         'cantidad',
+        'retiro',
         'subtotal',
         'deuda',
         'observacion',

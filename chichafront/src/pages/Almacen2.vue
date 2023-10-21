@@ -93,14 +93,14 @@
           <template v-slot:body-cell-costo="props">
             <q-td :props="props">
               <template v-if="$store.state.login.almacenCostoSubtotal">
-              <q-badge v-if="$store.state.login.preciounitario" :color="props.row.deuda>0?'red':'green'"  >{{props.row.costo}}</q-badge>
+              <q-badge v-if="$store.state.login.preciounitario" :color="props.row.subtotal>props.row.deuda?'red':'green'"  >{{props.row.costo}}</q-badge>
               </template>
             </q-td>
           </template>
           <template v-slot:body-cell-subtotal="props">
             <q-td :props="props">
               <template v-if="$store.state.login.almacenCostoSubtotal">
-              <q-badge v-if="$store.state.login.preciounitario" :color="props.row.deuda>0?'red':'green'"  >{{props.row.subtotal}}</q-badge>
+              <q-badge v-if="$store.state.login.preciounitario" :color="props.row.subtotal>props.row.deuda?'red':'green'"  >{{props.row.subtotal}}</q-badge>
               </template>
             </q-td>
           </template>
@@ -116,12 +116,14 @@
               <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.pagoalmacen && props.row.deuda<props.row.subtotal" @click="pagarcompra(props.row)">
                 <q-tooltip>Realizar Pago</q-tooltip>
               </q-btn>
-              <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.almacenHistorialPago && props.row.logcompras.length>0" @click="listpago(props.row)">
+              <q-btn dense round flat color="purple" icon="point_of_sale" v-if="$store.state.login.almacenHistorialPago && props.row.logcompras.length>0" @click="listpago(props.row)">
                 <q-tooltip>Ver Pagos</q-tooltip>
               </q-btn>
+
               <q-btn dense round flat color="teal" icon="o_download" v-if="$store.state.login.egresoMaterial && props.row.retiro<props.row.cantidad" @click="retirarRow(props.row)">
                 <q-tooltip>Realizar retiro</q-tooltip>
               </q-btn>
+              
               <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.egresoMaterial && props.row.recuentos.length>0" @click="listrecuento(props.row)">
                 <q-tooltip>Ver Retiros</q-tooltip>
               </q-btn>
@@ -334,8 +336,14 @@
     <q-dialog v-model="dialoglistpagos" >
       <q-card>
         <q-card-section class="row items-center">
-          <q-table title="pagos" :rows="pagos" :columns="colpagos" row-key="name" flat :rows-per-page-options="[0]"/>
+          <q-table title="pagos" :rows="pagos" :columns="colpagos" row-key="name"  :rows-per-page-options="[0]" dense>
+            <template v-slot:body-cell-op="props" >
+              <q-td key="op" :props="props" >
+                <q-btn dense round flat color="red"  icon="delete" @click="anularpago(props.row)"  />
+              </q-td>
+            </template>
 <!--          <pre>{{pagos}}</pre>-->
+</q-table>
 
         </q-card-section>
 
@@ -385,7 +393,7 @@
               <div class="col-6">
                 <q-input dense outlined type="text" v-model="pago.monto" label="Monto" step="0.01"
                          lazy-rules
-                         :rules="[ val => val && val > 0 && val <=compra2.deuda || 'ingrese otro monto']"
+                         :rules="[ val => val && val > 0 && val <=(compra2.subtotal - compra2.deuda) || 'ingrese otro monto']"
                 />
               </div>
               <div class="col-6">
@@ -533,6 +541,7 @@ export default {
       ],
       colpagos : [
 
+        { name: 'op', align: 'center', label: 'OP', field: 'op', sortable: true },
         { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
         { name: 'monto', align: 'center', label: 'MONTO', field: 'monto', sortable: true },
         { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
@@ -746,6 +755,7 @@ export default {
         });
         return false
       }
+
       this.pago.compra_id=this.compra2.id
       this.pago.checktipo=this.checkgasto
       this.$api.post(process.env.API + "/logcompra",this.pago).then((res) => {
@@ -907,7 +917,7 @@ export default {
         })
         ///////al modificar
       }else{
-        if(parseFloat(this.compra.cantidad) < parseFloat(this.compra.retiro)){
+        if(parseFloat(this.compra.cantidad) <  parseFloat(this.compra.retiro)){
           this.$q.notify({
             color: 'red-4',
             textColor: 'white',
@@ -928,12 +938,28 @@ export default {
         this.loading=true
         this.compra.material_id=this.material.id
         this.compra.provider_id=this.provider.id
+        this.$q.dialog({
+        dark: true,
+        title: 'Confirmar',
+        message: 'Esta seguro de Modificar?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        // console.log('>>>> OK')
         this.$api.post(process.env.API+'/compraModificar',this.compra).then(res=>{
           this.dialog_add=false
           this.materialsGet();
           this.consultmaterial()
           this.loading=false
         })
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+
       }
 
     },
@@ -1093,6 +1119,30 @@ export default {
         this.loading = false
       })
     },
+  anularpago(pago){
+    this.$q.dialog({
+        title: 'Confirmar',
+        message: '¿Desea eliminar el pago?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.loading = true
+        this.$api.post('anularLogcompra', pago).then(res => {
+          this.consultmaterial()
+          this.get
+        }).catch(e => {
+          this.$q.notify({
+            color: 'red',
+            textColor: 'white',
+            icon: 'info',
+            message: 'No se puede eliminar el material, ya que esta siendo utilizado',
+            position: 'top'
+          });
+        }).finally(() => {
+          this.loading = false
+        })
+      })
+  }
   }
 }
 </script>

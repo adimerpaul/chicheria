@@ -139,4 +139,5 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/impdevolucion/{id}',[\App\Http\Controllers\LogprestamoController::class,'impdevolucion']);
     Route::post('/impresion/{id}',[\App\Http\Controllers\PrestamoController::class,'impresion']);
 
+    Route::post('/anularLogcompra',[\App\Http\Controllers\LogcompraController::class,'anularLogcompra']);
 });
