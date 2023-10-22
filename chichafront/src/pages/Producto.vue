@@ -41,7 +41,23 @@
                       label="TIPO"
                     />
                   </div>
-
+                  <q-input
+                  :style="'background-color: '+producto.color"
+                  label="color"
+                  outlined
+                  v-model="producto.color"
+                  class="my-input"
+                  readonly
+                  
+                >
+                  <template v-slot:append>
+                    <q-icon name="colorize" class="cursor-pointer">
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                        <q-color v-model="producto.color" />
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
                   <div class="col-2">
                   <q-input
                     outlined
@@ -100,6 +116,11 @@
                 </q-td>
 <!--              </q-tr>-->
             </template>
+            <template v-slot:body-cell-color="props" > 
+                <q-td key="color" :props="props" >
+                  <div :style="'width: 20px;height:20px; background-color: '+props.row.color"></div>
+                </q-td>
+            </template>
             <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
                 <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit" v-if="$store.state.login.editproducto"></q-btn>
@@ -152,6 +173,23 @@
               v-model="dato.orden"
               label="N° Orden"
             />
+            <q-input
+            :style="'background-color: '+dato.color"
+            label="color"
+            outlined
+            v-model="dato.color"
+            class="my-input"
+            readonly
+            
+          >
+            <template v-slot:append>
+              <q-icon name="colorize" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-color v-model="dato.color" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
             <div>
               <q-btn label="Modificar" type="submit" color="positive" icon="add_circle"/>
                 <q-btn  label="Cancelar" icon="delete" color="negative" v-close-popup />
@@ -313,6 +351,7 @@ export default {
   { name: 'tipo', align: 'center', label: 'TIPO', field: 'tipo', sortable: true },
   { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
   { name: 'orden', align: 'center', label: 'ORDEN', field: 'orden' },
+  { name: 'color', align: 'center', label: 'COLOR', field: 'color' },
   { name: 'opcion', label: 'OPCIONES', field: 'action' }
 ],
   rows:[],

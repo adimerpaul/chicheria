@@ -140,4 +140,6 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/impresion/{id}',[\App\Http\Controllers\PrestamoController::class,'impresion']);
 
     Route::post('/anularLogcompra',[\App\Http\Controllers\LogcompraController::class,'anularLogcompra']);
+    Route::get('/impPagoAlmacen/{id}',[\App\Http\Controllers\LogcompraController::class,'impPagoAlmacen']);
+    
 });

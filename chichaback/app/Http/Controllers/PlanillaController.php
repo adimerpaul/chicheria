@@ -56,7 +56,6 @@ class PlanillaController extends Controller
         $planilla->empleado_id=$request->empleado_id;
         $planilla->save();
 
-        if($request->tpago=='GASTO'){
 
         $general=General::find(1);
         $general->monto=floatval($general->monto) - floatval($planilla->total);
@@ -72,23 +71,8 @@ class PlanillaController extends Controller
         $loggeneral->hora=date("H:i:s");
         $loggeneral->glosa_id=null;
         $loggeneral->user_id=$request->user()->id;
-        $loggeneral->save();}
+        $loggeneral->save();
 
-        if($request->tpago=='CAJA'){
-            $caja=Caja::find(1);
-            $caja->monto= floatval($caja->monto) - floatval($planilla->total);
-            $caja->save();
-
-            $log=new Logcaja ;
-            $log->monto=$planilla->total;
-            $log->motivo='PAGO SALARIO '.$planilla->id;
-            $log->tipo='GASTO';
-            $log->glosa_id=null;
-            $log->fecha=date('Y-m-d');
-            $log->hora=date('H:i:s');
-            $log->user_id=$request->user()->id;
-            $log->save();
-        }
 
     }
 
@@ -142,6 +126,16 @@ class PlanillaController extends Controller
 
         $loggeneral= Loggeneral::where('numero',$planilla->id)->where('tipo','EGRESO')->where('detalle','SALARIO')->get()[0];
         $loggeneral->delete();*/
+
+
+        $general=General::find(1);
+        $general->monto=floatval($general->monto) + floatval($planilla->total);
+        $general->save();
+
+        $loggeneral= Loggeneral::where('numero',$planilla->id)->whereDate('fecha',$planilla->fechapago)
+        ->where('detalle','SALARIO')->first();
+        $loggeneral->delete();
+
         $planilla->delete();
     }
 

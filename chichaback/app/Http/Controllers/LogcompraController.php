@@ -126,6 +126,42 @@ class LogcompraController extends Controller
         return $cadena;
     }
 
+    public function impPagoAlmacen($id){
+        $logcompra=Logcompra::find($id);
+        $usuario=User::find($logcompra->user_id);
+        $compra=Compra::find($logcompra->compra_id);
+        $prov=Provider::find($compra->provider_id);
+        $mat=Material::find($compra->material_id);
+        $cadena='
+
+        <style>
+        .textcnt{
+            text-align:center;
+        }
+        table{width:100%;}
+        td{vertical-align:top;}
+        </style>
+        <div class="textcnt"> DETALLE PAGO COMPRA</div>
+        <div class="textcnt">Nro '.$compra->id.'</div>
+        <hr>
+        <div>Usuario   : '.$usuario->name.'</div>
+        <div>Fec Compra: '.date('d/m/Y',strtotime($compra->fecha)).'</div>
+        <div>Proveedor : '.$prov->razon.'</div>
+        <div>Material  : '.$mat->nombre.'</div>
+        <div>Cantidad  : '.$compra->cantidad.'</div>
+        <div>Costo     : '.$compra->costo.'</div>
+        <hr>
+        <table>
+        <tr><td>Fecha Pago: </td><td><b>'.date('d/m/Y',strtotime($logcompra->fecha)).'</b></td></tr>
+        <tr><td>Monto: </td><td><b>'.$logcompra->monto.'</b></td></tr>
+        <tr><td>Saldo: </td><td><b>'.$compra->subtotal - $compra->deuda.'</b></td></tr>
+        <tr><td>Observacion: </td><td><b>'.$logcompra->observacion.'</b></td></tr>
+        </table>
+        <br>
+              ';
+        return $cadena;
+    }
+
     /**
      * Display the specified resource.
      *

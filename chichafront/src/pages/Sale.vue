@@ -34,10 +34,10 @@
   <div class="col-7">
 
     <div class="row">
-      <div class="col-2" v-for="p in products" :key="p.id" style="padding:5px">
-        <q-card style="height: 80px;" @click="saleAdd(p)" class="no_selection">
+      <div class="col-2" v-for="p in products" :key="p.id" style="padding:5px;">
+        <q-card style="height: 80px;" @click="saleAdd(p)" class="no_selection" :style="'background-color: '+p.color ">
           <q-card-section class="row items-center q-pb-none">
-            <div class="text-bold text-grey">{{p.precio}}Bs.</div>
+            <div class="text-bold text-grey-9">{{p.precio}}Bs.</div>
             <q-space />
             <div v-if="p.cantidad>0">
               <q-chip color="primary" class=" q-ma-none text-bold text-white" dense :label="p.cantidad"/>

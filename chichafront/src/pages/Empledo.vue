@@ -771,6 +771,7 @@ export default {
     },
 
     creategenplanilla(){
+      this.checkgasto='GASTO'
             if(this.checkgasto=='GASTO'  && this.planilla.total > this.montogeneral){
                       this.$q.notify({
                 message:'El monto excede en General ',

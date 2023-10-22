@@ -19,6 +19,7 @@ class CreateProductosTable extends Migration
             $table->string("nombre")->nullable()->default('');
             $table->double("precio",11,2)->nullable()->default(0);
             $table->string("observacion")->nullable();
+            $table->string("color")->nullable()->default('#ffffff');
             $table->string("tipo")->nullable()->default('LOCAL');
             $table->string("estado")->nullable()->default('ACTIVO');
             $table->timestamps();

@@ -14,6 +14,7 @@ class Producto extends Model
         'observacion',
         'estado',
         'tipo',
+        'color',
         'orden'
 
     ];

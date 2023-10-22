@@ -339,6 +339,7 @@
           <q-table title="pagos" :rows="pagos" :columns="colpagos" row-key="name"  :rows-per-page-options="[0]" dense>
             <template v-slot:body-cell-op="props" >
               <q-td key="op" :props="props" >
+                <q-btn dense round flat color="info"  icon="print" @click="printpago(props.row)"  />
                 <q-btn dense round flat color="red"  icon="delete" @click="anularpago(props.row)"  />
               </q-td>
             </template>
@@ -529,10 +530,10 @@ export default {
         { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
         { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
         { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
-        { name: 'retiro', align: 'center', label: 'RETIRADO', field: 'retiro', sortable: true },
+        { name: 'saldocant', align: 'center', label: 'SALDO CANT', field: 'saldocant', sortable: true },
         { name: 'costo', align: 'center', label: 'COSTO', field: 'costo', sortable: true },
         { name: 'subtotal', align: 'center', label: 'SUBTOTAL', field: 'subtotal', sortable: true },
-        { name: 'deuda', align: 'center', label: 'PAGO', field: 'deuda', sortable: true },
+        { name: 'saldopago', align: 'center', label: 'SALDO PAGO', field: 'saldopago', sortable: true },
         { name: 'lote', align: 'center', label: 'LOTE', field: 'lote', sortable: true },
         { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: 'fechaven', sortable: true },
         { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
@@ -836,9 +837,14 @@ export default {
 
     },
     consultmaterial(){
+      this.comptodo=[]
       this.$api.post(process.env.API+'/consultar2',{fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
+        res.data.forEach(r => {
+          r.saldocant = r.cantidad - r.retiro
+          r.saldopago = r.subtotal - r.deuda
+          this.comptodo.push(r)
+        });
         // console.log(res.data)
-        this.comptodo=res.data
       })
 
       this.$api.post(process.env.API+'/consulrecuento2',{fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
@@ -1119,6 +1125,16 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+    },
+    printpago(pago){
+      this.$api.get('impPagoAlmacen/'+ pago.id).then(res => {
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+      })
+
     },
   anularpago(pago){
     this.$q.dialog({
