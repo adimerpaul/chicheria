@@ -760,21 +760,19 @@ export default {
       this.pago.compra_id=this.compra2.id
       this.pago.checktipo=this.checkgasto
       this.$api.post(process.env.API + "/logcompra",this.pago).then((res) => {
-        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
-        myWindow.document.write(res.data);
-        myWindow.document.close();
-        myWindow.print();
-        myWindow.close();
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000")
+        myWindow.document.write(res.data)
+        myWindow.document.close()
+        myWindow.print()
+        myWindow.close()
+        this.consultmaterial()
         this.dialogpagar=false
         this.$q.notify({
           color: 'green-4',
           textColor: 'white',
           icon: 'info',
           message: 'registrado '
-        });
-        this.checkgasto='CAJA'
-        this.dialogpagar=false
-        this.consultmaterial()
+        })
       })
     },
     onReg(){
