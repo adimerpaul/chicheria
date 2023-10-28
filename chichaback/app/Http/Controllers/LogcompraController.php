@@ -57,7 +57,7 @@ class LogcompraController extends Controller
         $logcompra->save();
 
         $compra=Compra::find($request->compra_id);
-        if($compra->deuda> $request->monto)
+        if(($compra->subtotal - $compra->deuda) < 0 )
             return false;
         $compra->deuda=$compra->deuda + $request->monto;
 
