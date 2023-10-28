@@ -1145,8 +1145,8 @@ export default {
       }).onOk(() => {
         this.loading = true
         this.$api.post('anularLogcompra', pago).then(res => {
-          this.consultmaterial()
           this.dialoglistpagos=false
+          this.consultmaterial()
         }).catch(e => {
           this.$q.notify({
             color: 'red',
