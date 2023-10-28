@@ -123,8 +123,7 @@ class LogcompraController extends Controller
         <tr><td>Saldo: </td><td><b>'(floatval($compra->subtotal) - floatval($compra->deuda)).'</b></td></tr>
         <tr><td>Observacion: </td><td><b>'.$logcompra->observacion.'</b></td></tr>
         </table>
-        <br>
-              ';
+        <br>       ';
         return $cadena;
     }
 
