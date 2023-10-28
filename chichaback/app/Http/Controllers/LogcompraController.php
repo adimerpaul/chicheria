@@ -154,7 +154,7 @@ class LogcompraController extends Controller
         <table>
         <tr><td>Fecha Pago: </td><td><b>'.date('d/m/Y',strtotime($logcompra->fecha)).'</b></td></tr>
         <tr><td>Monto: </td><td><b>'.$logcompra->monto.'</b></td></tr>
-        <tr><td>Saldo: </td><td><b>'.$compra->subtotal - $compra->deuda.'</b></td></tr>
+        <tr><td>Saldo: </td><td><b>'. (floatval($compra->subtotal) - floatval($compra->deuda)).'</b></td></tr>
         <tr><td>Observacion: </td><td><b>'.$logcompra->observacion.'</b></td></tr>
         </table>
         <br>
