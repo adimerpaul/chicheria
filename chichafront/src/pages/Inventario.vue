@@ -182,7 +182,7 @@
                   <td>{{v.global}}</td>
                   <td>{{v.prestamo}}</td>
                   <td>{{v.ventas}}</td>
-                  <td>{{v.cantidad}}</td>
+                  <td style="font-size:16px; font-weight: bold;">{{v.cantidad}}</td>
                   <td>{{v.precio}}</td>
                   <td>{{v.detalle}}</td>
                   <td>{{v.orden}}</td>
@@ -397,6 +397,7 @@
             :rows="logdata"
             row-key="name"
             >
+
                         <template v-slot:body-cell-agregar="props" >
                 <q-td key="estado" :props="props" @click="activar(props)">
                   <q-badge color="green" v-if="props.row.agregar==1">

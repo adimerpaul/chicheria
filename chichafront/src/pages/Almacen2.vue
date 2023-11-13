@@ -501,7 +501,7 @@ export default {
       materials: [],
       material: '',
       dialog_add: false,
-      fecha3:date.formatDate( Date.now(),'YYYY-MM-DD'),
+      fecha3:moment().subtract(30, 'days').format('YYYY-MM-DD'),
       fecha4:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -737,7 +737,8 @@ export default {
 
     },
     regpago(){
-      if(this.$store.state.login.user.id==1){this.checkgasto='GASTO'}
+      if(this.$store.state.login.user.id==1){
+        this.checkgasto='GASTO'}
       else{this.checkgasto='CAJA'}
       if(this.montogeneral<this.pago.monto && this.checkgasto=='GASTO'){
         this.$q.notify({
@@ -758,7 +759,7 @@ export default {
       }
 
       this.pago.compra_id=this.compra2.id
-      this.pago.checktipo='GASTO'
+      this.pago.checktipo=this.checkgasto
       this.$api.post(process.env.API + "/logcompra",this.pago).then((res) => {
         console.log(res.data)
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000")
