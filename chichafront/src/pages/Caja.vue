@@ -99,7 +99,7 @@
               color="red"
               @click="deleteRow(props.row)"
               icon="delete"
-            ></q-btn>
+            ><q-tooltip>Eliminar</q-tooltip></q-btn>
           </q-td>
 
       </template>

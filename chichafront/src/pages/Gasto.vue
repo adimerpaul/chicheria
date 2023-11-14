@@ -144,7 +144,7 @@
                   size="xs"
                   dense
                   @click="updateval(g)"
-                />
+                ><q-tooltip>Modificar</q-tooltip></q-btn>
                 <q-btn
                 v-if="$store.state.login.eliminargasto"
                   color="negative"
@@ -154,7 +154,7 @@
                   size="xs"
                   dense
                   @click="deleteval(g)"
-                />
+                ><q-tooltip>Eliminar</q-tooltip></q-btn>
                 <q-btn
                 v-if="$store.state.login.user.id==1"
                   color="info"
@@ -164,7 +164,7 @@
                   size="xs"
                   dense
                   @click="printgasto(g)"
-                />
+                ><q-tooltip>Impresion</q-tooltip></q-btn>
               </q-td>
           </td>
         </tr>
@@ -220,8 +220,8 @@
           <td>{{c.hora}}</td>
           <td>{{c.user}}</td>
           <td>
-              <q-btn size="xs" @click="modifcaja(c)" v-if="$store.state.login.user.id==1" color="yellow" icon="edit"/>
-              <q-btn size="xs" @click="printcaja(c)" v-if="$store.state.login.user.id==1" color="primary" icon="print"/>
+              <q-btn size="xs" @click="modifcaja(c)" v-if="$store.state.login.user.id==1" color="yellow" icon="edit"><q-tooltip>Modificar</q-tooltip></q-btn>
+              <q-btn size="xs" @click="printcaja(c)" v-if="$store.state.login.user.id==1" color="primary" icon="print" ><q-tooltip>Impresion</q-tooltip></q-btn>
 
           </td>
         </tr>

@@ -100,7 +100,7 @@
               @click="deleteRow(r)"
               icon="delete"
               v-if="$store.state.login.user.id==1"
-            ></q-btn>
+            ><q-tooltip>Eliminar</q-tooltip></q-btn>
       <td>
       </td>
     </tr>
