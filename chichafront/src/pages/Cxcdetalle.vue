@@ -52,8 +52,8 @@
                     </td>
                     <td>{{v.user}}</td>
                     <td>
-                      <q-btn icon="segment" color="green"  @click="listpago(v)" />
-                      <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)"/>
+                      <q-btn icon="segment" color="green"  @click="listpago(v)" dense ><q-tooltip>Listado Pago</q-tooltip></q-btn>
+                      <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)" dense> <q-tooltip>Realizar Pago</q-tooltip></q-btn>
                     </td>
                   </tr>
                   </tbody>

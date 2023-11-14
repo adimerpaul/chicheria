@@ -54,7 +54,7 @@
               flat
               dense
               @click="verplanilla(props.row)"
-            />
+            ><q-tooltip>Listado planilla</q-tooltip></q-btn>
             <q-btn
               color="warning"
               icon-right="edit"
@@ -72,7 +72,7 @@
               flat
               dense
               @click="deleteval(props.row)"
-            />
+            ><q-tooltip>Modificar</q-tooltip></q-btn>
             <q-btn
               color="info"
               icon-right="list"
@@ -81,7 +81,7 @@
               flat
               dense
               @click="pagosval(props.row)"
-            />
+            ><q-tooltip>Lista Adelantos</q-tooltip></q-btn>
 
             <!--              @click="deleteval(detalles.indexOf(props.row))"-->
           </q-td>

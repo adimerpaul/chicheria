@@ -193,12 +193,12 @@
                   </td>
                   <td>
                   
-                <q-btn  dense round flat color="green" @click="addRow(v)" icon="add"></q-btn>
-                <q-btn  dense round flat color="red" @click="substractRow(v)" icon="remove"></q-btn>
+                <q-btn  dense round flat color="green" @click="addRow(v)" icon="add"><q-tooltip>Agregar Prod</q-tooltip></q-btn>
+                <q-btn  dense round flat color="red" @click="substractRow(v)" icon="remove"><q-tooltip>Retirar Prod</q-tooltip></q-btn>
 
-                <q-btn dense round flat color="accent" @click="logRow(v)" icon="list"></q-btn>
-                <q-btn dense round flat color="yellow" @click="editRow(v)" icon="edit" v-if="$store.state.login.editinventario"></q-btn>
-                <q-btn dense round flat color="red" @click="delRow(v)" icon="delete" v-if="$store.state.login.editinventario"></q-btn>
+                <q-btn dense round flat color="accent" @click="logRow(v)" icon="list"><q-tooltip>Listado </q-tooltip></q-btn>
+                <q-btn dense round flat color="yellow" @click="editRow(v)" icon="edit" v-if="$store.state.login.editinventario"><q-tooltip>Editar</q-tooltip></q-btn>
+                <q-btn dense round flat color="red" @click="delRow(v)" icon="delete" v-if="$store.state.login.editinventario"><q-tooltip>Eliminar</q-tooltip></q-btn>
                 </td>
                   </tr>
                   </tbody>

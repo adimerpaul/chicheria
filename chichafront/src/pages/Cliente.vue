@@ -99,8 +99,8 @@
                       <q-badge  :color="v.estado=='ACTIVO'?'positive':'negative'"  @click="activar(v)">{{ v.estado=='ACTIVO'?'HABILITADO':'INACTIVO' }}</q-badge>
                     </td>
                     <td>
-                      <q-btn dense round flat color="yellow" @click="editRow(v)" icon="edit"></q-btn>
-                      <q-btn dense round flat color="red" @click="delRow(v)" icon="delete"></q-btn>
+                      <q-btn dense round flat color="yellow" @click="editRow(v)" icon="edit"><q-tooltip>Modificar</q-tooltip></q-btn>
+                      <q-btn dense round flat color="red" @click="delRow(v)" icon="delete"><q-tooltip>Eliminar</q-tooltip></q-btn>
                     </td>
                   </tr>
                   </tbody>
