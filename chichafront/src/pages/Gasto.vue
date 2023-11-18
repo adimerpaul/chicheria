@@ -195,7 +195,7 @@
             </template>
     </q-table>
 -->
-<div class="text-h5" align="center">HISTORIAL DE GATOS DE CAJA CHICA</div>
+<div class="text-h5" align="center">HISTORIAL DE GASTOS DE CAJA CHICA</div>
 
     <table id="example2" style="width:100%" class="cell-border">
         <thead>

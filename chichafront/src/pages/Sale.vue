@@ -315,9 +315,9 @@
       <template v-slot:body-cell-opcion="props">
           <q-td key="opcion" :props="props">
             <q-btn-group >
-              <q-btn v-if="props.row.estado!='ANULADO'"  icon="delete" color="red" @click="anular(props.row)" size="xs" v-if="$store.state.login.anularventa"> <q-tooltip>Anular</q-tooltip></q-btn>
-              <q-btn v-if="props.row.estado!='ANULADO'"  icon="local_shipping" color="indigo-3"   @click="printruta(props.row)" size="xs" v-if="props.row.fechaentrega!=null && props.row.fechaentrega!=''" ><q-tooltip>Imprimir Ruta</q-tooltip></q-btn>
-              <q-btn v-if="props.row.estado!='ANULADO'"  icon="local_shipping" color="accent"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta "><q-tooltip>Hoja de Ruta</q-tooltip></q-btn>
+              <q-btn  icon="delete" color="red" @click="anular(props.row)" size="xs" v-if="$store.state.login.anularventa && props.row.estado!='ANULADO'"> <q-tooltip>Anular</q-tooltip></q-btn>
+              <q-btn  icon="local_shipping" color="indigo-3"   @click="printruta(props.row)" size="xs" v-if="props.row.fechaentrega!=null && props.row.fechaentrega!='' && props.row.estado!='ANULADO'" ><q-tooltip>Imprimir Ruta</q-tooltip></q-btn>
+              <q-btn  icon="local_shipping" color="accent"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta && props.row.estado!='ANULADO'"><q-tooltip>Hoja de Ruta</q-tooltip></q-btn>
               <q-btn icon="shopping_cart" color="orange"   @click="clickcompra(props.row)" size="xs" ><q-tooltip>Detalle Venta</q-tooltip></q-btn>
               <template v-if="$store.state.login.reimpresion && props.row.estado!='ANULADO'" >
                 <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" ><q-tooltip>Imprimir Boleta</q-tooltip></q-btn>
