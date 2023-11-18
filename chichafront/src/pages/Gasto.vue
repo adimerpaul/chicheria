@@ -135,7 +135,7 @@
           <td>{{g.user}}</td>
           <td>
               <q-td >
-                <q-btn
+                <q-btn hidden
                   color="warning"
                   icon-right="edit"
                   no-caps

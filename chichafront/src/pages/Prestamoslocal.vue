@@ -280,6 +280,7 @@ export default {
 ],
       colprestamo:[
   { name: 'opcion', label: 'OPCION', field: 'opcion' },
+  { name: 'id', label: 'ID', field: 'id', sortable: true },
   { name: 'local', label: 'LOCAL', field: row=>row.cliente.local, sortable: true,align:'left' },
   { name: 'titular', label: 'TITULAR', field: row=>row.cliente.titular, sortable: true ,align:'left'},
   { name: 'telefono', label: 'TELEFONO', field: row=>row.cliente.telefono, sortable: true },

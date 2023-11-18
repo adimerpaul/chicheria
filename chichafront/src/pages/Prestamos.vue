@@ -269,6 +269,7 @@ export default {
 ],
       colprestamo:[
   { name: 'opcion', label: 'OPCION', field: 'opcion' },
+  { name: 'id', label: 'ID', field: 'id', sortable: true },
   { name: 'titular', label: 'TITULAR', field: row=>row.cliente.titular, sortable: true,align:'left'},
    { name: 'telefono', label: 'TELEFONO', field: row=>row.cliente.telefono, sortable: true },
   { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true,align:'left' },

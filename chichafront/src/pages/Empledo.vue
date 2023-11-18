@@ -176,9 +176,9 @@
       </template>
           </q-table>-->
         </div>
-        <div class="col-12">
+       <!-- <div class="col-12">
           <q-btn label="Imprimir" icon="print" color="info" class="full-width" @click="imprimir"/>
-        </div>
+        </div>-->
       </div>
 
     <q-dialog v-model="modempleado" >
@@ -301,8 +301,8 @@
             <q-table title="PLANILLAS" :rows="planillas" :columns="colplan" row-key="name"  :rows-per-page-options="[0,50,100]">
                     <template v-slot:body-cell-opcion="props">
           <q-td :props="props">
-                <q-btn dense round flat color="info"  icon="print" @click="imprimirplanilla(props.row)"></q-btn>
-                <q-btn  color="negative" icon-right="delete" no-caps flat dense @click="delplanilla(props.row)"/>
+                <q-btn v-if="props.row.estado!='ANULADO'" dense round flat color="info"  icon="print" @click="imprimirplanilla(props.row)"></q-btn>
+                <q-btn v-if="props.row.estado!='ANULADO'" color="negative" icon-right="delete" no-caps flat dense @click="delplanilla(props.row)"/>
 
           </q-td>
         </template>
