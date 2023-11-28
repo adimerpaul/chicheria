@@ -9,11 +9,12 @@
       <q-form @submit.prevent="agregar">
         <div class="row">
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined dense label="CI" v-model="empleado.ci" required/></div>
-          <div class="col-12 q-pa-xs col-sm-3"><q-input outlined dense label="Nombre" v-model="empleado.nombre" required/></div>
+          <div class="col-12 q-pa-xs col-sm-4"><q-input outlined dense label="Nombre" v-model="empleado.nombre" required/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-select outlined dense v-model="empleado.tipo" :options="['DESTAJO','FIJO']" label="Tipo"  /></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined dense label="Fecha Nacimiento" type="date" v-model="empleado.fechanac" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined dense label="Fecha Ingreso" type="date" v-model="empleado.fechaingreso" required/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined dense label="Celular" v-model="empleado.celular"/></div>
-          <div class="col-12 q-pa-xs col-sm-1"><q-input outlined dense label="Salario" v-model="empleado.salario" type="number"/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined dense label="Salario" v-model="empleado.salario" type="number"/></div>
           <div class="col-12 col-sm-12 flex flex-center">
             <q-btn class="full-width" icon="send" label="CREAR" type="submit" color="positive"/>
           </div>
@@ -26,9 +27,10 @@
       :rows="empleados"
       :rows-per-page-options="[0,50,100]"
       :filter="filter"
+      wrap-cells
       >
       <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+        <q-input borderless dense outlined   debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -226,7 +228,7 @@
                   <q-input outlined dense type="text" label="observacion" v-model="pago.observacion" />
                 </div>
                 <div class="col-3" v-if="$store.state.login.user.id==1">
-                  <q-radio v-model="checkgasto" val="GASTO" label="GASTO" />
+                  <q-radio v-model="checkgasto" val="CAJA GENERAL" label="CAJA GENERAL" />
                   <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
                 </div>
                 <div class="col-2 flex flex-center">
@@ -346,7 +348,7 @@ export default {
       planilla:{},
       validarplan:true,
       modempleado:false,
-      empleado:{fechanac:'2000-01-01'},
+      empleado:{fechanac:'2000-01-01',fechaingreso:date.formatDate( Date.now(),'YYYY-MM-DD')},
       empleado2:{},
       dialog_plan:false,
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
@@ -356,6 +358,7 @@ export default {
       columns:[
         {name:'ci',label:'CI',field:'ci'},
         {name:'nombre',label:'NOMBRE',field:'nombre',sortable:true, align:'left'},
+        {name:'fechaingreso',label:'FECHA INGRESO',field:'fechaingreso',sortable:true, align:'left'},
         {name:'tipo',label:'TIPO',field:'tipo'},
         {name:'estado',label:'ESTADO',field:'estado'},
         {name:'action',label:'OPCION',field:'action'},

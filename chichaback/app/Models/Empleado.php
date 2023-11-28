@@ -13,13 +13,14 @@ class Empleado extends Model
         'nombre',
         'celular',
         'fechanac',
+        'fechaingreso',
         'salario',
         'dias',
         'tipo',
         'estado',
     ];
     public function sueldos(){
-            
+
             return $this->hasMany(Sueldo::class)->orderBy('fecha','desc');
     }
     public function planillas(){
