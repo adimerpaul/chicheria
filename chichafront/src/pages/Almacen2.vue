@@ -104,6 +104,13 @@
               </template>
             </q-td>
           </template>
+          <template v-slot:body-cell-saldopago="props">
+            <q-td :props="props">
+              <template v-if="$store.state.login.almacenCostoSubtotal">
+              {{props.row.saldopago}}
+              </template>
+            </q-td>
+          </template>
           <template v-slot:body-cell-deuda="props">
             <q-td :props="props">
               <template v-if="$store.state.login.almacenCostoSubtotal">
@@ -357,7 +364,13 @@
     <q-dialog v-model="dialoglistretiros" >
       <q-card>
         <q-card-section class="row items-center">
-          <q-table title="RETIROS" :rows="retiros" :columns="colretiros" row-key="name" flat :rows-per-page-options="[0]"/>
+          <q-table title="RETIROS" :rows="retiros" :columns="colretiros" row-key="name" flat :rows-per-page-options="[0]" >
+            <template v-slot:body-cell-op="props" >
+              <q-td key="op" :props="props" >
+                <q-btn dense round flat color="red"  icon="delete"  v-if="$store.state.login.almacenHistorialPago" />
+              </q-td>
+            </template>
+          </q-table>
         </q-card-section>
 
         <q-card-actions align="right">
