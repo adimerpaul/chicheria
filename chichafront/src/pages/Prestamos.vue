@@ -53,7 +53,9 @@
             :filter="filter"
             :pagination="pagination"
             :rows-per-page-options="[0,20,50,100]"
-            row-key="name">
+            row-key="name"
+            wrap-cells
+  >
 
           <template v-slot:top-right>
               <q-input outlined dense debounce="300" v-model="filter" placeholder="Buscar">
@@ -274,6 +276,8 @@ export default {
    { name: 'telefono', label: 'TELEFONO', field: row=>row.cliente.telefono, sortable: true },
   { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true,align:'left' },
   { name: 'fecha', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
+      { name: 'fechaAnulacion', label: 'FECHA ANULACION', field: row=>row.fechaAnulacion, sortable: true },
+        { name: 'motivoAnulacion', label: 'MOTIVO ANULACION', field: row=>row.motivoAnulacion, sortable: true },
   { name: 'estado', label: 'ESTADO', field: 'estado', sortable: true },
   { name: 'cantidad', label: 'CANTIDAD', field: 'cantidad', sortable: true },
   { name: 'prestado', label: 'PENDIENTE', field: 'prestado', sortable: true },
@@ -478,14 +482,30 @@ export default {
       this.dialog_dev=true;
     },
     onEliminar(p){
-      if (confirm('seguro de Anular?')){
-        this.$axios.post(process.env.API+'/anularprestamo',p).then(res=>{
-          // this.totalefectivo=res.data[0].total;
-          this.cajaprestamo()
-          this.listadoprestamo()
-          console.log(res.data)
-        })
-      }
+      this.$q.dialog({
+        title: 'Dar de Baja',
+        message: 'Motivo de Baja',
+        prompt: {
+          model: '',
+          type: 'text'
+        }
+      }).onOk((data) => {
+          p.motivo=data;
+          this.$axios.post(process.env.API+'/anularprestamo',p).then(res=>{
+            // this.totalefectivo=res.data[0].total;
+            this.cajaprestamo()
+            this.listadoprestamo()
+            console.log(res.data)
+          })
+      })
+      // if (confirm('seguro de Anular?')){
+      //   this.$axios.post(process.env.API+'/anularprestamo',p).then(res=>{
+      //     // this.totalefectivo=res.data[0].total;
+      //     this.cajaprestamo()
+      //     this.listadoprestamo()
+      //     console.log(res.data)
+      //   })
+      // }
 
     },
     ondelete(p){

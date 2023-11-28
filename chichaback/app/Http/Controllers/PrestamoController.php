@@ -105,7 +105,9 @@ class PrestamoController extends Controller
     public function anularprestamo(Request $request){
         $prestamo=Prestamo::find($request->id);
         $prestamo->user_id=$request->user()->id;
-            $prestamo->fecha=date('Y-m-d');
+//            $prestamo->fecha=date('Y-m-d');
+            $prestamo->fechaAnulacion=date('Y-m-d');
+            $prestamo->motivoAnulacion=strtoupper($request->motivo);
             $prestamo->estado='ANULADO';
         if($prestamo->efectivo>0 && $prestamo->efectivo!=null && $prestamo->tipo!='VENTA'){
             $general=General::find(1);

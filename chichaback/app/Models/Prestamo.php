@@ -10,6 +10,7 @@ class Prestamo extends Model
     use HasFactory;
     protected $fillable=[
         'fecha',
+        'fechaAnulacion',
         'efectivo',
         'estado',
         'estado',
@@ -36,5 +37,5 @@ class Prestamo extends Model
     public function logprestamos(){
         return $this->hasMany(Logprestamo::class);
     }
-    
+
 }
