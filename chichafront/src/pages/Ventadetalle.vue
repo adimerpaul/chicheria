@@ -27,7 +27,7 @@
                     :options="options"
                     @filter="filterFn"
                     @click="generar"
-                    
+
                   />
                 </div>
 
@@ -39,7 +39,7 @@
             </div>
             <div class="col-6 col-sm-1 q-pa-xs">
               <q-input
-                
+
                 type="number"
                 step="0.1"
                 label="precio"
@@ -54,7 +54,7 @@
             <div class="col-4 col-sm-2 q-pa-xs">
               <!--            <q-input type="number" label="Cantidad" v-model="cantidad" outlined/>-->
                             <q-input
-                
+
                 type="text"
                 label="Observacion"
                 v-model="observacion"
@@ -220,7 +220,7 @@
                       </q-td>
                       <q-td key="opcion" :props="props">
                         <q-btn-group v-if="props.row.estado!='ANULADO'" >
-                          <q-btn icon="cancel" color="red" @click="anular(props.row)" size="xs" v-if="$store.state.login.anularventa"/>
+                          <q-btn icon="delete" color="red" @click="anular(props.row)" size="xs" v-if="$store.state.login.anularventa"/>
                           <q-btn icon="local_shipping" color="info"   @click="clickhojaruta(props.row)" size="xs" v-if="$store.state.login.ruta"/>
                           <template v-if="$store.state.login.reimpresion" >
                             <q-btn dense icon="print" color="info" v-if="props.row.estado!='ANULADO'" @click="impboleta(props.row)" />
@@ -495,7 +495,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    
+
     <q-dialog v-model="modalhojaruta">
       <q-card style="width: 700px;min-width: 80vw">
         <q-card-section ><div class="text-h6">Hoja ruta {{venta.titular }} {{venta.direccion }}</div></q-card-section>
@@ -1076,7 +1076,7 @@ export default {
           spinnerSize:'100px',
           icon:'error',
           html:true
-          
+
         })
         return false;
       }
@@ -1143,7 +1143,7 @@ export default {
         myWindow.focus();
         // setTimeout(function(){
           myWindow.print();
-          myWindow.close(); 
+          myWindow.close();
         // },500);
 
         this.$q.notify({
