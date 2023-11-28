@@ -109,7 +109,7 @@
               </q-form>
             </div>
       <div class="col-12">
-        <q-btn label="Imprimir" icon="print" color="accent" class="full-width" @click="impresion()"/>
+        <q-btn label="Imprimir" icon="print" color="accent" class="full-width" @click="impresion2()"/>
       </div>
       </div>
     </div>
@@ -1240,7 +1240,55 @@ export default {
              lengthMenu: [[-1,20, 50, 100], [ "All",20, 50, 100]],
           } )})*/
     },
+    impresion2(){
+      this.resumen=[]
+      this.ingreso.forEach(r => {
+        this.resumen.push({detalle:r.detalle,ingreso:r.total,egreso:0});
+      })
 
+      this.egreso.forEach(r => {
+        this.resumen.push({detalle:r.detalle,ingreso:0,egreso:r.total});
+      })
+      let mc=this
+      let totalingreso=0
+      let totalegreso=0
+      let totalcaja=0
+        let cadena="<style>\
+        *{font-size:14px}\
+        table{width:100%;border-collapse: collapse;}\
+        table, th, td {  border: 1px solid;}\
+        .titulo1{text-align:center; font-weight: bold;}\
+        </style>\
+        <div><img src='logo.png' style='width:150px; height:75px;'></div>\
+        <div class='titulo1'>RESUMEN DE BALANCE DE <br>"+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY') +"</div><br>\
+        <div>INGRESOS</div><table><tr><th>DETALLE</th> <th>INGRESO</th> <th>EGRESO</th></tr>"
+       
+        this.ingreso.forEach(r=>{
+        totalingreso=totalingreso+r.ingreso;
+        cadena+="<tr><td>"+r.detalle+"</td><td>"+r.ingreso+"</td><td>"+r.egreso+"</td></tr>"
+        })
+        cadena+="</table><br><div>EGRESOS</div><table><tr><th>DETALLE</th> <th>INGRESO</th> <th>EGRESO</th></tr>"
+        
+
+              this.egreso.forEach(r=>{
+        totalegreso=totalegreso+r.egreso;
+        cadena+="<tr><td>"+r.detalle+"</td><td>"+r.ingreso+"</td><td>"+r.egreso+"</td></tr>"
+        })
+        cadena+="</table><br><div>CAJA CHICA</div><table><tr><th>DETALLE</th> <th>INGRESO</th> <th>EGRESO</th></tr>"
+              this.cchica.forEach(r=>{
+        totalcaja=totalcaja+r.egreso;
+        cadena+="<tr><td>"+r.detalle+"</td><td>"+r.ingreso+"</td><td>"+r.egreso+"</td></tr>"
+        })
+        var ttotal=totalingreso - totalegreso
+        cadena+="</table><div><b>TOTAL INGRESO: </b> "+ totalingreso+" Bs</div>\
+        <div><b>TOTAL EGRESO: </b> "+ totalegreso+" Bs</div>\
+        <div><b>T. CJA CHICA: </b> "+ totalcaja+" Bs</div>\
+        <div><b>BALANCE: </b> "+ ttotal+" Bs</div>"
+
+        let myWindow = window.open("_blank");
+        myWindow.document.write(cadena);
+        myWindow.document.close();
+    },
     impresion(){
       this.resumen=[]
       this.ingreso.forEach(r => {

@@ -104,6 +104,13 @@
               </template>
             </q-td>
           </template>
+          <template v-slot:body-cell-saldopago="props">
+            <q-td :props="props">
+              <template v-if="$store.state.login.almacenCostoSubtotal">
+              {{props.row.saldopago}}
+              </template>
+            </q-td>
+          </template>
           <template v-slot:body-cell-deuda="props">
             <q-td :props="props">
               <template v-if="$store.state.login.almacenCostoSubtotal">
