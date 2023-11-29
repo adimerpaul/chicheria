@@ -213,6 +213,7 @@ class LogcompraController extends Controller
         $compra->deuda=$compra->deuda - $logcompra->monto;
         $compra->estado='POR PAGAR';
         $compra->save();
+        $buscar='Almacen Pago '.$compra->id.' : ';
 
         if($logcompra->caja=='GENERAL'){
         $general=General::find(1);
@@ -235,6 +236,9 @@ class LogcompraController extends Controller
         $caja=Caja::find(1);
         $caja->monto= floatval($caja->monto) + floatval($logcompra->monto);
         $caja->save();
+
+        $log1= Logcaja::where('motivo','LIKE',$buscar.'%')->where('tipo','GASTO')->first();
+        $log1->delete();
 
         $log=new Logcaja ;
         $log->monto=$logcompra->monto;

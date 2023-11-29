@@ -540,7 +540,7 @@ export default {
       colcompra : [
         { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
         { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado', sortable: true },
-        { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+        { name: 'fecha', align: 'center', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
         { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
         { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
         { name: 'saldocant', align: 'center', label: 'SALDO CANT', field: 'saldocant', sortable: true },
@@ -548,7 +548,7 @@ export default {
         { name: 'subtotal', align: 'center', label: 'SUBTOTAL', field: 'subtotal', sortable: true },
         { name: 'saldopago', align: 'center', label: 'SALDO PAGO', field: 'saldopago', sortable: true },
         { name: 'lote', align: 'center', label: 'LOTE', field: 'lote', sortable: true },
-        { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: 'fechaven', sortable: true },
+        { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: row=>moment(row.fechaven).format('DD/MM/YYYY'), sortable: true },
         { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
         { name: 'provider', align: 'center', label: 'PROVEEDOR', field: row=>row.provider.razon, sortable: true },
         { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
