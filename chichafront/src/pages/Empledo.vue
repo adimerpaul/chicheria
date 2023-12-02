@@ -245,8 +245,8 @@
             >
         <template v-slot:body-cell-opcion="props">
           <q-td :props="props">
-            <q-btn  color="negative" icon-right="delete" no-caps flat dense @click="delsueldo(props.row)"/>
-                <q-btn dense round flat color="teal" @click="printRow(props)" icon="print"></q-btn>
+            <q-btn  color="negative" icon-right="delete" no-caps flat dense @click="delsueldo(props.row)" v-if="props.row.tipo!='ANULADO'"/>
+                <q-btn dense round flat color="teal" @click="printRow(props)" icon="print"  v-if="props.row.tipo!='ANULADO'"></q-btn>
 
           </q-td>
         </template>
