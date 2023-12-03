@@ -7,6 +7,7 @@ use App\Models\Material;
 use App\Models\General;
 use App\Models\Loggeneral;
 use App\Models\Logcompra;
+use App\Models\Recuento;
 use Illuminate\Http\Request;
 
 class CompraController extends Controller
@@ -227,6 +228,11 @@ class CompraController extends Controller
     public function destroy($id)
     {
         $compra=Compra::find($id);
+        if((Recuento::where('compra_id',$id)->count())>0)
+            return response()->json(['error' => 'Existe registro retiro'], 500);
+        if((Logcompra::where('compra_id',$id)->count())>0)
+            return response()->json(['error' => 'Existe registro pago'], 500);
+
         /*$general=General::find(1);
         $general->monto=$general->monto +  $compra->subtotal ;
         $general->save();

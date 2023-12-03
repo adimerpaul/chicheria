@@ -77,7 +77,7 @@
             <template v-slot:body-cell-estado="props" >
               <q-td key="estado" :props="props">
                 <q-badge color="negative" v-if="props.row.estado=='ANULADO'" >
-                  {{ props.row.estado }}
+                  BAJA
                 </q-badge>
                 <q-badge color="amber" v-if="props.row.estado=='DEVUELTO'">
                   {{ props.row.estado }}

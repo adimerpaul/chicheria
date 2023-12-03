@@ -207,7 +207,9 @@ class LogcompraController extends Controller
     {
         //
 
+
         $logcompra=Logcompra::find($request->id);
+
         $compra=Compra::find($logcompra->compra_id);
 
         $compra->deuda=$compra->deuda - $logcompra->monto;

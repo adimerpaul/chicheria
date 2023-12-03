@@ -367,7 +367,7 @@
           <q-table title="RETIROS" :rows="retiros" :columns="colretiros" row-key="name" flat :rows-per-page-options="[0]" >
             <template v-slot:body-cell-op="props" >
               <q-td key="op" :props="props" >
-                <q-btn dense round flat color="red"  icon="delete"  v-if="$store.state.login.almacenHistorialPago" />
+                <q-btn dense round flat color="red"  icon="delete"  v-if="$store.state.login.almacenHistorialPago" @click="delrecuento(props.row)"/>
               </q-td>
             </template>
           </q-table>
@@ -562,6 +562,7 @@ export default {
       ],
       colretiros : [
 
+      { name: 'op', align: 'center', label: 'OP', field: 'op' },
       { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
       { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
       { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
@@ -589,6 +590,7 @@ export default {
     this.consultmaterial()
   },
   methods: {
+
     delrecuento(recuento){
       //console.log(recuento)
       this.$q.dialog({
@@ -599,6 +601,7 @@ export default {
       }).onOk(() => {
         // console.log('>>>> OK')
         this.$axios.delete(process.env.API+'/recuento/'+recuento.id).then(res=>{
+          this.dialoglistretiros=false
           this.materialsGet()
           this.consultmaterial()
           this.$q.notify({
@@ -829,7 +832,15 @@ export default {
             textColor: 'white',
             icon: 'info',
             message: 'Eliminado '
-          });
+          })
+        }).catch(err=>{
+          console.log(err.response)
+        this.$q.notify({
+          color: 'red-4',
+          textColor: 'white',
+          icon: 'error',
+          message: err.response.data.error
+        });
         })
       }).onOk(() => {
         // console.log('>>>> second OK catcher')
