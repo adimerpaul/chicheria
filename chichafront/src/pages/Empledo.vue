@@ -194,6 +194,7 @@
           <div class="col-12 q-pa-xs col-sm-3"><q-input outlined label="Nombre" v-model="empleado2.nombre" required/></div>
           <div class="col-12 q-pa-xs col-sm-3"><q-select v-model="empleado2.tipo" :options="['DESTAJO','FIJO']" label="Tipo" outlined /></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Nacimiento" type="date" v-model="empleado2.fechanac" required/></div>
+          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Fecha Ingreso" type="date" v-model="empleado2.fechaingreso" /></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado2.celular"/></div>
           <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado2.salario" type="number"/></div>
           <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
