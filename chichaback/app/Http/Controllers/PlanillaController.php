@@ -125,12 +125,12 @@ class PlanillaController extends Controller
 
         $loggeneral= Loggeneral::where('numero',$planilla->id)->where('tipo','EGRESO')->where('detalle','SALARIO')->get()[0];
         $loggeneral->delete();*/
+        $planilla=Planilla::find($id);
         if(Planilla::where('id',$id)->count()==0)
             return response()->json(['error' => 'No Existe Planilla'], 500);
         if(Loggeneral::where('numero',$planilla->id)->whereDate('fecha',$planilla->fechapago)->where('detalle','SALARIO')->count()==0)
             return response()->json(['error' => 'No hay Registro Caja G'], 500);
         
-        $planilla=Planilla::find($id);
 
         $general=General::find(1);
         $general->monto=floatval($general->monto) + floatval($planilla->total);
