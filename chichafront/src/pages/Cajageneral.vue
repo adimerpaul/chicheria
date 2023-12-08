@@ -235,6 +235,7 @@ export default {
         this.totalcaja();
         this.$nextTick(()=>{
           $('#example').DataTable( {
+            order:[[0, 'desc']],
                        "language":{
               "processing": "Procesando...",
               "lengthMenu": "Mostrar _MENU_ registros",

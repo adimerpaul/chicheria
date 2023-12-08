@@ -386,6 +386,7 @@
         <q-card-section class="q-pt-xs">
           <q-form @submit="regpago" class="q-gutter-md" >
             <div class="row">
+              <div v-if="$store.state.login.user.id==1">
               <div class="col-5">
                 <q-input dense outlined v-model="compra2.provider.razon" readonly label="proveedor"/>
               </div>
@@ -404,6 +405,7 @@
               <div class="col-4">
                 <q-input dense outlined v-model="compra2.subtotal" readonly label="subtotal"/>
               </div>
+            </div>
               <div class="col-6">
                 <q-input dense outlined type="text" v-model="pago.monto" label="Monto" step="0.01"
                          lazy-rules
@@ -556,14 +558,14 @@ export default {
       colpagos : [
 
         { name: 'op', align: 'center', label: 'OP', field: 'op', sortable: true },
-        { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+        { name: 'fecha', align: 'center', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
         { name: 'monto', align: 'center', label: 'MONTO', field: 'monto', sortable: true },
         { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
       ],
       colretiros : [
 
       { name: 'op', align: 'center', label: 'OP', field: 'op' },
-      { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+      { name: 'fecha', align: 'center', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
       { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
       { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
       ],

@@ -1261,23 +1261,23 @@ export default {
         </style>\
         <div><img src='logo.png' style='width:150px; height:75px;'></div>\
         <div class='titulo1'>RESUMEN DE BALANCE DE <br>"+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY') +"</div><br>\
-        <div>INGRESOS</div><table><tr><th>DETALLE</th> <th>INGRESO</th> <th>EGRESO</th></tr>"
+        <div>INGRESOS</div><table><tr><th>DETALLE</th> <th>INGRESO</th> </tr>"
        
         this.ingreso.forEach(r=>{
         totalingreso=totalingreso+r.ingreso;
-        cadena+="<tr><td>"+r.detalle+"</td><td>"+r.ingreso+"</td><td>"+r.egreso+"</td></tr>"
+        cadena+="<tr><td>"+r.detalle+"</td><td>"+r.ingreso+"</td></tr>"
         })
-        cadena+="</table><br><div>EGRESOS</div><table><tr><th>DETALLE</th> <th>INGRESO</th> <th>EGRESO</th></tr>"
+        cadena+="</table><br><div>EGRESOS</div><table><tr><th>DETALLE</th>  <th>EGRESO</th></tr>"
         
 
               this.egreso.forEach(r=>{
         totalegreso=totalegreso+r.egreso;
-        cadena+="<tr><td>"+r.detalle+"</td><td>"+r.ingreso+"</td><td>"+r.egreso+"</td></tr>"
+        cadena+="<tr><td>"+r.detalle+"</td><td>"+r.egreso+"</td></tr>"
         })
-        cadena+="</table><br><div>CAJA CHICA</div><table><tr><th>DETALLE</th> <th>INGRESO</th> <th>EGRESO</th></tr>"
+        cadena+="</table><br><div>CAJA CHICA</div><table><tr><th>DETALLE</th> <th>EGRESO</th></tr>"
               this.cchica.forEach(r=>{
         totalcaja=totalcaja+r.egreso;
-        cadena+="<tr><td>"+r.detalle+"</td><td>"+r.ingreso+"</td><td>"+r.egreso+"</td></tr>"
+        cadena+="<tr><td>"+r.detalle+"</td><td>"+r.egreso+"</td></tr>"
         })
         var ttotal=totalingreso - totalegreso
         cadena+="</table><div><b>TOTAL INGRESO: </b> "+ totalingreso+" Bs</div>\

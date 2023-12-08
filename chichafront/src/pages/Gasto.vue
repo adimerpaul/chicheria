@@ -220,7 +220,7 @@
           <td>{{c.hora}}</td>
           <td>{{c.user}}</td>
           <td>
-              <q-btn size="xs" @click="modifcaja(c)" v-if="$store.state.login.user.id==1" color="yellow" icon="edit"><q-tooltip>Modificar</q-tooltip></q-btn>
+              <!--<q-btn size="xs" @click="modifcaja(c)" v-if="$store.state.login.user.id==1" color="yellow" icon="edit"><q-tooltip>Modificar</q-tooltip></q-btn>-->
               <q-btn size="xs" @click="printcaja(c)" v-if="$store.state.login.user.id==1" color="primary" icon="print" ><q-tooltip>Impresion</q-tooltip></q-btn>
 
           </td>
