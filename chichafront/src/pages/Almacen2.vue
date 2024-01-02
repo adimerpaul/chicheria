@@ -520,7 +520,7 @@ export default {
       fecha4:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
-      unidades: ['Kilogramos', 'Litros', 'Unidad', 'Metros', 'Metros Cuadrados', 'Metros Cubicos', 'Caja', 'Bolsa', 'Paquete', 'Otro'],
+      unidades: ['Kilogramos', 'Litros', 'Unidad', 'Metros', 'Metros Cuadrados', 'Metros Cubicos', 'Caja', 'Bolsa', 'Paquete','Quintal','Lata', 'Otro'],
       materialDialog: false,
       compra: {
         cantidad: 0,
