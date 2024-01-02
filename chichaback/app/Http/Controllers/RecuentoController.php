@@ -129,6 +129,10 @@ class RecuentoController extends Controller
     {
         //
         $recuento=Recuento::find($id);
+        $compra=Compra::find($recuento->compra_id);
+        $compra->retiro = $compra->retiro - $recuento->cantidad;
+        $compra->save();
+
         $material=Material::find($recuento->material_id);
         $material->stock=$material->stock + $recuento->cantidad;
         $material->save();

@@ -206,13 +206,12 @@ class LogcompraController extends Controller
     public function anularLogcompra(Request $request )
     {
         //
-
-
         $logcompra=Logcompra::find($request->id);
 
         $compra=Compra::find($logcompra->compra_id);
 
         $compra->deuda=$compra->deuda - $logcompra->monto;
+
         $compra->estado='POR PAGAR';
         $compra->save();
         $buscar='Almacen Pago '.$compra->id.' : ';
@@ -222,7 +221,14 @@ class LogcompraController extends Controller
         $general->monto=$general->monto + $logcompra->monto;
         $general->save();
 
-        $loggeneral= new Loggeneral;
+        $loggeneral= Loggeneral::where('numero', $compra->id)
+        ->where('monto',$logcompra->monto)
+        ->where('detalle','MATERIAL ALMACEN')
+        ->where('motivo','PAGO COMPRA')
+        ->where('tipo','EGRESO')
+        ->whereDate('fecha',$logcompra->fecha)->first();
+        $loggeneral->delete();
+        /*$loggeneral= new Loggeneral;
         $loggeneral->numero=$compra->id;
         $loggeneral->monto= $logcompra->monto;
         $loggeneral->detalle='MATERIAL ALMACEN :' . $logcompra->observacion;
@@ -232,7 +238,8 @@ class LogcompraController extends Controller
         $loggeneral->hora=date("H:i:s");
         $loggeneral->glosa_id=null;
         $loggeneral->user_id=$request->user()->id;
-        $loggeneral->save();
+        $loggeneral->save();*/
+        
         }
         else{
         $caja=Caja::find(1);
@@ -242,15 +249,22 @@ class LogcompraController extends Controller
         $log1= Logcaja::where('motivo','LIKE',$buscar.'%')->where('tipo','GASTO')->first();
         $log1->delete();
 
-        $log=new Logcaja ;
-        $log->monto=$logcompra->monto;
+        $log=Logcaja::where('monto',$logcompra->monto)
+        ->where('motivo','LIKE','Almacen Pago '.$compra->id.'%')
+        ->where('tipo','GASTO')
+        ->whereDate('fecha',$logcompra->fecha)
+        ->whereNull('glosa_id')
+        ->first();
+        $log->delete();
+
+        /*$log->monto=$logcompra->monto;
         $log->motivo='Almacen Pago '.$compra->id.' : '.$logcompra->observacion;
         $log->tipo='AGREGA';
         $log->fecha=date('Y-m-d');
         $log->hora=date('H:i:s');
         $log->glosa_id=null;
         $log->user_id=$request->user()->id;
-        $log->save();
+        $log->save();*/
         }
         $logcompra->delete();
     }
