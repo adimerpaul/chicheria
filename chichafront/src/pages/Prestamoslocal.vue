@@ -92,7 +92,7 @@
             <template v-slot:body-cell-logprestamos="props" >
               <q-td key="logprestamos" :props="props">
                 <ul v-for="l in props.row.logprestamos" :key="l.id" style="margin: 0px;padding:0px;border: 0px;list-style: none">
-                  <li style="margin: 0px;padding:0px;border: 0px;"> <b>Cant:</b> {{l.cantidad}} <b>Fecha:</b>{{l.fecha}} </li>
+                  <li style="margin: 0px;padding:0px;border: 0px;"> <b>Cant:</b> {{l.cantidad}} <b>Fecha: </b>{{cambiofecha(l.fecha)}} </li>
                 </ul>
               </q-td>
             </template>
@@ -1133,6 +1133,9 @@ export default {
         this.dev={};
         this.$q.loading.hide();
       })
+    },
+    cambiofecha(fec){
+      return moment(fec).format('DD/MM/YYYY')
     },
     imprimir(){
 
