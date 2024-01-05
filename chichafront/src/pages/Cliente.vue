@@ -69,7 +69,7 @@
 
         <div class="q-pa-md">
                               <div class=" responsive">
-                <table id="example" class="display" style="width:100%">
+                <q-markup-table dense bordered wrap-cells>
                   <thead>
                   <tr>
                     <!--                      <th>Nro</th>-->
@@ -104,7 +104,7 @@
                     </td>
                   </tr>
                   </tbody>
-                </table>
+                </q-markup-table>
                       </div>
 <!--
           <q-table
@@ -279,18 +279,18 @@ export default {
   },
     mounted() {
       //this.filtrarlista();
-      $('#example').DataTable(  );
+      // $('#example').DataTable(  );
       this.listado(2);
       console.log(this.days)
-             
-    
+
+
   },
   methods: {
     listado(valor){
       this.$q.loading.show();
       this.rows=[];
       this.days=[];
-      $('#example').DataTable().destroy();
+      // $('#example').DataTable().destroy();
       this.$axios.get(process.env.API+'/cumple').then(res=>{
          console.log(res.data)
         res.data.forEach(el => {
@@ -346,16 +346,16 @@ export default {
         this.rows.push(this.clientes);}
         });
         this.$q.loading.hide();
-                      $('#example').DataTable().destroy();
-        this.$nextTick(()=>{
-          $('#example').DataTable( {
-            dom: 'Blfrtip',
-            buttons: [
-               'excel', 'pdf'
-            ],
-             "lengthMenu": [[-1,10, 25, 50], [ "All",10, 25, 50]] 
-          } );
-        })
+        //               $('#example').DataTable().destroy();
+        // this.$nextTick(()=>{
+        //   $('#example').DataTable( {
+        //     dom: 'Blfrtip',
+        //     buttons: [
+        //        'excel', 'pdf'
+        //     ],
+        //      "lengthMenu": [[-1,10, 25, 50], [ "All",10, 25, 50]]
+        //   } );
+        // })
       })
 
       });

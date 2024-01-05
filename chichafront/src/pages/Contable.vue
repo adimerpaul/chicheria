@@ -1262,13 +1262,13 @@ export default {
         <div><img src='logo.png' style='width:150px; height:75px;'></div>\
         <div class='titulo1'>RESUMEN DE BALANCE DE <br>"+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY') +"</div><br>\
         <div>INGRESOS</div><table><tr><th>DETALLE</th> <th>INGRESO</th> </tr>"
-       
+
         this.ingreso.forEach(r=>{
         totalingreso=totalingreso+r.ingreso;
         cadena+="<tr><td>"+r.detalle+"</td><td>"+r.ingreso+"</td></tr>"
         })
         cadena+="</table><br><div>EGRESOS</div><table><tr><th>DETALLE</th>  <th>EGRESO</th></tr>"
-        
+
 
               this.egreso.forEach(r=>{
         totalegreso=totalegreso+r.egreso;
@@ -1279,7 +1279,7 @@ export default {
         totalcaja=totalcaja+r.egreso;
         cadena+="<tr><td>"+r.detalle+"</td><td>"+r.egreso+"</td></tr>"
         })
-        var ttotal=totalingreso - totalegreso
+        var ttotal=totalingreso - totalegreso - totalcaja
         cadena+="</table><div><b>TOTAL INGRESO: </b> "+ totalingreso+" Bs</div>\
         <div><b>TOTAL EGRESO: </b> "+ totalegreso+" Bs</div>\
         <div><b>T. CJA CHICA: </b> "+ totalcaja+" Bs</div>\
@@ -1388,7 +1388,7 @@ export default {
         doc.setFont(undefined,'normal')
         doc.text(10, y+4.5, totalcaja+' Bs')
 
-        var ttotal=totalingreso - totalegreso
+        var ttotal=totalingreso - totalegreso - totalcaja
         doc.setFont(undefined,'bold')
         doc.text(14, y+4, 'BALANCE: ')
         doc.setFont(undefined,'normal')
@@ -1422,7 +1422,7 @@ computed:{
       })
       return total
     },
-    
+
     balance(){
       var total=this.totalingreso - this.totalegreso - this.totalchica
       return total;

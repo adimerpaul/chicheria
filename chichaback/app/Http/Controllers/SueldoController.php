@@ -55,7 +55,7 @@ class SueldoController extends Controller
         $sueldo->user_id=$request->user()->id;
         if($request->checkbox=='CAJA')
             $sueldo->caja='CHICA';
-        else 
+        else
             $sueldo->caja='GENERAL';
         $sueldo->save();
 
@@ -97,7 +97,7 @@ class SueldoController extends Controller
             $loggeneral= new Loggeneral;
             $loggeneral->numero=$gasto->id;
             $loggeneral->monto= $request->monto;
-            $loggeneral->detalle='GASTO';
+            $loggeneral->detalle='EGRESO';
             $loggeneral->motivo=$request->observacion;
             $loggeneral->tipo='EGRESO';
             $loggeneral->fecha=$gasto->fecha;

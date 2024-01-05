@@ -68,7 +68,7 @@
     <table id="example" class="display">
     <thead>
       <tr>
-      <th class="hidden">Orden</th>
+      <th>id</th>
       <th>Fecha</th>
       <th>Monto</th>
       <th>Detalle</th>
@@ -80,7 +80,7 @@
     </thead>
     <tbody>
     <tr v-for="r in data " :key="r">
-      <td class="hidden">{{r.fechaord}}</td>
+      <td>{{r.id}}</td>
       <td>{{r.fecha}}</td>
       <td>{{r.monto}}</td>
       <td>{{r.detalle}}</td>

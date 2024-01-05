@@ -47,19 +47,19 @@
             <q-btn icon="price_change" label="Caja Chica" type="button" color="accent" @click="cajachica=true"/>
           </div>
     </div>
-    <div class="col-12">
-      <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir(user)"/>
+    <div class="col-3">
+      <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir(user)" dense no-caps/>
     </div>
-    <div class="col-12 row">
-      <div class="col-6 " >
-        <q-btn label="Imprimir mis ventas Detalle" icon="print" color="teal" style="width:100%"  @click="imprimirmisventasdetalle(user)"/>
-      </div>
-      <div class="col-6 ">
-        <q-btn label="Imprimir mis ventas Local" icon="print" color="warning" style="width:100%"  @click="imprimirmisventaslocal(user)"/>
-      </div>
+    <div class="col-3 ">
+<!--      <div class="col-6 " >-->
+        <q-btn label="Imprimir mis ventas Detalle" icon="print" color="teal" style="width:100%"  @click="imprimirmisventasdetalle(user)" dense no-caps/>
     </div>
-    <div class="col-12">
-      <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="impresionventagasto(user)"/>
+    <div class="col-3 ">
+        <q-btn label="Imprimir mis ventas Local" icon="print" color="warning" style="width:100%"  @click="imprimirmisventaslocal(user)" dense no-caps/>
+<!--      </div>-->
+    </div>
+    <div class="col-3">
+      <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="impresionventagasto(user)" dense no-caps/>
     </div>
     <div class="col-12">
 <!--      <q-table-->
@@ -111,6 +111,7 @@
 <!--          </q-td>-->
 <!--        </template>-->
 <!--      </q-table>-->
+      <div class="text-h5" align="center">HISTORIAL DE CAJA DE VENTAS</div>
       <table id="example" style="width:100%" class="cell-border">
         <thead>
         <tr>
@@ -2241,7 +2242,7 @@ xlsx(datacaja, settings) // Will download the excel file
             // pageLength: 5,
              lengthMenu: [[-1,20, 50, 100], [ "All",20, 50, 100]],
             buttons: [
-              'copy', 'csv', 'excel', 'pdf', 'print'
+              'excel', 'pdf'
              ],
             "footerCallback": function ( row, data, start, end, display ) {
               var api = this.api(), data;
