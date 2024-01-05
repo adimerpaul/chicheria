@@ -116,30 +116,50 @@
                           <q-item-section avatar>
                             <q-avatar  icon="print" color="info" text-color="white" />
                           </q-item-section>
+                          <q-item-section>
+                            Imprimir
+                          </q-item-section>
                         </q-item>
                         <q-item clickable v-close-popup @click="onDev(props.row)" v-if="props.row.estado=='EN PRESTAMO'" dense>
                           <q-item-section avatar>
                             <q-avatar  icon="refresh" color="primary" text-color="white" />
+                          </q-item-section>
+                          <q-item-section>
+                            Devolver
                           </q-item-section>
                         </q-item>
                         <q-item clickable v-close-popup @click="onList(props.row)" dense>
                           <q-item-section avatar>
                             <q-avatar  icon="list" color="green" text-color="white" />
                           </q-item-section>
+                          <q-item-section>
+                            Listado
+                          </q-item-section>
                         </q-item>
                         <q-item clickable v-close-popup @click="onMod(props.row)" v-if="props.row.estado=='EN PRESTAMO'" dense>
                           <q-item-section avatar>
                             <q-avatar  icon="edit" color="yellow" text-color="white" />
                           </q-item-section>
+                          <q-item-section>
+                            Modificar
+                          </q-item-section>
                         </q-item>
                         <q-item clickable v-close-popup @click="onEliminar(props.row)"  v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  dense>
                           <q-item-section>
-                            <q-item-label  content-style="{background-color: coral;}"  >BAJA</q-item-label>
+                            <q-item-section avatar >
+                              <q-avatar  icon="delete" color="red-12" text-color="white" />
+                            </q-item-section>
+                            <q-item-section>
+                              Baja
+                            </q-item-section>
                           </q-item-section>
                         </q-item>
                         <q-item clickable v-close-popup @click="ondelete(props.row)" v-if="(props.row.estado=='EN PRESTAMO' || props.row.estado=='VENTA') && $store.state.login.delprestamo" dense>
                           <q-item-section avatar>
                             <q-avatar  icon="delete" color="negative" text-color="white" />
+                          </q-item-section>
+                          <q-item-section>
+                            Eliminar
                           </q-item-section>
                         </q-item>
                       </q-list>

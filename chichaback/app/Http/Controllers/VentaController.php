@@ -255,6 +255,7 @@ class VentaController extends Controller
                 ->whereDate('fecha','>=',$request->ini)
                 ->whereDate('fecha','<=',$request->fin)
 //                ->where('user_id',$request->id)
+                ->orderBy('id','desc')
                 ->get();
         }else{
             return Venta::with('user')
@@ -264,6 +265,7 @@ class VentaController extends Controller
                 ->whereDate('fecha','>=',$request->ini)
                 ->whereDate('fecha','<=',$request->fin)
                 ->where('user_id',$request->id)
+                ->orderBy('id','desc')
                 ->get();
         }
 
