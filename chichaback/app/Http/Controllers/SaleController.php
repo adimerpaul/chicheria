@@ -7,6 +7,7 @@ use App\Models\Venta;
 use App\Models\General;
 use App\Models\Detalle;
 use App\Models\Loggeneral;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
@@ -306,5 +307,11 @@ class SaleController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function repClienteVenta(Request $request){
+        return DB::SELECT("SELECT c.id,c.local,c.titular,sum(v.total) total
+        from clientes c inner join ventas v on v.cliente_id=c.id 
+        where v.fecha>='$request->ini' and v.fecha<='$request->fin' and v.estado!='ANULADO' AND c.local!='' GROUP by c.id,c.local,c.titular;");
     }
 }
