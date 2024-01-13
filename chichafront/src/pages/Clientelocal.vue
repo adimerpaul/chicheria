@@ -195,7 +195,13 @@
                 </q-td>
               </q-tr>
             </template>
-
+            <template v-slot:body-cell-datos="props" >
+              <q-tr :props="props" >
+                <q-td key="estado" :props="props" >
+                   <q-btn icon="description"  dense color="amber" @click="verDatos(props.row)"/>                  
+                </q-td>
+              </q-tr>
+            </template>
             <template v-slot:body-cell-tipocliente="props" >
                 <q-td key="tipocliente" :props="props" >
                   <q-badge color="accent" v-if="props.row.tipocliente=='1'">
@@ -374,15 +380,16 @@ export default {
   { name: 'local', align: 'center', label: 'LOCAL', field: 'local', sortable: true },
   { name: 'ci', align: 'center', label: 'CI', field: 'ci', sortable: true },
   { name: 'titular', align: 'center', label: 'TITULAR', field: 'titular', sortable: true },
-  { name: 'tipo', label: 'TIPO', field: 'tipo' },
+ // { name: 'tipo', label: 'TIPO', field: 'tipo' },
   { name: 'telefono', label: 'TELÉFONO', field: 'telefono' },
   { name: 'fecha nac', label: 'FECHA NAC', field: 'fechanac' },
-  { name: 'direccion', label: 'DIRECCIÓN', field: 'direccion' },
-  { name: 'legalidad', label: 'LEGALIDAD', field: 'legalidad' },
-  { name: 'categoria', label: 'CATEGORIA NIT', field: 'categoria' },
+ // { name: 'direccion', label: 'DIRECCIÓN', field: 'direccion' },
+ // { name: 'legalidad', label: 'LEGALIDAD', field: 'legalidad' },
+  //{ name: 'categoria', label: 'CATEGORIA NIT', field: 'categoria' },
   { name: 'razon', label: 'RAZON SOCIAL', field: 'razon' },
   { name: 'nit', label: 'NÚMERO NIT', field: 'nit' },
-  { name: 'observacion', label: 'OBSERVACIÓN', field: 'observacion' },
+  { name: 'datos', label: 'Datos', field: 'datos' },
+ // { name: 'observacion', label: 'OBSERVACIÓN', field: 'observacion' },
   { name: 'tipocliente', label: 'TIPO CLIENTE', field: 'tipocliente' },
   { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado' },
   { name: 'opcion', label: 'OPCIONES', field: 'action' }
@@ -400,6 +407,19 @@ export default {
       console.log(this.days)
   },
   methods: {
+    verDatos( val){
+      this.$q.dialog({
+        title: 'DATOS CLIENTE',
+        message: '<b>Direcion:</b>'+val.direccion+'<br><b>Legalidad: </b>'+val.legalidad+'<br><b>Cateogoria: </b>'+val.categoria+'<br><b>Observacion:</b>'+val.observacion,
+        html: true
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
     generarExcel(){
       this.$axios.post(process.env.API+'/repClienteVenta',{ini:this.ini,fin:this.fin}).then(res=>{
         console.log(res.data)
