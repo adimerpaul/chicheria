@@ -118,10 +118,9 @@
 
         <div class="q-pa-md">
                       <div class=" responsive">
-                <q-markup-table dense bordered wrap-cells>
+               <!-- <q-markup-table dense bordered wrap-cells>
                   <thead>
                   <tr>
-                    <!--                      <th>Nro</th>-->
                     <th>Local</th>
                     <th>CI</th>
                     <th>Titular</th>
@@ -141,7 +140,6 @@
                   </thead>
                   <tbody>
                   <tr v-for="v in rows" :key="v.id">
-                    <!--                      <td>{{v.id}}</td>-->
                     <td>{{v.local}}</td>
                     <td>{{v.ci}}</td>
                     <td>{{v.titular}}</td>
@@ -167,21 +165,22 @@
                     </td>
                   </tr>
                   </tbody>
-                </q-markup-table>
+                </q-markup-table>-->
                       </div>
                       <div class="row">
-                        <div class="col-3 q-pa-xs"><q-input outlined dense v-model="ini" label="Fecha Ini" /></div>
-                        <div class="col-3 q-pa-xs "><q-input outlined dense v-model="fin" label="Fecha fin" /></div>
+                        <div class="col-3 q-pa-xs"><q-input type="date" outlined dense v-model="ini" label="Fecha Ini" /></div>
+                        <div class="col-3 q-pa-xs "><q-input type="date" outlined dense v-model="fin" label="Fecha fin" /></div>
                         <div class="col-3 q-pa-xs"> <q-btn color="green" label="EXCEL" @click="generarExcel" />
                         </div>
                       </div>
-                      <!--
+                      
           <q-table
             title="CLIENTES"
             :rows="rows"
             :columns="columns"
             row-key="name"
             :filter="filter"
+            :rows-per-page-options="[20,50,100,0]"
           >
 
             <template v-slot:body-cell-estado="props" >
@@ -221,7 +220,7 @@
                 </template>
               </q-input>
             </template>
-          </q-table> -->
+          </q-table> 
         </div>
 
     <q-dialog v-model="dialog_mod">
@@ -372,13 +371,7 @@ export default {
       color:'',
       dato:{},
       columns : [
-  {
-    name: 'local',
-    label: 'CODIGO',
-    align: 'center',
-    field: 'local',
-    sortable: true
-  },
+  { name: 'local', align: 'center', label: 'LOCAL', field: 'local', sortable: true },
   { name: 'ci', align: 'center', label: 'CI', field: 'ci', sortable: true },
   { name: 'titular', align: 'center', label: 'TITULAR', field: 'titular', sortable: true },
   { name: 'tipo', label: 'TIPO', field: 'tipo' },
@@ -445,6 +438,7 @@ export default {
           console.log(el.tipocliente);
           if(valor == el.tipocliente){
           const fecha = date.extractDate(el.fechanac, 'YYYY-MM-DD')
+          if(el.estado=='ACTIVO')
         this.days.push({cumple:date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'),titular:el.titular,local:el.local})
         this.clientes={};
         this.clientes.id=el.id;
@@ -472,7 +466,7 @@ export default {
 
             if(valor==el.tipocliente){
             const fecha = date.extractDate(el.fechanac, 'YYYY-MM-DD')
-
+            if(el.estado=='ACTIVO')
           this.days.push({cumple:date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'),titular:el.titular,local:el.local})
           this.clientes={};
           this.clientes.id=el.id;

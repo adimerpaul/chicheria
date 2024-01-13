@@ -69,10 +69,9 @@
 
         <div class="q-pa-md">
                               <div class=" responsive">
-                <q-markup-table dense bordered wrap-cells>
+               <!-- <q-markup-table dense bordered wrap-cells>
                   <thead>
                   <tr>
-                    <!--                      <th>Nro</th>-->
                     <th>CI</th>
                     <th>Titular</th>
                     <th>Telefono</th>
@@ -85,7 +84,6 @@
                   </thead>
                   <tbody>
                   <tr v-for="v in rows" :key="v.id">
-                    <!--                      <td>{{v.id}}</td>-->
                     <td>{{v.ci}}</td>
                     <td>{{v.titular}}</td>
                     <td>{{v.telefono}}</td>
@@ -104,15 +102,16 @@
                     </td>
                   </tr>
                   </tbody>
-                </q-markup-table>
+                </q-markup-table>-->
                       </div>
-<!--
+
           <q-table
             title="CLIENTES"
             :rows="rows"
             :columns="columns"
             row-key="name"
             :filter="filter"
+            :rows-per-page-options="[20,50,100,0]"
           >
 
             <template v-slot:body-cell-estado="props" >
@@ -152,7 +151,7 @@
                 </template>
               </q-input>
             </template>
-          </q-table>-->
+          </q-table>
         </div>
 
     <q-dialog v-model="dialog_mod">
@@ -298,6 +297,7 @@ export default {
           console.log(el.tipocliente);
           if(valor == el.tipocliente){
           const fecha = date.extractDate(el.fechanac, 'YYYY-MM-DD')
+          if(el.estado=='ACTIVO')
         this.days.push(date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'))
         this.clientes={};
         this.clientes.id=el.id;
@@ -325,7 +325,7 @@ export default {
 
             if(valor==el.tipocliente){
             const fecha = date.extractDate(el.fechanac, 'YYYY-MM-DD')
-
+            if(el.estado=='ACTIVO')
           this.days.push(date.formatDate(Date.now(),'YYYY')+'/'+date.formatDate(fecha,'MM')+'/'+date.formatDate(fecha,'DD'))
           this.clientes={};
           this.clientes.id=el.id;
