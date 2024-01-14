@@ -185,19 +185,19 @@
 
             <template v-slot:body-cell-estado="props" >
               <q-tr :props="props" >
-                <q-td key="estado" :props="props" @click="activar(props)">
+                <q-td key="estado" :props="props" @click="activar(props.row)">
                   <q-badge color="green" v-if="props.row.estado=='ACTIVO'">
                     {{ props.row.estado }}
                   </q-badge>
                   <q-badge color="red" v-else>
-                    {{ props.row.estado }}
+                    NO
                   </q-badge>
                 </q-td>
               </q-tr>
             </template>
             <template v-slot:body-cell-datos="props" >
               <q-tr :props="props" >
-                <q-td key="estado" :props="props" >
+                <q-td key="datos" :props="props" >
                    <q-btn icon="description"  dense color="amber" @click="verDatos(props.row)"/>                  
                 </q-td>
               </q-tr>
