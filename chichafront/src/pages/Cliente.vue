@@ -315,6 +315,8 @@ export default {
         this.clientes.observacion=el.observacion;
         this.clientes.tipocliente=el.tipocliente;
         this.clientes.estado=el.estado;
+        if(el.estado!='ACTIVO')
+        this.clientes.estado='NO';
         this.rows.push(this.clientes);}
         });
       this.$axios.get(process.env.API+'/cumple2').then(res=>{
@@ -343,6 +345,9 @@ export default {
         this.clientes.observacion=el.observacion;
         this.clientes.tipocliente=el.tipocliente;
         this.clientes.estado=el.estado;
+        if(el.estado!='ACTIVO')
+        this.clientes.estado='NO';
+
         this.rows.push(this.clientes);}
         });
         this.$q.loading.hide();
