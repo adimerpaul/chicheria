@@ -23,6 +23,8 @@
           row-class="cursor-pointer"
         >
           <template v-slot:top-right>
+             <q-btn dense color="green"  label="EXCEL" @click="exportTable" />
+            
             <q-input outlined dense v-model="almacenFilter" debounce="300" placeholder="Buscar...">
               <template v-slot:append>
                 <q-icon name="search" class="cursor-pointer"/>
@@ -61,10 +63,11 @@
           </template>
         </q-table>
       </div>
-      <div class="col-4"><q-input dense outlined v-model="fecha3" label="Fecha Ini" type="date"/></div>
-      <div class="col-4"><q-input dense outlined v-model="fecha4" label="Fecha fin" type="date"/></div>
+      <div class="col-3"><q-input dense outlined v-model="fecha3" label="Fecha Ini" type="date"/></div>
+      <div class="col-3"><q-input dense outlined v-model="fecha4" label="Fecha fin" type="date"/></div>
       <!--      <div class="col-4"><q-select dense outlined v-model="material3" :options="materiales" label="Material" /></div>-->
-      <div class="col-4 flex flex-center"> <q-btn color="info" label="Consultar"  @click="consultmaterial" no-caps/></div>
+      <div class="col-3 flex flex-center"> <q-btn color="info" label="Consultar"  @click="consultmaterial" no-caps/></div>
+      <div class="col-3 flex flex-center"> <q-btn color="green" label="EXCEL"  @click="exportTable2" no-caps/></div>
       <div class="col-12">
         <q-table
           dense
@@ -493,6 +496,7 @@ import {date} from "quasar";
 import moment from "moment/moment";
 import {jsPDF} from "jspdf";
 import { Console } from 'console';
+import xlsx from "json-as-xlsx"
 
 export default {
   data () {
@@ -541,6 +545,7 @@ export default {
       },
       comp:{},
       comptodo:[],
+      excelcompra:[],
       colrecuento : [
 
         { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
@@ -602,6 +607,50 @@ export default {
     this.consultmaterial()
   },
   methods: {
+    exportTable () {
+      let datacaja = [
+        {
+          sheet: "Almacen",
+          columns: [
+            { label: "Material", value: 'nombre' }, // Top level data
+            { label: "Cantidad", value: "stock" }, // Top level data
+          ],
+          content: this.materials
+        },
+
+      ]
+
+      let settings = {
+        fileName: "Almacen", // Name of the resulting spreadsheet
+        extraLength: 7, // A bigger number means that columns will be wider
+        writeOptions: {}, // Style options from https://github.com/SheetJS/sheetjs#writing-options
+      }
+      xlsx(datacaja, settings) // Will download the excel file
+      },
+      exportTable2 () {
+      let datacaja = [
+        {
+          sheet: "Compras",
+          columns: [
+            { label: "id", value: "id" }, // Top level data
+            { label: "Material", value: row=>row.material.nombre }, // Top level data
+            { label: "Proveedor", value: row=>row.provider.razon}, // Top level data
+            { label: "Lote", value: "lote" }, // Top level data
+            { label: "Cantidad", value: "cantidad" }, // Top level data
+            { label: "Saldo", value: "saldocant" }, // Top level data
+          ],
+          content: this.excelcompra
+        },
+
+      ]
+
+      let settings = {
+        fileName: "Compras", // Name of the resulting spreadsheet
+        extraLength: 7, // A bigger number means that columns will be wider
+        writeOptions: {}, // Style options from https://github.com/SheetJS/sheetjs#writing-options
+      }
+      xlsx(datacaja, settings) // Will download the excel file
+      },
 
     delrecuento(recuento){
       //console.log(recuento)
@@ -874,11 +923,14 @@ export default {
     },
     consultmaterial(){
       this.comptodo=[]
+      this.excelcompra=[]
       this.$api.post(process.env.API+'/consultar2',{fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
         res.data.forEach(r => {
           r.saldocant = r.cantidad - r.retiro
           r.saldopago = r.subtotal - r.deuda
           this.comptodo.push(r)
+          if(r.saldocant>0)
+            this.excelcompra.push(r)
         });
         // console.log(res.data)
       })
