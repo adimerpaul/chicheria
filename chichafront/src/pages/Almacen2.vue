@@ -97,6 +97,16 @@
               </template>
             </q-td>
           </template>
+          <template v-slot:body-cell-saldocant="props">
+            <q-td :props="props" style="font-weight: bold; font-size: 18px;" :color="props.row.saldocant>0?'black':'red'">
+              {{ props.row.saldocant }}
+            </q-td>
+          </template>
+          <template v-slot:body-cell-material="props">
+            <q-td :props="props" style="font-weight: bold; " >
+              {{ props.row.material.nombre }}
+            </q-td>
+          </template>
           <template v-slot:body-cell-subtotal="props">
             <q-td :props="props">
               <template v-if="$store.state.login.almacenCostoSubtotal">
