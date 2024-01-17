@@ -11,7 +11,7 @@ class MaterialController extends Controller
     public function index()
     {
         //
-        return Material::with('compras')->with('recuentos')->get();
+        return Material::with('compras')->with('recuentos')->orderBy('nombre','desc')->get();
 
     }
 

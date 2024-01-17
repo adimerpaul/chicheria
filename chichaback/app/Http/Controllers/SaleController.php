@@ -310,7 +310,7 @@ class SaleController extends Controller
     }
 
     public function repClienteVenta(Request $request){
-        return DB::SELECT("SELECT c.id,c.local,c.titular,sum(v.total) total
+        return DB::SELECT("SELECT c.id,c.local,c.titular,sum(v.total) total, count(*) cantidad
         from clientes c inner join ventas v on v.cliente_id=c.id 
         where v.fecha>='$request->ini' and v.fecha<='$request->fin' and v.estado!='ANULADO' AND c.local!='' GROUP by c.id,c.local,c.titular;");
     }

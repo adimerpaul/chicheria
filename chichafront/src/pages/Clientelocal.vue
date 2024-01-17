@@ -430,6 +430,7 @@ export default {
               { label: "local", value: "local" }, // Top level data
               { label: "titular", value: "titular" }, // Top level data
               { label: "total", value: "total" }, // Top level data
+              { label: "cantidad", value: "cantidad" }, // Top level data
             ],
             content: res.data
           },

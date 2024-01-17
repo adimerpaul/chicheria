@@ -540,10 +540,10 @@ export default {
         { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
       ],
       colcompra : [
+        { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
         { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
         { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado', sortable: true },
         { name: 'fecha', align: 'center', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
-        { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
         { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
         { name: 'saldocant', align: 'center', label: 'SALDO CANT', field: 'saldocant', sortable: true },
         { name: 'costo', align: 'center', label: 'COSTO', field: 'costo', sortable: true },
@@ -577,9 +577,9 @@ export default {
       materialColumns: [
         { name: 'nombre', label: 'Material', align: 'left', field: 'nombre', sortable: true },
         { name: 'unid', label: 'Unidad', align: 'left', field: 'unid', sortable: true },
-        { name: 'min', label: 'Minimo', align: 'center', field: 'min', sortable: true },
         { name: 'stock', label: 'Stock', align: 'center', field: 'stock', sortable: true },
-        { name: 'actions', label: 'Acciones', align: 'center', field: 'actions', sortable: true }
+        { name: 'actions', label: 'Acciones', align: 'center', field: 'actions', sortable: true },
+        { name: 'min', label: 'Minimo', align: 'center', field: 'min', sortable: true }
       ],
       dialoglistpagos:false,
       dialoglistretiros:false,
