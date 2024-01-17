@@ -44,5 +44,6 @@ export default function () {
     almacenCostoSubtotal:false,
     almacenCrearMateriaPrima: false,
     almacenHistorialPago:false,
+    empleadoSueldo:false,
   }
 }

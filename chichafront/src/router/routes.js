@@ -49,6 +49,8 @@ const routes = [
       { path: 'garantia', component: Garantia,meta: {requiresAuth: true} },
       { path: 'inventario', component: Inventario,meta: {requiresAuth: true} },
       { path: 'empleado', component: Empledo,meta: {requiresAuth: true} },
+      // empleadoSueldo
+      { path: 'empleadosueldo', component: () => import('pages/EmpleadoSueldos.vue'),meta: {requiresAuth: true} },
       { path: 'reporteuser', component: Reporteuser,meta: {requiresAuth: true} },
       { path: 'user', component: User,meta: {requiresAuth: true} },
       { path: 'gasto', component: Gasto,meta: {requiresAuth: true} },

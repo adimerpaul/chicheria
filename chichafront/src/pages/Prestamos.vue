@@ -102,6 +102,11 @@
                  <q-btn icon="call" color="accent" @click="verTelef(props.row)" dense v-if="props.row.telefono!=''"/>
               </q-td>
             </template>
+            <template v-slot:body-cell-motivoanulacion="props" >
+              <q-td key="motivoanulacion" :props="props" >
+                 <q-btn icon="list" color="accent" @click="verAnulacion(props.row)" dense v-if="props.row.motivoAnulacion!='' && props.row.motivoAnulacion!=null"/>
+              </q-td>
+            </template>
             <template v-slot:body-cell-fisico="props" >
               <q-td key="fisico" :props="props" >
                  <q-btn icon="list" color="accent" @click="verFisico(props.row)" dense v-if="props.row.fisico!=''"/>
@@ -145,13 +150,11 @@
                           </q-item-section>
                         </q-item>
                         <q-item clickable v-close-popup @click="onEliminar(props.row)"  v-if="props.row.estado=='EN PRESTAMO' && $store.state.login.anularprestamo"  dense>
+                          <q-item-section avatar >
+                            <q-avatar  icon="delete" color="red-12" text-color="white" />
+                          </q-item-section>
                           <q-item-section>
-                            <q-item-section avatar >
-                              <q-avatar  icon="delete" color="red-12" text-color="white" />
-                            </q-item-section>
-                            <q-item-section>
-                              Baja
-                            </q-item-section>
+                            Baja
                           </q-item-section>
                         </q-item>
                         <q-item clickable v-close-popup @click="ondelete(props.row)" v-if="(props.row.estado=='EN PRESTAMO' || props.row.estado=='VENTA') && $store.state.login.delprestamo" dense>
@@ -297,7 +300,7 @@ export default {
   { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true,align:'left' },
   { name: 'fecha', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
       { name: 'fechaAnulacion', label: 'FECHA ANULACION', field: row=>moment(row.fechaAnulacion).format('DD/MM/YYYY'), sortable: true },
-        { name: 'motivoAnulacion', label: 'MOTIVO ANULACION', field: row=>row.motivoAnulacion, sortable: true },
+        { name: 'motivoanulacion', label: 'MOTIVO ANULACION', field: row=>row.motivoAnulacion, sortable: true },
   { name: 'estado', label: 'ESTADO', field: 'estado', sortable: true },
   { name: 'cantidad', label: 'CANTIDAD', field: 'cantidad', sortable: true },
   { name: 'prestado', label: 'PENDIENTE', field: 'prestado', sortable: true },
@@ -394,6 +397,18 @@ export default {
       this.$q.dialog({
         title: ' Cliente: '+dato.cliente.titular,
         message: dato.fisico
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    },
+    verAnulacion(dato){
+      this.$q.dialog({
+        title: ' Cliente: '+dato.cliente.titular,
+        message: dato.motivoAnulacion
       }).onOk(() => {
         // console.log('OK')
       }).onCancel(() => {
@@ -507,7 +522,7 @@ export default {
         message: 'Motivo de Baja',
         prompt: {
           model: '',
-          type: 'text'
+          type: 'textarea'
         }
       }).onOk((data) => {
           p.motivo=data;

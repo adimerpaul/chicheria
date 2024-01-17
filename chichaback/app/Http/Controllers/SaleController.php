@@ -22,7 +22,22 @@ class SaleController extends Controller
     }
 
     public function listSale(Request $request){
-        return Venta::with('cliente')->with('detalles')->with('user')->where('tipo',$request->tipo)->whereDate('fecha','>=',$request->ini)->whereDate('fecha','<=',$request->fin)->orderBy('id','desc')->get();
+        $fechaIni=$request->ini;
+        $fechaFin=$request->fin;
+        $page = $request->page;
+        $filter = $request->filter;
+        error_log($filter);
+        return Venta::with('cliente')
+            ->with('detalles')
+            ->with('user')
+            ->where('tipo',$request->tipo)
+            ->whereHas('cliente', function ($query) use ($filter) {
+                $query->where('local', 'like', '%'.$filter.'%')
+                    ->orWhere('titular', 'like', '%'.$filter.'%');
+            })
+            ->whereBetween('fecha',[$fechaIni,$fechaFin])
+            ->orderBy('id','desc')
+            ->paginate(100);
     }
     /**
      * Store a newly created resource in storage.
@@ -311,7 +326,7 @@ class SaleController extends Controller
 
     public function repClienteVenta(Request $request){
         return DB::SELECT("SELECT c.id,c.local,c.titular,sum(v.total) total, count(*) cantidad
-        from clientes c inner join ventas v on v.cliente_id=c.id 
+        from clientes c inner join ventas v on v.cliente_id=c.id
         where v.fecha>='$request->ini' and v.fecha<='$request->fin' and v.estado!='ANULADO' AND c.local!='' GROUP by c.id,c.local,c.titular;");
     }
 }

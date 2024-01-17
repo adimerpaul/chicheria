@@ -277,12 +277,20 @@
   <div class="col-3"><q-input  outlined v-model="fecha2" label="Fecha Final"  dense type="date" v-if="rango=='RANGO'"/></div>
   <div class="col-1" ><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'" style="width:100%"/></div>
   <div class="col-3"> <q-btn color="info" label="CONSULTAR" icon="search"  dense @click="consultaVenta(type)"/></div>
- <!-- <div class="col-3"> <q-btn color="info" label="IMPRIMIR" icon="print"  dense @click="impresion"/></div>-->
+  <div class="col-12 flex flex-center">
+    <q-pagination  v-model="pagination.page"  :max="pagination.last_page" :min="1"
+                   :total-pages="Math.ceil(pagination.rowsNumber / pagination.rowsPerPage)"
+                   @click="consultaVenta(type)"
+                   :max-pages="6"
+                   boundary-numbers
+    />
   </div>
+ <!-- <div class="col-3"> <q-btn color="info" label="IMPRIMIR" icon="print"  dense @click="impresion"/></div>-->
+</div>
 <div class="col-12">
-  <q-table title="Ventas" :rows="ventas" :columns="columnas" row-key="name" :filter="filter" :rows-per-page-options="[0,20,50,100]">
+  <q-table  v-model:pagination="pagination" @request="onRequest" title="Ventas" :rows="ventas" :columns="columnas" row-key="name" :filter="filter" :rows-per-page-options="[0]">
     <template v-slot:top-right>
-      <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+      <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -491,6 +499,21 @@ export default {
       rango:'RANGO',
       venta:{},
       type: this.$route.params.type,
+      pagination: {
+        // No longer using sort. if needed, this can now be done using the backend!
+        // sortBy: 'name',
+        // descending: false,
+        page: 1,
+        rowsPerPage: 15,
+        // When using server side pagination, QTable needs
+        // to know the "rows number" (total number of rows).
+        // Why?
+        // Because Quasar has no way of knowing what the last page
+        // will be without this information!
+        // Therefore, we now need to supply it with a "rowsNumber" ourself.
+        rowsNumber: 0,
+        last_page:0
+      },
       columnas:[
         {label:'opcion',name:'opcion',field:'opcion'},
         {label:'id',name:'id',field:'id'},
@@ -537,6 +560,10 @@ export default {
       this.sale={}
       this.productSales=[]
       this.client={label:''}
+    },
+    onRequest (props) {
+      this.datosGet(this.type,props.pagination.page)
+      // this.getUsers()
     },
     delProduct(p,id){
       console.log(p)
@@ -763,12 +790,20 @@ export default {
       if(this.rango=='DIA'){
         this.fecha2=this.fecha1
       }
-      this.$api.post('listSale',{tipo:tipo1=='detalle'?'DETALLE':'LOCAL',ini:this.fecha1,fin:this.fecha2}).then(res => {
+      this.$api.post('listSale',{
+        tipo:tipo1=='detalle'?'DETALLE':'LOCAL',ini:this.fecha1,fin:this.fecha2,
+        page:this.pagination.page,
+        filter:this.filter
+      }).then(res => {
         console.log(res.data)
-        res.data.forEach(r => {
+        this.pagination.rowsNumber=res.data.total
+        this.pagination.page=res.data.current_page
+        this.pagination.last_page=res.data.last_page
+
+        res.data.data.forEach(r => {
           r.telefono1=r.cliente.telefono
         });
-        this.ventas=res.data
+        this.ventas=res.data.data
       })
 
     },
@@ -895,6 +930,7 @@ export default {
           this.sale={}
           this.productSales=[]
           this.client={label:''}
+          this.client={label:''}
           this.dialogGarantia=false
 
     },
@@ -912,9 +948,14 @@ export default {
           myWindow.print();
           myWindow.close();
     },
-    datosGet(type){
+    datosGet(type,page=1){
       this.products = []
-      this.$api.get(`/listaproducto/${type}`).then(res => {
+      this.$api.get(`/listaproducto/${type}`,{
+        params:{
+          page:page,
+          filter:this.filter
+        }
+      }).then(res => {
         res.data.forEach(p => {
           p.cantidad=0
           this.products.push(p)

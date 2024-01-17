@@ -435,6 +435,17 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item v-if="$store.state.login.empleadoSueldo" active-class="my-menu-link" clickable exact to="/empleadoSueldo">
+          <q-item-section avatar>
+            <q-icon name="o_people" size="lg" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>EMPLEADO SUELDOS</q-item-label>
+            <q-item-label caption>
+              Control de sueldos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item v-if="$store.state.login.veralmacen" active-class="my-menu-link" clickable exact to="/almacen2">
           <q-item-section avatar>
             <q-icon name="o_store" size="lg" />
