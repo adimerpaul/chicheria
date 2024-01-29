@@ -134,8 +134,12 @@ class CompraController extends Controller
     public function consultar(Request $request)
     {
         //
-        return Compra::with('material')->with('provider')->with('logcompras')->with('recuentos')->where('material_id',$request->material_id)
-        ->whereDate('fecha','>=',$request->fecha1)->where('fecha','<=',$request->fecha2)->get();
+        return Compra::with('material')->with('provider')
+        ->with(['logcompras' => function ($query) { $query->orderBy('id', 'desc');}])
+        ->with(['recuentos' => function ($query) { $query->orderBy('id', 'desc');}])
+        ->where('material_id',$request->material_id)
+        ->whereDate('fecha','>=',$request->fecha1)
+        ->where('fecha','<=',$request->fecha2)->get();
     }
     public function consultar2(Request $request)
     {

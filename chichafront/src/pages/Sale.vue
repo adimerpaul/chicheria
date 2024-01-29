@@ -867,6 +867,7 @@ export default {
       this.printboleta=''
       this.$api.post('sale',this.sale).then(res => {
         this.printboleta=res.data
+        this.dialogGarantia=true
         this.consultaVenta(this.type)
         this.saleClear()
         //let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
@@ -882,10 +883,8 @@ export default {
           message:'Venta exitosa',
           color:'green',
           position:'top',
-
           icon:'info'
         })
-        this.dialogGarantia=true
  /*       this.$q.dialog({
           message:'Desea registrar préstamo o venta de material?',
           title:'Garantia?',

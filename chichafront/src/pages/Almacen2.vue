@@ -24,7 +24,7 @@
         >
           <template v-slot:top-right>
              <q-btn dense color="green"  label="EXCEL" @click="exportTable" />
-            
+
             <q-input outlined dense v-model="almacenFilter" debounce="300" placeholder="Buscar...">
               <template v-slot:append>
                 <q-icon name="search" class="cursor-pointer"/>
@@ -143,7 +143,7 @@
               <q-btn dense round flat color="teal" icon="o_download" v-if="$store.state.login.egresoMaterial && props.row.retiro<props.row.cantidad" @click="retirarRow(props.row)">
                 <q-tooltip>Realizar retiro</q-tooltip>
               </q-btn>
-              
+
               <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.egresoMaterial && props.row.recuentos.length>0" @click="listrecuento(props.row)">
                 <q-tooltip>Ver Retiros</q-tooltip>
               </q-btn>
@@ -555,6 +555,8 @@ export default {
         { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
       ],
       colcompra : [
+        { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
+        { name: 'provider', align: 'center', label: 'PROVEEDOR', field: row=>row.provider.razon, sortable: true },
         { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
         { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
         { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado', sortable: true },
@@ -566,8 +568,6 @@ export default {
         { name: 'saldopago', align: 'center', label: 'SALDO PAGO', field: 'saldopago', sortable: true },
         { name: 'lote', align: 'center', label: 'LOTE', field: 'lote', sortable: true },
         { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: row=>moment(row.fechaven).format('DD/MM/YYYY'), sortable: true },
-        { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
-        { name: 'provider', align: 'center', label: 'PROVEEDOR', field: row=>row.provider.razon, sortable: true },
         { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
       ],
       colpagos : [
