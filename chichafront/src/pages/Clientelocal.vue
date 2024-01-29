@@ -173,7 +173,7 @@
                         <div class="col-3 q-pa-xs"> <q-btn color="green" label="EXCEL" @click="generarExcel" />
                         </div>
                       </div>
-                      
+
           <q-table
             title="CLIENTES"
             :rows="rows"
@@ -198,7 +198,7 @@
             <template v-slot:body-cell-datos="props" >
               <q-tr :props="props" >
                 <q-td key="datos" :props="props" >
-                   <q-btn icon="description"  dense color="amber" @click="verDatos(props.row)"/>                  
+                   <q-btn icon="description"  dense color="amber" @click="verDatos(props.row)"/>
                 </q-td>
               </q-tr>
             </template>
@@ -215,8 +215,8 @@
 
             <template v-slot:body-cell-opcion="props" >
                 <q-td key="opcion" :props="props" >
-                <q-btn dense round flat color="yellow" @click="editRow(props)" icon="edit"></q-btn>
-                <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
+                <q-btn dense round flat color="yellow" @click="editRow(props.row)" icon="edit"></q-btn>
+                <q-btn dense round flat color="red" @click="delRow(props.row)" icon="delete"></q-btn>
                 </q-td>
             </template>
             <template v-slot:top-right>
@@ -226,7 +226,7 @@
                 </template>
               </q-input>
             </template>
-          </q-table> 
+          </q-table>
         </div>
 
     <q-dialog v-model="dialog_mod">

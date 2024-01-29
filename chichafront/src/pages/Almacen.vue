@@ -482,14 +482,14 @@ export default {
       colrecuento : [
 
   { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
-  { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+  { name: 'fecha', align: 'center', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
   { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
   { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
   { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
 ],
       colpagos : [
 
-  { name: 'fecha', align: 'center', label: 'FECHA', field: 'fecha', sortable: true },
+  { name: 'fecha', align: 'center', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
   { name: 'monto', align: 'center', label: 'MONTO', field: 'monto', sortable: true },
   { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
 ],
