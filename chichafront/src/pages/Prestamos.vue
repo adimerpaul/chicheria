@@ -300,7 +300,7 @@ export default {
   { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true,align:'left' },
   { name: 'fecha', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
       { name: 'fechaAnulacion', label: 'FECHA ANULACION', field: row=>moment(row.fechaAnulacion).format('DD/MM/YYYY'), sortable: true },
-        { name: 'motivoanulacion', label: 'MOTIVO ANULACION', field: row=>row.motivoAnulacion, sortable: true },
+      { name: 'motivoanulacion', label: 'MOTIVO ANULACION', field: row=>row.motivoAnulacion, sortable: true },
   { name: 'estado', label: 'ESTADO', field: 'estado', sortable: true },
   { name: 'cantidad', label: 'CANTIDAD', field: 'cantidad', sortable: true },
   { name: 'prestado', label: 'PENDIENTE', field: 'prestado', sortable: true },
