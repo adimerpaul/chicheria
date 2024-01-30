@@ -42,8 +42,8 @@
         </div>
       </q-form>
                 <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
-                  <div class="col-4"><q-select dense outlined label="Empleado" v-model="empleadopago" :options="empleados"/></div>
-            <q-btn icon="send" label="Adelanto" type="button" color="teal" @click="cargarPagos"/>
+                  <!--<div class="col-4"><q-select dense outlined label="Empleado" v-model="empleadopago" :options="empleados"/></div>
+            <q-btn icon="send" label="Adelanto" type="button" color="teal" @click="cargarPagos"/>-->
             <q-btn icon="price_change" label="Caja Chica" type="button" color="accent" @click="cajachica=true"/>
           </div>
     </div>

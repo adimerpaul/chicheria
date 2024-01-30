@@ -101,7 +101,7 @@
             </q-td>
           </template>
           <template v-slot:body-cell-saldocant="props">
-            <q-td :props="props" style="font-weight: bold; font-size: 18px;" :color="props.row.saldocant>0?'black':'red'">
+            <q-td :props="props" style="font-weight: bold; font-size: 18px;" :color="props.row.saldocant>=1?'black':'red'">
               {{ props.row.saldocant }}
             </q-td>
           </template>
