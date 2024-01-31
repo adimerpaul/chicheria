@@ -1238,6 +1238,8 @@ export default {
 
         this.pago={fecha:date.formatDate( Date.now(),'YYYY-MM-DD')}
         this.totalgeneral()
+        this.totalcaja()
+        this.checkgasto='CAJA'
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
