@@ -116,7 +116,7 @@
                   <q-input outlined dense type="text" label="observacion" v-model="pago.observacion" />
                 </div>
                 <div class="col-3" v-if="$store.state.login.user.id==1">
-                  <q-radio v-model="checkgasto" val="CAJA GENERAL" label="CAJA GENERAL" />
+                  <q-radio v-model="checkgasto" val="GASTO" label="CAJA GENERAL" />
                   <q-radio v-model="checkgasto" val="CAJA" label="CAJA CHICA" />
                 </div>
                 <div class="col-2 flex flex-center">
@@ -224,7 +224,7 @@ export default {
       dialogver:false,
       filter:'',
       pagos:false,
-      checkgasto:"GASTO",
+      checkgasto:"CAJA",
       pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       empleados:[],
       emp:{},

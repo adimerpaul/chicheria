@@ -142,6 +142,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/anularLogcompra',[\App\Http\Controllers\LogcompraController::class,'anularLogcompra']);
     Route::get('/impPagoAlmacen/{id}',[\App\Http\Controllers\LogcompraController::class,'impPagoAlmacen']);
     Route::post('/repClienteVenta',[\App\Http\Controllers\SaleController::class,'repClienteVenta']);
-    
-    
+    Route::post('/repClienteVenta2',[\App\Http\Controllers\SaleController::class,'repClienteVenta2']);
+
+
 });

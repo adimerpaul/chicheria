@@ -104,7 +104,12 @@
                   </tbody>
                 </q-markup-table>-->
                       </div>
-
+                      <div class="row">
+                        <div class="col-3 q-pa-xs"><q-input type="date" outlined dense v-model="ini" label="Fecha Ini" /></div>
+                        <div class="col-3 q-pa-xs "><q-input type="date" outlined dense v-model="fin" label="Fecha fin" /></div>
+                        <div class="col-3 q-pa-xs"> <q-btn color="green" label="EXCEL" @click="generarExcel" />
+                        </div>
+                      </div>
           <q-table
             title="CLIENTES"
             :rows="rows"
@@ -242,9 +247,12 @@
 
 import { date } from 'quasar'
 import $ from "jquery";
+import xlsx from "json-as-xlsx"
 export default {
   data(){
     return{
+      ini:date.formatDate(Date.now(),'YYYY-MM-DD'),
+      fin:date.formatDate(Date.now(),'YYYY-MM-DD'),
       tab:'cliente',
       // days:[{id :'2019/02/01'}, {id:'2019/02/10'} ],
       days:[],filter:'',
@@ -285,6 +293,32 @@ export default {
 
   },
   methods: {
+    generarExcel(){
+      this.$axios.post(process.env.API+'/repClienteVenta2',{ini:this.ini,fin:this.fin}).then(res=>{
+        console.log(res.data)
+        let datacaja = [
+          {
+            sheet: "Cliente Total Venta",
+            columns: [
+              { label: "titular", value: "titular" }, // Top level data
+              { label: "total", value: "total" }, // Top level data
+              { label: "cantidad", value: "cantidad" }, // Top level data
+            ],
+            content: res.data
+          },
+
+        ]
+
+        let settings = {
+          fileName: "VentaCliente", // Name of the resulting spreadsheet
+          extraLength: 7, // A bigger number means that columns will be wider
+          writeOptions: {}, // Style options from https://github.com/SheetJS/sheetjs#writing-options
+        }
+
+        xlsx(datacaja, settings) // Will download the excel file
+      })
+
+    },
     listado(valor){
       this.$q.loading.show();
       this.rows=[];
