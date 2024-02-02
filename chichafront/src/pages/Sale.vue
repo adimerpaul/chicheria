@@ -288,9 +288,9 @@
  <!-- <div class="col-3"> <q-btn color="info" label="IMPRIMIR" icon="print"  dense @click="impresion"/></div>-->
 </div>
 <div class="col-12">
-  <q-table  v-model:pagination="pagination" @request="onRequest" title="Ventas" :rows="ventas" :columns="columnas" row-key="name" :filter="filter" :rows-per-page-options="[0]">
+  <q-table  v-model:pagination="pagination" title="Ventas" :rows="ventas" :columns="columnas" row-key="name" :filter="filter" :rows-per-page-options="[0]">
     <template v-slot:top-right>
-      <q-input outlined dense debounce="300" v-model="filter" placeholder="Search">
+      <q-input outlined dense debounce="300" v-model="filter" placeholder="Search" @update:modelValue="consultaVenta">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -949,12 +949,7 @@ export default {
     },
     datosGet(type,page=1){
       this.products = []
-      this.$api.get(`/listaproducto/${type}`,{
-        params:{
-          page:page,
-          filter:this.filter
-        }
-      }).then(res => {
+      this.$api.get(`/listaproducto/${type}`).then(res => {
         res.data.forEach(p => {
           p.cantidad=0
           this.products.push(p)
