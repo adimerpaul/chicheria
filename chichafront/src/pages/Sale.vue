@@ -851,6 +851,7 @@ export default {
 
         }
       console.log(this.client.id)
+      this.$q.loading.show()
       this.productSales.forEach(r=>{
         r.subtotal=r.precio * r.cantidad
       })
@@ -868,6 +869,7 @@ export default {
       this.$api.post('sale',this.sale).then(res => {
         this.printboleta=res.data
         this.dialogGarantia=true
+        this.$q.loading.hide()
         this.consultaVenta(this.type)
         this.saleClear()
         //let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
