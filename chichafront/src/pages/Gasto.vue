@@ -724,11 +724,15 @@ xlsx(datacaja, settings) // Will download the excel file
         return false
       }
       this.loading=true
+
       this.cchica.glosa_id=this.glosa.id
       //console.log(this.cchica)
       //  return false
+      this.$q.loading.show()
+
       this.$axios.post(process.env.API + "/gastocaja",this.cchica).then((res) => {
                         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        this.$q.loading.hide()
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.print();
