@@ -75,8 +75,8 @@ module.exports = configure(function (ctx) {
       env: {
         API: ctx.dev
           ? 'http://localhost:8000/api'
-          // : 'http://192.168.0.8:81/api'
-          : 'https://bnaty.siscenter.org/api'
+          : 'http://192.168.0.8:81/api'
+          // : 'https://bnaty.siscenter.org/api'
       }
     },
 
