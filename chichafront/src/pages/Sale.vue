@@ -951,6 +951,7 @@ export default {
     },
     datosGet(type,page=1){
       this.products = []
+        this.$q.loading.show()
       this.$api.get(`/listaproducto/${type}`).then(res => {
         res.data.forEach(p => {
           p.cantidad=0
@@ -966,6 +967,8 @@ export default {
           this.clients.push(c)
         })
       })
+      this.$q.loading.hide()
+
     },
     filterFn (val, update) {
       if (val === '') {
