@@ -532,9 +532,9 @@ export default {
   mounted() {
     this.$watch(
       () => this.$route.params.type,
-      (toParams, previousParams) => {
-        console.log('nuevo', toParams)
-        console.log('antiguo', previousParams)
+      (toParams) => {
+       // console.log('nuevo', toParams)
+       // console.log('antiguo', previousParams)
         if (toParams == undefined) {
           return false
         }
@@ -542,15 +542,16 @@ export default {
         this.type = toParams
         //this.consultaVenta(this.type)
         //this.calcular()
+        this.datosGet(toParams)
+        this.$axios.get(process.env.API+'/listainventario').then(res=>{
+          this.inventarios=res.data
+          this.inventario=res.data[0]
+        })
+        this.consultaVenta(toParams)
+        this.calcular()
       }
     )
-    this.datosGet(this.type)
-    this.$axios.get(process.env.API+'/listainventario').then(res=>{
-      this.inventarios=res.data
-      this.inventario=res.data[0]
-    })
-    this.consultaVenta(this.type)
-    this.calcular()
+
   },
   methods: {
     cancelarGarantia(){
