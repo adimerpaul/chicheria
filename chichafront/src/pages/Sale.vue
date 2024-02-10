@@ -538,10 +538,10 @@ export default {
         if (toParams == undefined) {
           return false
         }
-        this.datosGet(toParams)
+        //this.datosGet(toParams)
         this.type = toParams
-        this.consultaVenta(this.type)
-        this.calcular()
+        //this.consultaVenta(this.type)
+        //this.calcular()
       }
     )
     this.datosGet(this.type)
