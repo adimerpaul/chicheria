@@ -35,7 +35,9 @@ class ClienteController extends Controller
     public function listacliente2($type){
         if ($type=='detalle') {
             return Cliente::whereTipocliente('2')->where('estado', 'ACTIVO')->orderBy('titular')->get();
-        }else{
+        }
+        if ($type=='local') 
+            {
             return Cliente::whereTipocliente('1')->where('estado', 'ACTIVO')->orderBy('titular')->get();
         }
 
