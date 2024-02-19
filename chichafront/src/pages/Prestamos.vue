@@ -47,6 +47,14 @@
   <q-badge class="full-width text-h5 flex flex-center" color="red" v-if="tab==2">TOTAL EN CAJA: {{totalefectivo}} Bs.</q-badge>
 
 <!--  {{cliente}}-->
+<div class="col-12 flex flex-center">
+    <q-pagination  v-model="pagination.page"  :max="pagination.last_page" :min="1"
+                   :total-pages="Math.ceil(pagination.rowsNumber / pagination.rowsPerPage)"
+                   @click="consultaVenta(type)"
+                   :max-pages="6"
+                   boundary-numbers
+    />
+  </div>
   <q-table            title="LISTA DE PRESTAMOS DETALLE"
             :rows="listadop"
             :columns="colprestamo"
