@@ -23,6 +23,27 @@ class PrestamoController extends Controller
         return Prestamo::with('cliente')->with('user')->with('inventario')->with('logprestamos')->orderBy('id','desc')->get();
     }
 
+    public function listPag(Request $request){
+        {
+            //
+
+            $page = $request->page;
+            $filter = $request->filter;
+            $tipo= $request->tipo;
+            error_log($filter);
+            return Prestamo::with("cliente")
+            ->with('user')
+            ->with('inventario')
+            ->with('logprestamos')
+            ->whereHas('cliente', function ($query) use ($filter,$tipo) {
+                $query->where('tipocliente',$tipo);
+                $query->where(function ($query2) use($filter){
+                    $query2->where('local', 'like', '%'.$filter.'%')
+                    ->orWhere('titular', 'like', '%'.$filter.'%');});
+                })
+            ->orderBy('id','desc')->paginate(100);
+        }
+    }
     public function reportecliente(){
         return DB::SELECT('select local,titular,i.id,i.nombre,sum(p.prestado) as total,tipocliente,sum(p.efectivo) as monto from prestamos p inner join clientes c on p.cliente_id=c.id inner join inventarios i on p.inventario_id = i.id where p.prestado>0 and p.estado!="ANULADO" group by local,titular,i.id,i.nombre,tipocliente');
     }

@@ -6,7 +6,7 @@
   <q-form @submit.prevent="agregar">
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select dense use-input v-if="tab=='local'" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" @filter="filterFn"/>
+      <q-select dense use-input v-if="tab==1" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" @filter="filterFn"/>
       <q-select dense use-input @filter="filterFn" v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
@@ -44,21 +44,21 @@
     </div>
   </div>
   </q-form>
-  <q-badge class="full-width text-h5 flex flex-center" color="red" v-if="tab=='cliente'">TOTAL EN CAJA: {{totalefectivo}} Bs.</q-badge>
+  <q-badge class="full-width text-h5 flex flex-center" color="red" v-if="tab==2">TOTAL EN CAJA: {{totalefectivo}} Bs.</q-badge>
 
 <!--  {{cliente}}-->
   <q-table            title="LISTA DE PRESTAMOS DETALLE"
             :rows="listadop"
             :columns="colprestamo"
             :filter="filter"
-            :pagination="pagination"
-            :rows-per-page-options="[0,20,50,100]"
+            v-model:pagination="pagination"
+            :rows-per-page-options="[0]"
             row-key="name"
             wrap-cells
   >
 
           <template v-slot:top-right>
-              <q-input outlined dense debounce="300" v-model="filter" placeholder="Buscar">
+              <q-input outlined dense debounce="300" v-model="filter" placeholder="Buscar" @update:modelValue="listadoprestamo">
                 <template v-slot:append>
                   <q-icon name="search" />
                 </template>
@@ -178,7 +178,7 @@
   </q-table>
 
   <hr>
-  <table v-if="tab=='local'">
+  <table v-if="tab==1">
     <thead><tr><th>Local</th><th>Titular</th><th>Material</th><th>Total</th> <th>Monto</th></tr></thead>
     <tbody>
       <tr v-for="r of reportepres" :key="r">
@@ -261,13 +261,12 @@ export default {
   name: "Venta",
   data(){
     return{
-      tab:'cliente',
+      tab:2,
       prestamos:[],
       cliente:'',
       inventarios:[],
       inventario:'',
       cantidades:[],
-      pagination: { rowsPerPage: 20 },
       cantidad:1,
       fisico:'',
       efectivo:0,
@@ -310,6 +309,22 @@ export default {
   { name: 'observacion', label: 'OBSERVACION', field: 'observacion' },
   { name: 'logprestamos', label: 'HISTORIAL', field: 'logprestamos' },
 ],
+
+pagination: {
+        // No longer using sort. if needed, this can now be done using the backend!
+        // sortBy: 'name',
+        // descending: false,
+        page: 1,
+        rowsPerPage: 20,
+        // When using server side pagination, QTable needs
+        // to know the "rows number" (total number of rows).
+        // Why?
+        // Because Quasar has no way of knowing what the last page
+        // will be without this information!
+        // Therefore, we now need to supply it with a "rowsNumber" ourself.
+        rowsNumber: 0,
+        last_page:0
+      },
     }
   },
   created(){
@@ -489,24 +504,27 @@ export default {
         // console.log(res.data);
         this.reportepres=[];
         res.data.forEach(element => {
-            if(this.tab=='local' && element.tipocliente=='1')
+            if(this.tab==1 && element.tipocliente==1)
               this.reportepres.push(element);
-            if(this.tab=='cliente' && element.tipocliente=='2')
+            if(this.tab==2 && element.tipocliente==2)
               this.reportepres.push(element);
         })
       })
 
     },
     listadoprestamo(){
-      this.$axios.get(process.env.API+'/prestamo').then(res=>{
-        //console.log(res.data);
+      this.$axios.post(process.env.API+'/listPag',{tipo:this.tab,page:this.pagination.page,
+        filter:this.filter}).then(res=>{
+        console.log(res.data);
+       // return false
         this.listadop=[];
-        res.data.forEach(element => {
-          //console.log(element)
-            if(this.tab=='local' && element.cliente.tipocliente=='1')
-              this.listadop.push(element);
-            if(this.tab=='cliente' && element.cliente.tipocliente=='2')
-              this.listadop.push(element);
+        this.pagination.rowsNumber=res.data.total
+        this.pagination.page=res.data.current_page
+        this.pagination.last_page=res.data.last_page
+        res.data.data.forEach(element => {
+            if(element.estado=='ANULADO')
+              element.estado='BAJA';
+            this.listadop.push(element)
         });
 
       })
@@ -586,12 +604,12 @@ export default {
       this.prestamos=[];
          console.log(res.data)
         res.data.forEach(r => {
-            if(this.tab=='local' && r.tipocliente=='1'){
+            if(this.tab==1 && r.tipocliente==1){
               r.titular=r.local
               r.label=r.titular
               this.prestamos.push(r);
             }
-            if(this.tab=='cliente' && r.tipocliente=='2'){
+            if(this.tab==2 && r.tipocliente==2){
               r.label=r.titular
               this.prestamos.push(r);
             }

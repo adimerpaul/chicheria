@@ -144,5 +144,6 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/repClienteVenta',[\App\Http\Controllers\SaleController::class,'repClienteVenta']);
     Route::post('/repClienteVenta2',[\App\Http\Controllers\SaleController::class,'repClienteVenta2']);
 
+    Route::post('/listPag',[\App\Http\Controllers\PrestamoController::class,'listPag']);
 
 });
