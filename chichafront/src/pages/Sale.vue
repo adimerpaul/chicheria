@@ -529,7 +529,7 @@ export default {
       ]
     }
   },
-  mounted() {
+  created() {
     this.$watch(
       () => this.$route.params.type,
       (toParams) => {
