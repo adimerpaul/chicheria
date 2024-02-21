@@ -41,6 +41,7 @@ class PrestamoController extends Controller
                     $query2->where('local', 'like', '%'.$filter.'%')
                     ->orWhere('titular', 'like', '%'.$filter.'%');});
                 })
+            ->orWhere('estado','like','%'.$filter.'%')
             ->orderBy('id','desc')->paginate(100);
         }
     }
