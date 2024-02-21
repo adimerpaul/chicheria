@@ -530,28 +530,40 @@ export default {
     }
   },
   created() {
+    console.log(this.type)
+
     this.$watch(
-      () => this.$route.params.type,
+      () => this.$route.params,
       (toParams) => {
+        console.log(toParams)
+        console.log(toParams)
        // console.log('nuevo', toParams)
        // console.log('antiguo', previousParams)
         if (toParams == undefined) {
           return false
         }
         //this.datosGet(toParams)
-        this.type = toParams
+        this.type = toParams.type
         //this.consultaVenta(this.type)
         //this.calcular()
-        this.datosGet(toParams)
+        this.datosGet(toParams.type)
+
+        this.consultaVenta(toParams.type)
+        this.calcular()
         this.$axios.get(process.env.API+'/listainventario').then(res=>{
           this.inventarios=res.data
           this.inventario=res.data[0]
         })
-        this.consultaVenta(toParams)
-        this.calcular()
       }
     )
+        this.datosGet(this.type)
 
+    this.consultaVenta(this.type)
+    this.calcular()
+    this.$axios.get(process.env.API+'/listainventario').then(res=>{
+      this.inventarios=res.data
+      this.inventario=res.data[0]
+    })
   },
   methods: {
     cancelarGarantia(){
