@@ -834,11 +834,13 @@ export default {
         });
         return false
       }
+      this.$q.loading.show()
 
       this.pago.compra_id=this.compra2.id
       this.pago.checktipo=this.checkgasto
       this.$api.post(process.env.API + "/logcompra",this.pago).then((res) => {
         console.log(res.data)
+      this.$q.loading.hide()
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000")
         myWindow.document.write(res.data)
         myWindow.document.close()
@@ -846,6 +848,7 @@ export default {
         myWindow.close()
         this.consultmaterial()
         this.dialogpagar=false
+
         this.$q.notify({
           color: 'green-4',
           textColor: 'white',
