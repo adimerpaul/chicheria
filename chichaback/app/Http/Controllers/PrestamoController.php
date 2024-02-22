@@ -28,9 +28,11 @@ class PrestamoController extends Controller
             //
 
             $page = $request->page;
+            $estado = $request->estado;
             $filter = $request->filter;
             $tipo= $request->tipo;
             error_log($filter);
+            if ($estado=='TODO'){
             return Prestamo::with("cliente")
             ->with('user')
             ->with('inventario')
@@ -41,7 +43,20 @@ class PrestamoController extends Controller
                     $query2->where('local', 'like', '%'.$filter.'%')
                     ->orWhere('titular', 'like', '%'.$filter.'%');});
                 })
-            ->orderBy('id','desc')->paginate(100);
+            ->orderBy('id','desc')->paginate(100);}
+            else{
+                return Prestamo::with("cliente")
+                ->with('user')
+                ->with('inventario')
+                ->with('logprestamos')
+                ->whereHas('cliente', function ($query) use ($filter,$tipo) {
+                    $query->where('tipocliente',$tipo);
+                    $query->where(function ($query2) use($filter){
+                        $query2->where('local', 'like', '%'.$filter.'%')
+                        ->orWhere('titular', 'like', '%'.$filter.'%');});
+                    })
+                ->where('estado',$estado)
+                ->orderBy('id','desc')->paginate(100);}
         }
     }
     public function reportecliente(){

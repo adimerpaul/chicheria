@@ -65,6 +65,7 @@
             row-key="name">
 
           <template v-slot:top-right>
+            <q-select v-model="estado" :options="estados" label="ESTADO" outlined dense @update:modelValue="listadoprestamo" />
               <q-input borderless dense outlined debounce="300" v-model="filter" placeholder="Buscar" @update:modelValue="listadoprestamo">
                 <template v-slot:append>
                   <q-icon name="search" />
@@ -256,6 +257,8 @@ export default {
   data(){
     return{
       tab:1,
+      estados:['TODO','EN PRESTAMO','DEVUELTO','ANULADO','VENTA'],
+      estado:'TODO',
       prestamos:[],
       cliente:'',
       inventarios:[],
@@ -943,7 +946,7 @@ export default {
 
     },
     listadoprestamo(){
-      this.$axios.post(process.env.API+'/listPag',{tipo:this.tab,page:this.pagination.page,
+      this.$axios.post(process.env.API+'/listPag',{estado:this.estado,tipo:this.tab,page:this.pagination.page,
         filter:this.filter}).then(res=>{
         console.log(res.data);
        // return false
