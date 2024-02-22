@@ -420,7 +420,7 @@
               </div>
             </div>
               <div class="col-6">
-                <q-input dense outlined type="text" v-model="pago.monto" label="Monto" step="0.01"
+                <q-input dense outlined type="number" v-model="pago.monto" label="Monto" step="0.01"
                          lazy-rules
                          :rules="[ val => val && val > 0 && val <=(compra2.subtotal - compra2.deuda) || 'ingrese otro monto']"
                 />
