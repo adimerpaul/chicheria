@@ -713,6 +713,8 @@ export default {
         })
         return false
       }
+      this.$q.loading.show()
+
       this.recuento.material_id=this.material2.id
       this.recuento.compra_id=this.comp.id
       this.recuento.tipo='RETIRAR'
@@ -723,6 +725,8 @@ export default {
         this.dialog_remove=false
         this.materialsGet()
         this.consultmaterial()
+      this.$q.loading.hide()
+
       })
     },
     principioMesYmd(){
