@@ -374,7 +374,7 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="dialoglistretiros" >
+    <q-dialog v-model="dialoglistretiros" full-width>
       <q-card>
         <q-card-section class="row items-center">
           <q-table title="RETIROS" :rows="retiros" :columns="colretiros" row-key="name" flat :rows-per-page-options="[0]" >

@@ -723,6 +723,8 @@ xlsx(datacaja, settings) // Will download the excel file
       {
         return false
       }
+      if(this.montocajachica < this.cchica.precio)
+        return false
       this.loading=true
 
       this.cchica.glosa_id=this.glosa.id
