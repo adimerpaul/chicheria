@@ -196,7 +196,7 @@
             </template>
     </q-table>
 -->
-<div class="text-h5" align="center">HISTORIAL DE GATOS DE CAJA CHICA</div>
+<div class="text-h5" align="center">HISTORIAL DE GASTOS DE CAJA CHICA</div>
 
     <table id="example2" style="width:100%" class="cell-border">
         <thead>
@@ -723,8 +723,15 @@ xlsx(datacaja, settings) // Will download the excel file
       {
         return false
       }
-      if(this.montocajachica < this.cchica.precio)
+      if(this.montocajachica < this.cchica.precio){
+        this.$q.notify({
+          color: 'red-4',
+          textColor: 'white',
+          icon: 'info',
+          message: 'No Existe suficiente en Caja Chica'
+        })
         return false
+      }
       this.loading=true
 
       this.cchica.glosa_id=this.glosa.id
@@ -751,7 +758,7 @@ xlsx(datacaja, settings) // Will download the excel file
           textColor: 'white',
           icon: 'cloud_done',
           message: 'Registrado correctamente'
-        });
+        })
       })
 
     },

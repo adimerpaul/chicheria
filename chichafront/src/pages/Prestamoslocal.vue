@@ -62,7 +62,8 @@
             v-model:pagination="pagination"
             :filter="filter"
             :rows-per-page-options="[0]"
-            row-key="name">
+            row-key="name"
+            hide-bottom>
 
           <template v-slot:top-right>
             <q-select v-model="estado" :options="estados" label="ESTADO" outlined dense @update:modelValue="listadoprestamo" />

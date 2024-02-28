@@ -63,6 +63,7 @@
             :rows-per-page-options="[0]"
             row-key="name"
             wrap-cells
+            hide-bottom
   >
 
           <template v-slot:top-right>
