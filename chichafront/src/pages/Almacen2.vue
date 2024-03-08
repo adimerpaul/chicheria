@@ -131,6 +131,11 @@
               </template>
             </q-td>
           </template>
+          <template v-slot:body-cell-observacion="props">
+            <q-td :props="props">
+               <q-btn icon="list" color="purple"  dense v-if="props.row.observacion!=NULL" @click="verObs(props.row.observacion)"/>              
+            </q-td>
+          </template>
           <template v-slot:body-cell-opcion="props" >
             <q-td key="opcion" :props="props" >
               <q-btn dense round flat color="green" icon="paid" v-if="$store.state.login.pagoalmacen && props.row.deuda<props.row.subtotal" @click="pagarcompra(props.row)">
@@ -607,6 +612,18 @@ export default {
     this.consultmaterial()
   },
   methods: {
+   verObs(cadena){
+    this.$q.dialog({
+        title: 'Observacion',
+        message: cadena
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+   },
     exportTable () {
       let datacaja = [
         {

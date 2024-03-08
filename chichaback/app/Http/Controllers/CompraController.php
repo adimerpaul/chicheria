@@ -146,8 +146,8 @@ class CompraController extends Controller
         //
         return Compra::with('material')
             ->with('provider')
-            ->with('recuentos')
-            ->with('logcompras')
+            ->with(['recuentos' => function ($query) {$query->orderBy('id', 'desc');}])
+            ->with(['logcompras'=> function ($q) {$q->orderBy('id','desc');}])
 //            ->where('material_id',$request->material_id)
             ->whereDate('fecha','>=',$request->fecha1)
             ->where('fecha','<=',$request->fecha2)
