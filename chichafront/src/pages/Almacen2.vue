@@ -133,7 +133,7 @@
           </template>
           <template v-slot:body-cell-observacion="props">
             <q-td :props="props">
-               <q-btn icon="list" color="purple"  dense v-if="props.row.observacion!=NULL" @click="verObs(props.row.observacion)"/>              
+               <q-btn icon="list" color="purple"  dense v-if="props.row.observacion!=NULL" @click="verObs(props.row.observacion)"/>
             </q-td>
           </template>
           <template v-slot:body-cell-opcion="props" >
@@ -382,7 +382,7 @@
     <q-dialog v-model="dialoglistretiros" full-width>
       <q-card>
         <q-card-section class="row items-center">
-          <q-table title="RETIROS" :rows="retiros" :columns="colretiros" row-key="name" flat :rows-per-page-options="[0]" >
+          <q-table :title="'RETIROS TOTAL: ' + totalRetiro" :rows="retiros" :columns="colretiros" row-key="name" flat :rows-per-page-options="[0]" >
             <template v-slot:body-cell-op="props" >
               <q-td key="op" :props="props" >
                 <q-btn dense round flat color="red"  icon="delete"  v-if="$store.state.login.almacenHistorialPago" @click="delrecuento(props.row)"/>
@@ -566,7 +566,7 @@ export default {
         { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
         { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado', sortable: true },
         { name: 'fecha', align: 'center', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
-        { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: 'cantidad', sortable: true },
+        { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: row=> row.cantidad+' - '+ row.tretiro, sortable: true },
         { name: 'saldocant', align: 'center', label: 'SALDO CANT', field: 'saldocant', sortable: true },
         { name: 'costo', align: 'center', label: 'COSTO', field: 'costo', sortable: true },
         { name: 'subtotal', align: 'center', label: 'SUBTOTAL', field: 'subtotal', sortable: true },
@@ -892,6 +892,7 @@ export default {
     },
     listrecuento(compra){
       this.retiros=compra.recuentos
+      console.log(this.retiros)
       this.dialoglistretiros=true
     },
     retirarRow(props) {
@@ -952,6 +953,7 @@ export default {
         res.data.forEach(r => {
           r.saldocant = r.cantidad - r.retiro
           r.saldopago = r.subtotal - r.deuda
+          r.tretiro=this.calculoRetiro(r.recuentos)
           this.comptodo.push(r)
           if(r.saldocant>0)
             this.excelcompra.push(r)
@@ -962,6 +964,13 @@ export default {
       this.$api.post(process.env.API+'/consulrecuento2',{fecha1:this.fecha3,fecha2:this.fecha4}).then(res=>{
         this.recutodo=res.data
       })
+    },
+    calculoRetiro(ret){
+      let res=0
+      ret.forEach(element => {
+        res+=parseInt(element.cantidad)
+      })
+      return res
     },
     subTotalNumber(costo,cantidad){
       if(costo==undefined || costo=='' || costo==0) return 0
@@ -1272,6 +1281,16 @@ export default {
         })
       })
   }
+  }
+  ,
+  computed:{
+    totalRetiro(){
+      let result=0
+      this.retiros.forEach(element => {
+        result+=parseInt(element.cantidad)
+      })
+      return result
+    }
   }
 }
 </script>
