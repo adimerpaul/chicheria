@@ -16,6 +16,7 @@ class Compra extends Model
         'retiro',
         'subtotal',
         'deuda',
+        'comentario',
         'observacion',
         'lote',
         'estado',

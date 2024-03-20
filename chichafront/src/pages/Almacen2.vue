@@ -131,6 +131,11 @@
               </template>
             </q-td>
           </template>
+          <template v-slot:body-cell-comentario="props">
+            <q-td :props="props">
+               <q-btn icon="list" color="indigo"  dense v-if="props.row.comentario!=NULL && $store.state.login.user.id==1" @click="verObs(props.row.comentario)"  />
+            </q-td>
+          </template>
           <template v-slot:body-cell-observacion="props">
             <q-td :props="props">
                <q-btn icon="list" color="purple"  dense v-if="props.row.observacion!=NULL" @click="verObs(props.row.observacion)"/>
@@ -307,8 +312,9 @@
                 Subtotal: {{subTotalNumber(compra.costo,compra.cantidad)}}
               </template>
             </div>
-            <div class="col-1"><q-input dense outlined  type="text" v-model="compra.lote"  label="Lote"  /></div>
+            <div class="col-2"><q-input dense outlined  type="text" v-model="compra.lote"  label="Lote"  /></div>
             <div class="col-3"><q-input dense outlined  type="date" v-model="compra.fechaven"  label="Fecha Vencimiento"  /></div>
+            <div class="col-3" v-if="$store.state.login.user.id==1"><q-input dense outlined  type="text"  v-model="compra.comentario" label="Comentario" /></div>
             <div class="col-3"><q-input dense outlined  type="text"  v-model="compra.observacion" label="Observacion" /></div>
             <div class="col-12 text-right">
               <q-btn label="Añadir" no-caps  color="green" icon="add_circle" @click="agregarcompra" v-if="compraOptions === 'create'"/>
@@ -573,6 +579,7 @@ export default {
         { name: 'saldopago', align: 'center', label: 'SALDO PAGO', field: 'saldopago', sortable: true },
         { name: 'lote', align: 'center', label: 'LOTE', field: 'lote', sortable: true },
         { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: row=>moment(row.fechaven).format('DD/MM/YYYY'), sortable: true },
+        { name: 'comentario', align: 'center', label: 'COMENTARIO', field: 'comentario', sortable: true },
         { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
       ],
       colpagos : [

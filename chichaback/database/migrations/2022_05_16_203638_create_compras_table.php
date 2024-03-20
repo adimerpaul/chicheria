@@ -25,6 +25,7 @@ class CreateComprasTable extends Migration
 //            $table->string('tipo');
             $table->date('fechaven')->nullable();
             $table->string('estado')->nullable();
+            $table->string('comentario')->nullable();
             $table->string('observacion')->nullable();
             $table->unsignedBigInteger('material_id');
             $table->foreign('material_id')->references('id')->on('materials');

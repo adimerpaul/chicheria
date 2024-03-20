@@ -54,6 +54,7 @@ class CompraController extends Controller
         $compra->subtotal=$r['subtotal'];
         $compra->deuda=0;
         $compra->fechaven=$r['fechaven'];
+        $compra->comentario=$r['comentario'];
         $compra->observacion=$r['observacion'];
         $compra->lote=$r['lote'];
         $compra->material_id=$r['material_id'];
@@ -97,6 +98,7 @@ class CompraController extends Controller
             $compra->subtotal=$r['subtotal']==null?0:$r['subtotal'];
             $compra->deuda=0;
             $compra->fechaven=$r['fechaven'];
+            $compra->comentario=$r['comentario'];
             $compra->observacion=$r['observacion'];
             $compra->lote=$r['lote'];
             $compra->material_id=$r['material_id'];
@@ -178,6 +180,7 @@ class CompraController extends Controller
         $compra->costo=$request->costo;
         $compra->subtotal=$request->costo*$request->cantidad;
         $compra->fechaven=$request->fechaven;
+        $compra->comentario=$request->comentario;
         $compra->observacion=$request->observacion;
         $compra->lote=$request->lote;
         $compra->material_id=$request->material_id;
