@@ -21,7 +21,7 @@
     </div>
 
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input dense outlined label="Efectivo" v-model="efectivo" type="number"/>
+      <q-input dense outlined label="Efectivo" v-model="efectivo" type="number" step="0.01"/>
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
       <q-input dense outlined label="Fisico" v-model="fisico"  style="text-transform: uppercase"/>
