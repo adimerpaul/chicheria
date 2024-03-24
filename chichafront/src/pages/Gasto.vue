@@ -2486,6 +2486,7 @@ xlsx(datacaja, settings) // Will download the excel file
       }
        //console.log(this.pago)
       // return false
+      this.$q.loading.show()
 
       this.$axios.post(process.env.API+'/sueldo',this.pago).then(res=>{
         //console.log(res.data)
@@ -2496,12 +2497,14 @@ xlsx(datacaja, settings) // Will download the excel file
           let myWindow = window.open("", "Imprimir", "width=1000,height=1000")
         myWindow.document.write(res.data)
         myWindow.document.close()
-        myWindow.print()
+      myWindow.print()
         myWindow.close()
         this.pagosval()
         this.misgastos()
           this.totalcaja()
           this.totalgeneral()
+        this.$q.loading.hide()
+
         this.pagos=false
         this.checkgasto='CAJA'
         this.pago.monto=0
