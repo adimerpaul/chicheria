@@ -12,11 +12,11 @@ use Illuminate\Http\Request;
 
 class CompraController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function observacionAdmin(Request $request){
+        $compra=Compra::find($request->id);
+        $compra->observacionAdmin=$request->observacionAdmin;
+        $compra->save();
+    }
     public function index()
     {
         //

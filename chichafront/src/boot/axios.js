@@ -32,7 +32,7 @@ export default boot(({ app, router, store }) => {
       // console.error('aas')
       store.commit('login/salir')
       localStorage.removeItem('tokenchi')
-
+      localStorage.removeItem('userchi')
     })
   }
 

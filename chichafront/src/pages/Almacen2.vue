@@ -133,12 +133,12 @@
           </template>
           <template v-slot:body-cell-comentario="props">
             <q-td :props="props">
-               <q-btn icon="list" color="indigo"  dense v-if="props.row.comentario!=NULL && $store.state.login.user.id==1" @click="verObs(props.row.comentario)"  />
+               <q-btn icon="list" color="indigo"  dense v-if="props.row.comentario!=null && $store.state.login.user.id==1" @click="verObs(props.row.comentario)"  />
             </q-td>
           </template>
           <template v-slot:body-cell-observacion="props">
             <q-td :props="props">
-               <q-btn icon="list" color="purple"  dense v-if="props.row.observacion!=NULL" @click="verObs(props.row.observacion)"/>
+               <q-btn icon="list" color="purple"  dense v-if="props.row.observacion!=null" @click="verObs(props.row.observacion)"/>
             </q-td>
           </template>
           <template v-slot:body-cell-opcion="props" >
@@ -162,6 +162,9 @@
               </q-btn>
               <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen && props.row.estado=='POR PAGAR'" @click="delcompra(props.row)">
                 <q-tooltip>Eliminar</q-tooltip>
+              </q-btn>
+              <q-btn dense round flat color="indigo"  icon="info" v-if="$store.state.login.user.id==1" @click="comentarioAdmin(props.row)">
+                <q-tooltip>Comentario admin</q-tooltip>
               </q-btn>
             </q-td>
           </template>
@@ -566,21 +569,6 @@ export default {
         { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
       ],
       colcompra : [
-        { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
-        { name: 'provider', align: 'center', label: 'PROVEEDOR', field: row=>row.provider.razon, sortable: true },
-        { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
-        { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
-        { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado', sortable: true },
-        { name: 'fecha', align: 'center', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
-        { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: row=> row.cantidad+' - '+ row.tretiro, sortable: true },
-        { name: 'saldocant', align: 'center', label: 'SALDO CANT', field: 'saldocant', sortable: true },
-        { name: 'costo', align: 'center', label: 'COSTO', field: 'costo', sortable: true },
-        { name: 'subtotal', align: 'center', label: 'SUBTOTAL', field: 'subtotal', sortable: true },
-        { name: 'saldopago', align: 'center', label: 'SALDO PAGO', field: 'saldopago', sortable: true },
-        { name: 'lote', align: 'center', label: 'LOTE', field: 'lote', sortable: true },
-        { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: row=>moment(row.fechaven).format('DD/MM/YYYY'), sortable: true },
-        { name: 'comentario', align: 'center', label: 'COMENTARIO', field: 'comentario', sortable: true },
-        { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true },
       ],
       colpagos : [
 
@@ -613,6 +601,28 @@ export default {
     }
   },
   created() {
+    const user = JSON.parse(localStorage.getItem('userchi'))
+    // console.log(user)
+    this.colcompra = [
+      { name: 'material', align: 'center', label: 'MATERIAL', field: row=>row.material.nombre, sortable: true },
+      { name: 'provider', align: 'center', label: 'PROVEEDOR', field: row=>row.provider.razon, sortable: true },
+      { name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true },
+      { name: 'opcion', label: 'OPCIONES', field: 'opcion' },
+      { name: 'estado', align: 'center', label: 'ESTADO', field: 'estado', sortable: true },
+      { name: 'fecha', align: 'center', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
+      { name: 'cantidad', align: 'center', label: 'CANTIDAD', field: row=> row.cantidad+' - '+ row.tretiro, sortable: true },
+      { name: 'saldocant', align: 'center', label: 'SALDO CANT', field: 'saldocant', sortable: true },
+      { name: 'costo', align: 'center', label: 'COSTO', field: 'costo', sortable: true },
+      { name: 'subtotal', align: 'center', label: 'SUBTOTAL', field: 'subtotal', sortable: true },
+      { name: 'saldopago', align: 'center', label: 'SALDO PAGO', field: 'saldopago', sortable: true },
+      { name: 'lote', align: 'center', label: 'LOTE', field: 'lote', sortable: true },
+      { name: 'fechaven', align: 'center', label: 'FECHA VEN', field: row=>moment(row.fechaven).format('DD/MM/YYYY'), sortable: true },
+      { name: 'comentario', align: 'center', label: 'COMENTARIO', field: 'comentario', sortable: true },
+      { name: 'observacion', align: 'center', label: 'OBSERVACION', field: 'observacion', sortable: true }
+    ]
+    if (user.id==1){
+      this.colcompra.push({ name: 'observacionAdmin', align: 'center', label: 'OBSERVACION ADMIN', field: 'observacionAdmin', sortable: true })
+    }
     this.providersGet()
     this.materialsGet()
     // this.fecha3=this.principioMesYmd()
@@ -907,6 +917,30 @@ export default {
       this.material2=props.material
       this.comp=props
       this.dialog_remove=true
+    },
+    comentarioAdmin(compra){
+      this.$q.dialog({
+        title: 'Observacion Admin',
+        // message: compra.observacionAdmin,
+        prompt: {
+          model: compra.observacionAdmin,
+          type: 'text',
+        }
+      }).onOk((data) => {
+        this.$api.post(process.env.API+'/observacionAdmin',{
+          id:compra.id,
+          observacionAdmin:data
+        }).then(res=>{
+          this.materialsGet()
+          this.consultmaterial()
+          this.$q.notify({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'info',
+            message: 'modificado '
+          })
+        })
+      })
     },
     delcompra(compra){
       //console.log(compra)
