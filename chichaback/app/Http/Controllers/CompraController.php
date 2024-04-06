@@ -9,6 +9,7 @@ use App\Models\Loggeneral;
 use App\Models\Logcompra;
 use App\Models\Recuento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CompraController extends Controller
 {
@@ -84,45 +85,52 @@ class CompraController extends Controller
     }
     public function compra2(Request $request)
     {
-        //        return $request;
-        foreach ($request->compras as $r) {
-            error_log(json_encode($r));
-            $material=Material::find($r['material_id']);
-            $material->stock=$material->stock + $r['cantidad'];
-            $material->save();
-            $compra=new Compra;
-            $compra->fecha=date('Y-m-d');
-            $compra->hora=date('H:i:s');
-            $compra->cantidad=$r['cantidad'];
-            $compra->costo=$r['costo']==null?0:$r['costo'];
-            $compra->subtotal=$r['subtotal']==null?0:$r['subtotal'];
-            $compra->deuda=0;
-            $compra->fechaven=$r['fechaven'];
-            $compra->comentario=$r['comentario'];
-            $compra->observacion=$r['observacion'];
-            $compra->lote=$r['lote'];
-            $compra->material_id=$r['material_id'];
-            $compra->provider_id=$r['provider_id'];
-            $compra->user_id=$request->user_id;
-            $compra->estado='POR PAGAR';
-            $compra->save();
+        try {
+            DB::beginTransaction();
+            //        return $request;
+            foreach ($request->compras as $r) {
+                error_log(json_encode($r));
+                $material=Material::find($r['material_id']);
+                $material->stock=$material->stock + $r['cantidad'];
+                $material->save();
+                $compra=new Compra;
+                $compra->fecha=date('Y-m-d');
+                $compra->hora=date('H:i:s');
+                $compra->cantidad=$r['cantidad'];
+                $compra->costo=$r['costo']==null?0:$r['costo'];
+                $compra->subtotal=$r['subtotal']==null?0:$r['subtotal'];
+                $compra->deuda=0;
+                $compra->fechaven=$r['fechaven'];
+                $compra->comentario=isset($r['comentario'])?$r['comentario']:'';
+                $compra->observacion=$r['observacion'];
+                $compra->lote=$r['lote'];
+                $compra->material_id=$r['material_id'];
+                $compra->provider_id=isset($r['provider_id'])?$r['provider_id']:$request->provider_id;
+                $compra->user_id=$request->user_id;
+                $compra->estado='POR PAGAR';
+                $compra->save();
 
-            /*$general=General::find(1);
-            $general->monto=$general->monto - $compra->subtotal;
-            $general->save();
+                /*$general=General::find(1);
+                $general->monto=$general->monto - $compra->subtotal;
+                $general->save();
 
-            $loggeneral= new Loggeneral;
-            $loggeneral->numero=$compra->id;
-            $loggeneral->monto=$compra->subtotal;
-            $loggeneral->detalle='COMPRA ALMACEN';
-            $loggeneral->motivo='';
-            $loggeneral->tipo='EGRESO';
-            $loggeneral->fecha=$compra->fecha;
-            $loggeneral->hora=date("H:i:s");
-            $loggeneral->glosa_id=null;
-            $loggeneral->user_id= $compra->user_id;
-            $loggeneral->save();*/
+                $loggeneral= new Loggeneral;
+                $loggeneral->numero=$compra->id;
+                $loggeneral->monto=$compra->subtotal;
+                $loggeneral->detalle='COMPRA ALMACEN';
+                $loggeneral->motivo='';
+                $loggeneral->tipo='EGRESO';
+                $loggeneral->fecha=$compra->fecha;
+                $loggeneral->hora=date("H:i:s");
+                $loggeneral->glosa_id=null;
+                $loggeneral->user_id= $compra->user_id;
+                $loggeneral->save();*/
 
+            }
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
     }

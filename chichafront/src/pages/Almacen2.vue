@@ -544,8 +544,9 @@ export default {
       materials: [],
       material: '',
       dialog_add: false,
-      fecha3:moment().subtract(365, 'days').format('YYYY-MM-DD'),
-      fecha4:date.formatDate( Date.now(),'YYYY-MM-DD'),
+      //inicio de anio
+      fecha3:moment().startOf('year').format('YYYY-MM-DD'),
+      fecha4:moment().endOf('year').format('YYYY-MM-DD'),
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
       unidades: ['Kilogramos', 'Litros', 'Unidad', 'Metros', 'Metros Cuadrados', 'Metros Cubicos', 'Caja', 'Bolsa', 'Paquete','Quintal','Lata', 'Otro'],
@@ -1039,6 +1040,15 @@ export default {
       this.compra.material_id=this.material.id
       this.compra.subtotal=parseFloat(this.compra.cantidad) * parseFloat(this.compra.costo)
       this.compra.material=this.material.nombre
+      if (this.provider.id== undefined || this.provider.id=='' || this.provider.id==0){
+        this.$q.notify({
+          color: 'red-4',
+          textColor: 'white',
+          icon: 'info',
+          message: 'Debe seleccionar proveedor'
+        });
+        return false
+      }
       this.compra.provider_id=this.provider.id
       this.compras.push(this.compra)
       this.compra={
