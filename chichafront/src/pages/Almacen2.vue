@@ -544,7 +544,7 @@ export default {
       materials: [],
       material: '',
       dialog_add: false,
-      fecha3:moment().subtract(30, 'days').format('YYYY-MM-DD'),
+      fecha3:moment().subtract(365, 'days').format('YYYY-MM-DD'),
       fecha4:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha1:date.formatDate( Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate( Date.now(),'YYYY-MM-DD'),
