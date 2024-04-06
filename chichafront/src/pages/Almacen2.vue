@@ -1093,6 +1093,7 @@ export default {
           //console.log(res.data)
           this.dialog_add=false
           this.materialsGet();
+          this.consultmaterial();
           this.loading=false
         })
         ///////al modificar
