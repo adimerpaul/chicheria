@@ -1038,6 +1038,7 @@ export default {
       if(this.compra.observacion==undefined || this.compra.observacion=='') this.compra.observacion=''
       if(this.compra.lote==undefined || this.compra.lote=='') this.compra.lote=''
       this.compra.material_id=this.material.id
+      this.compra.costo=this.compra.costo=='' || this.compra.costo==undefined?0:this.compra.costo
       this.compra.subtotal=parseFloat(this.compra.cantidad) * parseFloat(this.compra.costo)
       this.compra.material=this.material.nombre
       if (this.provider.id== undefined || this.provider.id=='' || this.provider.id==0){
