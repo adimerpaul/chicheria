@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
       <q-select dense use-input v-if="tab==1" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" @filter="filterFn"/>
-      <q-select dense use-input @filter="filterFn" v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" option-label="titular"/>
+      <q-select dense use-input @filter="filterFn" v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" />
     </div>
     <div class="col-12 col-sm-3 q-pa-xs">
       <q-select dense outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre" @update:model-value="calcular"/>
@@ -471,7 +471,7 @@ pagination: {
       }
       update(() => {
         const needle = val.toLowerCase()
-        this.prestamos = this.prestamos.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+        this.prestamos = this.options.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
       })
     },
     modificar(){
@@ -618,11 +618,11 @@ pagination: {
         res.data.forEach(r => {
             if(this.tab==1 && r.tipocliente==1){
               r.titular=r.local
-              r.label=r.titular
+              r.label=r.ci+ ' ' +r.titular
               this.prestamos.push(r);
             }
             if(this.tab==2 && r.tipocliente==2){
-              r.label=r.titular
+              r.label=r.ci+ ' ' +r.titular
               this.prestamos.push(r);
             }
         });
@@ -636,7 +636,10 @@ pagination: {
       this.$q.loading.show()
       this.$axios.get(process.env.API+'/cliente').then(res=>{
         // console.log(res.data)
-        this.prestamos=res.data;
+        this.prestamos=[];
+        res.data.forEach(r => {
+            r.label=r.ci+' '+r.titular
+        });
         this.$q.loading.hide();
         this.cliente=this.prestamos[0];
       })

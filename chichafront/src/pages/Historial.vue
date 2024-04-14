@@ -93,6 +93,7 @@
                       <th>Tipo cliente</th>
                       <th>Estado</th>
                       <th>Usuario</th>
+                      <th>Observacion</th>
                       <th>Opcion</th>
                     </tr>
                     </thead>
@@ -114,6 +115,7 @@
                         <q-badge :color="v.estado=='CANCELADO'?'positive':'negative'">{{ v.estado }}</q-badge>
                       </td>
                       <td>{{v.user}}</td>
+                      <td>{{v.observacion}}</td>
                       <td>
                         <q-btn icon="segment" color="green"  @click="listpago(v)" dense ><q-tooltip>Listado Pago</q-tooltip> </q-btn>
                         <q-btn icon="shopping_cart" color="accent"  @click="venta=v; modalDialog=true;" dense><q-tooltip>Detalle Venta</q-tooltip></q-btn>
@@ -283,6 +285,7 @@ export default {
         {name:'tipocliente',label:'Tipo cliente',field:'tipocliente'},
         {name:'estado',label:'Estado',field:'estado'},
         {name:'user',label:'Usuario',field:'user'},
+        {name:'observacion',label:'Obs',field:'observacion'},
         {name:'opcion',label:'Opcion',field:'opcion'},
       ],
             columns3:[

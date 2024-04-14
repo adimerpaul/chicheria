@@ -74,6 +74,7 @@ class SueldoController extends Controller
             $log->fecha=date('Y-m-d');
             $log->hora=date('H:i:s');
             $log->user_id=$request->user()->id;
+            $log->sueldo_id=$sueldo->id;
             $log->save();
         }}
         else{
@@ -104,6 +105,7 @@ class SueldoController extends Controller
             $loggeneral->hora=date("H:i:s");
             $loggeneral->glosa_id=$glosa->id;
             $loggeneral->user_id=$request->user()->id;
+            $loggeneral->sueldo_id=$sueldo->id;
             $loggeneral->save();
 
         }
@@ -216,17 +218,8 @@ class SueldoController extends Controller
                     ->where('glosa',$sueldo->tipo)
                     ->first();
                 $gasto->delete();
-                $loggeneral=new Loggeneral();
-                $loggeneral->numero=$sueldo->id;
-                $loggeneral->monto=$sueldo->monto;
-                $loggeneral->detalle='GASTO';
-                $loggeneral->motivo=$sueldo->observacion.', '.$request->motivo;
-                $loggeneral->tipo='INGRESO';
-                $loggeneral->fecha=date('Y-m-d');
-                $loggeneral->hora=date('H:i:s');
-                $loggeneral->glosa_id=null;
-                $loggeneral->user_id=$request->user()->id;
-                $loggeneral->save();
+                $loggeneral=Loggeneral::where('tipo','EGRESO')->where('sueldo_id',$sueldo->id)->first();
+                $loggeneral->delete();
 
                 $general=General::find(1);
                 $general->monto=$general->monto + $sueldo->monto;
@@ -242,15 +235,8 @@ class SueldoController extends Controller
             $caja->monto= floatval($caja->monto) + floatval($sueldo->monto);
             $caja->save();
 
-            $log=new Logcaja ();
-            $log->monto=$sueldo->monto;
-            $log->motivo=$sueldo->observacion.', '.$request->motivo;
-            $log->tipo='AGREGA';
-            $log->glosa_id=null;
-            $log->fecha=date('Y-m-d');
-            $log->hora=date('H:i:s');
-            $log->user_id=$request->user()->id;
-            $log->save();
+            $log=Logcaja::where('tipo','GASTO')->where('sueldo_id',$sueldo->id)->first();
+            $log->delete();
         }
         }
         $sueldo->update(['monto'=>0,'tipo'=>'ANULADO','observacion'=>$sueldo->observacion.', '.$request->motivo]);

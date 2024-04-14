@@ -99,6 +99,7 @@
                     <th>Tipo cliente</th>
                     <th>Estado</th>
                     <th>Usuario</th>
+                    <th>Observacion</th>
                     <th>Opcion</th>
                   </tr>
                   </thead>
@@ -119,6 +120,7 @@
                       <q-badge :color="v.estado=='CANCELADO'?'positive':'negative'">{{ v.estado }}</q-badge>
                     </td>
                     <td>{{v.user}}</td>
+                    <td>{{v.observacion}}</td>
                     <td>
                       <q-btn icon="segment" color="green"  @click="listpago(v)" dense ><q-tooltip>Listado Pago</q-tooltip></q-btn>
                      <!-- <q-btn icon="monetization_on" color="amber" v-if="v.estado=='POR COBRAR'" @click="pago(v)" dense />-->
