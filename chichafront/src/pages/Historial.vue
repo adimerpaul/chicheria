@@ -115,7 +115,7 @@
                         <q-badge :color="v.estado=='CANCELADO'?'positive':'negative'">{{ v.estado }}</q-badge>
                       </td>
                       <td>{{v.user}}</td>
-                      <td>{{v.observacion}}</td>
+                      <td> <q-btn dense color="purple"  icon="list" @click="verObs(v.observacion)" v-if="v.observacion!=''"/></td>
                       <td>
                         <q-btn icon="segment" color="green"  @click="listpago(v)" dense ><q-tooltip>Listado Pago</q-tooltip> </q-btn>
                         <q-btn icon="shopping_cart" color="accent"  @click="venta=v; modalDialog=true;" dense><q-tooltip>Detalle Venta</q-tooltip></q-btn>
@@ -561,6 +561,18 @@ export default {
     })
   },
   methods:{
+      verObs(texto){
+        this.$q.dialog({
+        title: 'Observacion',
+        message: texto
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+      },
       onPago(){
       this.$axios.post(process.env.API+'/pago',this.regpago).then(res=>{
           this.regpago={};

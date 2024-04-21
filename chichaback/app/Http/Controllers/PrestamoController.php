@@ -140,11 +140,13 @@ class PrestamoController extends Controller
      */
     public function anularprestamo(Request $request){
         $prestamo=Prestamo::find($request->id);
-        $prestamo->user_id=$request->user()->id;
+
+        //$prestamo->user_id=$request->user()->id;
 //            $prestamo->fecha=date('Y-m-d');
             $prestamo->fechaAnulacion=date('Y-m-d');
             $prestamo->motivoAnulacion=strtoupper($request->motivo);
             $prestamo->estado='ANULADO';
+
         if($prestamo->efectivo>0 && $prestamo->efectivo!=null && $prestamo->tipo!='VENTA'){
             $general=General::find(1);
             $general->monto=$general->monto + $prestamo->efectivo;
@@ -368,15 +370,15 @@ public function reporteventa(Request $request){
         .leyenda{text-align:justify;
         size-font 6px;}
         </style>
+        <div style="padding:5px">
         <table style="width: 100%;">
         <tr><td>N </td><td>'.$garantia->id.'</td></tr>
+        <tr><td>Fecha: </td><td>'.date('d/m/Y',strtotime($garantia->fecha)).'</td></tr>
         <tr><td>Nombre:</td><td> '.$garantia->cliente->titular.'</td></tr>
-        <tr><td>Telefono:</td><td> '.$garantia->cliente->telefono.'</td></tr>
         <tr><td>Efectivo: </td><td>'.$garantia->efectivo.'</td></tr>
         <tr><td>Fisico: </td><td>'.$garantia->fisico.'</td></tr>
         <tr><td>Detalle: </td><td>'.$garantia->inventario->nombre.'</td></tr>
         <tr><td>Cantidad: </td><td>'.$garantia->cantidad.'</td></tr>
-        <tr><td>Fecha: </td><td>'.date('d/m/Y',strtotime($garantia->fecha)).'</td></tr>
         <tr><td>Usuario: </td><td>'.$garantia->user->name.'</td></tr>
 
         </table>
@@ -388,8 +390,8 @@ public function reporteventa(Request $request){
         $cadena.='<br>
         <br>
         <div class="textc"><b>OJO</b></div>
-        <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* HORARIO DE DEVOLUCION DE GARANTIA DE LUNES - DOMINGO, EXCEPTO EL DIA MIERCOLES DE 9:00 AM A 17:00 PM<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJA</b></div>
-
+        <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJAp<br>* HORARIO DE DEVOLUCION DE GARANTIA DE LUNES - DOMINGO, EXCEPTO EL DIA MIERCOLES DE 9:00 AM A 17:00 PM</b></div>
+            </div>
         ';}
         return $cadena;
 

@@ -85,8 +85,8 @@
             </template>
               <template v-slot:body-cell-estado="props" >
                 <q-td key="estado" :props="props">
-                  <q-badge color="negative" v-if="props.row.estado=='ANULADO'">
-                    {{ props.row.estado }}
+                  <q-badge color="red" v-if="props.row.estado=='ANULADO'">
+                   BAJA
                   </q-badge>
                   <q-badge color="amber" v-if="props.row.estado=='DEVUELTO'">
                     {{ props.row.estado }}
@@ -955,8 +955,7 @@ export default {
         this.pagination.page=res.data.current_page
         this.pagination.last_page=res.data.last_page
         res.data.data.forEach(element => {
-            if(element.estado=='ANULADO')
-              element.estado='BAJA';
+
             this.listadop.push(element)
         });
 
@@ -969,11 +968,14 @@ export default {
     },
     onEliminar(p){
       this.$q.dialog({
-          title: 'Eliminar',
-          message: 'Seguro de eliminar?',
-          cancel: true,
-          persistent: true
-        }).onOk(() => {
+        title: 'Dar de Baja',
+        message: 'Motivo de Baja',
+        prompt: {
+          model: '',
+          type: 'textarea'
+        }
+      }).onOk((data) => {
+          p.motivo=data;
         this.$axios.post(process.env.API+'/anularprestamo',p).then(res=>{
           // this.totalefectivo=res.data[0].total;
           this.cajaprestamo()
