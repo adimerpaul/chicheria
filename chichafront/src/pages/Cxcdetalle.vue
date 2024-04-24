@@ -21,6 +21,7 @@
                   <tr>
                     <!--                      <th>Nro</th>-->
                     <th class="hidden">FechaOrd</th>
+                    <th>Id</th>
                     <th>Fecha</th>
                     <th>Local</th>
                     <th>Titular</th>
@@ -37,6 +38,7 @@
                   <tr v-for="v in ventas" :key="v.id">
                     <!--                      <td>{{v.id}}</td>-->
                     <td class="hidden">{{v.fechaord}}</td>
+                    <td>{{v.id}}</td>
                     <td>{{v.fecha}}</td>
                     <td>{{v.local}}</td>
                     <td>{{v.titular}}</td>
@@ -478,6 +480,7 @@ export default {
       },
       onPago(){
         this.loading=true
+        this.$q.loading.show()
       this.$axios.post(process.env.API+'/pago',this.regpago).then(res=>{
          console.log(res.data)
           this.regpago={fecha:date.formatDate(new Date(),'YYYY-MM-DD')}
@@ -496,6 +499,7 @@ export default {
           myWindow2.close();
           this.regpago={fecha:date.formatDate(new Date(),'YYYY-MM-DD')}
           this.misventas();
+          this.$q.loading.hide()
           this.loading=false
                   this.$q.notify({
           message:'Registro correcto',

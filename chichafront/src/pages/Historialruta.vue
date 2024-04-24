@@ -90,6 +90,7 @@
                   <thead>
                   <tr>
                     <!--                      <th>Nro</th>-->
+                    <th>Id</th>
                     <th>Fecha</th>
                     <th>Local</th>
                     <th>Titular</th>
@@ -106,6 +107,7 @@
                   <tbody>
                   <tr v-for="v in ventas" :key="v.id">
                     <!--                      <td>{{v.id}}</td>-->
+                    <td>{{v.id}}</td>
                     <td>{{v.fecha}}</td>
                     <td>{{v.local}}</td>
                     <td>{{v.titular}}</td>

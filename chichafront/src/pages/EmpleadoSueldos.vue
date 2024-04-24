@@ -614,6 +614,8 @@ export default {
         cancel: true,
         persistent: false
       }).onOk((data) => {
+        this.$q.loading.show()
+
         this.$axios.delete(process.env.API+'/sueldo/'+sueldo.id,{
           params:{
             motivo:data
@@ -625,7 +627,10 @@ export default {
             color:'green'
           })
           this.pagos=false
+          this.pagosval(this.empleado2)
           this.misempleados()
+          this.$q.loading.hide()
+
       })
       }).onOk(() => {
         // console.log('>>>> second OK catcher')
@@ -1232,14 +1237,18 @@ export default {
 
       // console.log(this.pago)
       // return false
-
+      this.$q.loading.show()
+      
       this.$axios.post(process.env.API+'/sueldo',this.pago).then(res=>{
         //this.empleadohistorial=res.data
 
         this.pago={fecha:date.formatDate( Date.now(),'YYYY-MM-DD')}
         this.totalgeneral()
         this.totalcaja()
+        this.pagosval(this.empleado2)
         this.checkgasto='CAJA'
+        this.$q.loading.hide()
+
         let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
