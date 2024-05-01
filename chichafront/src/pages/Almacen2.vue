@@ -823,6 +823,10 @@ export default {
             y=0
           }
         })*/
+        let fec1=mc.fecha1
+        let fec2=mc.fecha2
+        this.fecha1=date.formatDate( Date.now(),'YYYY-MM-DD')
+        this.fecha2=date.formatDate( Date.now(),'YYYY-MM-DD')
         let cadena="<style>\
         *{font-size:10px}\
         table{width:100%;border-collapse: collapse;}\
@@ -830,7 +834,7 @@ export default {
         .titulo1{text-align:center; font-weight: bold;}\
         </style>\
         <div><img src='logo.png' style='width:150px; height:75px;'></div>\
-        <div class='titulo1'>INVENTARIO MATERIAL :  "+ mc.material2.nombre +"<br>DE "+moment(mc.fecha1).format('DD/MM/YYYY')+' AL '+moment(mc.fecha2).format('DD/MM/YYYY')+"</div><br>\
+        <div class='titulo1'>INVENTARIO MATERIAL :  "+ mc.material2.nombre +"<br>DE "+moment(fec1).format('DD/MM/YYYY')+' AL '+moment(fec2).format('DD/MM/YYYY')+"</div><br>\
         <table>\
         <tr><th>TIPO</th><th>PROVEEDOR</th><th>MATERIAL</th><th>FECHA</th><th>COSTO</th><th>CANTIDAD</th><th>FECHA VEN</th><th>OBSERVACION</th></tr>"
         res.data.forEach(r=>{
