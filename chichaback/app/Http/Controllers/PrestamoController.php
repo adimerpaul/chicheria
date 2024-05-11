@@ -126,7 +126,9 @@ class PrestamoController extends Controller
          $inv=Inventario::find($request->inventario_id);
          $inv->cantidad=$inv->cantidad - $request->cantidad;
          $inv->save();
-         return $this->impresion($prestamo->id);}
+
+         return  Prestamo::with('user')->with('cliente')->with('inventario')->where('id',$prestamo->id)->first();
+        }
          else
             return response()->json(['error' => 'No se cuenta con la cantidad'], 404);
 //        return $prestamo->
@@ -380,8 +382,11 @@ public function reporteventa(Request $request){
         <tr><td>Detalle: </td><td>'.$garantia->inventario->nombre.'</td></tr>
         <tr><td>Cantidad: </td><td>'.$garantia->cantidad.'</td></tr>
         <tr><td>Usuario: </td><td>'.$garantia->user->name.'</td></tr>
-
         </table>
+        <hr style=" border: 4px dashed;">
+        <div><b>FECHA</b>'.date('d/m/Y',strtotime($garantia->fecha)).'</div>
+        <div><b>NOMBRE</b>'.$garantia->cliente->titular.'</div>
+        <div><b>DETALLE</b> '.$garantia->cantidad.' - '.$garantia->inventario->nombre.'</div>
         <br>
         <br>
         <br>
@@ -390,7 +395,7 @@ public function reporteventa(Request $request){
         $cadena.='<br>
         <br>
         <div class="textc"><b>OJO</b></div>
-        <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJAp<br>* HORARIO DE DEVOLUCION DE GARANTIA DE LUNES - DOMINGO, EXCEPTO EL DIA MIERCOLES DE 9:00 AM A 17:00 PM</b></div>
+        <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJA<br>* HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO EXCEPTO EL DIA MIERCOLES </b></div>
             </div>
         ';}
         return $cadena;

@@ -3,47 +3,83 @@
   <div class="col-12">
     <div class="text-subtitle1 bg-blue-9 text-center text-white">PRESTAMOS DETALLE</div>
   </div>
-  <q-form @submit.prevent="agregar">
   <div class="row">
-    <div class="col-12 col-sm-3 q-pa-xs">
+    <div class="col-md-4 col-sm-3 q-pa-xs">
       <q-select dense use-input v-if="tab==1" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" @filter="filterFn"/>
       <q-select dense use-input @filter="filterFn" v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" />
     </div>
-    <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select dense outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre" @update:model-value="calcular"/>
-    </div>
-    <div class="col-12 col-sm-3 q-pa-xs">
-      <!--<q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades" @update:model-value="calcular"/>-->
-      <q-input dense outlined label="Cantidad"  v-model="cantidad" type="number" @update:model-value="calcular" :rules="[val => val>0 || 'Ingrese valor']"/>
-    </div>
-        <div class="col-12 col-sm-3 q-pa-xs">
+    <div class="col-md-4 col-sm-3 q-pa-xs">
       <q-input dense outlined label="Fecha" v-model="fecha" type="date"/>
     </div>
-    <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input dense outlined label="Efectivo" v-model="efectivo" type="number" step="0.01"/>
+    <div class="col-md-4 col-sm-3 q-pa-xs">
+       <q-btn color="green" dense label="REGISTRAR" @click="dialogReg=true" v-if="cliente.id!=undefined"/>      
+    </div>
     </div>
 
-    <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input dense outlined label="Fisico" v-model="fisico"  style="text-transform: uppercase"/>
-    </div>
-    <div class="col-12 col-sm-3 q-pa-xs">
-      <q-input dense outlined label="Observacion" v-model="observacion"  style="text-transform: uppercase"/>
-    </div>
-    <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
-      <input type="radio" value="EN PRESTAMO" v-model="tipo" style="margin-right: 0.5em;font;height:35px; width:35px; "  /><b :style="tipo=='EN PRESTAMO'?'color:red':''"> EN PRESTAMO </b>
-      <input type="radio" value="VENTA" v-model="tipo" style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "/><b :style="tipo=='VENTA'?'color:red':''"> VENTA </b>
-    </div>
-  </div>
+    <q-dialog v-model="dialogReg" persistent>
+      <q-card style="width: 700px; max-width: 80vw;">
+        <q-card-section>
+          <div class="text-h6">REGISTRAR PRESTAMO</div>
+        </q-card-section>
+        <q-card-section>
+          <q-form @submit.prevent="agregar">
+            <div class="row">
+              <div class="col-12 col-sm-4 q-pa-xs">
+                <q-select dense outlined label="Seleccionar Inventario" v-model="inventario" :options="inventarios" option-label="nombre" @update:model-value="calcular"/>
+              </div>
+              <div class="col-12 col-sm-2 q-pa-xs">
+                <!--<q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades" @update:model-value="calcular"/>-->
+                <q-input dense outlined label="Cantidad"  v-model="cantidad" type="number" @update:model-value="calcular" :rules="[val => val>0 || 'Ingrese valor']"/>
+              </div>
+          
+              <div class="col-12 col-sm-2 q-pa-xs">
+                <q-input dense outlined label="Efectivo" v-model="efectivo" type="number" step="0.01"/>
+              </div>
+          
+              <div class="col-12 col-sm-4 q-pa-xs">
+                <q-input dense outlined label="Fisico" v-model="fisico"  style="text-transform: uppercase"/>
+              </div>
+              <div class="col-12 col-sm-6 q-pa-xs">
+                <q-input dense outlined label="Observacion" v-model="observacion"  style="text-transform: uppercase"/>
+              </div>
+              <div class="col-12 col-sm-6 q-pa-xs flex flex-center">
+                <input type="radio" value="EN PRESTAMO" v-model="tipo" style="margin-right: 0.5em;font;height:35px; width:35px; "  /><b :style="tipo=='EN PRESTAMO'?'color:red':''"> EN PRESTAMO </b>
+                <input type="radio" value="VENTA" v-model="tipo" style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "/><b :style="tipo=='VENTA'?'color:red':''"> VENTA </b>
+              </div>
+              <div class="col-6  q-pa-xs " style=" text-align: right;">
+                <q-btn dense label="CANCELAR" color="red" v-close-popup v-if="listPrestamo.length==0"/>
+                <q-btn dense label="FINALIZAR" color="info" @click="impresionList()" v-if="listPrestamo.length>=1"/>
+              </div>
+            <div class="col-6  q-pa-xs " style=" text-align: right;">
+              <q-btn dense label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
+              <q-btn dense label="agregar" icon="send" color="positive" type="submit" v-else/>
+            </div>
+
+          </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+    
+
   <div class="row">
     <div class="col-6  q-pa-xs ">
       <q-btn label="Imprimir Pendientes" color="amber" icon="print" @click="imprimir"/>
     </div>
-    <div class="col-6  q-pa-xs " style=" text-align: right;">
-      <q-btn label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
-      <q-btn label="agregar" icon="send" color="positive" type="submit" v-else/>
-    </div>
-  </div>
-  </q-form>
+</div>
+  <q-dialog v-model="dialogAdd" persistent>
+    <q-card>
+      <q-card-section class="row items-center">
+        <q-avatar icon="signal_wifi_off" color="primary" text-color="white" />
+        <span class="q-ml-sm">You are currently not connected to any network.</span>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="primary" v-close-popup />
+        <q-btn flat label="Turn on Wifi" color="primary" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
   <q-badge class="full-width text-h5 flex flex-center" color="red" v-if="tab==2">TOTAL EN CAJA: {{totalefectivo}} Bs.</q-badge>
 
 <!--  {{cliente}}-->
@@ -272,6 +308,8 @@ export default {
   data(){
     return{
       tab:2,
+      dialogReg:false,
+      dialogAdd:false,
       estados:['TODO','EN PRESTAMO','DEVUELTO','ANULADO','VENTA'],
       estado:'TODO',
       prestamos:[],
@@ -296,6 +334,7 @@ export default {
       options:[],
       boolmod:false,
       filter:'',
+      listPrestamo:[],
       fecha:date.formatDate(new Date(),'YYYY-MM-DD'),
       colum:[
   { name: 'op', label: 'OP', field: 'op', sortable: true },
@@ -358,6 +397,73 @@ pagination: {
 
   },
   methods: {
+
+    impresionList(){
+      let cliente=this.listPrestamo[0].cliente
+      let user=this.listPrestamo[0].user
+      let fecha= this.listPrestamo[0].fecha
+      let cadena=`
+        <style>
+        .textc{text-align:center}
+        .leyenda{text-align:justify;
+        size-font 6px;}
+        </style>
+        <div style="padding:5px">
+        <div><b>Fecha: </b>`+fecha+`</div>
+        <div><b>Nombre:</b> `+cliente.titular+`</div>
+        <div><b>Usuario: </b>`+user.name+`</div>
+        <table style="width: 100%; font-size:10px">
+        <tr><th>Efectivo</th><th>Fisico</th><th>Material</th><th>Cantidad</th><th>tipo</th></tr>`
+        this.listPrestamo.forEach(r => {
+          cadena+=`<tr><td>`+r.efectivo+`</td>
+                  <td>`+r.fisico+`</td>
+                  <td>`+r.inventario.nombre+`</td>
+                  <td>`+r.cantidad+`</td>
+                  <td>`+r.estado+`</td>
+                  </tr>
+        `
+        });
+        cadena+=`
+        </table>
+        <hr style=" border: 4px dashed;">
+        <div><b>FECHA</b>`+fecha+`</div>
+        <div><b>NOMBRE</b> `+cliente.titular+`</div>
+        <table style="width: 100%; font-size:10px">
+        <tr><th>Efectivo</th><th>Fisico</th><th>Material</th><th>Cantidad</th><th>tipo</th></tr>`
+        this.listPrestamo.forEach(r => {
+          cadena+=`<tr><td>`+r.efectivo+`</td>
+                  <td>`+r.fisico+`</td>
+                  <td>`+r.inventario.nombre+`</td>
+                  <td>`+r.cantidad+`</td>
+                  <td>`+r.estado+`</td>
+                  </tr>
+        `
+        });
+        cadena+=`
+        </table>
+        <br>
+        <br>
+        <br>
+        <div class="textc">Firma</div>
+        <br>
+        <br>
+        <div class="textc"><b>OJO</b></div>
+        <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJA<br>* HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO EXCEPTO EL DIA MIERCOLES </b></div>
+            </div>
+        `
+      this.dialogReg=false
+      this.listPrestamo=[]
+        this.cantidad=1;
+        this.efectivo=0
+        this.cliente=this.prestamos[0];
+        this.inventario=this.inventario[0];
+        this.calcular
+      let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(cadena);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+    },
     onPrint(prest){
       this.$axios.post(process.env.API+'/impresion/'+prest.id).then(res=>{
         // console.log(res.data)
@@ -496,20 +602,23 @@ pagination: {
         inventario_id:this.inventario.id,
       }).then(res=>{
         // console.log(res.data)
-        this.listadoprestamo();
         this.boolmod=false
-        this.$q.loading.hide();
+        this.dialogReg=false
         // this.cliente=this.prestamos[0]
-        this.cantidad=1;
+        this.cantidad=1
       this.fecha=date.formatDate(new Date(),'YYYY-MM-DD')
 
-        this.cliente=this.cliente[0];
-        this.inventario=this.inventario[0];
+        this.cliente=this.prestamos[0]
+        this.inventario=this.inventarios[0]
         this.efectivo=0
         this.observacion=''
+        this.listadoprestamo()
+        this.listclientes();
+        this.cajaprestamo();
+        this.reporte();
+        this.$q.loading.hide()
       })
-      this.filtrarlista();
-      this.cajaprestamo();
+
     },
     reporte(){
       this.$axios.post(process.env.API+'/reportecliente').then(res=>{
@@ -590,6 +699,7 @@ pagination: {
     onMod(prop){
       console.log(prop)
         this.boolmod=true
+        this.dialogReg=true
         this.prestamo_id=prop.id
         this.efectivo=prop.efectivo;
         this.fecha=prop.fecha;
@@ -597,6 +707,7 @@ pagination: {
         this.observacion=prop.observacion;
         this.cantidad=prop.cantidad;
         this.cliente=prop.cliente;
+        this.cliente.label=this.cliente.ci+ ' ' +this.cliente.titular
         this.inventario=prop.inventario;
     },
     cajaprestamo(){
@@ -645,7 +756,8 @@ pagination: {
       })
     },
     agregar(){
-      if(this.inventario.cantidad<this.cantidad)
+
+      if(this.inventario.cantidad < this.cantidad)
       {
                 this.$q.notify({
           message: 'No ay sufuciente en Inventario',
@@ -673,8 +785,9 @@ pagination: {
         tipo:this.tipo,
         inventario_id:this.inventario.id,
       }).then(res=>{
+        this.listPrestamo.push(res.data)
         // console.log(res.data)
-        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        /*let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(res.data);
         myWindow.document.close();
         myWindow.print();
@@ -687,7 +800,7 @@ pagination: {
         this.efectivo=0
         this.cliente=this.cliente[0];
         this.inventario=this.inventario[0];
-        this.calcular
+        this.calcular*/
       })
       this.filtrarlista();
       this.cajaprestamo();
