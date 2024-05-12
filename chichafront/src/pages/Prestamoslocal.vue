@@ -673,10 +673,8 @@ export default {
         myWindow.close()
         this.dialogReg=false
         this.listPrestamo=[]
-        this.cantidad=1;
+        this.cantidad=1
         this.efectivo=0
-        this.cliente=this.prestamos[0]
-        this.inventario=this.inventarios[0]
     },
   
     delDevuelto(devol){
@@ -1150,6 +1148,7 @@ export default {
             }
         })
         this.options=this.prestamos
+        this.cliente=this.prestamos[0]
         this.$q.loading.hide()
       })
     },

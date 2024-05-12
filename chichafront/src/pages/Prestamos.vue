@@ -459,10 +459,8 @@ pagination: {
         myWindow.close()
         this.dialogReg=false
         this.listPrestamo=[]
-        this.cantidad=1;
+        this.cantidad=1
         this.efectivo=0
-        this.cliente=this.prestamos[0]
-        this.inventario=this.inventarios[0]
     },
     onPrint(prest){
       this.$axios.post(process.env.API+'/impresion/'+prest.id).then(res=>{
@@ -738,6 +736,7 @@ pagination: {
             }
         });
         this.options=this.prestamos
+        this.cliente=this.prestamos[0]
         this.$q.loading.hide();
         //if(this.prestamos.length>0)
          // this.cliente=this.prestamos[0];
