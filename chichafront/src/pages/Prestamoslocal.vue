@@ -669,14 +669,13 @@ export default {
       this.listPrestamo=[]
         this.cantidad=1;
         this.efectivo=0
-        this.cliente=this.prestamos[0];
-        this.inventario=this.inventario[0];
-        this.calcular
+        this.cliente=this.prestamos[0]
+        this.inventario=this.inventarios[0]
       let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
-        myWindow.document.write(cadena);
-        myWindow.document.close();
-        myWindow.print();
-        myWindow.close();
+        myWindow.document.write(cadena)
+        myWindow.document.close()
+        myWindow.print()
+        myWindow.close()
     },
   
     delDevuelto(devol){

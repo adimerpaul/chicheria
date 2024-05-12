@@ -15,7 +15,7 @@ class GlosaController extends Controller
     public function index()
     {
         //
-        return Glosa::orderBy('orden','asc')->get();
+        return Glosa::orderBy('orden','asc')->whereNotIn('id',[2,15])->get();
     }
 
     /**
