@@ -665,17 +665,18 @@ export default {
         <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJA<br>* HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO EXCEPTO EL DIA MIERCOLES </b></div>
             </div>
         `
-      this.dialogReg=false
-      this.listPrestamo=[]
-        this.cantidad=1;
-        this.efectivo=0
-        this.cliente=this.prestamos[0]
-        this.inventario=this.inventarios[0]
+
       let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
         myWindow.document.write(cadena)
         myWindow.document.close()
         myWindow.print()
         myWindow.close()
+        this.dialogReg=false
+        this.listPrestamo=[]
+        this.cantidad=1;
+        this.efectivo=0
+        this.cliente=this.prestamos[0]
+        this.inventario=this.inventarios[0]
     },
   
     delDevuelto(devol){
@@ -1126,7 +1127,7 @@ export default {
         // this.cliente=this.prestamos[0]
         this.cantidad=1;
         this.cliente=this.prestamos[0];
-        this.inventario=this.inventario[0];
+        this.inventario=this.inventarios[0];
         this.efectivo=0
         this.observacion=''
       })
