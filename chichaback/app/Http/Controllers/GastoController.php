@@ -37,9 +37,9 @@ class GastoController extends Controller
         //if($request->user()->id==1)
         //{
             if($request->user_id==0) 
-            return Gasto::with('glosa')->with('user')->whereNotIn('glosa_id',[2,15])->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('id','desc')->get();
+            return Gasto::with('glosa')->with('user')->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('id','desc')->get();
             else 
-            return Gasto::with('glosa')->with('user')->whereNotIn('glosa_id',[2,15])->where('user_id',$request->user_id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('id','desc')->get();
+            return Gasto::with('glosa')->with('user')->where('user_id',$request->user_id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('id','desc')->get();
        // }
         //else
         //return Gasto::with('glosa')->with('user')->where('user_id',$request->user()->id)->whereDate('fecha','>=',$request->fecha1)->whereDate('fecha','<=',$request->fecha2)->orderBy('id','desc')->get();
