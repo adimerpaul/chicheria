@@ -5,13 +5,13 @@
   </div>
   <div class="row">
     <div class="col-12 col-sm-3 q-pa-xs">
-      <q-select dense use-input outlined label="Seleccionar local" v-model="cliente" :options="prestamos" @filter="filterFn"/>
+      <q-select input-debounce="0" dense use-input outlined label="Seleccionar local" v-model="cliente" :options="prestamos" @filter="filterFn"/>
     </div>
     <div class="col-md-4 col-sm-3 q-pa-xs">
       <q-input dense outlined label="Fecha" v-model="fecha" type="date"/>
     </div>
     <div class="col-md-4 col-sm-3 q-pa-xs">
-       <q-btn color="green" dense label="REGISTRAR" @click="dialogReg=true" v-if="cliente.id!=undefined"/>      
+       <q-btn color="green" dense label="REGISTRAR" @click="dialogReg=true" v-if="cliente.id!=undefined"/>
     </div>
     </div>
     <q-dialog v-model="dialogReg" persistent>
@@ -29,11 +29,11 @@
                 <!--<q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades" @update:model-value="calcular"/>-->
                 <q-input dense outlined label="Cantidad"  v-model="cantidad" type="number" @update:model-value="calcular" :rules="[val => val>0 || 'Ingrese valor']"/>
               </div>
-          
+
               <div class="col-12 col-sm-2 q-pa-xs">
                 <q-input dense outlined label="Efectivo" v-model="efectivo" type="number" step="0.01"/>
               </div>
-          
+
               <div class="col-12 col-sm-4 q-pa-xs">
                 <q-input dense outlined label="Fisico" v-model="fisico"  style="text-transform: uppercase"/>
               </div>
@@ -276,7 +276,7 @@ export default {
       estados:['TODO','EN PRESTAMO','DEVUELTO','ANULADO','VENTA'],
       estado:'TODO',
       prestamos:[],
-      cliente:'',
+      cliente:{label:''},
       inventarios:[],
       inventario:'',
       cantidades:[],
@@ -611,7 +611,7 @@ export default {
     this.reporte();
   },
   methods: {
-  
+
     impresionList(){
       let cliente=this.listPrestamo[0].cliente
       let user=this.listPrestamo[0].user
@@ -676,7 +676,7 @@ export default {
         this.cantidad=1
         this.efectivo=0
     },
-  
+
     delDevuelto(devol){
       this.$q.dialog({
         title: 'Eliminar',
@@ -1124,7 +1124,7 @@ export default {
         this.$q.loading.hide();
         // this.cliente=this.prestamos[0]
         this.cantidad=1;
-        this.cliente=this.prestamos[0];
+        this.cliente={label:''};
         this.inventario=this.inventarios[0];
         this.efectivo=0
         this.observacion=''
@@ -1148,7 +1148,7 @@ export default {
             }
         })
         this.options=this.prestamos
-        this.cliente=this.prestamos[0]
+        this.cliente={label:''}
         this.$q.loading.hide()
       })
     },
@@ -1176,7 +1176,7 @@ export default {
         })
         return false;
       }
-            if (this.cliente==null ){
+            if (this.cliente.id==undefined ){
         this.$q.notify({
           message:'Tienes que seleccionar cliente',
           color:'red',

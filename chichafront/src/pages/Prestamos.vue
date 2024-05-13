@@ -12,7 +12,7 @@
       <q-input dense outlined label="Fecha" v-model="fecha" type="date"/>
     </div>
     <div class="col-md-4 col-sm-3 q-pa-xs">
-       <q-btn color="green" dense label="REGISTRAR" @click="dialogReg=true" v-if="cliente.id!=undefined"/>      
+       <q-btn color="green" dense label="REGISTRAR" @click="dialogReg=true" v-if="cliente.id!=undefined"/>
     </div>
     </div>
 
@@ -31,11 +31,11 @@
                 <!--<q-select dense outlined label="Seleccionar Cantidad" v-model="cantidad" :options="cantidades" @update:model-value="calcular"/>-->
                 <q-input dense outlined label="Cantidad"  v-model="cantidad" type="number" @update:model-value="calcular" :rules="[val => val>0 || 'Ingrese valor']"/>
               </div>
-          
+
               <div class="col-12 col-sm-2 q-pa-xs">
                 <q-input dense outlined label="Efectivo" v-model="efectivo" type="number" step="0.01"/>
               </div>
-          
+
               <div class="col-12 col-sm-4 q-pa-xs">
                 <q-input dense outlined label="Fisico" v-model="fisico"  style="text-transform: uppercase"/>
               </div>
@@ -60,7 +60,7 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    
+
 
   <div class="row">
     <div class="col-6  q-pa-xs ">
@@ -313,7 +313,7 @@ export default {
       estados:['TODO','EN PRESTAMO','DEVUELTO','ANULADO','VENTA'],
       estado:'TODO',
       prestamos:[],
-      cliente:'',
+      cliente:{label:''},
       inventarios:[],
       inventario:'',
       cantidades:[],
@@ -606,14 +606,14 @@ pagination: {
         this.cantidad=1
       this.fecha=date.formatDate(new Date(),'YYYY-MM-DD')
 
-        this.cliente=this.prestamos[0]
+        this.cliente={label:''}
         this.inventario=this.inventarios[0]
         this.efectivo=0
         this.observacion=''
         this.listadoprestamo()
-        this.listclientes();
-        this.cajaprestamo();
-        this.reporte();
+        this.listclientes()
+        this.cajaprestamo()
+        this.reporte()
         this.$q.loading.hide()
       })
 
@@ -715,9 +715,9 @@ pagination: {
 
     },
         filtrarlista(){
-      this.listadoprestamo();
-      this.listclientes();
-      this.reporte();
+      this.listadoprestamo()
+      this.listclientes()
+      this.reporte()
     },
     listclientes(){
       this.$q.loading.show();
@@ -736,7 +736,7 @@ pagination: {
             }
         });
         this.options=this.prestamos
-        this.cliente=this.prestamos[0]
+        this.cliente={label:''}
         this.$q.loading.hide();
         //if(this.prestamos.length>0)
          // this.cliente=this.prestamos[0];
@@ -765,7 +765,7 @@ pagination: {
         })
         return false;
       }
-                  if (this.cliente==null ){
+                  if (this.cliente.id==undefined ){
         this.$q.notify({
           message:'Tienes que seleccionar cliente',
           color:'red',
@@ -823,7 +823,7 @@ pagination: {
           myWindow.print();
           myWindow.close();
         // this.prestamos=res.data
-           this.listadoprestamo();
+           this.listadoprestamo()
         this.cajaprestamo()
         this.dialog_dev=false;
         this.dev={};
