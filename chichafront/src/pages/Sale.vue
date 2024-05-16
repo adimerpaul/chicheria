@@ -359,7 +359,7 @@
               <q-input required type="number"  outlined label="cantidad" v-model="newgarantia.cantidad" @update:model-value="calcular"/>
             </div>
             <div class="col-12 col-md-4 q-pa-xs">
-              <q-input  outlined type="number" label="efectivo" v-model="newgarantia.efectivo"/>
+              <q-input  outlined type="number" step="0.01" label="efectivo" v-model="newgarantia.efectivo"/>
             </div>
             <div class="col-12 col-md-4 q-pa-xs">
               <q-input  outlined label="fisico" v-model="newgarantia.fisico" style="text-transform: uppercase"/>
@@ -368,7 +368,7 @@
               <q-input  outlined label="observacion" v-model="newgarantia.observacion" style="text-transform: uppercase"/>
             </div>
             <div class="col-12 col-md-4 q-pa-xs flex flex-center">
-              <input style="margin-right: 0.5em;font;height:35px; width:35px; "   type="radio" value="EN PRESTAMO" v-model="newgarantia.tipo"/><b> EN PRESTAMO </b>
+              <input style="margin-right: 0.5em; height:35px; width:35px; "   type="radio" value="EN PRESTAMO" v-model="newgarantia.tipo"/><b> EN PRESTAMO </b>
               <input style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "   type="radio" value="VENTA" v-model="newgarantia.tipo"/><b> VENTA </b>
             </div>
             <div class="col-12  q-pa-xs flex flex-center ">
@@ -1104,16 +1104,18 @@ export default {
     garantiaCancel2(){
           this.dialogGarantia2=false
 
-          this.printboleta+="<hr style=' border: 4px dashed;'><div tyle='text-align:center'>OTROS</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
+          this.printboleta+="<hr style=' border: 4px dashed;'><div style='text-align:center'>OTROS</div><div><b>Cliente </b>"+this.client.local + ' - '+this.client.titular+"</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
           this.prestamolista.forEach(p => {
             this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
           })
           this.printboleta+="</table></div>"
           this.printboleta+="<br><hr style=' border: 4px dashed;'><div><b>Cliente </b>"+this.client.local + ' - '+this.client.titular+"</div><div><b>Fecha: </b>"+this.fecha+"</div><div><b>Usuario: </b>"+this.$store.state.login.user.name +"</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
           this.prestamolista.forEach(p => {
+            if(p.tipo=='EN PRESTAMO')  p.tipo="PRESTAMO"
+
             this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
           })
-          this.printboleta+="</table></div><div class='leyenda'><b>* SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS, CASO CONTRARIO SE DARA DE BAJA <br>* HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO, EXCEPTO EL DIA MIERCOLES <b></div>"
+          this.printboleta+="</table></div><br><br><div class='leyenda'><b><span style='text-align:center'>FIRMA<br>OJO</span>* SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS, CASO CONTRARIO SE DARA DE BAJA <br>* HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO, EXCEPTO EL DIA MIERCOLES <b></div>"
           let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
           myWindow.document.write(this.printboleta);
           myWindow.document.close();

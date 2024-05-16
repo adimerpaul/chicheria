@@ -426,15 +426,15 @@ pagination: {
         cadena+=`
         </table>
         <hr style=" border: 4px dashed;">
-        <div><b>FECHA</b>`+fecha+`</div>
+        <div style='text-align:right>`+fecha+`</div>
         <div><b>NOMBRE</b> `+cliente.titular+`</div>
-        <table style="width: 100%; font-size:10px">
-        <tr><th>Efectivo</th><th>Fisico</th><th>Material</th><th>Cantidad</th><th>tipo</th></tr>`
+        <table style="width: 100%; ">
+        <tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>`
         this.listPrestamo.forEach(r => {
-          cadena+=`<tr><td>`+r.efectivo+`</td>
-                  <td>`+r.fisico+`</td>
+          if(r.estado=="EN PRESTAMO") r.estado='PRESTAMO'
+          cadena+=`<tr><<td>`+r.cantidad+`</td>                  
                   <td>`+r.inventario.nombre+`</td>
-                  <td>`+r.cantidad+`</td>
+                  <td>`+r.efectivo+`</td>
                   <td>`+r.estado+`</td>
                   </tr>
         `
@@ -443,9 +443,7 @@ pagination: {
         </table>
         <br>
         <br>
-        <br>
         <div class="textc">Firma</div>
-        <br>
         <br>
         <div class="textc"><b>OJO</b></div>
         <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJA<br>* HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO EXCEPTO EL DIA MIERCOLES </b></div>
