@@ -134,6 +134,59 @@ class PrestamoController extends Controller
 //        return $prestamo->
     }
 
+    public function regprestamo(Request $request)
+    {   //return $request->listado[0]['inventario_id'];
+        $retorno =[];
+        foreach ($request->listado as $value) {
+            //return $value['inventario_id'];
+            # code...
+        $inv=Inventario::find($value['inventario_id']);
+         if( $inv->cantidad>=$value['cantidad']){
+        $prestamo=new Prestamo();
+        $prestamo->fecha=$value['fecha'];
+        $prestamo->estado=$value['tipo'];
+        if ($value['tipo']=='VENTA'){
+            $prestamo->cantidad=$value['cantidad'];
+            $prestamo->prestado=0;
+        }else{
+            $prestamo->cantidad=$value['cantidad'];
+            $prestamo->prestado=$value['cantidad'];
+        }
+        $prestamo->efectivo=$value['efectivo'];
+        $prestamo->fisico=strtoupper($value['fisico']);
+        $prestamo->observacion=strtoupper($value['observacion']);
+        $prestamo->user_id=$request->user()->id;
+        $prestamo->cliente_id=$value['cliente_id'];
+        $prestamo->inventario_id=$inv->id;
+         $prestamo->save();
+
+         if($value['tipo']=='VENTA'){
+            $general=General::find(1);
+            $general->monto=$general->monto +  $prestamo->efectivo;
+            $general->save();
+
+            $loggeneral= new Loggeneral;
+            $loggeneral->numero=$prestamo->id;
+            $loggeneral->monto= $prestamo->efectivo;
+            $loggeneral->detalle='PRESTAMO/VENTA';
+            $loggeneral->motivo='VENTA INVENTARIO';
+            $loggeneral->tipo='INGRESO';
+            $loggeneral->fecha=$prestamo->fecha;
+            $loggeneral->hora=date("H:i:s");
+            $loggeneral->glosa_id=null;
+            $loggeneral->user_id= $prestamo->user_id;
+            $loggeneral->save();
+         }
+         $inv->cantidad=$inv->cantidad - $value['cantidad'];
+         $inv->save();
+         array_push($retorno, Prestamo::with('user')->with('cliente')->with('inventario')->where('id',$prestamo->id)->first());
+        }
+
+        }
+        return $retorno;
+
+    }
+
     /**
      * Display the specified resource.
      *

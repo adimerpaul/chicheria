@@ -5,15 +5,13 @@
   </div>
   <div class="row">
     <div class="col-md-4 col-sm-3 q-pa-xs">
-      <q-select dense use-input v-if="tab==1" outlined label="Seleccionar local" v-model="cliente" :options="prestamos" @filter="filterFn"/>
-      <q-select dense use-input @filter="filterFn" v-else outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" />
+      <q-select dense use-input @filter="filterFn"  outlined label="Seleccionar Cliente" v-model="cliente" :options="prestamos" />
     </div>
     <div class="col-md-4 col-sm-3 q-pa-xs">
       <q-input dense outlined label="Fecha" v-model="fecha" type="date"/>
     </div>
     <div class="col-md-4 col-sm-3 q-pa-xs">
-       <q-btn color="green" dense label="REGISTRAR" @click="dialogReg=true" v-if="cliente.id!=undefined"/>
-    </div>
+       <q-btn color="green" dense label="REGISTRAR" @click="dialogReg=true" v-if="cliente.label!=''"/>    </div>
     </div>
 
     <q-dialog v-model="dialogReg" persistent>
@@ -45,6 +43,14 @@
               <div class="col-12 col-sm-6 q-pa-xs flex flex-center">
                 <input type="radio" value="EN PRESTAMO" v-model="tipo" style="margin-right: 0.5em;font;height:35px; width:35px; "  /><b :style="tipo=='EN PRESTAMO'?'color:red':''"> EN PRESTAMO </b>
                 <input type="radio" value="VENTA" v-model="tipo" style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "/><b :style="tipo=='VENTA'?'color:red':''"> VENTA </b>
+              </div>
+              <div class="col-12"><q-table dense :rows="listPrestamo" :columns="colregistro" row-key="name" >
+                <template v-slot:body-cell-op="props" >
+                  <q-td key="op" :props="props">
+                      <q-btn color="red" icon="delete" dense @click="delListPres(props)"/>                     
+                  </q-td>
+                </template>
+                </q-table>
               </div>
               <div class="col-6  q-pa-xs " style=" text-align: right;">
                 <q-btn dense label="CANCELAR" color="red" v-close-popup v-if="listPrestamo.length==0"/>
@@ -307,6 +313,13 @@ export default {
   name: "Venta",
   data(){
     return{
+      colregistro:[
+        {label:'OP',name:'op',field:'op'},
+        {label:'CANT',name:'cantidad',field:'cantidad'},
+        {label:'TIPO',name:'tipo',field:'tipo'},
+        {label:'MAT',name:'inventario',field:'inventario'},
+        {label:'OBS',name:'obs',field:'observacion'},
+      ],
       tab:2,
       dialogReg:false,
       dialogAdd:false,
@@ -397,11 +410,30 @@ pagination: {
 
   },
   methods: {
-
+    delListPres(p){
+      console.log(p.rowIndex)
+      if (p.rowIndex > -1) { // only splice array when item is found
+        this.listPrestamo.splice(p.rowIndex, 1); // 2nd parameter means remove one item only
+      }
+    },
     impresionList(){
-      let cliente=this.listPrestamo[0].cliente
-      let user=this.listPrestamo[0].user
-      let fecha= this.listPrestamo[0].fecha
+      this.$axios.post(process.env.API+'/regprestamo',{listado:this.listPrestamo}).then(res=>{
+        console.log(res.data)
+        //return false
+      let cliente=res.data[0].cliente
+      let user=res.data[0].user
+      let fecha= res.data[0].fecha
+      let contenido=''
+      res.data.forEach(r => {
+          if(r.estado=='EN PRESTAMO') r.estado='PRESTAMO'
+          contenido+=`<tr>
+                  <td>`+r.cantidad+`</td>
+                  <td>`+r.inventario.nombre+`</td>
+                  <td>`+r.efectivo+`</td>
+                  <td>`+r.estado+`</td>
+                  </tr>
+        `
+        })
       let cadena=`
         <style>
         .textc{text-align:center}
@@ -409,47 +441,25 @@ pagination: {
         size-font 6px;}
         </style>
         <div style="padding:5px">
-        <div><b>Fecha: </b>`+fecha+`</div>
+        <div style='text-align:right'>`+fecha+`</div>
         <div><b>Nombre:</b> `+cliente.titular+`</div>
         <div><b>Usuario: </b>`+user.name+`</div>
-        <table style="width: 100%; font-size:10px">
-        <tr><th>Efectivo</th><th>Fisico</th><th>Material</th><th>Cantidad</th><th>tipo</th></tr>`
-        this.listPrestamo.forEach(r => {
-          cadena+=`<tr><td>`+r.efectivo+`</td>
-                  <td>`+r.fisico+`</td>
-                  <td>`+r.inventario.nombre+`</td>
-                  <td>`+r.cantidad+`</td>
-                  <td>`+r.estado+`</td>
-                  </tr>
-        `
-        });
-        cadena+=`
-        </table>
-        <hr style=" border: 4px dashed;">
-        <div style='text-align:right>`+fecha+`</div>
+        <table style="width: 100%;">
+        <tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>`+contenido+`</table>
+        <hr style=" border: 4px dashed;"/>
+        <div style='text-align:right'>`+fecha+`</div>
         <div><b>NOMBRE</b> `+cliente.titular+`</div>
         <table style="width: 100%; ">
-        <tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>`
-        this.listPrestamo.forEach(r => {
-          if(r.estado=="EN PRESTAMO") r.estado='PRESTAMO'
-          cadena+=`<tr><<td>`+r.cantidad+`</td>                  
-                  <td>`+r.inventario.nombre+`</td>
-                  <td>`+r.efectivo+`</td>
-                  <td>`+r.estado+`</td>
-                  </tr>
-        `
-        });
-        cadena+=`
-        </table>
+        <tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>`+contenido+`</table>
         <br>
         <br>
         <div class="textc">Firma</div>
         <br>
         <div class="textc"><b>OJO</b></div>
-        <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJA<br>* HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO EXCEPTO EL DIA MIERCOLES </b></div>
-            </div>
-        `
-
+        <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO
+          <br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJA<br>
+          * HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO EXCEPTO EL DIA MIERCOLES </b></div></div>`
+          console.log(cadena)
       let myWindow = window.open("", "Imprimir", "width=1000,height=1000")
         myWindow.document.write(cadena)
         myWindow.document.close()
@@ -457,8 +467,9 @@ pagination: {
         myWindow.close()
         this.dialogReg=false
         this.listPrestamo=[]
-        this.cantidad=1
-        this.efectivo=0
+        this.filtrarlista()
+      this.cajaprestamo()
+        })
     },
     onPrint(prest){
       this.$axios.post(process.env.API+'/impresion/'+prest.id).then(res=>{
@@ -753,7 +764,6 @@ pagination: {
       })
     },
     agregar(){
-
       if(this.inventario.cantidad < this.cantidad)
       {
                 this.$q.notify({
@@ -771,14 +781,30 @@ pagination: {
         })
         return false;
       }
-      this.$q.loading.show();
-      this.$axios.post(process.env.API+'/prestamo',{
-        efectivo:this.efectivo,
+      this.listPrestamo.push({
         fecha:this.fecha,
+        cliente_id:this.cliente.id,
+        efectivo:this.efectivo,
         fisico:this.fisico,
         observacion:this.observacion,
         cantidad:this.cantidad,
+        tipo:this.tipo,
+        inventario_id:this.inventario.id,
+        inventario:this.inventario.nombre})
+        this.cantidad=1
+        this.efectivo=0
+        this.fisico=''
+        this.observacion=''
+        this.inventario=this.inventario[0]
+        this.calcular
+      /*this.$q.loading.show();
+      this.$axios.post(process.env.API+'/prestamo',{
+        fecha:this.fecha,
         cliente_id:this.cliente.id,
+        efectivo:this.efectivo,
+        fisico:this.fisico,
+        observacion:this.observacion,
+        cantidad:this.cantidad,
         tipo:this.tipo,
         inventario_id:this.inventario.id,
       }).then(res=>{
@@ -797,10 +823,10 @@ pagination: {
         this.efectivo=0
         this.cliente=this.cliente[0];
         this.inventario=this.inventario[0];
-        this.calcular*/
+        this.calcular
       })
       this.filtrarlista();
-      this.cajaprestamo();
+      this.cajaprestamo();*/
     },
     devolver(){
       this.$q.loading.show()
