@@ -10,8 +10,9 @@
     <div class="col-md-4 col-sm-3 q-pa-xs">
       <q-input dense outlined label="Fecha" v-model="fecha" type="date"/>
     </div>
-    <div class="col-md-4 col-sm-3 q-pa-xs">
-       <q-btn color="green" dense label="REGISTRAR" @click="dialogReg=true" v-if="cliente.label!=''"/>
+    <div class="col-md-4 col-sm-3 q-pa-xs" >
+       <q-btn color="green" dense label="REGISTRAR" @click="validarReg()" />
+       
     </div>
     </div>
     <q-dialog v-model="dialogReg" persistent>
@@ -611,6 +612,7 @@ export default {
 
   },
   created(){
+    
     for (let i=1;i<=100;i++){
       this.cantidades.push(i);
     }
@@ -626,6 +628,27 @@ export default {
     this.reporte();
   },
   methods: {
+    validarReg(){
+      if(this.cliente=='' || this.cliente==null){
+        this.$q.notify({
+          message: 'Debe Selecionar Cliente',
+          color: 'red',
+          icon:'info'
+        })
+        return false
+      }
+      else{
+        if(this.cliente.id!=undefined)
+          this.dialogReg=true
+        else{
+          this.$q.notify({
+          message: 'Debe Selecionar Cliente',
+          color: 'red',
+          icon:'info'
+        })
+        }
+      }
+    },
     delListPres(p){
       console.log(p.rowIndex)
       if (p.rowIndex > -1) { // only splice array when item is found
