@@ -212,6 +212,17 @@
       <!--        </q-td>-->
       <!--      </template>-->
     </q-table>
+    <br>
+    <div class="row">
+      <div class="col-4 q-pa-xs "><q-input dense outlined v-model="ini" type="date" label="Fecha Ini" /></div>
+      <div class="col-4 q-pa-xs "><q-input dense outlined v-model="fin" type="date" label="Fecha Fin" /></div>
+      <div class="col-4 q-pa-xs"> <q-btn dense outline color="info" icon="search" @click="getHistorial()"/>
+      </div>
+      <div class="col-12">
+        <q-table title="LISTADO ACCESO" :rows="logs" :columns="colhist" row-key="name" dense/>
+        
+      </div>
+    </div>
     <!--    {{permisos2}}-->
     <q-dialog v-model="dialog_mod">
       <q-card style="max-width: 80%; width: 50%">
@@ -346,15 +357,24 @@ export default {
       dato: {
         fechalimite:date.formatDate( addToDate(new Date(),{days:7}) , 'YYYY-MM-DD')
       },
+      ini:date.formatDate( new Date() , 'YYYY-MM-DD'),
+      fin:date.formatDate( new Date() , 'YYYY-MM-DD'),
       model:'',
       dato2: {},
       options: [],
+      historial:[],
       props: [],
       unidades:[],
       permisos:[],
       permisos2:[],
+      logs:[],
       modelpermiso:false,
       uni:{},
+      colhist:[
+        {name: "fecha", label: "FECHA ", field: "fecha", sortable: true,},
+        {name: "hora", label: "HORA", field: "hora", sortable: true,},
+        {name: "user", label: "USUARIO", field: row=>row.user.name, sortable: true,},
+      ],
       columns: [
         {name: "name", align: "left", label: "NOMBRE ", field: "name", sortable: true,},
         {name: "estado", align: "left", label: "ESTADO ", field: "estado", sortable: true,},
@@ -382,6 +402,14 @@ export default {
     this.permisosGet();
   },
   methods: {
+    getHistorial(){
+      if(this.ini==undefined || this.fin==undefined)
+        return false
+      this.$axios.post(process.env.API+'/loginHistorial',{ini:this.ini,fin:this.fin}).then(res=>{
+        console.log(res.data)
+        this.logs=res.data
+      })
+    },
     permisosGet() {
       this.permisos=[]
       this.permisos2=[]

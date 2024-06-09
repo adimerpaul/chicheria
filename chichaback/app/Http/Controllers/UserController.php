@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Permiso;
 use App\Models\User;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -33,6 +34,11 @@ class UserController extends Controller
 //            ->with('unid')
             ->with('permisos')
             ->firstOrFail();
+        $log=new Log();
+        $log->fecha=date('Y-m-d');
+        $log->hora=date('H:i:s');
+        $log->user_id=$user->id;
+        $log->save();
         $token=$user->createToken('auth_token')->plainTextToken;
         return response()->json(['token'=>$token,'user'=>$user],200);
     }
@@ -102,5 +108,9 @@ class UserController extends Controller
             $user->estado='ACTIVO';
         $user->save();
 
+    }
+
+    public function loginHistorial(Request $request){
+        return Log::whereDate('fecha','>=',$request->ini)->whereDate('fecha','<=',$request->fin)->with('user')->get();
     }
 }

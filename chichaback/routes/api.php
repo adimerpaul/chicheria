@@ -150,6 +150,9 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/listPag',[\App\Http\Controllers\PrestamoController::class,'listPag']);
     Route::post('/regprestamo',[\App\Http\Controllers\PrestamoController::class,'regprestamo']);
 
+    Route::post('/loginHistorial',[\App\Http\Controllers\UserController::class,'loginHistorial']);
+
+
     
 
 });
