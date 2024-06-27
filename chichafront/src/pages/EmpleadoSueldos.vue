@@ -104,7 +104,9 @@
             <q-form @submit.prevent="agregarpago">
               <div class="row">
                 <div class="col-2">
-                  <q-input outlined dense label="Monto" type="number" step="0.01" v-model="pago.monto" required/>
+                  <q-input outlined dense label="Monto" type="number" step="0.01" v-model="pago.monto" required
+                           :rules="[val => val > 0 && val <= montocajachica || 'Monto excede caja chica']"
+                  />
                 </div>
                 <div class="col-2">
                   <q-select outlined dense label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA']"/>
@@ -220,6 +222,7 @@ export default {
   name: "EmpleadoSeldos",
   data(){
     return{
+      montocajachica:0,
       dialoggenplanilla:false,
       dialogver:false,
       filter:'',
@@ -1238,7 +1241,7 @@ export default {
       // console.log(this.pago)
       // return false
       this.$q.loading.show()
-      
+
       this.$axios.post(process.env.API+'/sueldo',this.pago).then(res=>{
         //this.empleadohistorial=res.data
 
