@@ -16,7 +16,11 @@
       <q-form @submit.prevent="agregar">
         <div class="row">
           <div class="col-12 q-pa-xs col-sm-1">
-          <q-input dense outlined type="number" step="0.1" label="Precio" v-model="empleado.precio" required/></div>
+          <q-input dense outlined type="number" step="0.1" label="Precio" v-model="empleado.precio" required
+                   :rules="[
+                     val => val>0  && val<= montocajachica || 'No debe exceder el monto',
+                    ]"
+          /></div>
           <div class="col-12 q-pa-xs col-sm-3">
             <q-select outlined v-model="glosa" :options="glosas" label="Glosa" use-input @filter="filterFn"     dense  >
               <template v-slot:no-option>
