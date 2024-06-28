@@ -288,6 +288,7 @@ export default {
     }
   },
   mounted() {
+    this.totalcaja()
         $('#example').DataTable( {
           "language":{
         "processing": "Procesando...",
@@ -560,6 +561,7 @@ export default {
     // this.responsable=this.$store.getters["login/user"].name
   },
   methods:{
+
     cambioEstado(empledo){
       this.$axios.post(process.env.API + "/estadoEmpleado",empledo).then((res) => {
         this.missalarios()
