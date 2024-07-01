@@ -444,9 +444,12 @@ pagination: {
       let cliente=res.data[0].cliente
       let user=res.data[0].user
       let fecha= res.data[0].fecha
+      let prt=false
       let contenido=''
       res.data.forEach(r => {
-          if(r.estado=='EN PRESTAMO') r.estado='PRESTAMO'
+          if(r.estado=='EN PRESTAMO') {r.estado='PRESTAMO'
+          prt=true
+        }
           contenido+=`<tr>
                   <td>`+r.cantidad+`</td>
                   <td>`+r.inventario.nombre+`</td>
@@ -467,8 +470,9 @@ pagination: {
         <div><b>Usuario: </b>`+user.name+`</div>
         <table style="width: 100%;">
         <tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>`+contenido+`</table>
-        <hr style=" border: 4px dashed;"/>
-        <div style='text-align:right'>`+fecha+`</div>
+        <hr style=" border: 4px dashed;"/>`
+        if(prt){
+        cadena+=`<div style='text-align:right'>`+fecha+`</div>
         <div><b>NOMBRE</b> `+cliente.titular+`</div>
         <table style="width: 100%; ">
         <tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>`+contenido+`</table>
@@ -479,7 +483,7 @@ pagination: {
         <div class="textc"><b>OJO</b></div>
         <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO
           <br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJA<br>
-          * HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO EXCEPTO EL DIA MIERCOLES </b></div></div>`
+          * HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO EXCEPTO EL DIA MIERCOLES </b></div></div>`}
           console.log(cadena)
       let myWindow = window.open("", "Imprimir", "width=1000,height=1000")
         myWindow.document.write(cadena)

@@ -1103,19 +1103,24 @@ export default {
         },
     garantiaCancel2(){
           this.dialogGarantia2=false
-
+          let prt=false
           this.printboleta+="<hr style=' border: 4px dashed;'><div style='text-align:center'>OTROS</div><div><b>Cliente </b>"+this.client.local + ' - '+this.client.titular+"</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
           this.prestamolista.forEach(p => {
+            if(p.tipo=='EN PRESTAMO')  {
+              p.tipo="PRESTAMO"
+              prt=true
+            }
             this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
           })
           this.printboleta+="</table></div>"
-          this.printboleta+="<br><hr style=' border: 4px dashed;'><div><b>Cliente </b>"+this.client.local + ' - '+this.client.titular+"</div><div><b>Fecha: </b>"+this.fecha+"</div><div><b>Usuario: </b>"+this.$store.state.login.user.name +"</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
+          if(prt)
+          {this.printboleta+="<br><hr style=' border: 4px dashed;'><div><b>Cliente </b>"+this.client.local + ' - '+this.client.titular+"</div><div><b>Fecha: </b>"+this.fecha+"</div><div><b>Usuario: </b>"+this.$store.state.login.user.name +"</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
           this.prestamolista.forEach(p => {
             if(p.tipo=='EN PRESTAMO')  p.tipo="PRESTAMO"
 
             this.printboleta+="<tr><td>"+p.cantidad+"</td><td>"+p.nombre+"</td><td>"+p.efectivo+"</td><td>"+p.tipo+"</td></tr>"
           })
-          this.printboleta+="</table></div><br><br><div class='leyenda'><b><span style='text-align:center'>FIRMA<br>OJO</span>* SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS, CASO CONTRARIO SE DARA DE BAJA <br>* HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO, EXCEPTO EL DIA MIERCOLES <b></div>"
+          this.printboleta+="</table></div><br><br><div class='leyenda' style='text-align:center'><b>FIRMA<br>OJO</div><div class='leyenda'>* SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS, CASO CONTRARIO SE DARA DE BAJA <br>* HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO, EXCEPTO EL DIA MIERCOLES <b></div>"}
           let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
           myWindow.document.write(this.printboleta);
           myWindow.document.close();
