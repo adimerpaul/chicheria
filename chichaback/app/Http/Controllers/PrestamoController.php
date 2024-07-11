@@ -363,6 +363,8 @@ public function reporteventa(Request $request){
     {
 //        return $prestamo;
         $prestamo=Prestamo::find($id);
+        if(Logprestamo::where('prestamo_id',$prestamo->id)->count()>0)
+            return false;
         if($prestamo->estado=='VENTA'){
             $general=General::find(1);
             $general->monto=$general->monto -  $prestamo->efectivo;
