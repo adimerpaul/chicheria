@@ -47,7 +47,7 @@
               <div class="col-12"><q-table dense :rows="listPrestamo" :columns="colregistro" row-key="name" >
                 <template v-slot:body-cell-op="props" >
                   <q-td key="op" :props="props">
-                      <q-btn color="red" icon="delete" dense @click="delListPres(props)"/>                     
+                      <q-btn color="red" icon="delete" dense @click="delListPres(props)"/>
                   </q-td>
                 </template>
                 </q-table>
@@ -675,8 +675,7 @@ pagination: {
         this.pagination.page=res.data.current_page
         this.pagination.last_page=res.data.last_page
         res.data.data.forEach(element => {
-            if(element.estado=='ANULADO')
-              element.estado='BAJA';
+
             this.listadop.push(element)
         });
 
