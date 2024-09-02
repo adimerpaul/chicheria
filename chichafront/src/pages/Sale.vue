@@ -290,7 +290,7 @@
 <div class="col-12">
   <q-table  v-model:pagination="pagination" title="Ventas" :rows="ventas" :columns="columnas" row-key="name" :filter="filter" :rows-per-page-options="[0]">
     <template v-slot:top-right>
-      <q-input outlined dense debounce="300" v-model="filter" placeholder="Search" @update:modelValue="consultaVenta">
+      <q-input outlined dense debounce="300" v-model="filter" placeholder="Search" @update:modelValue="consultaVenta(type)">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
