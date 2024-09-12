@@ -127,6 +127,7 @@ export default {
       options: [],
       props: [],
       cajachica:0,
+      montogeneral:0,
       columns: [
         {name: "fecha", align: "left", label: "FECHA ", field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true,},
         {name: "monto", align: "left", label: "MONTO", field: "monto", sortable: true,},
@@ -146,6 +147,11 @@ export default {
 
   },
   methods: {
+    totalgeneral(){
+      this.$axios.post(process.env.API + "/totalgeneral").then((res) => {
+          this.montogeneral=parseFloat( res.data.monto);
+      })
+      },
       deleteRow(logcaja){
       this.$q.dialog({
         title: 'Confirmar',
@@ -203,6 +209,15 @@ export default {
         {
                     this.$q.notify({
           message:'No debe ser Mayor a lo q esta en caja',
+          icon:'close',
+          color:'red'
+        })
+            return false
+        }
+        if(this.dato.tipo=='AGREGAR' && parseFloat(this.dato.monto) > parseFloat(this.montogeneral))
+        {
+                    this.$q.notify({
+          message:'No debe ser Mayor a lo q esta en caja General',
           icon:'close',
           color:'red'
         })

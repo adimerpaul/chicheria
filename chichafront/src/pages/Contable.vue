@@ -172,6 +172,7 @@ export default {
       this.listado();
   },
   methods: {
+    
           onPago(){
       this.$axios.post(process.env.API+'/pago',this.regpago).then(res=>{
           this.regpago={};
@@ -198,8 +199,10 @@ export default {
         })
         this.$axios.post(process.env.API+'/repventpago',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
       //  console.log(res.data)
-        if(res.data.total > 0 )
-          this.ingreso.push({detalle:'CxC pagos',total:res.data.total,ingreso:res.data.total,egreso:0})
+        if(res.data){
+          let resultado=res.data[0]
+          this.ingreso.push({detalle:'CxC pagos',total:resultado.total,ingreso:resultado.total,egreso:0})
+        }
         this.$axios.post(process.env.API+'/repingprestamo',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
         //console.log(res.data)
         res.data.forEach(r=>{

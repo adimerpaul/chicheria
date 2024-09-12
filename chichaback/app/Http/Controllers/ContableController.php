@@ -68,7 +68,8 @@ class ContableController extends Controller
     }
 
     public function repventpago(Request $request){
-        return DB::SELECT("SELECT sum(monto) total from pagos where fecha>='$request->fecha1' AND fecha<='$request->fecha2'")[0];
+        $res=DB::SELECT("SELECT sum(monto) total from pagos where fecha>='$request->fecha1' AND fecha<='$request->fecha2'");
+        return $res;
     }
 
     public function repingprestamo(Request $request){
