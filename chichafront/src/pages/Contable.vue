@@ -198,7 +198,7 @@ export default {
         })
         this.$axios.post(process.env.API+'/repventpago',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
       //  console.log(res.data)
-        if(res.data.total!=null && res.data.total!=undefined)
+        if(res.data.total > 0 )
           this.ingreso.push({detalle:'CxC pagos',total:res.data.total,ingreso:res.data.total,egreso:0})
         this.$axios.post(process.env.API+'/repingprestamo',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
         //console.log(res.data)
