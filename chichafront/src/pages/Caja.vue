@@ -205,7 +205,7 @@ export default {
     },
 
     onSubmit() {
-        if(this.dato.tipo=='RETIRA' || parseFloat(this.dato.monto) > parseFloat(this.cajachica.monto))
+        if(this.dato.tipo=='RETIRA' && parseFloat(this.dato.monto) > parseFloat(this.cajachica.monto))
         {
                     this.$q.notify({
           message:'No debe ser Mayor a lo q esta en caja',
@@ -214,7 +214,7 @@ export default {
         })
             return false
         }
-        if(this.dato.tipo=='AGREGAR' || parseFloat(this.dato.monto) > parseFloat(this.montogeneral))
+        if(this.dato.tipo=='AGREGA' && parseFloat(this.dato.monto) > parseFloat(this.montogeneral))
         {
                     this.$q.notify({
           message:'No debe ser Mayor a lo q esta en caja General',
