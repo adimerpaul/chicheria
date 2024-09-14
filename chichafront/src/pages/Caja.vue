@@ -144,11 +144,13 @@ export default {
 
     this.misdatos();
     this.totalcaja();
+    this.totalgeneral();
 
   },
   methods: {
     totalgeneral(){
       this.$axios.post(process.env.API + "/totalgeneral").then((res) => {
+        console.log(res.data)
           this.montogeneral=parseFloat( res.data.monto);
       })
       },
@@ -239,6 +241,7 @@ export default {
         });
         this.alert = false;
         this.misdatos();
+        this.totalgeneral();
       }).catch(err=>{
         console.log(err.response.data);
         this.$q.notify({

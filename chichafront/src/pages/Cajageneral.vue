@@ -543,7 +543,7 @@ export default {
 
 
     onSubmit() {
-        if(this.dato.tipo=='RETIRAR' || parseFloat(this.dato.monto) > parseFloat(this.cajageneral.monto))
+        if(this.dato.tipo=='RETIRAR' && parseFloat(this.dato.monto) > parseFloat(this.cajageneral.monto))
         {
                     this.$q.notify({
           message:'No debe ser Mayor a lo q esta en caja',
