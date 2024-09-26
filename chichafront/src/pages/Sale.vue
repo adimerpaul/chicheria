@@ -970,7 +970,7 @@ export default {
           p.cantidad=0
           this.products.push(p)
         })
-      })
+
       this.clients = []
       this.$api.get(`/listacliente2/${type}`).then(res => {
         res.data.forEach(c => {
@@ -980,7 +980,7 @@ export default {
         this.clients2=this.clients
       })
       this.$q.loading.hide()
-
+    })
     },
     filterFn (val, update) {
       if (val === '') {
