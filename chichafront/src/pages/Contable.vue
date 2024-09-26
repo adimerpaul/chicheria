@@ -103,6 +103,9 @@
                     <q-input type="text" label="Caja Chica Total" label-color="info"  v-model="totalchica"  outlined/>
                   </div>
                   <div class="col-3 q-pa-md">
+                    <q-input type="text" label="SALDO C CHICA" label-color="warning"  v-model="totalch"  outlined/>
+                  </div>
+                  <div class="col-3 q-pa-md">
                     <q-input type="text" label="Balance" label-color="teal"  outlined v-model="balance"/>
                   </div>
                 </div>
@@ -124,6 +127,7 @@ import moment from 'moment'
 export default {
   data(){
     return{
+      totalch:0,
       fecha1:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
       resumen:[],
@@ -170,9 +174,16 @@ export default {
     $('#example3').DataTable( )
 
       this.listado();
+      
   },
   methods: {
-    
+      getSaldoCh(){
+      this.$axios.post(process.env.API+'/totalCajaIng',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+        this.totalch=res.data
+        console.log(res.data)
+      })
+
+      },
           onPago(){
       this.$axios.post(process.env.API+'/pago',this.regpago).then(res=>{
           this.regpago={};
@@ -190,7 +201,7 @@ export default {
       this.ingreso=[]
       this.egreso=[]
       this.cchica=[]
-
+      this.getSaldoCh()
       this.$axios.post(process.env.API+'/repventa',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
 
         res.data.forEach(r=>{
@@ -199,7 +210,7 @@ export default {
         })
         this.$axios.post(process.env.API+'/repventpago',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
       //  console.log(res.data)
-        if(res.data){
+        if(res.data[0].total>0){
           let resultado=res.data[0]
           this.ingreso.push({detalle:'CxC pagos',total:resultado.total,ingreso:resultado.total,egreso:0})
         }
@@ -207,7 +218,7 @@ export default {
         //console.log(res.data)
         res.data.forEach(r=>{
         if(r.total!=null && r.total!=undefined)
-          this.ingreso.push({detalle:'Prest/mat '+r.estado,total:r.total,ingreso:r.total,egreso:0})
+          this.ingreso.push({detalle:'Anulacion Prestamo/ Venta '+r.estado,total:r.total,ingreso:r.total,egreso:0})
         })
 
       })

@@ -87,4 +87,10 @@ class ContableController extends Controller
     public function repcaja(Request $request){
         return DB::SELECT("SELECT g.nombre as glosa,sum(monto) total FROM logcajas l inner join glosas g on l.glosa_id=g.id WHERE l.tipo='GASTO' and fecha>='$request->fecha1' AND fecha<='$request->fecha2' group by g.nombre");
     }
+
+    public function totalCajaIng(Request $request){
+        $res1= DB::SELECT("SELECT sum(monto) saldo FROM logcajas  WHERE tipo='AGREGA' and fecha>='$request->fecha1' AND fecha<='$request->fecha2' ") [0];
+        $res2= DB::SELECT("SELECT sum(monto) total FROM logcajas  WHERE tipo='RETIRA' and fecha>='$request->fecha1' AND fecha<='$request->fecha2' ")[0];
+        return $res1->saldo - $res2->total;
+    }
 }

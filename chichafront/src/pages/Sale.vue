@@ -972,13 +972,12 @@ export default {
         })
       })
       this.clients = []
-      this.clients2 = []
       this.$api.get(`/listacliente2/${type}`).then(res => {
         res.data.forEach(c => {
           c.label=c.ci+' '+c.local+' '+c.titular
-          this.clients2.push(c)
           this.clients.push(c)
         })
+        this.clients2=this.clients
       })
       this.$q.loading.hide()
 

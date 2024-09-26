@@ -152,7 +152,8 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
 
     Route::post('/loginHistorial',[\App\Http\Controllers\UserController::class,'loginHistorial']);
 
-
+    Route::post('/totalCajaIng',[\App\Http\Controllers\ContableController::class,'totalCajaIng']);
+    
     
 
 });

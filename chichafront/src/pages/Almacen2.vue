@@ -157,7 +157,7 @@
               <q-btn dense round flat color="purple" icon="list" v-if="$store.state.login.egresoMaterial && props.row.recuentos.length>0" @click="listrecuento(props.row)">
                 <q-tooltip>Ver Retiros</q-tooltip>
               </q-btn>
-              <q-btn dense round flat color="yellow-9" icon="o_edit" v-if="$store.state.login.editalmacen && props.row.estado=='POR PAGAR'" @click="editcompra(props.row)">
+              <q-btn dense round flat color="yellow-9" icon="o_edit" v-if="$store.state.login.editalmacen " @click="editcompra(props.row)">
                 <q-tooltip>Editar</q-tooltip>
               </q-btn>
               <q-btn dense round flat color="red"  icon="delete" v-if="$store.state.login.editalmacen && props.row.estado=='POR PAGAR'" @click="delcompra(props.row)">
