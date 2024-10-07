@@ -119,6 +119,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/repgastos',[\App\Http\Controllers\ContableController::class,'repgastos']);
     Route::post('/repcompra',[\App\Http\Controllers\ContableController::class,'repcompra']);
     Route::post('/repcaja',[\App\Http\Controllers\ContableController::class,'repcaja']);
+    Route::post('/repcaja2',[\App\Http\Controllers\ContableController::class,'repcaja2']);
     Route::post('/consultar',[\App\Http\Controllers\CompraController::class,'consultar']);
     Route::post('/consultar2',[\App\Http\Controllers\CompraController::class,'consultar2']);
 //    observacionAdmin

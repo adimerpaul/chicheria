@@ -103,7 +103,7 @@
                     <q-input type="text" label="Caja Chica Total" label-color="info"  v-model="totalchica"  outlined/>
                   </div>
                   <div class="col-3 q-pa-md">
-                    <q-input type="text" label="SALDO C CHICA" label-color="warning"  v-model="totalch"  outlined/>
+                    <q-input type="text" label="SALDO C CHICA" label-color="warning"  v-model="montocajachica"  outlined/>
                   </div>
                   <div class="col-3 q-pa-md">
                     <q-input type="text" label="Balance" label-color="teal"  outlined v-model="balance"/>
@@ -127,6 +127,7 @@ import moment from 'moment'
 export default {
   data(){
     return{
+      montocajachica:0,
       totalch:0,
       fecha1:date.formatDate(new Date(),'YYYY-MM-DD'),
       fecha2:date.formatDate(new Date(),'YYYY-MM-DD'),
@@ -177,6 +178,11 @@ export default {
       
   },
   methods: {
+    totalcaja(){
+      this.$axios.post(process.env.API + "/totalcaja").then((res) => {
+          this.montocajachica=res.data.monto;
+      })
+    },
       getSaldoCh(){
       this.$axios.post(process.env.API+'/totalCajaIng',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
         this.totalch=res.data
@@ -201,7 +207,7 @@ export default {
       this.ingreso=[]
       this.egreso=[]
       this.cchica=[]
-      this.getSaldoCh()
+      this.totalcaja()
       this.$axios.post(process.env.API+'/repventa',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
 
         res.data.forEach(r=>{
@@ -257,6 +263,12 @@ export default {
           res.data.forEach(r => {
             this.cchica.push({detalle:r.glosa,total:r.total,egreso:r.total,ingreso:0})})
 
+      this.$axios.post(process.env.API+'/repcaja2',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
+        console.log(res.data)
+          
+          this.cchica.push({detalle:'RETIRO SALDO TOTAL',total:(res.data[0].total*(-1)),ingreso:0})
+      })
+
 
          // console.log(this.egreso)
 
@@ -302,10 +314,11 @@ export default {
         totalcaja=totalcaja+r.egreso;
         cadena+="<tr><td>"+r.detalle+"</td><td>"+r.egreso+"</td></tr>"
         })
-        var ttotal=totalingreso - totalegreso - totalcaja
+        var ttotal=totalingreso - totalegreso - totalcaja +this.montocajachica
         cadena+="</table><div><b>TOTAL INGRESO: </b> "+ totalingreso+" Bs</div>\
         <div><b>TOTAL EGRESO: </b> "+ totalegreso+" Bs</div>\
         <div><b>T. CJA CHICA: </b> "+ totalcaja+" Bs</div>\
+        <div><b>SALDO CJA CHICA: </b> "+ this.montocajachica+" Bs</div>\
         <div><b>BALANCE: </b> "+ ttotal+" Bs</div>"
 
         let myWindow = window.open("_blank");

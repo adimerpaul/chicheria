@@ -178,4 +178,6 @@ class LogcajaController extends Controller
     public function repcaja(Request $request){
         return DB::SELECT("SELECT SUM(total) as total from planillas where fechapago >= '$request->fecha1' and  fechapago <= '$request->fecha2'");
     }
+
+
 }

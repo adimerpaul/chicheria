@@ -99,7 +99,7 @@
               color="red"
               @click="deleteRow(r)"
               icon="delete"
-              v-if="$store.state.login.user.id==1"
+              v-if="$store.state.login.user.id==1 && (r.tipo=='AGREGAR' || r.tipo=='RETIRAR')"
             ><q-tooltip>Eliminar</q-tooltip></q-btn>
       <td>
       </td>

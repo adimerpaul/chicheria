@@ -93,4 +93,10 @@ class ContableController extends Controller
         $res2= DB::SELECT("SELECT sum(monto) total FROM logcajas  WHERE tipo='RETIRA' and fecha>='$request->fecha1' AND fecha<='$request->fecha2' ")[0];
         return $res1->saldo - $res2->total;
     }
+
+    public function repcaja2(Request $request){
+        return DB::SELECT("SELECT SUM(monto) as total from logcajas 
+        where fecha >= '$request->fecha1' and  fecha <= '$request->fecha2'
+        and tipo='RETIRA' ");
+    }
 }
