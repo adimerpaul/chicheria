@@ -73,7 +73,21 @@ class ContableController extends Controller
     }
 
     public function repingprestamo(Request $request){
-        return DB::SELECT("SELECT estado,sum(efectivo) total from prestamos where fecha>='$request->fecha1' AND fecha<='$request->fecha2' and estado in('VENTA','ANULADO') GROUP by estado;");
+        return DB::SELECT("SELECT estado, SUM(efectivo) as total 
+FROM prestamos 
+WHERE fecha >= '$request->fecha1' 
+AND fecha <= '$request->fecha2' 
+AND estado = 'VENTA' 
+GROUP BY estado
+
+UNION
+
+SELECT estado, SUM(efectivo) as total 
+FROM prestamos 
+WHERE fechaAnulacion >= '$request->fecha1' 
+AND fechaAnulacion <= '$request->fecha2' 
+AND estado = 'ANULADO' 
+GROUP BY estado;");
     }
 
     public function repgastos(Request $request){
