@@ -266,7 +266,7 @@ export default {
       this.$axios.post(process.env.API+'/repcaja2',{fecha1:this.fecha1,fecha2:this.fecha2}).then(res=>{
         console.log(res.data)
           
-          this.cchica.push({detalle:'RETIRO SALDO TOTAL',total:(res.data[0].total*(-1)),ingreso:0})
+          this.cchica.push({detalle:'RETIRO SALDO TOTAL',total:(res.data[0].total*(-1)),egreso:(res.data[0].total*(-1)),ingreso:0})
       })
 
 
