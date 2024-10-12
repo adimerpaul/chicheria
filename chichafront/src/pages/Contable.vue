@@ -311,10 +311,11 @@ export default {
         })
         cadena+="</table><br><div>CAJA CHICA</div><table><tr><th style='width:50%'>DETALLE</th> <th>EGRESO</th></tr>"
               this.cchica.forEach(r=>{
-        totalcaja=totalcaja+r.egreso;
+                r.egreso+ parseFloat(r.egreso)
+        totalcaja=totalcaja + r.egreso;
         cadena+="<tr><td>"+r.detalle+"</td><td>"+r.egreso+"</td></tr>"
         })
-        var ttotal=totalingreso - totalegreso - totalcaja +this.montocajachica
+        var ttotal=totalingreso - totalegreso - totalcaja + parseFloat(this.montocajachica)
         cadena+="</table><div><b>TOTAL INGRESO: </b> "+ totalingreso+" Bs</div>\
         <div><b>TOTAL EGRESO: </b> "+ totalegreso+" Bs</div>\
         <div><b>T. CJA CHICA: </b> "+ totalcaja+" Bs</div>\
