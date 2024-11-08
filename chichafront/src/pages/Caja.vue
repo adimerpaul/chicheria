@@ -99,7 +99,7 @@
               color="red"
               @click="deleteRow(props.row)"
               icon="delete"
-              v-if="props.row.tipo=='AGREGA' || props.row.tipo=='RETIRA'"
+              
             ><q-tooltip>Eliminar</q-tooltip></q-btn>
           </q-td>
 
