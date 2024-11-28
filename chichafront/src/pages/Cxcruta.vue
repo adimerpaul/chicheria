@@ -161,6 +161,7 @@
                     label="Monto"
                     hint="Efectivo"
                     type="number"
+                    step="0.1"
                     lazy-rules
                     :rules="[ val => val && val > 0 && val <=regpago.saldo || 'no exceder el monto']"
                     />
