@@ -1308,7 +1308,10 @@ export default {
       },
     agregarpago(){
 
-      console.log(this.empleadohistorial)
+      //console.log(this.empleadohistorial)
+      //console.log(this.empleado2.salario)
+      //console.log(this.totaldescuento)
+      //return false
       if(this.empleado2.tipo=='FIJO'){
         if((parseFloat(this.empleado2.salario)- this.totaldescuento) < parseFloat( this.pago.monto) && (this.pago.tipo=='ADELANTO' || this.pago.tipo=='DESCUENTO'))
         {
@@ -1515,8 +1518,9 @@ export default {
       totaldescuento(){
         let total=0;
       this.empleadohistorial.forEach(element => {
-        if(date.formatDate( element.fecha,'YYYY-MM') == date.formatDate(this.pago.fecha,'YYYY-MM'))
+        if (moment(element.fecha).format('YYYY-MM') === moment(this.pago.fecha).format('YYYY-MM'))
         if(element.tipo=='ADELANTO' || element.tipo=='DESCUENTO')
+          //console.log(element)
           total+=parseFloat(element.monto)
       });
       return total;
