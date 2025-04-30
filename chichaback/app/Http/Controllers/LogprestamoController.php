@@ -58,6 +58,7 @@ class LogprestamoController extends Controller
         $cadena="
 <table>
 
+<tr><td colspan ='2' style='font-size:10px; text-align:center;'><b>COMPROBANTE DE DEVOLUCION <br> DE GARANTIA</b></td></tr>
 <tr><td><b>Fecha:</b></td><td>".date('d/m/Y',strtotime($logpres->fecha))."</td></tr>
 <tr><td><b>Cliente:</b></td><td>$cliente->local  $cliente->titular</td></tr>
 <tr><td><b>Item:</b></td><td> $inv->nombre</td></tr>
@@ -92,6 +93,7 @@ class LogprestamoController extends Controller
         $cadena="
         <table>
 
+        <tr><td colspan ='2' style='font-size:10px; text-align:center;'><b>COMPROBANTE DE DEVOLUCION <br> DE GARANTIA</b></td></tr>
         <tr><td><b>Fecha:</b></td><td>".date('d/m/Y',strtotime($devol->fecha))."</td></tr>
         <tr><td><b>Cliente:</b></td><td>$cliente->local  $cliente->titular</td></tr>
         <tr><td><b>Item:</b></td><td> $inv->nombre</td></tr>

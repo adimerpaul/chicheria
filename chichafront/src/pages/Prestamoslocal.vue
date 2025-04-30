@@ -683,6 +683,7 @@ export default {
         size-font 6px;}
         </style>
         <div style="padding:5px">
+         <div style='text-align:center; font-size:10px;'>Detalle de Prestamo o <br> Venta de Envases</div>
         <div style='text-align:right'>`+fecha+`</div>
         <div><b>Nombre:</b> `+cliente.titular+`</div>
         <div><b>Usuario: </b>`+user.name+`</div>
@@ -699,9 +700,7 @@ export default {
         <div class="textc">Firma</div>
         <br>
         <div class="textc"><b>OJO</b></div>
-        <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO
-          <br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJA<br>
-          * HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO EXCEPTO EL DIA MIERCOLES </b></div></div>`}
+        <div class="leyenda"><b>*  Accepto todas las condiciones y terminos de prestamo de envases </b></div></div>`}
           console.log(cadena)
       let myWindow = window.open("", "Imprimir", "width=1000,height=1000")
         myWindow.document.write(cadena)
