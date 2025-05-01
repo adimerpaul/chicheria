@@ -183,9 +183,9 @@
         Desea registrar préstamo o venta de material?
       </q-card-section>
       <q-card-actions align="center">
-          <q-btn flat label="FINALIZAR" color="accent"  @click="garantiaFin"/>
-        <q-btn flat label="OK" color="green"  @click="garantiaOk"/>
-        <q-btn flat label="IMPRIMIR" color="red"  @click="garantiaCancel"/>
+        <q-btn flat label="FINALIZAR" color="red"  @click="garantiaCancel"/>
+        <q-btn flat label="NO" color="accent"  @click="garantiaFin"/>
+        <q-btn flat label="SI" color="green"  @click="garantiaOk"/>
       </q-card-actions>
     </q-card>
   </q-dialog>

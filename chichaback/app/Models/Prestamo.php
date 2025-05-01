@@ -20,7 +20,7 @@ class Prestamo extends Model
         'cliente_id',
         'inventario_id',
     ];
-    protected $hidden = ["created_at", "updated_at"];
+    protected $hidden = [ "updated_at"];
 
     public function cliente(){
         return $this->belongsTo(Cliente::class);
