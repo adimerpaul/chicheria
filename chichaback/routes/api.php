@@ -155,6 +155,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
 
     Route::post('/totalCajaIng',[\App\Http\Controllers\ContableController::class,'totalCajaIng']);
     
+    Route::get('/empleadoSueldo',[\App\Http\Controllers\EmpleadoController::class,'empleadoSueldo']);
     
 
 });

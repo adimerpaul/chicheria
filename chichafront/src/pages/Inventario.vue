@@ -3,22 +3,23 @@
       <div class="col-12">
             <div class="text-h6">
               <div style="text-align:center">REGISTRO DE INVENTARIO DE MATERIALES</div>
-<!--              <q-btn label="Registrar" icon="add" color="positive" @click="crear = true" />-->
+             <q-btn label="Registrar" icon="add" color="positive" @click="crear = true" />
             </div>
             <!--            <div class="text-subtitle2">by John Doe</div>-->
-<!--          <q-dialog v-model="crear" >-->
-<!--            <q-card style="width: 700px; max-width: 80vw;">-->
-<!--              <q-card-section>-->
-<!--                <div class="text-h6">Registro nuevo Material</div>-->
-<!--              </q-card-section>-->
-<!--              <q-card-section>-->
+         <q-dialog v-model="crear" >
+           <q-card style="width: 700px; max-width: 80vw;">
+             <q-card-section>
+               <div class="text-h6">Registro nuevo Material</div>
+             </q-card-section>
+             <q-card-section>
+
                 <q-form
                   @submit="registrar"
                   @reset="onReset"
                   class="q-gutter-md"
                 >
                   <div class="row">
-                    <div class="col-12 col-sm-2 q-pa-xs">
+                    <div class="col-12 col-sm-6 q-pa-xs">
                       <q-input
                         outlined
                         dense
@@ -33,7 +34,7 @@
                           ]"
                       />
                     </div>
-                    <div class="col-12 col-sm-2 q-pa-xs">
+                    <div class="col-12 col-sm-6 q-pa-xs">
                       <q-input
                         outlined
                         dense
@@ -47,7 +48,7 @@
                           val => val.length > 0 || 'Por favor ingrese dato']"
                       />
                     </div>
-                    <div class="col-12 col-sm-2 q-pa-xs">
+                    <div class="col-12 col-sm-6 q-pa-xs">
                       <q-input
                         outlined
                         dense
@@ -59,7 +60,7 @@
                       />
 
                     </div>
-                    <div class="col-12 col-sm-2 q-pa-xs">
+                    <div class="col-12 col-sm-6 q-pa-xs">
                       <q-input
                         outlined
                         dense
@@ -72,7 +73,7 @@
                       />
 
                     </div>
-                    <div class="col-12 col-sm-2 q-pa-xs">
+                    <div class="col-12 col-sm-6 q-pa-xs">
                       <q-input
                         outlined
                         dense
@@ -84,7 +85,7 @@
                       />
 
                     </div>
-                    <div class="col-12 col-sm-2 q-pa-xs">
+                    <div class="col-12 col-sm-6 q-pa-xs">
 
                       <q-input
                         outlined
@@ -98,7 +99,7 @@
 
 
                     </div>
-                    <div class="col-12 col-sm-2 q-pa-xs ">
+                    <div class="col-12 col-sm-6 q-pa-xs ">
                         <q-btn label="Registrar" type="submit" color="primary" icon="send" />
                     </div>
 <!--                    <div class="col-sm-2">-->
@@ -111,10 +112,10 @@
 
 
                 </q-form>
-<!--              </q-card-section>-->
+              </q-card-section>
 
-<!--            </q-card>-->
-<!--          </q-dialog>-->
+          </q-card>
+          </q-dialog>
 <!--
         <div class="q-pa-md">
           <q-table
@@ -193,8 +194,8 @@
                   </td>
                   <td>
                   
-                <q-btn  dense round flat color="green" @click="addRow(v)" icon="add"><q-tooltip>Agregar Prod</q-tooltip></q-btn>
-                <q-btn  dense round flat color="red" @click="substractRow(v)" icon="remove"><q-tooltip>Retirar Prod</q-tooltip></q-btn>
+                <q-btn  dense round flat color="green" @click="addRow(v)" icon="add" v-if="$store.state.login.editinventario"><q-tooltip>Agregar Prod</q-tooltip></q-btn>
+                <q-btn  dense round flat color="red" @click="substractRow(v)" icon="remove" v-if="$store.state.login.editinventario"><q-tooltip>Retirar Prod</q-tooltip></q-btn>
 
                 <q-btn dense round flat color="accent" @click="logRow(v)" icon="list"><q-tooltip>Listado </q-tooltip></q-btn>
                 <q-btn dense round flat color="yellow" @click="editRow(v)" icon="edit" v-if="$store.state.login.editinventario"><q-tooltip>Editar</q-tooltip></q-btn>

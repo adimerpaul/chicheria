@@ -53,6 +53,7 @@ export function auth_success(state, data){
   state.almacenCrearMateriaPrima= data.user.permisos.find(p=>p.id===42)!=undefined
   state.almacenHistorialPago=data.user.permisos.find(p=>p.id===43)!=undefined
   state.empleadoSueldo=data.user.permisos.find(p=>p.id===44)!=undefined
+  state.editcajachica=data.user.permisos.find(p=>p.id===45)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'
@@ -104,4 +105,5 @@ export function salir(state){
   state.almacenCrearMateriaPrima= false
   state.almacenHistorialPago=false
   state.empleadoSueldo=false
+  state.editcajachica=false
 }

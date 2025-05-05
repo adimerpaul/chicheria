@@ -6,14 +6,16 @@
       @click="alert = true"
       icon="add_circle"
       class="q-mb-xs"
+      v-if="this.$store.state.login.editcajachica"
     />
                 <q-form @submit.prevent="misdatos">
             <div class="row">
-            <div class="col-3  q-pa-xs"><q-input type="date" label="fecha" v-model="fecha1" outlined required/></div>
-            <div class="col-3  q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required v-if="rango=='RANGO'"/></div>
-            <div class="col-3" ><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'" style="width:100%"/></div>
+            <div class="col-3  q-pa-xs"><q-input type="date" label="fecha" v-model="fecha1" outlined required dense /></div>
+            <div class="col-3  q-pa-xs"><q-input type="date" label="fecha" v-model="fecha2" outlined required dense v-if="rango=='RANGO'"/></div>
+            <div class="col-2" ><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'" style="width:100%"/></div>
             <div class="col-3  q-pa-xs flex flex-center">
-              <q-btn color="info"  label="Consultar" icon="search" type="submit" />
+              <q-btn color="info"  label="Consultar" icon="search" type="submit" dense/>
+              <q-btn color="teal"  label="Gasto Cja Chica" icon="edit" @click="dialogcajachica=true" dense/>
 
             </div>
             </div>
@@ -99,13 +101,53 @@
               color="red"
               @click="deleteRow(props.row)"
               icon="delete"
-              
+              v-if="this.$store.state.login.editcajachica"
             ><q-tooltip>Eliminar</q-tooltip></q-btn>
           </q-td>
 
       </template>
-    </q-table>
 
+    </q-table>
+    <q-dialog v-model="dialogcajachica">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Registro Gasto de Caja Chica {{cajachica.monto}} Bs</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-form @submit.prevent="agregarcjchica">
+            <div class="row">
+          <div class="col-12">
+          <q-select outlined v-model="glosa" :options="glosas" label="Glosa" use-input @filter="filterFn"     dense  >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-grey">
+                  No results
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+        </div>
+              <div class="col-12">
+                <q-input outlined label="Monto" type="number" step="0.1" v-model="cchica.precio"
+                  :rules="[
+                  val => val>0 && val<= cajachica  || 'No debe exceder el monto',
+                  ]"
+              lazy-rules/>
+              </div>
+               <div class="col-12">
+                <q-input outlined label="Observacion" type="text" v-model="cchica.observacion" />
+              </div>
+              <div class="col-3 flex flex-center">
+                <q-btn label="Registrar" type="submit" icon="send" color="info" :loading="loading" dense/>
+              </div>
+            </div>
+          </q-form>
+        </q-card-section>
+        <q-card-actions align="right" class="bg-white text-teal">
+          <q-btn flat label="Cerrar" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
 
   </div>
@@ -118,6 +160,10 @@ import moment from 'moment'
 export default {
   data() {
     return {
+      glosa:{},
+      loading:false,
+      cchica:{},     
+      dialogcajachica:false,
       alert: false,
       filter:'',
         fecha1:date.formatDate(Date.now(),'YYYY-MM-DD'),
@@ -139,6 +185,9 @@ export default {
 
       ],
       data: [],
+      glosas:[],
+      filterglosa:[],
+
     };
   },
   created() {
@@ -146,9 +195,80 @@ export default {
     this.misdatos();
     this.totalcaja();
     this.totalgeneral();
+    this.misglosa();
 
   },
   methods: {
+    agregarcjchica(){
+      if(this.glosa.id==undefined)
+      {
+        return false
+      }
+      if(this.montocajachica < this.cchica.precio){
+        this.$q.notify({
+          color: 'red-4',
+          textColor: 'white',
+          icon: 'info',
+          message: 'No Existe suficiente en Caja Chica'
+        })
+        return false
+      }
+      this.loading=true
+
+      this.cchica.glosa_id=this.glosa.id
+      //console.log(this.cchica)
+      //  return false
+      this.$q.loading.show()
+
+      this.$axios.post(process.env.API + "/gastocaja",this.cchica).then((res) => {
+                        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        this.$q.loading.hide()
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+        this.cchica.precio=0;
+        this.cchica.observacion='';
+        this.dialogcajachica=false;
+        this.glosa={label:''}
+        this.misdatos()
+        this.totalcaja()
+        this.loading=false
+                this.$q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: 'Registrado correctamente'
+        })
+      })
+    },
+    misglosa(){
+          this.glosas=[{label:''}]
+      this.$axios.get(process.env.API+'/glosa').then(res=>{
+        //console.log(res.data)
+        res.data.forEach(r => {
+          r.label=r.nombre
+          this.glosas.push(r);
+
+        });
+        this.filterglosa=this.glosas
+        this.glosa=this.glosas[0];
+      })
+    },
+    filterFn (val, update) {
+        if (val === '') {
+          update(() => {
+            this.glosas = this.filterglosa
+          })
+          return
+        }
+
+        update(() => {
+          const needle = val.toLowerCase()
+          this.glosas = this.filterglosa.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+        })
+      },
+
     totalgeneral(){
       this.$axios.post(process.env.API + "/totalgeneral").then((res) => {
         console.log(res.data)

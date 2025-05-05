@@ -19,6 +19,11 @@ class EmpleadoController extends Controller
         return Empleado::with('planillas')->with('sueldos')->orderBy('nombre','asc')->get();
     }
 
+    public function empleadoSueldo()
+    {
+        return Empleado::with('planillas')->with('sueldos')->where('estado','ACTIVO')->orderBy('nombre','asc')->get();
+    }
+
     public function listEmpleado()
     {
         return Empleado::where('estado','ACTIVO')->orderBy('nombre','asc')->get();

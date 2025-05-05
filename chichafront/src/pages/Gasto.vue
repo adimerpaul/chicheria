@@ -764,7 +764,6 @@ xlsx(datacaja, settings) // Will download the excel file
           message: 'Registrado correctamente'
         })
       })
-
     },
       totalcaja(){
       this.$axios.post(process.env.API + "/totalcaja").then((res) => {
