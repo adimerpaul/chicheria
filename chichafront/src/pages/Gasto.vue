@@ -7,50 +7,60 @@
     <div class="col-6 col-sm-2 q-pa-xs"><q-input dense type="date" label="fecha" v-model="fecha1" outlined required/></div>
     <div class="col-6 col-sm-2 q-pa-xs" v-if="rango=='RANGO'"><q-input dense type="date" label="fecha" v-model="fecha2" outlined required/></div>
     <div class="col-6 col-sm-2 q-pa-xs"><q-toggle v-model="rango" true-value="RANGO" false-value="DIA" :label="rango +' FECHA'"/></div>
-
     <div class="col-6 col-sm-3 q-pa-xs" v-if="$store.state.login.gastoreporteuser"><q-select dense v-model="user" :options="users" label="Usuarios" outlined /></div>
     <div class="col-6 col-sm-3 q-pa-xs flex flex-center">
       <q-btn color="info"  label="Consultar" icon="search" type="submit" @click="misgastos" />
     </div>
-    <div class="col-12">
-      <q-form @submit.prevent="agregar">
-        <div class="row">
-          <div class="col-12 q-pa-xs col-sm-1">
-          <q-input dense outlined type="number" step="0.1" label="Precio" v-model="empleado.precio" required
-                   :rules="[
-                     val => val>0  && val<= montogeneral || 'No debe exceder el monto',
-                    ]"
-          /></div>
-          <div class="col-12 q-pa-xs col-sm-3">
-            <q-select outlined v-model="glosa" :options="glosas" label="Glosa" use-input @filter="filterFn"     dense  >
-              <template v-slot:no-option>
-                <q-item>
-                  <q-item-section class="text-grey">
-                    No results
-                  </q-item-section>
-                </q-item>
-              </template>
-            </q-select>
-          </div>
-          <div class="col-12 q-pa-xs col-sm-1">
-             <q-btn color="green" icon="add_circle"  @click="dialogaddglosa=true" v-if="$store.state.login.editglosa"/>
 
+    <q-dialog v-model="dialogGasto">
+    <q-card>
+    <q-card-section>
+    <div class="text-h6">REGISTRO DE GASTO</div>
+    </q-card-section>
+    <q-card-section>
+      <div class="col-12">
+        <q-form @submit.prevent="agregar">
+          <div class="row">
+            <div class="col-12 q-pa-xs ">
+            <q-input dense outlined type="number" step="0.1" label="Precio" v-model="empleado.precio" required :rules="[val => val>0  && val<= montogeneral || 'No debe exceder el monto']"/></div>
+            <div class="col-10 q-pa-xs ">
+              <q-select outlined v-model="glosa" :options="glosas" label="Glosa" use-input @filter="filterFn"     dense  >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
+            <div class="col-2 q-pa-xs ">
+               <q-btn color="green" icon="add_circle"  @click="dialogaddglosa=true" v-if="$store.state.login.editglosa"/>
+  
+            </div>
+            <div class="col-12 q-pa-xs "><q-input dense outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
+            <div class="col-12 q-pa-xs "><q-input dense outlined label="Fecha " type="date" v-model="empleado.fecha" required/></div>
+            <div class="col-12 q-pa-xs  flex flex-center">
+              <q-btn icon="send" :label="boolcrear?'CREAR':'MODIFICAR'" type="submit" :color="boolcrear?'positive':'warning'"/>
+            </div>
           </div>
-          <div class="col-12 q-pa-xs col-sm-3"><q-input dense outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
-          <div class="col-12 q-pa-xs col-sm-2"><q-input dense outlined label="Fecha " type="date" v-model="empleado.fecha" required/></div>
-<!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Celular" v-model="empleado.celular"/></div>-->
-<!--          <div class="col-12 q-pa-xs col-sm-2"><q-input outlined label="Salario" v-model="empleado.salario" type="number"/></div>-->
-          <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
-            <q-btn icon="send" :label="boolcrear?'CREAR':'MODIFICAR'" type="submit" :color="boolcrear?'positive':'warning'"/>
-          </div>
-        </div>
-      </q-form>
-                <div class="col-12 q-pa-xs col-sm-2 flex flex-center">
-                  <!--<div class="col-4"><q-select dense outlined label="Empleado" v-model="empleadopago" :options="empleados"/></div>
-            <q-btn icon="send" label="Adelanto" type="button" color="teal" @click="cargarPagos"/>-->
-            <q-btn icon="price_change" label="Caja Chica" type="button" color="accent" @click="cajachica=true"/>
-          </div>
-    </div>
+        </q-form>
+
+      </div>
+  
+    </q-card-section>
+    <q-card-actions align="right">
+    <q-btn flat label="cerrar" color="primary" v-close-popup />
+    </q-card-actions>
+    </q-card>
+    </q-dialog>
+    <div class="col-12 q-pa-xs  flex flex-center">
+      <!--<div class="col-4"><q-select dense outlined label="Empleado" v-model="empleadopago" :options="empleados"/></div>
+<q-btn icon="send" label="Adelanto" type="button" color="teal" @click="cargarPagos"/>-->
+<q-btn icon="price_change" label="REGISTRO PAGO" type="button" color="cyan" @click="dialogGasto=true"/>
+<q-btn icon="price_change" label="Caja Chica" type="button" color="accent" @click="cajachica=true"/>
+</div>
+
     <div class="col-3">
       <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir(user)" dense no-caps/>
     </div>
@@ -483,6 +493,7 @@ export default {
       pagos:false,
       cajachica:false,
       modifcajachica:false,
+      dialogGasto:false,
       pago:{fecha:date.formatDate( Date.now(),'YYYY-MM-DD')},
       empleados:[],
       empleadohistorial:{},
@@ -1703,8 +1714,11 @@ xlsx(datacaja, settings) // Will download the excel file
             glosa:r.glosa.nombre,
             precio:r.precio,
             fecha:moment(r.fecha).format('DD-MM-YYYY'),
+            fecha2:moment(r.fecha).format('YYYY-MM-DD'),
             hora:r.hora,
-            user:r.user.name
+            user:r.user.name,
+            gl:r.glosa,
+
           })
         })
           if(!this.$store.state.login.gastoreporteuser) this.user={label:this.$store.state.login.user.name,id:this.$store.state.login.user.id}
@@ -2677,10 +2691,13 @@ xlsx(datacaja, settings) // Will download the excel file
     },
     updateval(index){
       console.log(index)
-      index.glosa.label=index.glosa.nombre
-      this.glosa=index.glosa
+      //index.glosa.label=index.glosa.nombre
+      this.glosa=index.gl
+      this.glosa.label=this.glosa.nombre
       this.empleado=index
+      this.empleado.fecha=index.fecha2
       this.boolcrear=false
+      this.dialogGasto=true
       // this.detalles.splice(index, 1);
       // console.log(index)
       // this.$q.loading.show()
