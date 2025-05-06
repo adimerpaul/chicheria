@@ -361,7 +361,7 @@ export default {
   { name: 'titular', label: 'TITULAR', field: row=>row.cliente.titular, sortable: true,align:'left'},
    { name: 'telefono', label: 'TELEFONO', field: row=>row.cliente.telefono, sortable: true },
   { name: 'Inventario', label: 'INVENTARIO', field: row=>row.inventario.nombre, sortable: true,align:'left' },
-  { name: 'fecha', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY'), sortable: true },
+  { name: 'fecha', label: 'FECHA', field: row=>moment(row.fecha).format('DD/MM/YYYY')+' '+ moment(row.created_at).format('LT'), sortable: true },
       { name: 'fechaAnulacion', label: 'FECHA ANULACION', field: row=>moment(row.fechaAnulacion).format('DD/MM/YYYY'), sortable: true },
       { name: 'motivoanulacion', label: 'MOTIVO ANULACION', field: row=>row.motivoAnulacion, sortable: true },
   { name: 'estado', label: 'ESTADO', field: 'estado', sortable: true },
