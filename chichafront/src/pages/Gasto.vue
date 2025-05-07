@@ -36,7 +36,7 @@
             </div>
             <div class="col-2 q-pa-xs ">
                <q-btn color="green" icon="add_circle"  @click="dialogaddglosa=true" v-if="$store.state.login.editglosa"/>
-  
+
             </div>
             <div class="col-12 q-pa-xs "><q-input dense outlined label="Observacion" v-model="empleado.observacion" style="text-transform: uppercase" required/></div>
             <div class="col-12 q-pa-xs "><q-input dense outlined label="Fecha " type="date" v-model="empleado.fecha" required/></div>
@@ -47,7 +47,7 @@
         </q-form>
 
       </div>
-  
+
     </q-card-section>
     <q-card-actions align="right">
     <q-btn flat label="cerrar" color="primary" v-close-popup />
@@ -61,17 +61,15 @@
 <q-btn icon="price_change" label="Caja Chica" type="button" color="accent" @click="cajachica=true"/>
 </div>
 
-    <div class="col-3">
-      <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir(user)" dense no-caps/>
-    </div>
-    <div class="col-3 ">
-<!--      <div class="col-6 " >-->
-        <q-btn label="Imprimir mis ventas Detalle" icon="print" color="teal" style="width:100%"  @click="imprimirmisventasdetalle(user)" dense no-caps/>
-    </div>
-    <div class="col-3 ">
-        <q-btn label="Imprimir mis ventas Local" icon="print" color="warning" style="width:100%"  @click="imprimirmisventaslocal(user)" dense no-caps/>
-<!--      </div>-->
-    </div>
+<!--    <div class="col-3">-->
+<!--      <q-btn label="Imprimir mis gastos" icon="print" color="info" class="full-width" @click="imprimir(user)" dense no-caps/>-->
+<!--    </div>-->
+<!--    <div class="col-3 ">-->
+<!--        <q-btn label="Imprimir mis ventas Detalle" icon="print" color="teal" style="width:100%"  @click="imprimirmisventasdetalle(user)" dense no-caps/>-->
+<!--    </div>-->
+<!--    <div class="col-3 ">-->
+<!--        <q-btn label="Imprimir mis ventas Local" icon="print" color="warning" style="width:100%"  @click="imprimirmisventaslocal(user)" dense no-caps/>-->
+<!--    </div>-->
     <div class="col-3">
       <q-btn label="Imprimir mis ventas y gastos" icon="print" color="accent" class="full-width" @click="impresionventagasto(user)" dense no-caps/>
     </div>
