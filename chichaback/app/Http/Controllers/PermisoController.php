@@ -14,7 +14,7 @@ class PermisoController extends Controller
      */
     public function index()
     {
-        return Permiso::orderBy('orden')->get();
+        return Permiso::orderBy('grupo')->get();
     }
 
     /**
