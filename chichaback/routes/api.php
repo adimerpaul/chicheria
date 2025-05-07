@@ -154,8 +154,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/loginHistorial',[\App\Http\Controllers\UserController::class,'loginHistorial']);
 
     Route::post('/totalCajaIng',[\App\Http\Controllers\ContableController::class,'totalCajaIng']);
-    
-    Route::get('/empleadoSueldo',[\App\Http\Controllers\EmpleadoController::class,'empleadoSueldo']);
-    
 
+    Route::get('/empleadoSueldo',[\App\Http\Controllers\EmpleadoController::class,'empleadoSueldo']);
 });
+Route::get('/cuentasCobrarDetalle',[\App\Http\Controllers\ReporteController::class,'cuentasCobrarDetalle']);
