@@ -26,6 +26,7 @@ import Almacen from "pages/Almacen";
 import Contable from "pages/Contable";
 import Sale from "pages/Sale";
 import Almacen2 from "pages/Almacen2.vue";
+import Almacen3 from "pages/Almacen3.vue";
 // <<<<<<< HEAD
 // import User from "pages/User";
 // =======
@@ -66,6 +67,7 @@ const routes = [
       { path: 'planillas', component: Planillas,meta: {requiresAuth: true} },
       { path: 'almacen', component: Almacen,meta: {requiresAuth: true} },
       { path: 'almacen2', component: Almacen2,meta: {requiresAuth: true} },
+      { path: 'almacen3', component: Almacen3,meta: {requiresAuth: true} },
       { path: 'contable', component: Contable,meta: {requiresAuth: true} },
       { path: 'sale/:type', component: Sale,meta: {requiresAuth: true} },
 
