@@ -3,121 +3,121 @@
     <div class="col-12">
       <q-badge label="REGISTRO DE NUEVOS LOCALES " color="teal" class="full-width text-h6"/>
     </div>
-    <div class="col-12">
-      <q-card>
+<!--    <div class="col-12">-->
+<!--      <q-card>-->
 
-        <q-separator/>
+<!--        <q-separator/>-->
 
-        <q-form @submit="registrar(1)" class="q-gutter-md">
-          <div class="row">
-            <div class="col-12 col-sm-2">
-              <q-input
-                outlined
-                type="text"
-                v-model="cliente.local"
-                label="Local"
-                style="text-transform: uppercase"
-              />
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-input
-                outlined
-                type="text"
-                v-model="cliente.ci"
-                label="Cedula Identidad"
-                style="text-transform: uppercase"
-              />
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-input
-                outlined
-                v-model="cliente.titular"
-                type="text"
-                label="Nombre Completo"
-                style="text-transform: uppercase"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"
-              />
-            </div>
+<!--        <q-form @submit="registrar(1)" class="q-gutter-md">-->
+<!--          <div class="row">-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input-->
+<!--                outlined-->
+<!--                type="text"-->
+<!--                v-model="cliente.local"-->
+<!--                label="Local"-->
+<!--                style="text-transform: uppercase"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input-->
+<!--                outlined-->
+<!--                type="text"-->
+<!--                v-model="cliente.ci"-->
+<!--                label="Cedula Identidad"-->
+<!--                style="text-transform: uppercase"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input-->
+<!--                outlined-->
+<!--                v-model="cliente.titular"-->
+<!--                type="text"-->
+<!--                label="Nombre Completo"-->
+<!--                style="text-transform: uppercase"-->
+<!--                lazy-rules-->
+<!--                :rules="[ val => val && val.length > 0 || 'Por favor ingresar dato']"-->
+<!--              />-->
+<!--            </div>-->
 
-            <div class="col-12 col-sm-2">
-              <q-input
-                outlined
-                type="text"
-                v-model="cliente.telefono"
-                label="Telefono o Celular"
-                style="text-transform: uppercase"
-              />
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-input
-                type="date"
-                outlined
-                v-model="cliente.fechanac"
-                label="Fecha Nac"
-              />
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-input
-                type="text"
-                outlined
-                v-model="cliente.direccion"
-                label="Direccion*"
-                style="text-transform: uppercase"
-              />
-            </div>
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input-->
+<!--                outlined-->
+<!--                type="text"-->
+<!--                v-model="cliente.telefono"-->
+<!--                label="Telefono o Celular"-->
+<!--                style="text-transform: uppercase"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input-->
+<!--                type="date"-->
+<!--                outlined-->
+<!--                v-model="cliente.fechanac"-->
+<!--                label="Fecha Nac"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input-->
+<!--                type="text"-->
+<!--                outlined-->
+<!--                v-model="cliente.direccion"-->
+<!--                label="Direccion*"-->
+<!--                style="text-transform: uppercase"-->
+<!--              />-->
+<!--            </div>-->
 
-            <div class="col-12 col-sm-2">
-              <q-select outlined v-model="cliente.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo"/>
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-select outlined v-model="cliente.legalidad" :options="['CON LICENCIA','SIN LICENCIA']"
-                        label="Legalidad"/>
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-select outlined v-model="cliente.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']"
-                        label="Categoria"/>
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-input
-                type="text"
-                outlined
-                v-model="cliente.razon"
-                label="Razon Social"
-                style="text-transform: uppercase"
-              />
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-input
-                outlined
-                v-model="cliente.nit"
-                label="NIT"
-                type="text"
-                style="text-transform: uppercase"
-              />
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-input
-                outlined
-                v-model="cliente.observacion"
-                label="Observacion"
-                type="text"
-                style="text-transform: uppercase"
-              />
-            </div>
-            <div class="col-12 flex flex-center">
-              <q-btn label="Registrar" icon="send" type="submit" color="primary" class="full-width"/>
-            </div>
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-select outlined v-model="cliente.tipo" :options="['PROPIETARIO','INQUILINO']" label="Tipo"/>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-select outlined v-model="cliente.legalidad" :options="['CON LICENCIA','SIN LICENCIA']"-->
+<!--                        label="Legalidad"/>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-select outlined v-model="cliente.categoria" :options="['GENERAL','SIMPLIFICADO','SIN NIT']"-->
+<!--                        label="Categoria"/>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input-->
+<!--                type="text"-->
+<!--                outlined-->
+<!--                v-model="cliente.razon"-->
+<!--                label="Razon Social"-->
+<!--                style="text-transform: uppercase"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input-->
+<!--                outlined-->
+<!--                v-model="cliente.nit"-->
+<!--                label="NIT"-->
+<!--                type="text"-->
+<!--                style="text-transform: uppercase"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input-->
+<!--                outlined-->
+<!--                v-model="cliente.observacion"-->
+<!--                label="Observacion"-->
+<!--                type="text"-->
+<!--                style="text-transform: uppercase"-->
+<!--              />-->
+<!--            </div>-->
+<!--            <div class="col-12 flex flex-center">-->
+<!--              <q-btn label="Registrar" icon="send" type="submit" color="primary" class="full-width"/>-->
+<!--            </div>-->
 
-          </div>
+<!--          </div>-->
 
-          <div>
-          </div>
+<!--          <div>-->
+<!--          </div>-->
 
 
-        </q-form>
-      </q-card>
-    </div>
+<!--        </q-form>-->
+<!--      </q-card>-->
+<!--    </div>-->
     <div class="col-12">
 
       <div class="q-pa-md">
@@ -172,14 +172,17 @@
            </q-markup-table>-->
         </div>
         <div class="row">
-          <div class="col-3 q-pa-xs">
+          <div class="col-2 q-pa-xs">
             <q-input type="date" outlined dense v-model="ini" label="Fecha Ini"/>
           </div>
-          <div class="col-3 q-pa-xs ">
+          <div class="col-2 q-pa-xs ">
             <q-input type="date" outlined dense v-model="fin" label="Fecha fin"/>
           </div>
-          <div class="col-3 q-pa-xs">
-            <q-btn color="green" label="EXCEL" @click="generarExcel"/>
+          <div class="col-4 q-pa-xs">
+            <q-btn color="green" label="Generar ultmas ventas excel" @click="generarExcel" no-caps icon="shopping_cart"/>
+          </div>
+          <div class="col-4 q-pa-xs text-right">
+            <q-btn color="green" label="Crear Cliente" @click="clickCreateCliente" no-caps icon="add_circle"/>
           </div>
         </div>
 
@@ -241,7 +244,9 @@
       <q-dialog v-model="dialog_mod">
         <q-card>
           <q-card-section class="bg-green-14 text-white">
-            <div class="text-h7">MODIFICAR REGISTRO CLIENTE</div>
+            <div class="text-h7">
+              {{dato.id ? 'Modificar' : 'Registrar'}} CLIENTE
+            </div>
           </q-card-section>
           <q-card-section class="q-pt-xs">
             <q-form
@@ -431,6 +436,10 @@ export default {
         // console.log('I am triggered on both OK and Cancel')
       })
     },
+    clickCreateCliente() {
+      this.dialog_mod = true;
+      this.dato = {};
+    },
     generarExcel() {
       this.$axios.post(process.env.API + '/repClienteVenta', {ini: this.ini, fin: this.fin}).then(res => {
         console.log(res.data)
@@ -595,26 +604,74 @@ export default {
       this.dialog_del = true;
     },
     onMod() {
-      this.$q.loading.show();
-      this.$axios.put(process.env.API + '/cliente/' + this.dato.id, this.dato).then(res => {
-        this.$q.notify({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: 'Modificado correctamente'
-        });
-        this.dialog_mod = false;
-        this.filtrarlista();
-      }).catch(err => {
+      if (this.dato.id == undefined){
+        this.$q.loading.show();
+        this.dato.tipocliente = 1;
+        this.$axios.post(process.env.API + '/cliente', this.dato).then(res => {
+          this.$q.notify({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'cloud_done',
+            message: 'Creado correctamente'
+          });
+          this.dialog_mod = false;
+          this.filtrarlista();
+        }).catch(err => {
 
-        this.$q.notify({
-          color: 'red-4',
-          textColor: 'white',
-          icon: 'error',
-          message: 'Error al Modificar'
-        });
-      })
-      this.$q.loading.hide();
+          this.$q.notify({
+            color: 'red-4',
+            textColor: 'white',
+            icon: 'error',
+            message: err.response.data.message
+          });
+        }).finally(() => {
+          this.$q.loading.hide();
+          this.dialog_mod = false;
+        })
+      }else {
+        this.$q.loading.show();
+        this.$axios.put(process.env.API + '/cliente/' + this.dato.id, this.dato).then(res => {
+          this.$q.notify({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'cloud_done',
+            message: 'Modificado correctamente'
+          });
+          this.dialog_mod = false;
+          this.filtrarlista();
+        }).catch(err => {
+
+          this.$q.notify({
+            color: 'red-4',
+            textColor: 'white',
+            icon: 'error',
+            message: err.response.data.message
+          });
+        }).finally(() => {
+          this.$q.loading.hide();
+          this.dialog_mod = false;
+        })
+      }
+      // this.$q.loading.show();
+      // this.$axios.put(process.env.API + '/cliente/' + this.dato.id, this.dato).then(res => {
+      //   this.$q.notify({
+      //     color: 'green-4',
+      //     textColor: 'white',
+      //     icon: 'cloud_done',
+      //     message: 'Modificado correctamente'
+      //   });
+      //   this.dialog_mod = false;
+      //   this.filtrarlista();
+      // }).catch(err => {
+      //
+      //   this.$q.notify({
+      //     color: 'red-4',
+      //     textColor: 'white',
+      //     icon: 'error',
+      //     message: 'Error al Modificar'
+      //   });
+      // })
+      // this.$q.loading.hide();
     },
     onDel() {
       this.$q.loading.show();
