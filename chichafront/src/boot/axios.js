@@ -15,6 +15,7 @@ export default boot(({ app, router, store }) => {
 
   app.config.globalProperties.$axios = axios
   app.config.globalProperties.$url = process.env.API
+  app.config.globalProperties.$gruposProductos = ['CHICHA','GARAPIÑA']
   app.config.globalProperties.$api = api
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
   //       so you won't necessarily have to import axios in each vue file
