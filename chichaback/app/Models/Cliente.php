@@ -30,5 +30,10 @@ class Cliente extends Model
     public function prestamos(){
         return $this->hasMany(Prestamo::class)->with('inventario')->with('logprestamos');
     }
+    public function ventas()
+    {
+        return $this->hasMany(Venta::class);
+    }
+
 
 }

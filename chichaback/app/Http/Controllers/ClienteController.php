@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -36,7 +37,7 @@ class ClienteController extends Controller
         if ($type=='detalle') {
             return Cliente::whereTipocliente('2')->where('estado', 'ACTIVO')->orderBy('titular')->get();
         }
-        if ($type=='local') 
+        if ($type=='local')
             {
             return Cliente::whereTipocliente('1')->where('estado', 'ACTIVO')->orderBy('titular')->get();
         }
@@ -155,6 +156,46 @@ class ClienteController extends Controller
         $cliente->delete();
         return response()->json(['res'=>'Borrado exitoso'],200);
     }
+    public function cumple3()
+    {
+        $hoy = Carbon::today();
+        $limite = $hoy->copy()->addDays(15);
+
+        $clientes = Cliente::all()->map(function ($cliente) use ($hoy, $limite) {
+            if (!$cliente->fechanac) {
+                return null;
+            }
+
+            $nacimiento = Carbon::parse($cliente->fechanac);
+            $proximoCumple = $nacimiento->copy()->year($hoy->year);
+
+            if ($proximoCumple->lessThan($hoy)) {
+                $proximoCumple->addYear();
+            }
+
+            if (!$proximoCumple->between($hoy, $limite)) {
+                return null;
+            }
+
+            $diasFaltantes = $hoy->diffInDays($proximoCumple);
+
+            $ventas = $cliente->ventas()
+                ->orderBy('fecha', 'desc')
+                ->take(7)
+                ->get(['fecha', 'total']);
+
+            return [
+                'cliente' => $cliente->titular,
+                'fechanac' => $cliente->fechanac,
+                'dias_para_cumple' => $diasFaltantes,
+                'ventas' => $ventas
+            ];
+        })->filter()->sortBy('dias_para_cumple')->values();
+
+        return response()->json($clientes);
+    }
+
+
 
     public function ordercumple(){
 

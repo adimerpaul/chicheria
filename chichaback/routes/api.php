@@ -82,6 +82,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/devolver',[\App\Http\Controllers\GarantiaController ::class,'devolver']);
     Route::get('/cumple',[\App\Http\Controllers\ClienteController ::class,'ordercumple']);
     Route::get('/cumple2',[\App\Http\Controllers\ClienteController ::class,'ordercumple2']);
+    Route::get('/cumple3',[\App\Http\Controllers\ClienteController ::class,'cumple3']);
     Route::get('/aniver',[\App\Http\Controllers\ClienteController ::class,'aniver']);
     Route::post('/impresiondetalle/{id}',[\App\Http\Controllers\VentaController ::class,'impresiondetalle']);
     Route::post('/anular',[\App\Http\Controllers\VentaController ::class,'anular']);
