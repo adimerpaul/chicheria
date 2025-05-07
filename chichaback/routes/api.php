@@ -158,3 +158,4 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::get('/empleadoSueldo',[\App\Http\Controllers\EmpleadoController::class,'empleadoSueldo']);
 });
 Route::get('/cuentasCobrarDetalle',[\App\Http\Controllers\ReporteController::class,'cuentasCobrarDetalle']);
+Route::get('/cuentasCobrarLocal',[\App\Http\Controllers\ReporteController::class,'cuentasCobrarLocal']);
