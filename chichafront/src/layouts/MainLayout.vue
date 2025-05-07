@@ -28,10 +28,10 @@
       bordered
       class="bg-grey-1"
     >
-      <q-list>
+      <q-list dense>
         <q-item-label
           header
-          class="text-grey-8"
+          class="text-grey-8 text-bold"
         >
           Opciones del menu
         </q-item-label>
