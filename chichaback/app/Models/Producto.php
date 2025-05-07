@@ -15,8 +15,8 @@ class Producto extends Model
         'estado',
         'tipo',
         'color',
-        'orden'
-
+        'orden',
+        'grupo'
     ];
     protected $hidden = ["created_at", "updated_at"];
 }
