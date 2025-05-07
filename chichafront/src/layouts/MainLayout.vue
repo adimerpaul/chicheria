@@ -17,7 +17,7 @@
 
         <div>
           Chicha doña nati
-          <q-btn @click="logout" label="salir" color="negative" icon="logout" v-if="$store.getters['login/isLoggedIn']"/>
+          <q-btn @click="logout" label="Salir" color="negative" icon="logout" v-if="$store.getters['login/isLoggedIn']" dense no-caps/>
         </div>
       </q-toolbar>
     </q-header>
