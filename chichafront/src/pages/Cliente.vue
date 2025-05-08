@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12">
-      <q-badge label="REGISTRO DE NUEVOS CLIENTES LOCAL" color="teal" class="full-width text-h6"/>
+      <q-badge label="REGISTRO DE NUEVOS CLIENTES " color="teal" class="full-width text-h6"/>
     </div>
 <!--    <div class="col-12">-->
 <!--      <q-card>-->
@@ -159,7 +159,7 @@
           <template v-slot:body-cell-opcion="props">
             <q-td key="opcion" :props="props">
               <q-btn dense round flat color="yellow" @click="editRow(props.row)" icon="edit"></q-btn>
-              <q-btn dense round flat color="red" @click="delRow(props.row)" icon="delete"></q-btn>
+              <q-btn dense round flat color="red" @click="delRow(props.row)" icon="delete" v-if="$store.state.login.editcliente"></q-btn>
             </q-td>
           </template>
           <template v-slot:top-right>
@@ -561,6 +561,15 @@ export default {
         this.dialog_del = false;
         //this.filtrarlista();
         this.listado(2)
+      }).catch(err => {
+        this.$q.notify({
+          color: 'red-4',
+          textColor: 'white',
+          icon: 'error',
+          message: 'Error al eliminar'
+        });
+      }).finally(() => {
+        this.dialog_del = false;
       })
       this.$q.loading.hide();
     },

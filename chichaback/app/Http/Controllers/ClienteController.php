@@ -154,7 +154,7 @@ class ClienteController extends Controller
         //
         $cliente=Cliente::find($id);
         $cliente->delete();
-        return response()->json(['res'=>'Borrado exitoso'],200);
+        return $cliente;
     }
     public function cumple3()
     {

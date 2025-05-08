@@ -439,9 +439,9 @@ public function reporteventa(Request $request){
         <tr><td>Usuario: </td><td>'.$garantia->user->name.'</td></tr>
         </table>
         <hr style=" border: 4px dashed;">
-        <div><b>FECHA</b>'.date('d/m/Y',strtotime($garantia->fecha)).'</div>
-        <div><b>NOMBRE</b>'.$garantia->cliente->titular.'</div>
-        <div><b>DETALLE</b> '.$garantia->cantidad.' - '.$garantia->inventario->nombre.'</div>
+        <div><b>FECHA </b>'.date('d/m/Y',strtotime($garantia->fecha)).'</div>
+        <div><b>NOMBRE </b>'.$garantia->cliente->titular.'</div>
+        <div><b>DETALLE </b> '.$garantia->cantidad.' - '.$garantia->inventario->nombre.'</div>
         <br>
         <br>
         <br>
@@ -449,8 +449,7 @@ public function reporteventa(Request $request){
         if($garantia->estado!='VENTA'){
         $cadena.='<br>
         <br>
-        <div class="textc"><b>OJO</b></div>
-        <div class="leyenda"><b>*  SOLO SE RECIBIRA EL ENVASE SI ESTA LIMPIO Y EN BUEN ESTADO<br>* TIEMPO MAXIMO DE DEVOLUCION 5 DIAS,CASO CONTRARIO SE DARA DE BAJA<br>* HORARIO DE DEVOLUCION DE GARANTIA DE 9:00 AM A 17:00 PM DE LUNES - DOMINGO EXCEPTO EL DIA MIERCOLES </b></div>
+        <div class="leyenda"><b>*  Accepto todas las condiciones y terminos de prestamo de envases </b></div>
             </div>
         ';}
         return $cadena;

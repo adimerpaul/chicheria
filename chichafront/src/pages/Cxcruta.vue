@@ -241,7 +241,7 @@ export default {
       prestamo:{},
       columns:[
         {name:'op',label:'OP',field:'op'},
-        {name:'fecha',label:'Fecha',field:row=>moment(row.fecha).format('DD/MM/YYYY')},
+        {name:'fecha',label:'Fecha',field:row=>moment(row.fecha).format('DD/MM/YYYY')+' ' + moment(row.created_at).format('HH:mm')},
         {name:'monto',label:'Monto',field:'monto'},
         {name:'Observacion',label:'Observacion',field:'observacion'},
       ],

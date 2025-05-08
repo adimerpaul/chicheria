@@ -228,7 +228,7 @@
           <template v-slot:body-cell-opcion="props">
             <q-td key="opcion" :props="props">
               <q-btn dense round flat color="yellow" @click="editRow(props.row)" icon="edit"></q-btn>
-              <q-btn dense round flat color="red" @click="delRow(props.row)" icon="delete"></q-btn>
+              <q-btn dense round flat color="red" @click="delRow(props.row)" icon="delete" v-if="$store.state.login.editcliente"></q-btn>
             </q-td>
           </template>
           <template v-slot:top-right>
@@ -372,6 +372,7 @@ import {date} from 'quasar'
 import $ from "jquery";
 import moment from 'moment'
 import xlsx from "json-as-xlsx"
+import { store } from 'quasar/wrappers';
 
 
 export default {
@@ -684,6 +685,15 @@ export default {
         });
         this.dialog_del = false;
         this.filtrarlista();
+      }).catch(err => {
+        this.$q.notify({
+          color: 'red-4',
+          textColor: 'white',
+          icon: 'error',
+          message: err.response.data.message
+        });
+      }).finally(() => {
+        this.dialog_del = false;
       })
       this.$q.loading.hide();
     },

@@ -45,5 +45,7 @@ export default function () {
     almacenCrearMateriaPrima: false,
     almacenHistorialPago:false,
     empleadoSueldo:false,
+    editcajachica:false,
+    editcliente:false,
   }
 }

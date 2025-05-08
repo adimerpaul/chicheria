@@ -54,6 +54,7 @@ export function auth_success(state, data){
   state.almacenHistorialPago=data.user.permisos.find(p=>p.id===43)!=undefined
   state.empleadoSueldo=data.user.permisos.find(p=>p.id===44)!=undefined
   state.editcajachica=data.user.permisos.find(p=>p.id===45)!=undefined
+  state.editcliente=data.user.permisos.find(p=>p.id===46)!=undefined
 }
 export function   auth_error(state){
   state.status = 'error'

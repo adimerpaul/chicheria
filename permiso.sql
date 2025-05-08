@@ -31,3 +31,7 @@ UPDATE productos SET grupo = 'CHICHA' WHERE id IN (1, 4, 5, 6, 7, 8, 9, 18, 19, 
 
 -- GARAPIÑA
 UPDATE productos SET grupo = 'GARAPIÑA' WHERE id IN (39, 54, 56, 57, 58, 59, 60);
+
+INSERT INTO `permisos` (`id`, `nombre`, `created_at`, `updated_at`, `orden`, `descripcion`, `grupo`) VALUES
+(45, 'Editar Caja Chica', NULL, NULL, 45, 'eliminar registro de caja', 'Finanzas'),
+(46, 'Editar Cliente', NULL, NULL, 46, 'modificar o eliminar ', 'Clientes');

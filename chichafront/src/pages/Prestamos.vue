@@ -46,11 +46,14 @@
               </div>
               <div class="col-12 col-sm-6 q-pa-xs flex flex-center">
                 <input type="radio" value="EN PRESTAMO" v-model="tipo"
-                       style="margin-right: 0.5em;font;height:35px; width:35px; "/><b
+                       style="margin-right: 0.5em;height:35px; width:35px; "/><b
                 :style="tipo=='EN PRESTAMO'?'color:red':''"> EN PRESTAMO </b>
                 <input type="radio" value="VENTA" v-model="tipo"
                        style="margin-left: 1em;margin-right: 0.5em;height:35px; width:35px; "/><b
                 :style="tipo=='VENTA'?'color:red':''"> VENTA </b>
+              </div>
+              <div class="col-12 col-sm-12 q-pa-xs " style=" text-align: right;">
+                <q-btn dense label="agregar" icon="send" color="positive" type="submit" v-if="!boolmod"/>
               </div>
               <div class="col-12">
                 <q-table dense :rows="listPrestamo" :columns="colregistro" row-key="name">
@@ -61,13 +64,10 @@
                   </template>
                 </q-table>
               </div>
-              <div class="col-6  q-pa-xs " style=" text-align: right;">
+              <div class="col-12 q-pa-xs " style=" text-align: right;">
                 <q-btn dense label="CANCELAR" color="red" v-close-popup v-if="listPrestamo.length==0"/>
                 <q-btn dense label="FINALIZAR" color="info" @click="impresionList()" v-if="listPrestamo.length>=1"/>
-              </div>
-              <div class="col-6  q-pa-xs " style=" text-align: right;">
                 <q-btn dense label="Modficar" icon="edit" color="yellow" v-if="boolmod" @click="modificar"/>
-                <q-btn dense label="agregar" icon="send" color="positive" type="submit" v-else/>
               </div>
 
             </div>
@@ -574,7 +574,6 @@ export default {
         <br>
         <div class="textc">Firma</div>
         <br>
-        <div class="textc"><b>OJO</b></div>
         <div class="leyenda"><b>*  Accepto todas las condiciones y terminos de prestamo de envases</b></div></div>`
         }
         console.log(cadena)
