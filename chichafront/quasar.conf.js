@@ -75,7 +75,8 @@ module.exports = configure(function (ctx) {
       env: {
         API: ctx.dev
           ? 'http://localhost:8000/api'
-          : 'https://bnaty.tuprogam.com/api'
+          : 'https://bnaty.tuprogam.com/api',
+        VERSION: '28.9.5'
       }
     },
 

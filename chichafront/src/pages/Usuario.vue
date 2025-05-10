@@ -67,10 +67,10 @@
       </q-card>
     </q-dialog>
 
-    <q-table :filter="filter" title="Usuarios" 
-      :rows="data" 
-      :columns="columns" 
-      row-key="name" 
+    <q-table :filter="filter" title="Usuarios"
+      :rows="data"
+      :columns="columns"
+      row-key="name"
       :rows-per-page-options="[0,50,100]">
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -409,7 +409,6 @@ export default {
         message: 'Ingresar nueva contraseña',
         prompt: {
           model: '',
-          type: 'password' // optional
         },
         cancel: true,
         persistent: true

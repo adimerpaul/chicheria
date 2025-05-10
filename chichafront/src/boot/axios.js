@@ -14,6 +14,7 @@ export default boot(({ app, router, store }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
   app.config.globalProperties.$axios = axios
+  app.config.globalProperties.$version = process.env.VERSION
   app.config.globalProperties.$url = process.env.API
   app.config.globalProperties.$gruposProductos = ['CHICHA','GARAPIÑA']
   app.config.globalProperties.$api = api
