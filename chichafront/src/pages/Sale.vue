@@ -197,7 +197,7 @@
         </q-card>
       </q-dialog>
 
-      <q-dialog v-model="dialogGarantia" persistent>
+      <q-dialog v-model="dialogGarantia" >
         <q-card>
           <q-card-section>
 
@@ -207,8 +207,8 @@
             Desea registrar préstamo o venta de material?
           </q-card-section>
           <q-card-actions align="center">
-            <q-btn flat label="FINALIZAR" color="red" @click="garantiaCancel"/>
-            <q-btn flat label="NO" color="accent" @click="garantiaFin"/>
+            <q-btn flat label="Cerrar" color="red" @click="garantiaFin"/>
+            <q-btn flat label="No" color="accent" @click="garantiaCancel"/>
             <q-btn flat label="SI" color="green" @click="garantiaOk"/>
           </q-card-actions>
         </q-card>

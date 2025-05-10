@@ -13,7 +13,7 @@
 
         <q-toolbar-title>
           {{ this.$store.state.login.user.name }}
-          {{$version}}
+          <span style="font-size: 16px">{{$version}}</span>
         </q-toolbar-title>
 
         <div>
