@@ -1194,6 +1194,15 @@ export default {
     garantiaCancel2() {
       this.dialogGarantia2 = false
       let prt = false
+      this.printboleta += "<div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
+      this.prestamolista.forEach(p => {
+        if (p.tipo == 'EN PRESTAMO') {
+          p.tipo = "PRESTAMO"
+          prt = true
+        }
+        this.printboleta += "<tr><td>" + p.cantidad + "</td><td>" + p.nombre + "</td><td>" + p.efectivo + "</td><td>" + p.tipo + "</td></tr>"
+      })
+      this.printboleta += "</table></div>"
       this.printboleta += "<hr style=' border: 4px dashed;'><div style='text-align:center'>Detalle de Prestamo o venta de material</div><div><b>Cliente </b>" + this.client.local + ' - ' + this.client.titular + "</div><div><table><tr><th>CANT</th><th>MATERIAL</th><th>MONTO</th><th>TIPO</th></tr>"
       this.prestamolista.forEach(p => {
         if (p.tipo == 'EN PRESTAMO') {

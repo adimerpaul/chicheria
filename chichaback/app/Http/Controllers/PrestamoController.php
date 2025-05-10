@@ -424,10 +424,12 @@ public function reporteventa(Request $request){
         $cadena='
         <style>
         .textc{text-align:center}
+        .texttitulo{text-align:center; }
         .leyenda{text-align:justify;
         size-font 6px;}
         </style>
         <div style="padding:5px">
+        <div class="texttitulo">Prestamo / Venta Material</div>
         <table style="width: 100%;">
         <tr><td>N </td><td>'.$garantia->id.'</td></tr>
         <tr><td>Fecha: </td><td>'.date('d/m/Y',strtotime($garantia->fecha)).'</td></tr>
@@ -442,6 +444,41 @@ public function reporteventa(Request $request){
         <div><b>FECHA </b>'.date('d/m/Y',strtotime($garantia->fecha)).'</div>
         <div><b>NOMBRE </b>'.$garantia->cliente->titular.'</div>
         <div><b>DETALLE </b> '.$garantia->cantidad.' - '.$garantia->inventario->nombre.'</div>
+        <br>
+        <br>
+        <br>
+        <div class="textc">Firma</div>';
+        if($garantia->estado!='VENTA'){
+        $cadena.='<br>
+        <br>
+        <div class="leyenda"><b>*  Accepto todas las condiciones y terminos de prestamo de envases </b></div>
+            </div>
+        ';}
+        return $cadena;
+
+    }
+
+    public function impresionRep($id){
+        $garantia=Prestamo::with('user')->with('cliente')->with('inventario')->where('id',$id)->get()[0];
+        $cadena='
+        <style>
+        .textc{text-align:center; }
+        .texttitulo{text-align:center; font-size:14px;font-weight: bold;}
+        .leyenda{text-align:justify;
+        size-font 6px;}
+        </style>
+        <div style="padding:5px">
+        <div class="texttitulo">Prestamo / Venta Material</div>
+        <table style="width: 100%;">
+        <tr><td>N </td><td>'.$garantia->id.'</td></tr>
+        <tr><td>Fecha: </td><td>'.date('d/m/Y',strtotime($garantia->fecha)).'</td></tr>
+        <tr><td>Nombre:</td><td> '.$garantia->cliente->titular.'</td></tr>
+        <tr><td>Efectivo: </td><td>'.$garantia->efectivo.'</td></tr>
+        <tr><td>Fisico: </td><td>'.$garantia->fisico.'</td></tr>
+        <tr><td>Detalle: </td><td>'.$garantia->inventario->nombre.'</td></tr>
+        <tr><td>Cantidad: </td><td>'.$garantia->cantidad.'</td></tr>
+        <tr><td>Usuario: </td><td>'.$garantia->user->name.'</td></tr>
+        </table>
         <br>
         <br>
         <br>

@@ -194,7 +194,7 @@
           <!-- dropdown content goes here -->
           <q-btn-dropdown color="primary" label="Opciones" dense size="10px" no-caps>
             <q-list>
-              <q-item clickable v-close-popup @click="onPrint(props.row)"
+              <q-item clickable v-close-popup @click="onPrint2(props.row)"
                       v-if="props.row.estado=='EN PRESTAMO' || props.row.estado=='DEVUELTO'" dense>
                 <q-item-section avatar>
                   <q-avatar icon="print" color="info" text-color="white"/>
@@ -598,6 +598,17 @@ export default {
         myWindow.close();
       })
     },
+    onPrint2(prest) {
+      this.$axios.post(process.env.API + '/impresionRep/' + prest.id).then(res => {
+        // console.log(res.data)
+        let myWindow = window.open("", "Imprimir", "width=1000,height=1000");
+        myWindow.document.write(res.data);
+        myWindow.document.close();
+        myWindow.print();
+        myWindow.close();
+      })
+    },
+
     printDevuelto(devuelto) {
       this.$axios.post(process.env.API + '/impdevolucion/' + devuelto.id).then(res => {
         // console.log(res.data)
