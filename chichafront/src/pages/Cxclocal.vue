@@ -24,15 +24,56 @@
           </div>
         </q-form>
         <div class="col-12">
-          <div class=" responsive">
-            <q-btn color="red" icon="picture_as_pdf" label="Exportar PDF" @click="exportPdf()" class="q-mb-md" dense
-                   no-caps/>
-            <q-btn color="green" icon="description" label="Exportar Excel" @click="exportExcel()" class="q-mb-md" dense
-                   no-caps/>
+          <q-btn color="red" icon="picture_as_pdf" label="Exportar PDF" @click="exportPdf()" class="q-mb-md" dense no-caps/>
+            <q-btn color="green" icon="description" label="Exportar Excel" @click="exportExcel()" class="q-mb-md" dense no-caps/>
+          <q-table
+            :rows="ventas"
+            :columns="columns2"
+            :filter="filter"
+            row-key="name"
+        >
+        <template v-slot:top-right>
+          <q-select v-model="filtEstado" :options="['TODOS','POR COBRAR','CANCELADO','ANULADO']" label="Estado" outlined dense @update:model-value="filtrarList"/>
+        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
+
+      <template v-slot:body-cell-tipocliente="props">
+          <q-td :props="props" auto-width>
+            <q-badge color="accent" v-if="props.row.tipocliente=='1'">LOCAL</q-badge>
+            <q-badge color="teal" v-else>CLIENTE</q-badge>
+          </q-td>
+        </template>
+        <template v-slot:body-cell-saldo="props">
+          <q-td :props="props" auto-width>
+            <span style="font-weight:bold; font-size:20px">{{ props.row.saldo }}</span>
+          </q-td>
+        </template>
+        <template v-slot:body-cell-estado="props">
+          <q-td :props="props" auto-width>
+            <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
+          </q-td>
+        </template>
+
+        <template v-slot:body-cell-opcion="props">
+          <q-td :props="props" auto-width>
+            <q-btn icon="segment" color="green" @click="listpago(props.row)" dense>
+                    <q-tooltip>Listado Pago</q-tooltip>
+                  </q-btn>
+                  <q-btn icon="monetization_on" color="amber" v-if="props.row.estado=='POR COBRAR'" @click="pago(props.row)" dense>
+                    <q-tooltip>Realizar Pago</q-tooltip>
+                  </q-btn>
+          </q-td>
+        </template>
+        </q-table>
+        <!--  <div class=" responsive">
+
             <q-markup-table id="example" style="width:100%" class="cell-border" dense flat bordered>
               <thead>
               <tr>
-                <!--                      <th>Nro</th>-->
                 <th class="hidden">FechaOrd</th>
                 <th>Id</th>
                 <th>Fecha</th>
@@ -49,7 +90,6 @@
               </thead>
               <tbody>
               <tr v-for="v in ventas" :key="v.i">
-                <!--                      <td>{{v.id}}</td>-->
                 <td class="hidden">{{ v.fechaord }}</td>
                 <td>{{ v.id }}</td>
                 <td>{{ v.fecha }}</td>
@@ -76,15 +116,10 @@
                 </td>
               </tr>
               </tbody>
-              <!--                  <tfoot>
-                                <tr>
-                                  <th colspan="9" style="text-align:right">Total:</th>
-                                  <th></th>
-                                </tr>
-                                </tfoot>-->
+
             </q-markup-table>
           </div>
-
+        -->
           <q-dialog v-model="alert">
             <q-card>
               <q-card-section>
@@ -177,7 +212,9 @@ export default {
   name: "Venta",
   data() {
     return {
+      filtEstado:'TODOS',
       loading: false,
+      filter:'',
       fecha: date.formatDate(new Date(), 'YYYY-MM-DD'),
       fecha2: date.formatDate(new Date(), 'YYYY-MM-DD'),
       fecha3: date.formatDate(new Date(), 'YYYY-MM-DD'),
@@ -234,7 +271,6 @@ export default {
       ],
       ventas: [],
       prestamos: [],
-      filter: '',
       options: [],
       model: '',
       tot: '',
@@ -561,6 +597,15 @@ export default {
     })
   },
   methods: {
+    filtrarList(){
+      if (this.filtEstado === 'TODOS') {
+        this.ventas = this.filterVenta;
+      } else {
+        this.ventas = this.filterVenta.filter(
+          item => item.estado === this.filtEstado
+        );
+      }
+    },
     exportPdf() {
       const url = process.env.API + '/cuentasCobrarLocal?fechaInicio=' + this.fecha2 + '&fechaFin=' + this.fecha3;
       window.open(url, '_blank');
@@ -687,6 +732,7 @@ export default {
             pagos: r.pagos
           })
         })
+        this.filterVenta=this.ventas
         // console.log(this.ventas)
         // this.$nextTick(() => {
         //   // $('#example').DataTable( {
