@@ -10,16 +10,21 @@ class ReporteController extends Controller{
     function cuentasCobrarLocal(Request $request){
         $fechaInicio = $request->input('fechaInicio');
         $fechaFin = $request->input('fechaFin');
-        $ventas= Venta::with('user')
-            ->with('cliente')
-            ->with('pagos')
-            ->whereDate('fecha','>=',$fechaInicio)
-            ->whereDate('fecha','<=',$fechaFin)
-            ->where('tipo','LOCAL')
-            ->whereRaw("(fechaentrega is null OR fechaentrega='')")
-            //->where('saldo','>',0)
-            ->whereRaw("total > acuenta")
-            ->get();
+        $estado = $request->input('estado');
+        $ventas = Venta::with(['user', 'cliente', 'pagos'])
+            ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+            ->where('tipo', 'LOCAL')
+            ->where(function ($query) {
+                $query->whereNull('fechaentrega')
+                    ->orWhere('fechaentrega', '');
+            })
+            ->whereRaw('total > acuenta');
+
+        if ($estado !== 'TODOS') {
+            $ventas->where('estado', $estado);
+        }
+
+        $ventas = $ventas->get();
         $pdf = Pdf::loadView('pdf.cuentascobrarlocal', [
             'ventas' => $ventas,
             'fechaInicio' => $fechaInicio,
@@ -30,16 +35,24 @@ class ReporteController extends Controller{
     function cuentasCobrarDetalle(Request $request){
         $fechaInicio = $request->input('fechaInicio');
         $fechaFin = $request->input('fechaFin');
-        $ventas= Venta::with('user')
-            ->with('cliente')
-            ->with('pagos')
-            ->whereDate('fecha','>=',$fechaInicio)
-            ->whereDate('fecha','<=',$fechaFin)
-            ->where('tipo','DETALLE')
-            ->whereRaw("(fechaentrega is null OR fechaentrega='')")
-            //->where('saldo','>',0)
-            ->whereRaw("total > acuenta")
-            ->get();
+        $estado = $request->input('estado');
+
+        $ventas = Venta::with(['user', 'cliente', 'pagos'])
+            ->whereBetween('fecha', [$fechaInicio, $fechaFin])
+            ->where('tipo', 'DETALLE')
+            ->where(function ($query) {
+                $query->whereNull('fechaentrega')
+                    ->orWhere('fechaentrega', '');
+            })
+            ->whereRaw('total > acuenta');
+
+        if ($estado !== 'TODOS') {
+            $ventas->where('estado', $estado);
+        }
+
+        $ventas = $ventas->get();
+
+
         $pdf = Pdf::loadView('pdf.cuentascobrardetalle', [
             'ventas' => $ventas,
             'fechaInicio' => $fechaInicio,

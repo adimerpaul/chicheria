@@ -23,15 +23,56 @@
         </div>
       </q-form>
       <div class="col-12">
+                  <q-btn color="red" icon="picture_as_pdf" label="Exportar PDF" @click="exportPdf()" class="q-mb-md" dense no-caps/>
+            <q-btn color="green" icon="description" label="Exportar Excel" @click="exportExcel()" class="q-mb-md" dense no-caps/>
+          <q-table
+            :rows="ventas"
+            :columns="columns2"
+            :filter="filter"
+            row-key="name"
+        >
+        <template v-slot:top-right>
+          <q-select v-model="filtEstado" :options="['TODOS','POR COBRAR','CANCELADO','ANULADO']" label="Estado" outlined dense @update:model-value="filtrarList"/>
+        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
+
+      <template v-slot:body-cell-tipocliente="props">
+          <q-td :props="props" auto-width>
+            <q-badge color="accent" v-if="props.row.tipocliente=='1'">LOCAL</q-badge>
+            <q-badge color="teal" v-else>CLIENTE</q-badge>
+          </q-td>
+        </template>
+        <template v-slot:body-cell-saldo="props">
+          <q-td :props="props" auto-width>
+            <span style="font-weight:bold; font-size:20px">{{ props.row.saldo }}</span>
+          </q-td>
+        </template>
+        <template v-slot:body-cell-estado="props">
+          <q-td :props="props" auto-width>
+            <q-badge :color="props.row.estado=='CANCELADO'?'positive':'negative'">{{ props.row.estado }}</q-badge>
+          </q-td>
+        </template>
+
+        <template v-slot:body-cell-opcion="props">
+          <q-td :props="props" auto-width>
+            <q-btn icon="segment" color="green" @click="listpago(props.row)" dense>
+                    <q-tooltip>Listado Pago</q-tooltip>
+                  </q-btn>
+                  <q-btn icon="monetization_on" color="amber" v-if="props.row.estado=='POR COBRAR'" @click="pago(props.row)" dense>
+                    <q-tooltip>Realizar Pago</q-tooltip>
+                  </q-btn>
+          </q-td>
+        </template>
+        </q-table>
+        <!--
         <div class=" responsive">
-          <q-btn color="red" icon="picture_as_pdf" label="Exportar PDF" @click="exportPdf()" class="q-mb-md" dense
-                 no-caps/>
-          <q-btn color="green" icon="description" label="Exportar Excel" @click="exportExcel()" class="q-mb-md" dense
-                 no-caps/>
           <q-markup-table flat bordered dense id="example" style="width:100%" class="cell-border">
             <thead>
             <tr>
-              <!--                      <th>Nro</th>-->
               <th class="hidden">FechaOrd</th>
               <th>Id</th>
               <th>Fecha</th>
@@ -48,7 +89,6 @@
             </thead>
             <tbody>
             <tr v-for="v in ventas" :key="v.id">
-              <!--                      <td>{{v.id}}</td>-->
               <td class="hidden">{{ v.fechaord }}</td>
               <td>{{ v.id }}</td>
               <td>{{ v.fecha }}</td>
@@ -77,7 +117,7 @@
             </tbody>
           </q-markup-table>
         </div>
-
+-->
         <q-dialog v-model="alert">
           <q-card>
             <q-card-section>
@@ -153,6 +193,7 @@ export default {
   name: "Venta",
   data() {
     return {
+      filtEstado:'TODOS',
       loading: false,
       fecha: date.formatDate(new Date(), 'YYYY-MM-DD'),
       fecha2: date.formatDate(new Date(), 'YYYY-MM-DD'),
@@ -188,7 +229,7 @@ export default {
       ],
       columns2: [
         {name: 'fecha', label: 'Fecha', field: 'fecha'},
-        {name: 'local', label: 'Local', field: 'local'},
+       // {name: 'local', label: 'Local', field: 'local'},
         {name: 'titular', label: 'Titular', field: 'titular'},
         {name: 'total', label: 'Total', field: 'total'},
         {name: 'acuenta', label: 'A cuenta', field: 'acuenta'},
@@ -212,7 +253,8 @@ export default {
       prestamos: [],
       filter: '',
       options: [],
-      model: ''
+      model: '',
+      filterVenta:[]
     }
   },
   mounted() {
@@ -475,8 +517,17 @@ export default {
     })
   },
   methods: {
+    filtrarList(){
+      if (this.filtEstado === 'TODOS') {
+        this.ventas = this.filterVenta;
+      } else {
+        this.ventas = this.filterVenta.filter(
+          item => item.estado === this.filtEstado
+        );
+      }
+    },
     exportPdf() {
-      const url = process.env.API + '/cuentasCobrarDetalle?fechaInicio=' + this.fecha2 + '&fechaFin=' + this.fecha3;
+      const url = process.env.API + '/cuentasCobrarDetalle?fechaInicio=' + this.fecha2 + '&fechaFin=' + this.fecha3+'&estado='+this.filtEstado;
       window.open(url, '_blank');
     },
     exportExcel() {
@@ -600,6 +651,8 @@ export default {
             pagos: r.pagos
           })
         })
+        this.filterVenta=this.ventas
+
         // $('#example').DataTable().destroy();
         // this.$nextTick(() => {
         //   $('#example').DataTable({

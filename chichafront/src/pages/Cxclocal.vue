@@ -607,7 +607,7 @@ export default {
       }
     },
     exportPdf() {
-      const url = process.env.API + '/cuentasCobrarLocal?fechaInicio=' + this.fecha2 + '&fechaFin=' + this.fecha3;
+      const url = process.env.API + '/cuentasCobrarLocal?fechaInicio=' + this.fecha2 + '&fechaFin=' + this.fecha3+'&estado='+this.filtEstado;
       window.open(url, '_blank');
     },
     exportExcel() {
