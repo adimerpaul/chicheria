@@ -941,8 +941,8 @@ xlsx(datacaja, settings) // Will download the excel file
       cadena+="</table><div><b>TOTAL GASTO CAJA CHICA: </b>"+ caja+" Bs</div><br>"}
 
       cadena+="<table><tr><td>"
-      cadena+="<div style='font-size:16px'><b>TOTAL GANANCIA : </b>"+ (ventas + ventasruta + matventa  + ccpago +panulado)+" Bs</div>"
-      if(vtotal>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS : </b>"+ vtotal+" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL VENTAS : </b>"+ (ventas + ventasruta + matventa )+" Bs</div>"
+      if(vtotal>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS CHICHA: </b>"+ vtotal+" Bs</div>"
       if(vrtotal>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS RUTA: </b>"+ vrtotal+" Bs</div>"
       if(matventa>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
       if(panulado>0) cadena+="<div style='font-size:16px'><b>TOTAL GARANTIAS ANULADOS: </b>"+ panulado+" Bs</div>"
