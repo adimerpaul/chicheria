@@ -941,14 +941,13 @@ xlsx(datacaja, settings) // Will download the excel file
       cadena+="</table><div><b>TOTAL GASTO CAJA CHICA: </b>"+ caja+" Bs</div><br>"}
 
       cadena+="<table><tr><td>"
-      cadena+="<div style='font-size:16px'><b>TOTAL VENTAS : </b>"+ (vtotal + vrtotal )+" Bs</div>"
       if(vtotal>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS CHICHA: </b>"+ vtotal+" Bs</div>"
       if(vrtotal>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS RUTA: </b>"+ vrtotal+" Bs</div>"
-      if(matventa>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
-      if(panulado>0) cadena+="<div style='font-size:16px'><b>TOTAL GARANTIAS ANULADOS: </b>"+ panulado+" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL VENTAS : </b>"+ (vtotal + vrtotal )+" Bs</div>"
+      if((ventas + ventasruta)>0) cadena+="<div style='font-size:16px'><b>TOTAL A CUENTA : </b>"+ (ventas + ventasruta ) +" Bs</div>"
       if(ccpago>0) cadena+="<div style='font-size:16px'><b>TOTAL COBRO DEUDA: </b>"+ ccpago+" Bs</div>"
-      if((ventas + ventasruta)>0) cadena+="<div style='font-size:16px'><b>TOTAL A CUENTA + MAT + GARANTIA: </b>"+ (ventas + ventasruta + matventa + panulado) +" Bs</div>"
-
+      if(panulado>0) cadena+="<div style='font-size:16px'><b>TOTAL GARANTIAS ANULADOS: </b>"+ panulado+" Bs</div>"
+      if(matventa>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
       cadena+="</td><td>"
         if((vsaldo + vrsaldo)>0) cadena+="<div style='font-size:16px'><b>TOTAL SALDO : </b>"+ (vsaldo + vrsaldo)+" Bs</div>"
         if(gastos>0) cadena+="<div style='font-size:16px'><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
@@ -957,7 +956,7 @@ xlsx(datacaja, settings) // Will download the excel file
 
       cadena+="</td></tr></table>"
       //cadena+="<div style='font-size:16px'><b>TOTAL TOTAL ACUENTA-GASTO: </b>"+ ( ventas + ventasruta - gastos) +" Bs</div>"
-      cadena+="<div style='font-size:16px'><b>TOTAL EFECTIVO ENTREGADO: </b>"+ ( ventas + ventasruta + matventa  + ccpago - gastos) +" Bs</div>"
+      cadena+="<div style='font-size:16px'><b>TOTAL EFECTIVO ENTREGADO: </b>"+ ( ventas + ventasruta + matventa  + ccpago + panulado - gastos) +" Bs</div>"
 
       /*if(this.$store.state.login.user.id==1 && this.resumenplanilla>0){
       cadena+="<div style='font-size:16px'><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
