@@ -941,25 +941,28 @@ xlsx(datacaja, settings) // Will download the excel file
       cadena+="</table><div><b>TOTAL GASTO CAJA CHICA: </b>"+ caja+" Bs</div><br>"}
 
       cadena+="<table><tr><td>"
-      if(vtotal>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS CHICHA: </b>"+ vtotal+" Bs</div>"
-      if(vrtotal>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTAS RUTA: </b>"+ vrtotal+" Bs</div>"
-      cadena+="<div style='font-size:16px'><b>TOTAL VENTAS : </b>"+ (vtotal + vrtotal )+" Bs</div>"
-      if((ventas + ventasruta)>0) cadena+="<div style='font-size:16px'><b>TOTAL A CUENTA : </b>"+ (ventas + ventasruta ) +" Bs</div>"
-      if(ccpago>0) cadena+="<div style='font-size:16px'><b>TOTAL COBRO DEUDA: </b>"+ ccpago+" Bs</div>"
-      if(panulado>0) cadena+="<div style='font-size:16px'><b>TOTAL GARANTIAS ANULADOS: </b>"+ panulado+" Bs</div>"
-      if(matventa>0) cadena+="<div style='font-size:16px'><b>TOTAL VENTA MATERIAL: </b>"+ matventa+" Bs</div>"
+      if(vtotal>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL VENTAS CHICHA: </span>"+ vtotal+" Bs</div>"
+      if(vrtotal>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL VENTAS RUTA: </span>"+ vrtotal+" Bs</div>"
+      if(matventa>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL VENTA MATERIAL: </span>"+ matventa+" Bs</div>"
+      cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL VENTAS : </span>"+ (vtotal + vrtotal + matventa)+" Bs</div>"
+      cadena+="<hr>"
+      if((ventas + ventasruta)>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL A CUENTA : </span>"+ (ventas + ventasruta ) +" Bs</div>"
+      if(ccpago>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL COBRO DEUDA: </span>"+ ccpago+" Bs</div>"
+      if(panulado>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL GARANTIAS ANULADOS: </span>"+ panulado+" Bs</div>"
+      if(matventa>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL VENTA MATERIAL: </span>"+ matventa+" Bs</div>"
+      cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL INGRESO : </span>"+ (ventas + ventasruta + matventa + ccpago + panulado)+" Bs</div>"
       cadena+="</td><td>"
-        if((vsaldo + vrsaldo)>0) cadena+="<div style='font-size:16px'><b>TOTAL SALDO : </b>"+ (vsaldo + vrsaldo)+" Bs</div>"
-        if(gastos>0) cadena+="<div style='font-size:16px'><b>TOTAL GASTOS : </b>"+ gastos+" Bs</div>"
+        if((vsaldo + vrsaldo)>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL SALDO POR PAGAR: </span>"+ (vsaldo + vrsaldo)+" Bs</div>"
+        if(gastos>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL GASTOS : </span>"+ gastos+" Bs</div>"
       cadena+="</td><td>"
-        if(caja>0) cadena+="<div style='font-size:16px'><b>TOTAL CAJA CHICA : </b>"+ caja+" Bs</div>"
+        if(caja>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL GASTOS CAJA CHICA : </span>"+ caja+" Bs</div>"
 
       cadena+="</td></tr></table>"
-      //cadena+="<div style='font-size:16px'><b>TOTAL TOTAL ACUENTA-GASTO: </b>"+ ( ventas + ventasruta - gastos) +" Bs</div>"
-      cadena+="<div style='font-size:16px'><b>TOTAL EFECTIVO ENTREGADO: </b>"+ ( ventas + ventasruta + matventa  + ccpago + panulado - gastos) +" Bs</div>"
+      //cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL TOTAL ACUENTA-GASTO: </span>"+ ( ventas + ventasruta - gastos) +" Bs</div>"
+      cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL EFECTIVO ENTREGADO: </span>"+ ( ventas + ventasruta + matventa  + ccpago + panulado - gastos) +" Bs</div>"
 
       /*if(this.$store.state.login.user.id==1 && this.resumenplanilla>0){
-      cadena+="<div style='font-size:16px'><b>SALARIOS : </b>"+ this.resumenplanilla+" Bs</div>"
+      cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>SALARIOS : </span>"+ this.resumenplanilla+" Bs</div>"
       }*/
         let myWindow = window.open("_blank");
         myWindow.document.write(cadena);
