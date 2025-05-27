@@ -73,7 +73,6 @@ class PlanillaController extends Controller
         $loggeneral->user_id=$request->user()->id;
         $loggeneral->save();
 
-
     }
 
     /**

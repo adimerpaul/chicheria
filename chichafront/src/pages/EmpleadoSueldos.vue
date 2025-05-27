@@ -104,9 +104,7 @@
             <q-form @submit.prevent="agregarpago">
               <div class="row">
                 <div class="col-2">
-                  <q-input outlined dense label="Monto" type="number" step="0.01" v-model="pago.monto" required
-                           :rules="[val => val > 0 && val <= montocajachica || 'Monto excede caja chica']"
-                  />
+                  <q-input outlined dense label="Monto" type="number" step="0.01" v-model="pago.monto" required :rules="[val => val > 0 && val <= montocajachica && pago.tipo!='DESCUENTO' || 'Monto excede caja chica']" />
                 </div>
                 <div class="col-2">
                   <q-select outlined dense label="Tipo" v-model="pago.tipo" :options="['DESCUENTO','ADELANTO','EXTRA']"/>
