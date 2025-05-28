@@ -956,14 +956,17 @@ xlsx(datacaja, settings) // Will download the excel file
         if(gastos>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL GASTOS : </span>"+ gastos+" Bs</div>"
       cadena+="</td><td>"
         if(caja>0) cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL GASTOS CAJA CHICA : </span>"+ caja+" Bs</div>"
+        if(this.$store.state.login.user.id==1 && this.resumenplanilla>0){
+          cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>SALARIOS : </span>"+ this.resumenplanilla+" Bs</div>"
+        }
+        else{
+          this.resumenplanilla=0
+        }
 
       cadena+="</td></tr></table>"
       //cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL TOTAL ACUENTA-GASTO: </span>"+ ( ventas + ventasruta - gastos) +" Bs</div>"
-      cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL EFECTIVO ENTREGADO: </span>"+ ( ventas + ventasruta + matventa  + ccpago + panulado - gastos) +" Bs</div>"
+      cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>TOTAL EFECTIVO ENTREGADO: </span>"+ ( ventas + ventasruta + matventa  + ccpago + panulado - gastos - this.resumenplanilla) +" Bs</div>"
 
-      if(this.$store.state.login.user.id==1 && this.resumenplanilla>0){
-      cadena+="<div style='font-size:16px'><span style='font-weight: bold;'>SALARIOS : </span>"+ this.resumenplanilla+" Bs</div>"
-      }
         let myWindow = window.open("_blank");
         myWindow.document.write(cadena);
         myWindow.document.close();
