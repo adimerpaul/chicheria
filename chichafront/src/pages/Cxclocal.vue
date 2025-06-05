@@ -33,6 +33,7 @@
             row-key="name"
         >
         <template v-slot:top-right>
+        <q-select v-model="cliente" :options="clientes"  label="Cliente" outlined dense @update:model-value="filtrarList"/>
           <q-select v-model="filtEstado" :options="['TODOS','POR COBRAR','CANCELADO','ANULADO']" label="Estado" outlined dense @update:model-value="filtrarList"/>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
@@ -223,9 +224,8 @@ export default {
       alert: false,
       responsable: '',
       rango: 'RANGO',
-      clientes: [],
-      clientes2: [],
-      cliente: '',
+      clientes: [{ label: 'TODOS', id: 0 }],
+      cliente: {label: 'TODOS', id: 0},
       productos: [],
       inventarios: [],
       inventario: {},
@@ -598,13 +598,18 @@ export default {
   },
   methods: {
     filtrarList(){
-      if (this.filtEstado === 'TODOS') {
+      /*if (this.filtEstado === 'TODOS') {
         this.ventas = this.filterVenta;
       } else {
         this.ventas = this.filterVenta.filter(
           item => item.estado === this.filtEstado
         );
-      }
+      }*/
+        this.ventas= this.filterVenta.filter(item => {
+        const filtroEstado = this.filtEstado === 'TODOS' || item.estado === this.filtEstado;
+        const filtroGrupo = this.cliente.id === 0 || item.cliente_id === this.cliente.id;
+        return filtroEstado && filtroGrupo;
+    });
     },
     exportPdf() {
       const url = process.env.API + '/cuentasCobrarLocal?fechaInicio=' + this.fecha2 + '&fechaFin=' + this.fecha3+'&estado='+this.filtEstado;
@@ -715,7 +720,8 @@ export default {
         this.$q.loading.hide()
         this.ventas = []
         // $('#example').DataTable().destroy();
-
+        let unicos = [];  
+        let ids = new Set();
         res.data.forEach(r => {
           this.ventas.push({
             id: r.id,
@@ -728,10 +734,17 @@ export default {
             estado: r.estado,
             local: r.cliente.local,
             titular: r.cliente.titular,
+            cliente_id: r.cliente.id,
             user: r.user.name,
             pagos: r.pagos
           })
+          const cliente = r.cliente;
+          if (!ids.has(cliente.id)) {
+            ids.add(cliente.id);
+            unicos.push({ label: cliente.local + ' ' + cliente.titular, id: cliente.id });
+          }
         })
+        this.clientes= [{ label: 'TODOS', id: 0 }, ...unicos];
         this.filterVenta=this.ventas
         // console.log(this.ventas)
         // this.$nextTick(() => {
