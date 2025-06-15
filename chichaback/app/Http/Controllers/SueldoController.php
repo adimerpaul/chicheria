@@ -214,11 +214,14 @@ class SueldoController extends Controller
         $empleado=Empleado::find($sueldo->empleado_id);
         if($sueldo->caja=='GENERAL'){
             if ($sueldo->tipo=='ADELANTO' || $sueldo->tipo=='EXTRA'){
+                $loggeneral=Loggeneral::where('tipo','EGRESO')->where('sueldo_id',$sueldo->id)->first();
+                if($loggeneral ==null){
+                    return response()->json(['error'=>'No se puede anular este sueldo, ya que no se ha realizado un log general.'], 400);
+                }
                 $gasto=Gasto::where('observacion',$sueldo->observacion.' '.$empleado->nombre)
                     ->where('glosa',$sueldo->tipo)
                     ->first();
                 $gasto->delete();
-                $loggeneral=Loggeneral::where('tipo','EGRESO')->where('sueldo_id',$sueldo->id)->first();
                 $loggeneral->delete();
 
                 $general=General::find(1);
@@ -228,14 +231,16 @@ class SueldoController extends Controller
             }
         }
         else {
-            # code...
+           
             if ($sueldo->tipo=='ADELANTO' || $sueldo->tipo=='EXTRA'){
-
+                //verificar primero si esta en Locaja si no esta error
+                $log=Logcaja::where('tipo','GASTO')->where('sueldo_id',$sueldo->id)->first();
+                if($log !=null){                             
+                    return response()->json(['error'=>'No se puede anular este sueldo, ya que se ha realizado un log de caja.'], 400);
             $caja=Caja::find(1);
             $caja->monto= floatval($caja->monto) + floatval($sueldo->monto);
             $caja->save();
 
-            $log=Logcaja::where('tipo','GASTO')->where('sueldo_id',$sueldo->id)->first();
             $log->delete();
         }
         }
