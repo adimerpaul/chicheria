@@ -32,6 +32,7 @@
             row-key="name"
         >
         <template v-slot:top-right>
+          <q-select v-model="cliente" :options="clientes"  label="Cliente" outlined dense @update:model-value="filtrarList"/>
           <q-select v-model="filtEstado" :options="['TODOS','POR COBRAR','CANCELADO','ANULADO']" label="Estado" outlined dense @update:model-value="filtrarList"/>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
@@ -203,9 +204,8 @@ export default {
       rango: 'RANGO',
       alert: false,
       responsable: '',
-      clientes: [],
-      clientes2: [],
-      cliente: '',
+      clientes: [{ label: 'TODOS', id: 0 }],
+      cliente: {label: 'TODOS', id: 0},
       productos: [],
       inventarios: [],
       inventario: {},
@@ -518,13 +518,18 @@ export default {
   },
   methods: {
     filtrarList(){
-      if (this.filtEstado === 'TODOS') {
+      /*if (this.filtEstado === 'TODOS') {
         this.ventas = this.filterVenta;
       } else {
         this.ventas = this.filterVenta.filter(
           item => item.estado === this.filtEstado
         );
-      }
+      }*/
+        this.ventas= this.filterVenta.filter(item => {
+        const filtroEstado = this.filtEstado === 'TODOS' || item.estado === this.filtEstado;
+        const filtroGrupo = this.cliente.id === 0 || item.cliente_id === this.cliente.id;
+        return filtroEstado && filtroGrupo;
+    });
     },
     exportPdf() {
       const url = process.env.API + '/cuentasCobrarDetalle?fechaInicio=' + this.fecha2 + '&fechaFin=' + this.fecha3+'&estado='+this.filtEstado;
@@ -630,6 +635,8 @@ export default {
         this.fecha3 = this.fecha2
       }
       // $('#example').DataTable().destroy();
+      let unicos = [];
+      let ids = new Set();
       this.$axios.post(process.env.API + '/listventdetalle', {ini: this.fecha2, fin: this.fecha3}).then(res => {
         // this.ventas=res.data
         // console.log(res.data)
@@ -648,9 +655,16 @@ export default {
             local: r.cliente.local,
             titular: r.cliente.titular,
             user: r.user.name,
-            pagos: r.pagos
+            pagos: r.pagos,
+            cliente_id:r.cliente.id
           })
+          const cliente = r.cliente;
+          if (!ids.has(cliente.id)) {
+            ids.add(cliente.id);
+            unicos.push({ label: cliente.titular, id: cliente.id });
+          }
         })
+        this.clientes= [{ label: 'TODOS', id: 0 }, ...unicos];
         this.filterVenta=this.ventas
 
         // $('#example').DataTable().destroy();
