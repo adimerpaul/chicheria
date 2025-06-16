@@ -231,11 +231,11 @@ class SueldoController extends Controller
             }
         }
         else {
-           
+
             if ($sueldo->tipo=='ADELANTO' || $sueldo->tipo=='EXTRA'){
                 //verificar primero si esta en Locaja si no esta error
                 $log=Logcaja::where('tipo','GASTO')->where('sueldo_id',$sueldo->id)->first();
-                if($log !=null){                             
+                if($log !=null){
                     return response()->json(['error'=>'No se puede anular este sueldo, ya que se ha realizado un log de caja.'], 400);
             $caja=Caja::find(1);
             $caja->monto= floatval($caja->monto) + floatval($sueldo->monto);
@@ -248,4 +248,5 @@ class SueldoController extends Controller
 //        $sueldo->delete();
 //        return 1;
     }
+}
 }
