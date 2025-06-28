@@ -32,7 +32,7 @@
         >
           <td>{{ cliente.cliente }}</td>
           <td>
-            {{ moment(cliente.fechanac).format('DD/MM/YYYY') }}
+            {{ cliente.fechanac }}
           </td>
           <td class="text-right">
           <span :class="cliente.dias_para_cumple < 5 ? 'text-red' : 'text-green text-bold'">
