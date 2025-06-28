@@ -126,7 +126,7 @@
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-              <q-table title="Pagos" :rows="pagos" :columns="columns" row-key="name">
+              <q-table title="Pagos" :rows="pagos" :columns="columns" row-key="name" :rows-per-page-options=[0]>
                 <template v-slot:body-cell-op="props" v-if="$store.state.login.delpago">
                   <q-td key="op" :props="props">
                     <q-btn color="red" icon="delete" dense @click="delPago(props.row)"/>
@@ -224,6 +224,7 @@ export default {
       columns: [
         {name: 'op', label: 'OP', field: 'op'},
         {name: 'fecha', label: 'Fecha', field: row => moment(row.fecha).format('DD/MM/YYYY') +' ' + moment(row.created_at).format('HH:mm')},
+        {name: 'hora', label: 'Hora', field: row => moment(row.created_at).format('HH:mm')},
         {name: 'monto', label: 'Monto', field: 'monto'},
         {name: 'Observacion', label: 'Observacion', field: 'observacion'},
       ],
