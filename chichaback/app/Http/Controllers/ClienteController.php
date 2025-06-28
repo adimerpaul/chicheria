@@ -159,9 +159,10 @@ class ClienteController extends Controller
     public function cumple3()
     {
         $hoy = Carbon::today();
-        $limite = $hoy->copy()->addDays(15);
+        $inicio = $hoy->copy()->subDays(7);
+        $fin = $hoy->copy()->addDays(7);
 
-        $clientes = Cliente::all()->map(function ($cliente) use ($hoy, $limite) {
+        $clientes = Cliente::all()->map(function ($cliente) use ($hoy, $inicio, $fin) {
             if (!$cliente->fechanac) {
                 return null;
             }
@@ -169,15 +170,16 @@ class ClienteController extends Controller
             $nacimiento = Carbon::parse($cliente->fechanac);
             $proximoCumple = $nacimiento->copy()->year($hoy->year);
 
-            if ($proximoCumple->lessThan($hoy)) {
+            // Si ya pasó este año, considerar el del siguiente año
+            if ($proximoCumple->lessThan($inicio)) {
                 $proximoCumple->addYear();
             }
 
-            if (!$proximoCumple->between($hoy, $limite)) {
+            if (!$proximoCumple->between($inicio, $fin)) {
                 return null;
             }
 
-            $diasFaltantes = $hoy->diffInDays($proximoCumple);
+            $diasFaltantes = $hoy->diffInDays($proximoCumple, false); // puede ser negativo
 
             $ventas = $cliente->ventas()
                 ->orderBy('fecha', 'desc')
@@ -186,6 +188,7 @@ class ClienteController extends Controller
 
             return [
                 'cliente' => $cliente->titular,
+                'local' => $cliente->local,
                 'fechanac' => $cliente->fechanac,
                 'dias_para_cumple' => $diasFaltantes,
                 'ventas' => $ventas

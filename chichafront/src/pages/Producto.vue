@@ -465,7 +465,7 @@ export default {
 
     },
     editRow(props) {
-      this.dato = props.row;
+      this.dato = { ...props.row }; // Spread operator to clone the row data
       this.dialog_mod = true;
     },
     logRow(props) {

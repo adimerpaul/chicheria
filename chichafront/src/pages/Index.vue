@@ -21,7 +21,7 @@
           <th class="">CLIENTE</th>
           <th class="">FECHA NACIMIENTO</th>
           <th class="">DIAS PARA CUMPLE</th>
-<!--          <th class="">VENTAS</th>-->
+          <th class="">LOCAL</th>
         </tr>
         </thead>
         <tbody>
@@ -40,6 +40,9 @@
 <!--              </li>-->
 <!--            </ul>-->
 <!--          </td>-->
+          <td>
+            {{ cliente.local}}
+          </td>
         </tr>
         </tbody>
       </q-markup-table>
