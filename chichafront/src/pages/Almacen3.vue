@@ -10,7 +10,7 @@
       <div class="col-2">
         <q-select v-model="materialSelect" dense outlined label="Material" :options="materialsSelect"
                   option-label="nombre" option-value="id" @update:modelValue="getMaterialSelect"/>
-<!--        <pre>{{materialSelect}}</pre>-->
+        <!--        <pre>{{materialSelect}}</pre>-->
       </div>
       <div class="col-2 flex flex-center">
         <q-btn color="info" label="Consultar" @click="consultmaterial" no-caps :loading="loading"/>
@@ -218,7 +218,9 @@
       <q-card style="width: 700px; max-width: 90vw;">
         <q-card-section class="q-pb-none row items-center">
           <div class="text-h6">
-            {{ providerOptions === 'create' ? 'Registro de Provedor' : providerOptions === 'list' ? 'Lista de Provedores' : 'Editar Provedor' }}
+            {{
+              providerOptions === 'create' ? 'Registro de Provedor' : providerOptions === 'list' ? 'Lista de Provedores' : 'Editar Provedor'
+            }}
           </div>
           <q-space/>
           <q-btn flat round dense icon="close" v-close-popup/>
@@ -666,7 +668,7 @@ export default {
       {name: 'opcion', label: 'OPCIONES', field: 'opcion'},
       {name: 'material', align: 'center', label: 'MATERIAL', field: row => row.material.nombre, sortable: true},
       {name: 'provider', align: 'center', label: 'PROVEEDOR', field: row => row.provider.razon, sortable: true},
-      {name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true},
+      // {name: 'id', align: 'center', label: 'ID', field: 'id', sortable: true},
       {name: 'estado', align: 'center', label: 'ESTADO', field: 'estado', sortable: true},
       {
         name: 'fecha',
@@ -1100,16 +1102,16 @@ export default {
       this.loading = true
       this.$api.post(process.env.API + '/consultar2', {fecha1: this.fecha3, fecha2: this.fecha4})
         .then(res => {
-        res.data.forEach(r => {
-          r.saldocant = r.cantidad - r.retiro
-          r.saldopago = r.subtotal - r.deuda
-          r.tretiro = this.calculoRetiro(r.recuentos)
-          this.comptodo.push(r)
-          this.comptodoAll.push(r)
-          if (r.saldocant > 0)
-            this.excelcompra.push(r)
-        });
-      }).finally(() => {
+          res.data.forEach(r => {
+            r.saldocant = r.cantidad - r.retiro
+            r.saldopago = r.subtotal - r.deuda
+            r.tretiro = this.calculoRetiro(r.recuentos)
+            this.comptodo.push(r)
+            this.comptodoAll.push(r)
+            if (r.saldocant > 0)
+              this.excelcompra.push(r)
+          });
+        }).finally(() => {
         this.loading = false
       })
 
