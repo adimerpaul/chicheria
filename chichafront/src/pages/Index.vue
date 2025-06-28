@@ -31,7 +31,9 @@
           :class="cliente.dias_para_cumple === 0 ? 'bg-red text-white' : ''"
         >
           <td>{{ cliente.cliente }}</td>
-          <td>{{ cliente.fechanac }}</td>
+          <td>
+            {{ moment(cliente.fechanac).format('DD/MM/YYYY') }}
+          </td>
           <td class="text-right">
           <span :class="cliente.dias_para_cumple < 5 ? 'text-red' : 'text-green text-bold'">
             {{ cliente.dias_para_cumple }}
