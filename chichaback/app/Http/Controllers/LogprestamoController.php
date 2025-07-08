@@ -39,6 +39,13 @@ class LogprestamoController extends Controller
     public function store(Request $request)
     {
         //
+        $prestamo=Prestamo::find($request->id);
+        if(!$prestamo){
+            return response()->json(['error' => 'Prestamo no encontrado.'], 404);
+        }
+        if($prestamo->prestado - $request->cantidad < 0){
+            return response()->json(['error' => 'No hay suficiente cantidad prestada para devolver.'], 400);
+        }   
         $logpres= new Logprestamo;
         $logpres->fecha=$request->fecha;
         $logpres->cantidad=$request->cantidad;
@@ -46,9 +53,8 @@ class LogprestamoController extends Controller
         $logpres->prestamo_id=$request->id;
         $logpres->user_id=$request->user()->id;
         $logpres->save();
-        $prestamo=Prestamo::find($request->id);
         $prestamo->prestado = $prestamo->prestado - $request->cantidad;
-        if($prestamo->prestado == 0)
+        if($prestamo->prestado <= 0)
         $prestamo->estado='DEVUELTO';
         $prestamo->save();
         $inv=Inventario::find($request->inventario_id);
