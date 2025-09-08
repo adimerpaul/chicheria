@@ -284,7 +284,7 @@
               <div class="col-12"><q-input dense outlined label="Salario" v-model="planilla.monto" @update:model-value="actualizamonto"/></div>
               <div class="col-12"><q-input dense outlined label="adelanto" v-model="planilla.adelanto" disable /></div>
               <div class="col-12"><q-input dense outlined label="descuento" v-model="planilla.descuento" disable /></div>
-              <div class="col-12"><q-input dense outlined label="bono" v-model="planilla.bono" disable /></div>
+              <div class="col-12"><q-input dense outlined label="extra" v-model="planilla.bono" disable /></div>
               <div class="col-12"><q-input dense outlined label="total" v-model="planilla.total" disable /></div>
               <div class="col-12"><q-input dense outlined label="observacion" v-model="planilla.observacion"  /></div>
               <div class="col-12">
